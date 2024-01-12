@@ -1,5 +1,5 @@
 import {IsEmail,IsNotEmpty,IsOptional,IsString,IsStrongPassword} from 'class-validator';
-import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn} from 'typeorm';
+import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn, OneToMany} from 'typeorm';
 import { Gender } from '../../enum/Gender';
 import { Role } from '../../enum/Role';
 
@@ -9,25 +9,25 @@ export class User {
     id: number;
 
     @Column()
-    Email : string
+    email : string
  
     @Column()
-    Password: string;
+    password: string;
 
     @Column()
-    Nickname: string;
+    nickname: string;
 
     @Column({type : "number" , default : 0})
-    Mileage : number
+    mileage : number
 
     @Column()
-    Gender : Gender
+    gender : Gender
 
     @Column()
     phone: string;
 
     @Column({type : "enum", enum : Role , default : Role.User})
-    Authority : Role
+    authority : Role
 
     @CreateDateColumn()
     createdAt: Date;

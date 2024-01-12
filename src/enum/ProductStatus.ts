@@ -1,0 +1,1 @@
+export enum ProductStatus { Salable, Unsalable, Pending }
