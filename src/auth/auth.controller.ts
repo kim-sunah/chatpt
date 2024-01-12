@@ -8,7 +8,7 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignUpDto } from './dtos/sign-up.dto';
+import { CreateuserDto } from './dtos/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dtos/sign-in.dto';
@@ -18,14 +18,10 @@ import { SignInDto } from './dtos/sign-in.dto';
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
-    /**
-     * 회원가입
-     * @param signUpDto
-     * @returns
-     */
+    
     @Post('/sign-up')
-    async signUp(@Body() signUpDto: SignUpDto) {
-        const user = await this.authService.signUp(signUpDto);
+    async signUp(@Body() createuserDto: CreateuserDto) {
+        const user = await this.authService.signUp(createuserDto);
 
         return {
             statusCode: HttpStatus.CREATED,
