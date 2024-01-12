@@ -1,9 +1,10 @@
 import {
     BadRequestException,
     Injectable,
+    InternalServerErrorException,
     UnauthorizedException,
 } from '@nestjs/common';
-import { SignUpDto } from './dtos/sign-up.dto';
+import { CreateuserDto } from './dtos/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -19,30 +20,29 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async signUp({ email, password, passwordCheck, phone, name }: SignUpDto) {
-        // 비밀번호 확인
-        const isPasswordCheck = password === passwordCheck;
-        if (!isPasswordCheck) {
-            throw new BadRequestException('비밀번호 확인이 일치하지 않습니다.');
+    async signUp({ Email, Password,  phone, Nickname ,Gender}: CreateuserDto) {
+        try{
+            const existedUser = await this.userRepository.findOne({where : {Email : Email}});
+            if (existedUser) {
+                throw new BadRequestException('이미 사용중인 이메일입니다.');
+            }
+            const hashedPassword = await bcrypt.hashSync(Password, 12);
+            return await this.userRepository.save({ Email, Password: hashedPassword,Nickname, phone , Gender});
         }
 
-        // 이미 가입된 회원 확인
-        const existedUser = await this.userRepository.findOneBy({ email });
-        if (existedUser) {
-            throw new BadRequestException('이미 사용중인 이메일입니다.');
+        catch(error){
+            if (error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('회원 가입 중 오류가 발생했습니다.');
         }
+         
 
-        const hashedPassword = await bcrypt.hashSync(password, 10);
+        
+        
+       
 
-        const user = await this.userRepository.save({
-            email,
-            password: hashedPassword,
-            name,
-            phone,
-        });
-        delete user.password;
-
-        return user;
+       
     }
 
     async validate({ email, password }: SignInDto) {
