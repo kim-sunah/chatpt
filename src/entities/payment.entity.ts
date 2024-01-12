@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
-import {PayStatus} from '../../enum/PayStatus'
+import {PayStatus} from '../enum/PayStatus'
 
 @Entity('payment')
 export class Payment {

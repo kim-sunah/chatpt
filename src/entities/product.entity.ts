@@ -1,6 +1,6 @@
 import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
-import {Category} from '../../enum/Category'
-import {ProductStatus} from '../../enum/ProductStatus'
+import {Category} from '../enum/Category'
+import {ProductStatus} from '../enum/ProductStatus'
 
 @Entity('product')
 export class Product {

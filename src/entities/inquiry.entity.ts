@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
-import {InquiryStatus} from '../../enum/InquiryStatus'
+import {InquiryStatus} from '../enum/InquiryStatus'
 
 @Entity('inquiry')
 export class Inquiry {

@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
-import {LiveStatus} from '../../enum/LiveStatus'
+import {LiveStatus} from '../enum/LiveStatus'
 
 @Entity('livecast')
 export class Livecast {

@@ -1,8 +1,8 @@
 import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
-import {DeliveryStatus} from '../../enum/DeliveryStatus'
+import {DeliveryStatus} from '../enum/DeliveryStatus'
 
-@Entity('livecast')
-export class Livecast {
+@Entity('delivery')
+export class Delivery {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	

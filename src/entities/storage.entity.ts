@@ -1,7 +1,7 @@
 import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
 
-@Entity('refund')
-export class Refund {
+@Entity('storage')
+export class Storage {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
