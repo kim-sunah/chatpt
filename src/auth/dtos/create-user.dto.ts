@@ -1,5 +1,5 @@
 import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEnum } from "class-validator";
-import { Gender } from "../enum/Gender";
+import { Gender } from "../../enum/Gender";
 import { IsEqualTo } from "../decorator/match.decorator";
 
 
