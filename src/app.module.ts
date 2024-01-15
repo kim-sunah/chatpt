@@ -1,20 +1,12 @@
+import Joi from "joi";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { TypeOrmConfig } from "./_config/typeorm.config";
-import { envValidationSchema } from "./_config/env-validation.config";
-import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
-import { ProductModule } from "./product/product.module";
-import { OrderModule } from "./order/order.module";
-import { LivecastModule } from "./livecast/livecast.module";
-import { InquiryModule } from "./inquiry/inquiry.module";
-import { CartlistModule } from "./cartlist/cartlist.module";
-import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import { User } from "./entities/user.entity";
-import Joi from "joi";
+import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { AuthModule } from "./auth/auth.module";
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -27,13 +19,12 @@ const typeOrmModuleOptions = {
     host: configService.get("DB_HOST"),
     port: configService.get("DB_PORT"),
     database: configService.get("DB_NAME"),
-    entities: [User],
+    entities: [__dirname + "/*/entities/*{.js,.ts}"],
     synchronize: configService.get("DB_SYNC"),
     logging: true,
   }),
   inject: [ConfigService],
 };
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -49,15 +40,10 @@ const typeOrmModuleOptions = {
       }),
     }),
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
-    AuthModule,
     UserModule,
-    ProductModule,
-    OrderModule,
-    LivecastModule,
-    InquiryModule,
-    CartlistModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
