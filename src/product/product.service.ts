@@ -17,4 +17,12 @@ export class ProductService {
 	async searchProducts(){
 		return await this.productRepository.find()
 	}
+	
+	// 아래는 나중에 host만 하게 추가
+	
+	// 상품 등록
+	async createProduct(body){
+		body.sale_price = body.sale_price || body.price
+		return await this.productRepository.save({...body, user_id:1})
+	}
 }

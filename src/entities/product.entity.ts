@@ -1,6 +1,7 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
+import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm'
 import {Category} from '../enum/Category'
 import {ProductStatus} from '../enum/ProductStatus'
+import {User} from './user.entity'
 
 @Entity('product')
 export class Product {
@@ -13,20 +14,20 @@ export class Product {
 	@Column()
     name : string
 	
-	@Column()
+	@Column('enum',{enum: Category, default: Category.Others})
     category : Category
 	
-	@Column({default: 0})
+	@Column('enum',{enum: ProductStatus, default: ProductStatus.Salable})
 	status: ProductStatus
 	
 	@Column('text',{nullable: true})
     body : string
 	
 	@Column('int',{unsigned: true})
-    price : string
+    price : number
 	
 	@Column('int',{unsigned: true})
-    sale_price : string
+    sale_price : number
 
 	@CreateDateColumn()
     createdAt: Date
@@ -36,4 +37,8 @@ export class Product {
 
     @DeleteDateColumn()
     deletedAt: Date | null
+	
+	@ManyToOne(() => User, user => user.products)
+	@JoinColumn({name: 'user_id'})
+	user: User
 }
