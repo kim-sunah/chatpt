@@ -1,9 +1,15 @@
 import {IsEmail,IsNotEmpty,IsOptional,IsString,IsStrongPassword} from 'class-validator';
 import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn} from 'typeorm';
-import { Gender } from '../../enum/Gender';
+
 import { Role } from '../../enum/Role';
+enum  Gender {
+    Male,
+    Female
+}
 
 @Entity('users')
+
+
 export class User {
     @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
@@ -17,7 +23,7 @@ export class User {
     @Column()
     Nickname: string;
 
-    @Column({type : "number" , default : 0})
+    @Column({ default : 0})
     Mileage : number
 
     @Column()
