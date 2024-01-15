@@ -1,39 +1,33 @@
 import {IsEmail,IsNotEmpty,IsOptional,IsString,IsStrongPassword} from 'class-validator';
-import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn} from 'typeorm';
-
-import { Role } from '../../enum/Role';
-enum  Gender {
-    Male,
-    Female
-}
+import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+import { Gender } from '../enum/Gender';
+import { Role } from '../enum/Role';
 
 @Entity('users')
-
-
 export class User {
     @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
 
     @Column()
-    Email : string
+    email : string
  
     @Column()
-    Password: string;
+    password: string;
 
     @Column()
-    Nickname: string;
+    nickname: string;
 
-    @Column({ default : 0})
-    Mileage : number
+    @Column({type : "number" , default : 0})
+    mileage : number
 
     @Column()
-    Gender : Gender
+    gender : Gender
 
     @Column()
     phone: string;
 
     @Column({type : "enum", enum : Role , default : Role.User})
-    Authority : Role
+    authority : Role
 
     @CreateDateColumn()
     createdAt: Date;

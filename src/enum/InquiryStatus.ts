@@ -1,0 +1,1 @@
+export enum InquiryStatus { Pending, Answered, Resolved }
