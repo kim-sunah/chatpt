@@ -21,8 +21,8 @@ export class CreateuserDto {
     @IsEqualTo("Password")
     ConfirmPassword : string
 
-    @IsEnum(Gender)
-    Gender : Gender
+    @IsString()
+    Gender : string
 
     @IsMobilePhone()
     @IsNotEmpty({message : "폰번호를 입력해주세요"})

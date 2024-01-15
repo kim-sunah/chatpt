@@ -21,13 +21,14 @@ export class AuthService {
     ) {}
     async signUp({ Email, Password,  Gender, Nickname ,phone}: CreateuserDto) {
         try{
-            console.log(Gender)
+         
             const existedUser = await this.userRepository.findOne({where : {email : Email}});
             if (existedUser) {
                 throw new BadRequestException('이미 사용중인 이메일입니다.');
             }
             const hashedPassword = await bcrypt.hashSync(Password, 12);
-            return await this.userRepository.save({ email : Email, password: hashedPassword, nickname : Nickname, phone , Gender});
+           const user= this.userRepository.create({ email : Email, password: hashedPassword, nickname : Nickname, phone , gender : Gender})
+           return await this.userRepository.save(user)
         }
 
         catch(error){

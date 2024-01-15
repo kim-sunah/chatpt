@@ -20,8 +20,8 @@ export class User {
     @Column({default : 0})
     mileage : number
 
-    @Column({type : "enum", enum : Gender})
-    gender : Gender
+    @Column()
+    gender : string
 
     @Column()
     phone: string;
