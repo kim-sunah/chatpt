@@ -8,11 +8,8 @@ import { UserModule } from "./user/user.module";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { AuthModule } from "./auth/auth.module";
 import {ProductModule} from './product/product.module'
-import { User } from "./entities/user.entity";
-import {Product} from './entities/product.entity'
-import {ProductImage} from './entities/product-image.entity'
-import {Storage} from './entities/storage.entity'
-import {Comment} from './entities/comment.entity'
+import {LivecastModule} from './livecast/livecast.module'
+
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -25,7 +22,7 @@ const typeOrmModuleOptions = {
     host: configService.get("DB_HOST"),
     port: configService.get("DB_PORT"),
     database: configService.get("DB_NAME"),
-    entities: [User, Product, ProductImage, Storage, Comment],
+    entities: [__dirname + '/entities/*{.js,.ts}'],
     synchronize: configService.get("DB_SYNC"),
     logging: true,
   }),
@@ -48,7 +45,8 @@ const typeOrmModuleOptions = {
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UserModule,
     AuthModule,
-	ProductModule
+	ProductModule,
+	LivecastModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,10 +8,10 @@ import {Id} from '../util/id'
 export class ProductController {
 	constructor(private readonly productService: ProductService) {}
 
-	// 상품 검색
+	// 전체 상품 목록
 	@Get('')
-	async searchProducts(){
-		return await this.productService.searchProducts()
+	async getProducts(){
+		return await this.productService.getProducts()
 	}
 	
 	// 아래는 나중에 host만 하게 추가

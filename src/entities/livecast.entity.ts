@@ -12,8 +12,11 @@ export class Livecast {
 	@Column('int',{unsigned: true})
 	product_id: number
 
-	@Column({default:0})
+	@Column('enum',{enum:LiveStatus, default:0})
 	status: LiveStatus
+	
+	@Column()
+	url: string
 	
 	@Column()
 	start_time: Date

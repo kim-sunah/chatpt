@@ -14,7 +14,7 @@ export class ProductService {
     ) {}
 	
 	// 상품 검색
-	async searchProducts(){
+	async getProducts(){
 		return await this.productRepository.find()
 	}
 	
