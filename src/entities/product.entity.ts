@@ -28,6 +28,12 @@ export class Product {
 	
 	@Column('int',{unsigned: true})
     sale_price : number
+	
+	@Column('int',{unsigned: true, default: 0})
+	sales_volume : number
+	
+	@Column('bigint',{unsigned: true, default: 0})
+	revenue : number
 
 	@CreateDateColumn()
     createdAt: Date

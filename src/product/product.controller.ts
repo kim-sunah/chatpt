@@ -24,13 +24,19 @@ export class ProductController {
 	
 	// 상품 삭제
 	@Delete(':id')
-	async deleteProduct(@Param() param: Id){
-		await this.productService.deleteProduct(param.id)
+	async softDeleteProduct(@Param() param: Id){
+		await this.productService.softDeleteProduct(param.id)
 	}
 	
 	// 상품 수정
 	@Patch(':id')
 	async updateProduct(@Param() param: Id, @Body() body: UpdateProductDto){
 		return await this.productService.updateProduct(param.id, body)
+	}
+	
+	// 내 상품 검색
+	@Get('/my')
+	async getMyProducts(){
+		return await this.productService.getMyProducts()
 	}
 }

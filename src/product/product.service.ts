@@ -28,8 +28,8 @@ export class ProductService {
 	
 	// 상품 삭제
 	// user_id 비교 추가
-	async deleteProduct(id: number){
-		await this.productRepository.delete(id)
+	async softDeleteProduct(id: number){
+		await this.productRepository.softDelete(id)
 	}
 	
 	// 상품 수정
@@ -39,5 +39,10 @@ export class ProductService {
 		const res = await this.productRepository.findOne({where:{id}})
 		if(!res) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
 		return res
+	}
+	
+	// 내 상품 검색
+	async getMyProducts(){
+		return await this.productRepository.find({where:{user_id:1}})
 	}
 }
