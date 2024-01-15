@@ -2,7 +2,7 @@ import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEn
 import { Gender } from "../../enum/Gender";
 
 
-export class CreateuserDto {
+export class UpdateuserDto {
 
     @IsEmail({}, {message : "이메일 형식에 맞게 입력해주세요"})
     @IsNotEmpty({message : "이메일을 입력해주세요"})

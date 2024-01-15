@@ -19,7 +19,6 @@ export class AuthService {
         private readonly userRepository: Repository<User>,
         private readonly jwtService: JwtService,
     ) {}
-
     async signUp({ Email, Password,  phone, Nickname ,Gender}: CreateuserDto) {
         try{
             const existedUser = await this.userRepository.findOne({where : {Email : Email}});
@@ -34,22 +33,15 @@ export class AuthService {
             if (error instanceof BadRequestException) {
                 throw error;
             }
-            throw new InternalServerErrorException('회원 가입 중 오류가 발생했습니다.');
+            throw new InternalServerErrorException('회원 가입 중 오류가 발생했습니다.')
         }
-         
-
-        
-        
-       
-
-       
     }
 
-    async validate({ email, password }: SignInDto) {
-        const existedUser = await this.userRepository.findOne({
-            where: { email },
-            select: { id: true, password: true },
-        });
+
+
+
+    async validate({ Email, Password }: SignInDto) {
+        const existedUser = await this.userRepository.findOne({where: { Email }, select: { id: true, Password: true }, });
 
         // 회원이 존재하지 않을 때
         if (!existedUser) {
@@ -58,8 +50,8 @@ export class AuthService {
 
         // 비밀번호가 일치하지 않을 때
         const isPasswordMatched = await bcrypt.compareSync(
-            password,
-            existedUser.password,
+            Password,
+            existedUser.Password,
         );
 
         if (!isPasswordMatched) {

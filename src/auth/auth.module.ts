@@ -9,7 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtConfig } from 'src/_config/jwt.config';
-import { JwtStrategy } from './strategies/jwt.strategy';
+// import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guards';
 
 @Module({
@@ -23,7 +23,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guards';
         }),
     ],
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy, JwtStrategy, JwtAuthGuard],
+    providers: [AuthService, LocalStrategy, JwtAuthGuard],
     exports: [AuthService],
 })
 export class AuthModule {}
