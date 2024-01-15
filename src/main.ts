@@ -11,23 +11,17 @@ async function bootstrap() {
     const PORT = configService.get<number>('SERVER_PORT');
 
     app.setGlobalPrefix('api');
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            whitelist: true,
-            forbidNonWhitelisted: true,
-        }),
-    );
+    app.useGlobalPipes(new ValidationPipe({transform: true,whitelist: true,forbidNonWhitelisted: true,}),);
 
     // swagger
-    const config = new DocumentBuilder()
-        .setTitle('nbcamp_timeattack')
-        .setDescription('nbcamp_timeattack')
-        .setVersion('1.0')
-        .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
-        .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+    // const config = new DocumentBuilder()
+    //     .setTitle('nbcamp_timeattack')
+    //     .setDescription('nbcamp_timeattack')
+    //     .setVersion('1.0')
+    //     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
+    //     .build();
+    // const document = SwaggerModule.createDocument(app, config);
+    // SwaggerModule.setup('api', app, document);
 
     await app.listen(5000);
 }

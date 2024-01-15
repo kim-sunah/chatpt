@@ -13,7 +13,7 @@ import { LivecastModule } from './livecast/livecast.module';
 import { InquiryModule } from './inquiry/inquiry.module';
 import { CartlistModule } from './cartlist/cartlist.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { User } from './user/entities/user.entity';
+import { User } from './entities/user.entity';
 import Joi from 'joi';
 
 const typeOrmModuleOptions = {

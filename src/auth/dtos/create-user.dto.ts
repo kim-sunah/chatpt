@@ -1,11 +1,7 @@
 import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEnum } from "class-validator";
-
+import { Gender } from "../../enum/Gender";
 import { IsEqualTo } from "../decorator/match.decorator";
 
-enum  Gender {
-    Male,
-    Female
-}
 
 export class CreateuserDto {
     @IsEmail({}, {message : "이메일 형식에 맞게 입력해주세요"})
@@ -26,7 +22,7 @@ export class CreateuserDto {
     ConfirmPassword : string
 
     @IsEnum(Gender)
-    Gender : Gender
+    Gender : string
 
     @IsMobilePhone()
     @IsNotEmpty({message : "폰번호를 입력해주세요"})
