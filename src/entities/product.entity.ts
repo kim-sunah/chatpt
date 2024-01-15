@@ -1,7 +1,8 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm'
+import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn} from 'typeorm'
 import {Category} from '../enum/Category'
 import {ProductStatus} from '../enum/ProductStatus'
 import {User} from './user.entity'
+import {ProductImage} from './product-image.entity'
 
 @Entity('product')
 export class Product {
@@ -47,4 +48,7 @@ export class Product {
 	@ManyToOne(() => User, user => user.products)
 	@JoinColumn({name: 'user_id'})
 	user: User
+	
+	@OneToMany(() => ProductImage, productImage => productImage.product)
+	images: ProductImage[]
 }
