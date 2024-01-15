@@ -6,6 +6,7 @@ import {Id} from '../util/id'
 import {FileInterceptor} from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { extname } from 'path'
+import { ConfigService } from "@nestjs/config"
 
 @Controller('product')
 export class ProductController {
@@ -45,18 +46,9 @@ export class ProductController {
 	
 	// 상품 이미지 넣기 $
 	@Post(':id/image')
-	@UseInterceptors(FileInterceptor('image',{
-		// 나중에 s3 등으로 바꿔야
-		storage: diskStorage({
-			destination: './image',
-			filename(_, file, callback): void {
-				const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
-				return callback(null, `${randomName}${extname(file.originalname)}`)
-			}
-		})
-	}))
-	async uploadImage(@UploadedFile() image: Express.Multer.File, @Param() param: Id){
-		return await this.productService.uploadImage(param.id, image.path)
+	@UseInterceptors(FileInterceptor('image'))
+	async uploadImage(@UploadedFile() image, @Param() param: Id){
+		return await this.productService.uploadImage(param.id, image.location)
 	}
 	
 	// 상품 이미지 가져오기
