@@ -6,13 +6,13 @@ export class Livecast {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	host_id: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	product_id: number
 
-	@Column({default:'Pending'})
+	@Column({default:0})
 	status: LiveStatus
 	
 	@Column()

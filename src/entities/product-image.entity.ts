@@ -5,7 +5,7 @@ export class ProductImage {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	product_id: number
 	
 	@Column()

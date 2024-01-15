@@ -7,7 +7,12 @@ import { AppService } from "./app.service";
 import { UserModule } from "./user/user.module";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { AuthModule } from "./auth/auth.module";
+import {ProductModule} from './product/product.module'
 import { User } from "./entities/user.entity";
+import {Product} from './entities/product.entity'
+import {ProductImage} from './entities/product-image.entity'
+import {Storage} from './entities/storage.entity'
+import {Comment} from './entities/comment.entity'
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -20,7 +25,7 @@ const typeOrmModuleOptions = {
     host: configService.get("DB_HOST"),
     port: configService.get("DB_PORT"),
     database: configService.get("DB_NAME"),
-    entities: [User],
+    entities: [User, Product, ProductImage, Storage, Comment],
     synchronize: configService.get("DB_SYNC"),
     logging: true,
   }),
@@ -43,8 +48,9 @@ const typeOrmModuleOptions = {
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UserModule,
     AuthModule,
+	ProductModule
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

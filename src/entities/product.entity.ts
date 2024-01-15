@@ -7,7 +7,7 @@ export class Product {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	user_id: number
 	
 	@Column()
@@ -16,16 +16,16 @@ export class Product {
 	@Column()
     category : Category
 	
-	@Column({default: 'Salable'})
+	@Column({default: 0})
 	status: ProductStatus
 	
 	@Column('text',{nullable: true})
     body : string
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
     price : string
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
     sale_price : string
 
 	@CreateDateColumn()
