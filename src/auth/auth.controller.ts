@@ -19,11 +19,9 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     
-    @Post('/sign-up')
-    async signUp(@Body() createuserDto: CreateuserDto) {
-        console.log("asds")
+    @Post('/signup')
+    async signUp(@Body() createuserDto : CreateuserDto) {
         const user = await this.authService.signUp(createuserDto);
-
         return {
             statusCode: HttpStatus.CREATED,
             message: '회원가입에 성공했습니다.',

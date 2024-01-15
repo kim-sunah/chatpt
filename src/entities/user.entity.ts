@@ -17,11 +17,11 @@ export class User {
     @Column()
     nickname: string;
 
-    @Column({type : "number" , default : 0})
+    @Column({default : 0})
     mileage : number
 
     @Column()
-    gender : Gender
+    gender : string
 
     @Column()
     phone: string;

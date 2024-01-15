@@ -19,14 +19,16 @@ export class AuthService {
         private readonly userRepository: Repository<User>,
         private readonly jwtService: JwtService,
     ) {}
-    async signUp({ Email, Password,  phone, Nickname ,Gender}: CreateuserDto) {
+    async signUp({ Email, Password,  Gender, Nickname ,phone}: CreateuserDto) {
         try{
-            const existedUser = await this.userRepository.findOne({where : {Email : Email}});
+         
+            const existedUser = await this.userRepository.findOne({where : {email : Email}});
             if (existedUser) {
                 throw new BadRequestException('이미 사용중인 이메일입니다.');
             }
             const hashedPassword = await bcrypt.hashSync(Password, 12);
-            return await this.userRepository.save({ Email, Password: hashedPassword,Nickname, phone , Gender});
+           const user= this.userRepository.create({ email : Email, password: hashedPassword, nickname : Nickname, phone , gender : Gender})
+           return await this.userRepository.save(user)
         }
 
         catch(error){
@@ -41,7 +43,7 @@ export class AuthService {
 
 
     async validate({ Email, Password }: SignInDto) {
-        const existedUser = await this.userRepository.findOne({where: { Email }, select: { id: true, Password: true }, });
+        const existedUser = await this.userRepository.findOne({where: { email : Email }, select: { id: true, password: true }, });
 
         // 회원이 존재하지 않을 때
         if (!existedUser) {
@@ -51,7 +53,7 @@ export class AuthService {
         // 비밀번호가 일치하지 않을 때
         const isPasswordMatched = await bcrypt.compareSync(
             Password,
-            existedUser.Password,
+            existedUser.password,
         );
 
         if (!isPasswordMatched) {

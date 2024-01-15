@@ -1,34 +1,25 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core';
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
 
-    const configService = app.get(ConfigService);
-    const PORT = configService.get<number>('SERVER_PORT');
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
-    app.setGlobalPrefix('api');
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            whitelist: true,
-            forbidNonWhitelisted: true,
-        }),
-    );
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept , Authorization , X-XSRF-TOKEN',
+    credentials: true,
+  });
 
-    // swagger
-    const config = new DocumentBuilder()
-        .setTitle('nbcamp_timeattack')
-        .setDescription('nbcamp_timeattack')
-        .setVersion('1.0')
-        .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
-        .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
-
-    await app.listen(5000);
+  await app.listen(4000, '0.0.0.0');
 }
+
 bootstrap();
