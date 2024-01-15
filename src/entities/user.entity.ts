@@ -1,6 +1,5 @@
 import {IsEmail,IsNotEmpty,IsOptional,IsString,IsStrongPassword} from 'class-validator';
 import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn, OneToMany} from 'typeorm';
-import { Gender } from '../enum/Gender';
 import { Role } from '../enum/Role';
 
 @Entity('users')

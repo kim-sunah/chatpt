@@ -21,7 +21,7 @@ export class AuthService {
         private readonly userRepository: Repository<User>,
         private readonly jwtService: JwtService,
     ) {}
-    async signUp({ Email, Password,  Gender, Nickname ,phone}: CreateuserDto) {
+    async signUp({ Email, Password,  Gender, Nickname ,phone,authority}: CreateuserDto) {
         try{
          
             const existedUser = await this.userRepository.findOne({where : {email : Email}});
@@ -38,7 +38,7 @@ export class AuthService {
                 throw new BadRequestException('이미 사용중인 번호입니다.');
             }
             const hashedPassword = await bcrypt.hashSync(Password, 12);
-           const user= this.userRepository.create({ email : Email, password: hashedPassword, nickname : Nickname, phone , gender : Gender})
+           const user= this.userRepository.create({ email : Email, password: hashedPassword, nickname : Nickname, phone , gender : Gender, authority})
            return await this.userRepository.save(user)
         }
         catch(error){
@@ -62,7 +62,7 @@ export class AuthService {
         const payload = {Email , id : user.id}
         return {access_token : this.jwtService.sign(payload,{expiresIn : "15m"})}
     }
-    
+
     async findByEmail(email: string) {
         return await this.userRepository.findOneBy({ email });
       }
