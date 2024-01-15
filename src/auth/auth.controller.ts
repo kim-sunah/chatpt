@@ -20,15 +20,14 @@ export class AuthController {
 
     
     @Post('/signup')
-    async signUp() {
-        console.log("asds")
-        // const user = await this.authService.signUp(createuserDto);
+    async signUp(@Body() createuserDto : CreateuserDto) {
+        const user = await this.authService.signUp(createuserDto);
 
-        // return {
-        //     statusCode: HttpStatus.CREATED,
-        //     message: '회원가입에 성공했습니다.',
-        //     user,
-        // };
+        return {
+            statusCode: HttpStatus.CREATED,
+            message: '회원가입에 성공했습니다.',
+            user,
+        };
     }
 
     // /**
