@@ -22,7 +22,7 @@ const typeOrmModuleOptions = {
     host: configService.get("DB_HOST"),
     port: configService.get("DB_PORT"),
     database: configService.get("DB_NAME"),
-    entities: [__dirname + '/entities/*{.js,.ts}']
+    entities: [__dirname + '/entities/*{.js,.ts}'],
     synchronize: configService.get("DB_SYNC"),
     logging: true,
   }),
@@ -45,12 +45,9 @@ const typeOrmModuleOptions = {
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UserModule,
     AuthModule,
-<<<<<<< HEAD
 	ProductModule,
-	LivecastModule
-=======
+	LivecastModule,
     DeliveryModule,
->>>>>>> 515a2ac08274585d7626fc8eb3580a3e9126d88c
   ],
   controllers: [AppController],
   providers: [AppService],
