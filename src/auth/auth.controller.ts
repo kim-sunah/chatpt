@@ -28,16 +28,17 @@ export class AuthController {
   
     @Post('/sign-in')
     async signIn(@Body() signInDto: SignInDto) {
-        const accessToken =  await this.authService.signIn(signInDto);
-  
-
+        const { accessToken, refreshToken } =  await this.authService.signIn(signInDto);
+        console.log(accessToken, refreshToken)
         return {
             statusCode: HttpStatus.OK,
             message: '로그인에 성공했습니다.',
             accessToken,
+            refreshToken
         };
     }
-    @Get('email')
+    @Get('/userinfo')
+    @UseGuards(AuthGuard("jwt"))
     getEmail(@UserInfo() user: User) {
       return { email: user.email };
     }
