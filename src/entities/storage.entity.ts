@@ -5,10 +5,10 @@ export class Storage {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
-	product_id: number
+	@Column('number',{unsigned: true})
+	payment_id: number
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	amount: number
 	
 	@Column('text',{nullable: true})

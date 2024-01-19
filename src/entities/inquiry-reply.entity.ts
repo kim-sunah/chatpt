@@ -5,10 +5,10 @@ export class InquiryReply {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	user_id: number
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	inquiry_id: number
 	
 	@Column('text')

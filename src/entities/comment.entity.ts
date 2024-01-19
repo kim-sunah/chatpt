@@ -5,10 +5,10 @@ export class Comment {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	product_id: number
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	user_id: number
 	
 	@Column('text',{nullable: true})
