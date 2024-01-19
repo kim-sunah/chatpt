@@ -1,10 +1,11 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn} from 'typeorm'
+import { Index, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn} from 'typeorm'
 import {Category} from '../enum/Category'
 import {ProductStatus} from '../enum/ProductStatus'
 import {User} from './user.entity'
 import {ProductImage} from './product-image.entity'
 
 @Entity('product')
+@Index(['name','body'],{ fulltext: true, parser: 'ngram' })
 export class Product {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
@@ -14,6 +15,9 @@ export class Product {
 	
 	@Column()
     name : string
+	
+	@Column({nullable: true})
+	thumbnail: string
 	
 	@Column('enum',{enum: Category, default: Category.Others})
     category : Category

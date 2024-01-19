@@ -21,6 +21,18 @@ export class ProductController {
 		return await this.productService.getProducts()
 	}
 	
+	// 상품 검색
+	@Get('search')
+	async searchProducts(@Body() body){
+		return await this.productService.searchProducts(body)
+	}
+	
+	// 상품 id로 찾기
+	@Get(':id')
+	async getProductById(@Param() param: Id){
+		return await this.productService.getProductById(param.id)
+	}
+	
 	// 상품 등록
 	@UseGuards(RoleGuard)
     @Roles(Role.Seller)
@@ -51,6 +63,15 @@ export class ProductController {
 	@Get('my')
 	async getMyProducts(){
 		return await this.productService.getMyProducts()
+	}
+	
+	// 상품 썸네일 넣기/수정
+	@UseGuards(RoleGuard)
+    @Roles(Role.Seller)
+	@Patch(':id/thumbnail')
+	@UseInterceptors(FileInterceptor('image'))
+	async uploadThumbnail(@UploadedFile() image, @Param() param: Id){
+		return await this.productService.uploadThumbnail(param.id, image.location)
 	}
 	
 	// 상품 이미지 넣기

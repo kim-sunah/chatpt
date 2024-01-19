@@ -18,16 +18,28 @@ export class ProductService {
 		@Inject(REQUEST) private readonly req: Request
     ) {}
 	
-	// 상품 검색
+	// 전체 상품 목록
 	async getProducts(){
 		return await this.productRepository.find()
 	}
 	
+	// 상품 검색
+	async searchProducts(body){
+		return {1:1}
+	}
+	
 	// 상품 id로 찾기
 	async getProductById(id: number){
-		const res = await this.productRepository.findOne({where:{id}})
-		if(!res) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
-		return res
+		const product = await this.productRepository.findOne({where:{id}})
+		if(!product) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
+		return product
+	}
+	
+	// 상품 id로 찾고 등록자 확인
+	async checkUploader(id: number){
+		const product = await this.getProductById(id)
+		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
+		return product
 	}
 
 	// 상품 등록
@@ -38,15 +50,13 @@ export class ProductService {
 	
 	// 상품 삭제
 	async softDeleteProduct(id: number){
-		const product = await this.getProductById(id)
-		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
+		await this.checkUploader(id)
 		await this.productRepository.softDelete(id)
 	}
 	
 	// 상품 수정
 	async updateProduct(id: number, body){
-		const product = await this.getProductById(id)
-		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
+		await this.checkUploader(id)
 		return await this.productRepository.save({id,...body})
 	}
 	
@@ -55,10 +65,15 @@ export class ProductService {
 		return await this.productRepository.find({where:{user_id:this.req.user['id']}})
 	}
 	
+	// 상품 썸네일 넣기/수정
+	async uploadThumbnail(id: number, thumbnail: string){
+		await this.checkUploader(id)
+		return await this.productRepository.save({id, thumbnail})
+	}
+	
 	// 상품 이미지 넣기
 	async uploadImage(product_id: number, original_url: string){
-		const product = await this.getProductById(product_id)
-		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
+		await this.checkUploader(product_id)
 		return await this.productImageRepository.save({product_id, original_url})
 	}
 	
@@ -71,8 +86,7 @@ export class ProductService {
 	async softDeleteImage(id: number){
 		const image = await this.productImageRepository.findOne({where:{id}})
 		if(!image) throw new NotFoundException('해당 이미지를 찾을 수 없습니다.')
-		const product = await this.getProductById(image.product_id)
-		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
+		await this.checkUploader(image.product_id)
 		return await this.productImageRepository.softDelete(id)
 	}
 }
