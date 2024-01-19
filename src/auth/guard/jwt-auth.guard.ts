@@ -1,8 +1,4 @@
-import {
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException,
-} from '@nestjs/common';
+import {ExecutionContext,Injectable,UnauthorizedException,} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth.service';
 
@@ -17,22 +13,22 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
         const accessToken = req.headers.authorization.split(' ')[1];
         const refreshToken = req.headers.refreshtoken;
+       
 
         if (!accessToken || !refreshToken) {
             throw new UnauthorizedException('접근할 수 없습니다.');
         }
-
+       
         // access token 검증
-        const isVerifiedAccessToken =
-            await this.authService.verifyAccessToken(accessToken);
-
+        const isVerifiedAccessToken = await this.authService.verifyAccessToken(accessToken);
         const id = isVerifiedAccessToken.id;
-
-        // access token 만료
+      
         if (isVerifiedAccessToken.message === 'jwt expired') {
             // refresh token 검증
-            const isVerifiedRefreshToken =
-                await this.authService.verifyRefreshToken(refreshToken);
+
+
+            const isVerifiedRefreshToken =await this.authService.verifyRefreshToken(refreshToken);
+            
 
             // refresh token 만료
             if (isVerifiedRefreshToken.message === 'jwt expired') {
@@ -43,15 +39,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
             // access token 재발급
             const newAccessToken = await this.authService.createAccessToken(id);
-
             req.user = { id, accessToken: newAccessToken, refreshToken };
-
             return true;
         }
-
-        // access token 유효
+        
         req.user = { id, accessToken, refreshToken };
-
         return true;
     }
 }

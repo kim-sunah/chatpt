@@ -5,10 +5,10 @@ export class Wishlist {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	user_id: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	product_id: number
 	
 	@CreateDateColumn()

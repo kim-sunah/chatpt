@@ -1,7 +1,6 @@
-import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEnum } from "class-validator";
-import { Gender } from "../../enum/Gender";
+import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEnum, IsOptional } from "class-validator";
+import { Role } from "src/enum/Role";
 import { IsEqualTo } from "../decorators/match.decorator";
-
 
 export class CreateuserDto {
     @IsEmail({}, {message : "이메일 형식에 맞게 입력해주세요"})
@@ -27,4 +26,8 @@ export class CreateuserDto {
     @IsMobilePhone()
     @IsNotEmpty({message : "폰번호를 입력해주세요"})
     phone : string
+
+    @IsOptional()
+    @IsEnum(Role)
+    authority : Role
 }
