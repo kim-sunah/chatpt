@@ -23,12 +23,19 @@ export class ProductService {
 		return await this.productRepository.find()
 	}
 	
+	// 쿼리 검색 문자열 만들기
+	query(key, antiKey){
+		const keyQuery = key.map(k => '+'+k).join(' ')
+		const antiKeyQuery = antiKey.map(k => '-'+k).join(' ')
+		return keyQuery+(antiKeyQuery? ' '+antiKeyQuery:'')
+	}
+	
 	// 상품 검색
 	async searchProducts(body){
 		const {key, antiKey, minSalePrice, maxSalePrice, categories} = body
 		const res = await this.productRepository
 			.createQueryBuilder().select()
-			.where(key || antiKey? `match(name, body) against ('${key? '+'+key:''}${antiKey? '-'+antiKey:''}' in boolean mode)`:'')
+			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
 			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
 			.andWhere(`category in (${categories.map(c => `'${c}'`).join(',')})`)
 			.getMany()
