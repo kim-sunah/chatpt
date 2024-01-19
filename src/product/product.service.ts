@@ -25,9 +25,13 @@ export class ProductService {
 	
 	// 상품 검색
 	async searchProducts(body){
-		const {key, minSalePrice, maxSalePrice} = body
-		const res = await this.productRepository.createQueryBuilder()
-            .select().where(key? `match(name, body) against ('${key}' in boolean mode)`:'').getMany()
+		const {key, antiKey, minSalePrice, maxSalePrice, categories} = body
+		const res = await this.productRepository
+			.createQueryBuilder().select()
+			.where(key || antiKey? `match(name, body) against ('${key? '+'+key:''}${antiKey? '-'+antiKey:''}' in boolean mode)`:'')
+			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
+			.andWhere(`category in (${categories.map(c => `'${c}'`).join(',')})`)
+			.getMany()
 		return res
 	}
 	

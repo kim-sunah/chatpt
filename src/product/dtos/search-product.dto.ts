@@ -1,23 +1,31 @@
-import { IsString, IsInt, Min, IsOptional, MinLength, MaxLength } from 'class-validator'
+import { IsNotEmpty, IsString, IsInt, Min, IsOptional, MinLength, MaxLength, IsArray, ArrayMinSize, IsEnum } from 'class-validator'
 import { Category } from '../../enum/Category'
+import { IsNotLessThan } from '../../util/is-not-less-than.decorator'
 
 export class SearchProductDto {
-	@IsOptional()
+	@IsNotEmpty()
 	@IsString()
 	@MinLength(2)
 	@MaxLength(20)
 	key: string
 	
 	@IsOptional()
+	@IsString()
+	@MinLength(2)
+	@MaxLength(20)
+	antiKey: string
+	
 	@IsInt()
 	@Min(1)
-	minSalePrice: string
+	minSalePrice: number = 1
 	
-	@IsOptional()
 	@IsInt()
 	@Min(1)
-	maxSalePrice: string
+	@IsNotLessThan('minSalePrice',{message:'maxSalePrice must not be less than minSalePrice'})
+	maxSalePrice: number = 4294967295
 	
-	//@IsOptional()
-	
+	@IsArray()
+	@ArrayMinSize(1)
+	@IsEnum(Category,{each:true})
+	categories: Category[]
 }
