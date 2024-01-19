@@ -25,7 +25,10 @@ export class ProductService {
 	
 	// 상품 검색
 	async searchProducts(body){
-		return {1:1}
+		const {key, minSalePrice, maxSalePrice} = body
+		const res = await this.productRepository.createQueryBuilder()
+            .select().where(key? `match(name, body) against ('${key}' in boolean mode)`:'').getMany()
+		return res
 	}
 	
 	// 상품 id로 찾기
@@ -60,7 +63,7 @@ export class ProductService {
 		return await this.productRepository.save({id,...body})
 	}
 	
-	// 내 상품 검색
+	// 내가 등록한 상품 목록
 	async getMyProducts(){
 		return await this.productRepository.find({where:{user_id:this.req.user['id']}})
 	}

@@ -2,6 +2,7 @@ import { Body, Get, Post, Patch, Delete, Controller, UseGuards, Param, UploadedF
 import {ProductService} from './product.service'
 import {CreateProductDto} from './dtos/create-product.dto'
 import {UpdateProductDto} from './dtos/update-product.dto'
+import {SearchProductDto} from './dtos/search-product.dto'
 import {Id} from '../util/id'
 import {FileInterceptor} from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
@@ -23,7 +24,7 @@ export class ProductController {
 	
 	// 상품 검색
 	@Get('search')
-	async searchProducts(@Body() body){
+	async searchProducts(@Body() body: SearchProductDto){
 		return await this.productService.searchProducts(body)
 	}
 	
@@ -57,7 +58,7 @@ export class ProductController {
 		return await this.productService.updateProduct(param.id, body)
 	}
 	
-	// 내 상품 검색
+	// 내가 등록한 상품 목록
 	@UseGuards(RoleGuard)
     @Roles(Role.Seller)
 	@Get('my')
