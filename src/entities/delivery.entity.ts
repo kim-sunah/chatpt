@@ -1,14 +1,12 @@
 import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
 import {DeliveryStatus} from '../enum/DeliveryStatus'
-import { MIN } from 'class-validator';
-import { User } from './user.entity';
 
 @Entity('delivery')
 export class Delivery {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	payment_id: number
 	
 	@Column()
@@ -22,12 +20,9 @@ export class Delivery {
 	
 	@Column({nullable: true})
 	contact: string
-
 	
 	@Column({default: '조심히 와주세요'})
 	request: string
-
-
 
 	@CreateDateColumn()
     createdAt: Date
@@ -37,7 +32,4 @@ export class Delivery {
 
     @DeleteDateColumn()
     deletedAt: Date | null
-
-	@ManyToOne(() => User, (user) => user.delivery)
-	user : User
 }

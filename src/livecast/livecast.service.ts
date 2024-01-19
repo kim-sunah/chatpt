@@ -1,15 +1,4 @@
-import { Injectable } from '@nestjs/common'
-import { Repository } from 'typeorm'
-import { InjectRepository } from '@nestjs/typeorm'
-import {Livecast} from '../entities/livecast.entity'
-import {LiveComment} from '../entities/live-comment.entity'
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class LivecastService {
-	constructor(
-        @InjectRepository(Livecast)
-        private readonly livecastRepository: Repository<Livecast>
-    ) {}
-	
-	
-}
+export class LivecastService {}

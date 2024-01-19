@@ -6,17 +6,14 @@ export class Livecast {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	host_id: number
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	product_id: number
 
-	@Column('enum',{enum:LiveStatus, default:0})
+	@Column({default:'Pending'})
 	status: LiveStatus
-	
-	@Column()
-	url: string
 	
 	@Column()
 	start_time: Date

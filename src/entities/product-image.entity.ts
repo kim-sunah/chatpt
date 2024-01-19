@@ -1,12 +1,11 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm'
-import {Product} from './product.entity'
+import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
 
 @Entity('product_image')
 export class ProductImage {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	product_id: number
 	
 	@Column()
@@ -23,8 +22,4 @@ export class ProductImage {
 
     @DeleteDateColumn()
     deletedAt: Date | null
-	
-	@ManyToOne(() => Product, product => product.images)
-	@JoinColumn({name: 'product_id'})
-	product: Product
 }

@@ -5,13 +5,13 @@ export class Cart {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	user_id: number
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	product_id: number
 	
-	@Column('int',{default:1, unsigned: true})
+	@Column('number',{default:1, unsigned: true})
 	count: number
 	
 	@CreateDateColumn()
