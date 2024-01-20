@@ -35,6 +35,12 @@ export class Product {
     sale_price : number
 	
 	@Column('int',{unsigned: true, default: 0})
+    rating_count : number
+	
+	@Column('int',{unsigned: true, default: 0})
+    rating_total : number
+	
+	@Column('int',{unsigned: true, default: 0})
 	sales_volume : number
 	
 	@Column('bigint',{unsigned: true, default: 0})
