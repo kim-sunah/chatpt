@@ -18,9 +18,9 @@ export class ProductService {
 		@Inject(REQUEST) private readonly req: Request
     ) {}
 	
-	// 전체 상품 목록
-	async getProducts(){
-		return await this.productRepository.find()
+	// 상품 목록
+	async getProducts(page: number, pageSize: number){
+		return await this.productRepository.find({take: pageSize, skip:(page-1)*pageSize})
 	}
 	
 	// 쿼리 검색 문자열 만들기
@@ -31,13 +31,13 @@ export class ProductService {
 	}
 	
 	// 상품 검색
-	async searchProducts(body){
-		const {key, antiKey, minSalePrice, maxSalePrice, categories} = body
+	async searchProducts(key: string[], antiKey: string[], minSalePrice: number, maxSalePrice: number, categories: number[], page: number, pageSize: number){
 		const res = await this.productRepository
 			.createQueryBuilder().select()
 			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
 			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
 			.andWhere(`category in (${categories.map(c => `'${c}'`).join(',')})`)
+			.take(pageSize).skip((page-1)*pageSize)
 			.getMany()
 		return res
 	}

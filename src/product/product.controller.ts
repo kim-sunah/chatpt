@@ -1,8 +1,9 @@
-import { Body, Get, Post, Patch, Delete, Controller, UseGuards, Param, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Query, Get, Post, Patch, Delete, Controller, UseGuards, Param, UploadedFile, UseInterceptors } from '@nestjs/common';
 import {ProductService} from './product.service'
 import {CreateProductDto} from './dtos/create-product.dto'
 import {UpdateProductDto} from './dtos/update-product.dto'
 import {SearchProductDto} from './dtos/search-product.dto'
+import {PageDto} from './dtos/page.dto'
 import {Id} from '../util/id'
 import {FileInterceptor} from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
@@ -15,17 +16,20 @@ import { Roles } from '../auth/decorators/roles.decorator'
 @Controller('product')
 export class ProductController {
 	constructor(private readonly productService: ProductService) {}
-
-	// 전체 상품 목록
-	@Get('')
-	async getProducts(){
-		return await this.productService.getProducts()
+	
+	// 상품 목록
+	@Get('?')
+	async getProducts(@Query() query: PageDto){
+		const {page, pageSize} = query
+		return await this.productService.getProducts(page,pageSize)
 	}
 	
 	// 상품 검색
-	@Get('search')
-	async searchProducts(@Body() body: SearchProductDto){
-		return await this.productService.searchProducts(body)
+	@Get('search?')
+	async searchProducts(@Body() body: SearchProductDto, @Query() query: PageDto){
+		const {key, antiKey, minSalePrice, maxSalePrice, categories} = body
+		const {page, pageSize} = query
+		return await this.productService.searchProducts(key, antiKey, minSalePrice, maxSalePrice, categories, page, pageSize)
 	}
 	
 	// 상품 id로 찾기

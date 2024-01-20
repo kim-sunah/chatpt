@@ -10,7 +10,7 @@ export class SearchProductDto {
 	@IsString({each: true})
 	@MinLength(2,{each: true})
 	@MaxLength(20,{each: true})
-	key: string
+	key: string[]
 	
 	@IsArray()
 	@ArrayMinSize(0)
@@ -19,7 +19,7 @@ export class SearchProductDto {
 	@IsString({each: true})
 	@MinLength(2,{each: true})
 	@MaxLength(20,{each: true})
-	antiKey: string
+	antiKey: string[]
 	
 	@IsInt()
 	@Min(1)
