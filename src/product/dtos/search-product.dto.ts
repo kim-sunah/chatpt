@@ -16,10 +16,12 @@ export class SearchProductDto {
 	antiKey: string
 	
 	@IsInt()
+	@Type(() => Number)
 	@Min(1)
 	minSalePrice: number = 1
 	
 	@IsInt()
+	@Type(() => Number)
 	@Min(1)
 	@IsNotLessThan('minSalePrice',{message:'maxSalePrice must not be less than minSalePrice'})
 	maxSalePrice: number = 4294967295
