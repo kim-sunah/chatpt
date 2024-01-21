@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, Scope, Inject } from
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import {Product} from '../entities/product.entity'
+import {SearchProductDto} from './dtos/search-product.dto'
 import {ProductImage} from '../entities/product-image.entity'
 import {Storage} from '../entities/storage.entity'
 import {Comment} from '../entities/comment.entity'
@@ -25,18 +26,28 @@ export class ProductService {
 	
 	// 쿼리 검색 문자열 만들기
 	query(key, antiKey){
-		const keyQuery = key.map(k => '+'+k).join(' ')
-		const antiKeyQuery = antiKey.map(k => '-'+k).join(' ')
+		const keyQuery = key.split(' ').map(k => '+'+k).join(' ')
+		const antiKeyQuery = antiKey? antiKey.split(' ').map(k => '-'+k).join(' '):''
 		return keyQuery+(antiKeyQuery? ' '+antiKeyQuery:'')
+	}
+
+	// 카테고리 비트 풀기
+	categoryArray(categories){
+		const arr = []
+		for(let i=0,j=1;i<10;++i,j*=2)
+			if(categories&j) arr.push(i)
+		return arr
 	}
 	
 	// 상품 검색
-	async searchProducts(key: string[], antiKey: string[], minSalePrice: number, maxSalePrice: number, categories: number[], page: number, pageSize: number){
+	async searchProducts(query){
+		const {page, pageSize, key, antiKey, minSalePrice, maxSalePrice, categories} = query
+		console.log(query)
 		const res = await this.productRepository
 			.createQueryBuilder().select()
 			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
 			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
-			.andWhere(`category in (${categories.map(c => `'${c}'`).join(',')})`)
+			.andWhere(`category in (${this.categoryArray(categories).map(c => `'${c}'`).join(',')})`)
 			.take(pageSize).skip((page-1)*pageSize)
 			.getMany()
 		return res

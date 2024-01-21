@@ -41,6 +41,15 @@ const multerOptionsFactory = (configService: ConfigService) => {
       // 파일 크기 제한
         limits: {
             fileSize: 2 * 1024 * 1024
+        },
+		fileFilter: (req: Request, file: Express.Multer.File, callback: (error: Error | null, acceptFile: boolean) => void) => {
+            const allowedFileTypes = ['.jpg', '.jpeg', '.png'];
+            const ext = extname(file.originalname).toLowerCase();
+            if (allowedFileTypes.includes(ext)) {
+                callback(null, true); // Accept the file
+            } else {
+                callback(new Error('Only JPG and PNG files are allowed'), false); // Reject the file
+            }
         }
 	}
 }

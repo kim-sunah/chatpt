@@ -26,10 +26,8 @@ export class ProductController {
 	
 	// 상품 검색
 	@Get('search?')
-	async searchProducts(@Body() body: SearchProductDto, @Query() query: PageDto){
-		const {key, antiKey, minSalePrice, maxSalePrice, categories} = body
-		const {page, pageSize} = query
-		return await this.productService.searchProducts(key, antiKey, minSalePrice, maxSalePrice, categories, page, pageSize)
+	async searchProducts(@Query() query: SearchProductDto){
+		return await this.productService.searchProducts(query)
 	}
 	
 	// 상품 id로 찾기
