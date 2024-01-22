@@ -10,7 +10,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtConfig } from "src/_config/jwt.config";
 
-import { JwtAuthGuard } from "./guard/jwt-auth.guard";
+import { JwtAuthGuard } from "./guards/jwt-auth.guards";
 import { SessionModule } from 'nestjs-session';
 import * as session from 'express-session';
 

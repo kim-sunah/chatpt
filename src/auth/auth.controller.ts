@@ -4,7 +4,7 @@ import { CreateuserDto } from './dtos/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dtos/sign-in.dto';
-import { UserInfo } from './decorators/userinfo.decorator';
+
 import { User } from 'src/entities/user.entity';
 import {  Response } from 'express';
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
@@ -110,10 +110,6 @@ export class AuthController {
     }
    
   
-    @Get('/userinfo')
-    @UseGuards(AuthGuard("jwt"))
-    getEmail(@UserInfo() user: User) {
-        return { email: user.email };
-    }
+   
 }
 

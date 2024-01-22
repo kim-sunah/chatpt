@@ -150,9 +150,7 @@ export class AuthService {
 
     }
 
-    async findByEmail(email: string) {
-        return await this.userRepository.findOneBy({ email });
-    }
+  
 
 
     async createAccessToken(id: number) {
