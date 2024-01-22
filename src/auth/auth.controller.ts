@@ -4,7 +4,7 @@ import { CreateuserDto } from './dtos/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dtos/sign-in.dto';
-
+import { UserInfo } from './decorators/userinfo.decorator';
 import { User } from 'src/entities/user.entity';
 import {  Response } from 'express';
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
@@ -74,15 +74,42 @@ export class AuthController {
             }
         
             const resData = await response.json();
-            console.log(resData)
-            return {access_token : resData.access_token, refresh_token : resData.refresh_token};
+    
+            const responseData = await fetch(`https://openapi.naver.com/v1/nid/me`, {
+                method: "GET",
+                headers: {"Authorization": "Bearer " + resData.access_token}
+              });
+          
+              if (!responseData.ok) {
+                throw new Error(`HTTP error! Status: ${responseData.status}`);
+              }
+              const userData = await responseData.json();
+             
+            const naveruser = await this.authService.naverlogin(userData.response.email , userData.response.gender, userData.response.mobile, userData.response.name)
+           
+            return {
+                statusCode: HttpStatus.OK,
+                message: '로그인에 성공했습니다.',
+                naveruser
+               
+            };
           } catch (err) {
             console.log(err);
             return null; // 또는 적절한 오류 처리를 수행할 수 있습니다.
           }
-     
      }
 
+     @Post("naversignin")
+     async naversignin(@Body("email") email : string){
+        const { accessToken, refreshToken } = await this.authService.naversignin(email)
+        return {
+            statusCode: HttpStatus.OK,
+            message: '로그인에 성공했습니다.',
+            accessToken,
+            refreshToken
+        };
+
+     }
     @Post('kakaosingup')
     async postKakaoInfo(@Body() kakaoLoginDto : KakaoLoginDto) {
         console.log(kakaoLoginDto);
@@ -108,8 +135,10 @@ export class AuthController {
         };
        
     }
+
+    
    
   
-   
+  
 }
 
