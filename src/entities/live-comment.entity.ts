@@ -5,10 +5,10 @@ export class LiveComment {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	live_id: number
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	user_id: number
 	
 	@Column()

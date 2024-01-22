@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import {User} from '../entities/user.entity'
 import {Product} from '../entities/product.entity'
 import {ProductImage} from '../entities/product-image.entity'
 import {Storage} from '../entities/storage.entity'
@@ -55,15 +54,7 @@ const multerOptionsFactory = (configService: ConfigService) => {
 }
 
 @Module({
-	imports: [
-		TypeOrmModule.forFeature([Product,ProductImage,Storage,Comment,User]),
-		MulterModule.registerAsync({
-            imports: [ConfigModule],
-            useFactory: multerOptionsFactory,
-            inject: [ConfigService]
-        }),
-		AuthModule
-	],
+	imports: [TypeOrmModule.forFeature([Product,ProductImage,Storage,Comment])],
 	controllers: [ProductController],
 	providers: [ProductService]
 })
