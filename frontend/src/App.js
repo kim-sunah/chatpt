@@ -11,6 +11,7 @@ import SearchMain from
 './components/search/search-main'
 import ProductDetail from './components/product/product-detail'
 import ProductUpdate from './components/product/product-update'
+import ProductMy from './components/product/product-my'
 
 
 const router = createBrowserRouter([
@@ -22,7 +23,8 @@ const router = createBrowserRouter([
   ]},
   { path: 'product', children: [
 		{ path: 'create', element: <ProductCreate /> },
-		{ path: 'update', element: <ProductUpdate /> }
+		{ path: 'update', element: <ProductUpdate /> },
+		{ path: 'my', element: <ProductMy /> }
 	]},
 	{ path: 'productDetail', element: <ProductDetail /> },
 	{ path: 'search', element: <SearchMain /> }

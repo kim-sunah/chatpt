@@ -10,6 +10,8 @@ const style = {
 
 export default function ProductCreate(props){
 	const navigate = useNavigate()
+	//const Authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
+	//const refreshtoken = window.sessionStorage.getItem('refreshToken')
 	// 인증 추가
 	const [Authorization,setAuthorization] = useState('Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA1NzYyOTkxLCJleHAiOjE3MDU3NjMxMTF9.0q5KuDZSPh2TAn5-ofLTZDNFrX5eSTuC8HzwyEvvFfw')
 	const [refreshtoken,setRefreshtoken] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDU3NjI5OTEsImV4cCI6MTcwNjM2Nzc5MX0.8GaubrgbLn1wUHoQrLLyWlGd7FqETkZnz6_7-QpwTBE')

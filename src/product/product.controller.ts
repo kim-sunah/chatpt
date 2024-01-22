@@ -30,6 +30,14 @@ export class ProductController {
 		return await this.productService.searchProducts(query)
 	}
 	
+	// 내가 등록한 상품 목록
+	@UseGuards(RoleGuard)
+    @Roles(Role.Seller)
+	@Get('my')
+	async getMyProducts(){
+		return await this.productService.getMyProducts()
+	}
+	
 	// 상품 id로 찾기
 	@Get(':id')
 	async getProductById(@Param() param: Id){
@@ -58,14 +66,6 @@ export class ProductController {
 	@Patch(':id')
 	async updateProduct(@Param() param: Id, @Body() body: UpdateProductDto){
 		return await this.productService.updateProduct(param.id, body)
-	}
-	
-	// 내가 등록한 상품 목록
-	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
-	@Get('my')
-	async getMyProducts(){
-		return await this.productService.getMyProducts()
 	}
 	
 	// 상품 썸네일 넣기/수정
