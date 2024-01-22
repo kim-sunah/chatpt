@@ -5,13 +5,13 @@ import { IsNotLessThan } from '../../util/is-not-less-than.decorator'
 export class SearchProductDto {
 	@IsNotEmpty()
 	@IsString()
-	@MinLength(2)
+	@MinLength(1)
 	@MaxLength(20)
 	key: string
 	
 	@IsOptional()
 	@IsString()
-	@MinLength(2)
+	@MinLength(1)
 	@MaxLength(20)
 	antiKey: string
 	
