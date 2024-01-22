@@ -6,16 +6,16 @@ export class Inquiry {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('int',{unsigned: true})
+	@Column('number',{unsigned: true})
 	user_id: number
 	
-	@Column('int',{nullable: true, unsigned: true})
+	@Column('number',{nullable: true, unsigned: true})
 	product_id: number
 	
 	@Column('text')
 	body: string
 	
-	@Column('enum',{enum:InquiryStatus, default:0})
+	@Column({default:'Pending'})
 	status: InquiryStatus
 	
 	@CreateDateColumn()
