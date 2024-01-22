@@ -10,6 +10,11 @@ import { AuthModule } from "./auth/auth.module";
 import { User } from "./entities/user.entity";
 import { Delivery } from "./entities/delivery.entity";
 import { DeliveryModule } from './delivery/delivery.module';
+import { NestSessionOptions, SessionModule } from 'nestjs-session';
+
+import { CacheModule } from "@nestjs/cache-manager";
+
+
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -42,6 +47,13 @@ const typeOrmModuleOptions = {
         DB_SYNC: Joi.boolean().required(),
       }),
     }),
+    CacheModule.register({
+      ttl: 6, 
+      max: 1000, 
+      isGlobal: true,
+    }),
+ 
+   
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UserModule,
     AuthModule,

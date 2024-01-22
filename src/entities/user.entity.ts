@@ -10,6 +10,9 @@ export class User {
     id: number;
 
     @Column()
+    registration_information : string
+
+    @Column()
     email : string
  
     @Column()
