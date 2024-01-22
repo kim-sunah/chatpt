@@ -51,11 +51,7 @@ import * as session from 'express-session';
   ],
   
   controllers: [AuthController],
-<<<<<<< HEAD
-  providers: [AuthService, JwtStrategy, JwtAuthGuard, RoleGuard],
-=======
-  providers: [AuthService, JwtAuthGuard],
->>>>>>> ea95193c84da8cbfa57f74b021706c9b989e0494
+  providers: [AuthService, JwtAuthGuard, RoleGuard],
   exports: [AuthService],
 })
 export class AuthModule {}
