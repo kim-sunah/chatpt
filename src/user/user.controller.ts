@@ -14,6 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from 'src/auth/decorators/userinfo.decorator';
 import { User } from 'src/entities/user.entity';
 import { UpdateuserDto } from './dto/update-user.dto';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @ApiTags('회원')
 @UseGuards(AuthGuard("jwt"))

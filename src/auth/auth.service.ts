@@ -33,7 +33,7 @@ export class AuthService {
     ) { }
     async signUp({ Email, Password, Gender, phone,  Emailauthentication }: CreateuserDto) {
         const email_Emailauthentication = await this.cacheManager.get(Email)
-        console.log(email_Emailauthentication)
+    
         
         try {
             const existedUser = await this.userRepository.findOne({ where: { email: Email , registration_information : "site"} });
@@ -53,7 +53,7 @@ export class AuthService {
             console.log("xcx")
 
             const hashedPassword = await bcrypt.hashSync(Password, 12);
-            const user = this.userRepository.create({registration_information:"site", email: Email, password: hashedPassword, nickname: Nickname, phone, gender: Gender,  })
+            const user = this.userRepository.create({registration_information:"site", email: Email, password: hashedPassword, nickname: Nickname, phone, gender: Gender})
             return await this.userRepository.save(user)
         }
         catch (error) {
@@ -75,10 +75,9 @@ export class AuthService {
             throw new UnauthorizedException("존재하지 않는 비밀번호입니다.")
         }
 
-        console.log(user.id)
-        // acess token 생성 
+   
         const accessToken = await this.createAccessToken(+user.id);
-        // refresh token 생성
+     
        
         const refreshToken = await this.createRefreshToken();
 
@@ -139,22 +138,15 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException("존재하지 않는 이메일입니다.")
         }
-        console.log(user.id)
-        // acess token 생성 
+    
         const accessToken = await this.createAccessToken(+user.id);
-        // refresh token 생성
+   
        
         const refreshToken = await this.createRefreshToken();
 
         return { accessToken, refreshToken };
 
     }
-
-    async findByEmail(email: string) {
-        return await this.userRepository.findOneBy({ email });
-    }
-
-
     async createAccessToken(id: number) {
         const payload = { id: id };
         return await this.jwtService.signAsync(payload, { expiresIn: '5m' });
@@ -188,6 +180,38 @@ export class AuthService {
         } catch (error) {
             return { success: false, message: error.message };
         }
+    }
+
+    async naverlogin(email : string, gender : string, phone : string , name : string){
+        const user = await this.userRepository.findOne({where : {email : email , registration_information : "naver"}})
+    
+        if(user){
+            return{ email : user.email};
+        }
+        else{
+            const naveruser = this.userRepository.create({registration_information:"naver", email, nickname: name, phone, gender})
+            return await this.userRepository.save(naveruser)
+
+        }
+    }
+
+    async naversignin(email : string){
+        const user = await this.userRepository.findOne({ where: { email: email ,registration_information : "naver"} })
+        console.log(user)
+        
+        if (!user) {
+            throw new UnauthorizedException("존재하지 않는 이메일입니다.")
+        }
+   
+    
+        const accessToken = await this.createAccessToken(+user.id);
+    
+       
+        const refreshToken = await this.createRefreshToken();
+
+        return { accessToken, refreshToken };
+
+
     }
 
 
