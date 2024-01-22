@@ -1,29 +1,35 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
+import { Index, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn} from 'typeorm'
 import {Category} from '../enum/Category'
 import {ProductStatus} from '../enum/ProductStatus'
+import {User} from './user.entity'
+import {ProductImage} from './product-image.entity'
 
 @Entity('product')
+@Index(['name','body'],{ fulltext: true, parser: 'ngram' })
 export class Product {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	user_id: number
 	
 	@Column()
     name : string
 	
-	@Column()
+	@Column({nullable: true})
+	thumbnail: string
+	
+	@Column('enum',{enum: Category, default: Category.Others})
     category : Category
 	
-	@Column({default: 'Salable'})
+	@Column('enum',{enum: ProductStatus, default: ProductStatus.Salable})
 	status: ProductStatus
 	
 	@Column('text',{nullable: true})
     body : string
 	
-	@Column('number',{unsigned: true})
-    price : string
+	@Column('int',{unsigned: true})
+    price : number
 	
 	@Column('int',{unsigned: true})
     sale_price : number
@@ -48,4 +54,11 @@ export class Product {
 
     @DeleteDateColumn()
     deletedAt: Date | null
+	
+	@ManyToOne(() => User, user => user.products)
+	@JoinColumn({name: 'user_id'})
+	user: User
+	
+	@OneToMany(() => ProductImage, productImage => productImage.product)
+	images: ProductImage[]
 }

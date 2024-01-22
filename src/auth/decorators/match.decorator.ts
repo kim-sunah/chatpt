@@ -14,15 +14,19 @@ export function IsEqualTo(property: string, validationOptions?: ValidationOption
         options: validationOptions,
         validator: {  //검증 validate는 무조건 실행된다 
           validate(value: any, args: ValidationArguments) { //검증에 성공했을떄 
+            console.log(args)
           const [relatedPropertyName] = args.constraints;  //args.constraints  == ["password"]
+         
           const relatedValue = (args.object as any)[relatedPropertyName];
-      
+          
+         
+         
           return value === relatedValue;
         },
  
         defaultMessage(args: ValidationArguments) {  //검증에 실패했을떄
           const [relatedPropertyName] = args.constraints;
-          return `${propertyName} 가 ${relatedPropertyName}와 일치 않습니다`;
+          return `${propertyName} must match ${relatedPropertyName} exactly`;
         },
       },
     });
