@@ -1,11 +1,12 @@
 import React, {useState,useEffect} from 'react'
 import Card from 'react-bootstrap/Card'
 import { useNavigate } from 'react-router-dom'
+import Button from 'react-bootstrap/button'
 
 const style = {
 	margin: '10px auto',
 	padding: '5px',
-	width: 500,
+	width: 600,
 	border: '1px solid black',
 	borderRadius: 15
 }
@@ -34,15 +35,16 @@ export default function SearchCard(props){
 	const {id, name, thumbnail, price, sale_price, rating_total, rating_count, sales_volume} = props.product
 	const navigate = useNavigate()
 	return (
-		<Card onClick={() => window.open(`../productDetail?id=${id}`,'_blank')} style={style}>
+		<Card style={style}>
 			<Card.Header style={{display:'flex'}}>
-				<img style={imgStyle} src={thumbnail || 'default.png'} />
-				<div>
+				<img onClick={() => window.open(`../productDetail?id=${id}`,'_blank')} style={imgStyle} src={thumbnail || 'default.png'} />
+				<div onClick={() => window.open(`../productDetail?id=${id}`,'_blank')} style={{width:250}}>
 					<h2>{name}</h2>
 					<h4>{price}원</h4>
 					<h4>{sale_price}원</h4>
 					<p>{decimal1(rating_total,rating_count)} ({rating_count}) 판매량: {sales_volume}</p>
 				</div>
+				{props.edit && <Button style={{width:120}} onClick={() => navigate(`../update?id=${id}`)}>상품 관리</Button>}
 			</Card.Header>
 		</Card>
 	)

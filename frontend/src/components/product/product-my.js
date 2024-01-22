@@ -26,8 +26,9 @@ const ProductMy = props => {
 	},[])
 	
 	return (
-		<div>
-			{products.map(product => <SearchCard key={product.id} product={product} />)}
+		<div style={{textAlign:'center'}}>
+			<Button onClick={() => navigate('../create')}>상품 등록</Button>
+			{products.map(product => <SearchCard key={product.id} product={product} edit={true} />)}
 		</div>
 	)
 }
