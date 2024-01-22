@@ -2,8 +2,6 @@ import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEn
 import { Role } from "src/enum/Role";
 import { IsEqualTo } from "../decorators/match.decorator";
 
-
-
 export class CreateuserDto {
 
 

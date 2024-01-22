@@ -5,7 +5,7 @@ export class PayMethod {
     @PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	user_id: number
 
     @Column()

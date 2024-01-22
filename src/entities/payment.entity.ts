@@ -6,25 +6,25 @@ export class Payment {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	user_id: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	product_id: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	pay_method_id: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	spending: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	count: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	mileage: number
 	
-	@Column({default: 'Pending'})
+	@Column('enum',{enum: PayStatus, default: 0})
 	status: PayStatus
 	
 	@CreateDateColumn()
