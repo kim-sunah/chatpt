@@ -5,9 +5,12 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
+    findUserById(userId: number) {
+        throw new Error('Method not implemented.');
+    }
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
+        private readonly userRepository: Repository<User>
     ) {}
 
     async getUserInfo(id: number) {
@@ -16,7 +19,6 @@ export class UserService {
         if (!user) {
             throw new NotFoundException('사용자를 찾을 수 없습니다.');
         }
-        
 
         return user;
     }

@@ -1,13 +1,8 @@
-import {
-    Controller,
-    Get,
-    HttpStatus,
-    Request,
-    UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Put, Request, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UpdateuserDto } from './dto/update-user.dto';
 
 @ApiTags('회원')
 @Controller('users')

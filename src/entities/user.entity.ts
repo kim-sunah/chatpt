@@ -1,7 +1,17 @@
-import {IsEmail,IsNotEmpty,IsOptional,IsString,IsStrongPassword} from 'class-validator';
-import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword } from 'class-validator';
+import {
+    Column,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    OneToMany,
+    Relation,
+} from 'typeorm';
 import { Gender } from '../enum/Gender';
 import { Role } from '../enum/Role';
+import { Comment } from './comment.entity';
 
 @Entity('users')
 export class User {
@@ -9,25 +19,25 @@ export class User {
     id: number;
 
     @Column()
-    email : string
- 
+    email: string;
+
     @Column()
     password: string;
 
     @Column()
     nickname: string;
 
-    @Column({default : 0})
-    mileage : number
+    @Column({ default: 0 })
+    mileage: number;
 
     @Column()
-    gender : string
+    gender: string;
 
     @Column()
     phone: string;
 
-    @Column({type : "enum", enum : Role , default : Role.User})
-    authority : Role
+    @Column({ type: 'enum', enum: Role, default: Role.User })
+    authority: Role;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -37,4 +47,7 @@ export class User {
 
     @DeleteDateColumn()
     deletedAt: Date | null;
+
+    @OneToMany(() => Comment, (comment) => comment.user)
+    comment: Relation<Comment>;
 }

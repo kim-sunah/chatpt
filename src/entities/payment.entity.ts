@@ -1,38 +1,52 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
-import {PayStatus} from '../enum/PayStatus'
+import {
+    Column,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    OneToOne,
+    Relation,
+} from 'typeorm';
+import { PayStatus } from '../enum/PayStatus';
+import { Refund } from './refund.entity';
 
 @Entity('payment')
 export class Payment {
-	@PrimaryGeneratedColumn({unsigned: true})
+    @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
-	
-	@Column('number',{unsigned: true})
-	user_id: number
-	
-	@Column('number',{unsigned: true})
-	product_id: number
-	
-	@Column('number',{unsigned: true})
-	pay_method_id: number
-	
-	@Column('number',{unsigned: true})
-	spending: number
-	
-	@Column('number',{unsigned: true})
-	count: number
-	
-	@Column('number',{unsigned: true})
-	mileage: number
-	
-	@Column({default: 'Pending'})
-	status: PayStatus
-	
-	@CreateDateColumn()
-    createdAt: Date
+
+    @Column('number', { unsigned: true })
+    user_id: number;
+
+    @Column('number', { unsigned: true })
+    product_id: number;
+
+    @Column('number', { unsigned: true })
+    pay_method_id: number;
+
+    @Column('number', { unsigned: true })
+    spending: number;
+
+    @Column('number', { unsigned: true })
+    count: number;
+
+    @Column('number', { unsigned: true })
+    mileage: number;
+
+    @Column({ default: 'Pending' })
+    status: PayStatus;
+
+    @CreateDateColumn()
+    createdAt: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt: Date;
 
     @DeleteDateColumn()
-    deletedAt: Date | null
+    deletedAt: Date | null;
+
+    @OneToOne(() => Refund, (refund) => refund.payment)
+    refund: Relation<Refund>;
 }
