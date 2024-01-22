@@ -20,7 +20,7 @@ async function bootstrap() {
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Accept , Authorization , X-XSRF-TOKEN',
+    allowedHeaders: 'Content-Type, Accept , Authorization , X-XSRF-TOKEN , refreshtoken',
     credentials: true,
   });
 
