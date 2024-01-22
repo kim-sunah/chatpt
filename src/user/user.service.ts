@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
+import { UpdateuserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -19,5 +20,35 @@ export class UserService {
         
 
         return user;
+    }
+
+    async updateUserinfo(id: number ,updateUser:  UpdateuserDto){
+        
+        const user = await this.userRepository.findOne({where : {id : id}});
+        if(user.email !== updateUser.Email){
+            const existemail = await this.userRepository.findOne({where : {email : updateUser.Email}})
+            if(existemail){
+                throw new BadRequestException("이미 사용중인 이메일입니다.")
+            }
+        }
+        if(user.nickname !== updateUser.Nickname){
+            const existname = await this.userRepository.findOne({where : {nickname : updateUser.Nickname}})
+            if(existname){
+                throw new BadRequestException("이미 사용중인 이름입니다")
+            }
+        }
+        if(user.phone !== updateUser.phone){
+            const existphone = await this.userRepository.findOne({where : {phone : updateUser.phone}})
+            if(existphone){
+                throw new BadRequestException("이미 사용중인 번호입니다.")
+            }
+
+        }
+        if(user){
+            await this.userRepository.update(id, {email : updateUser.Email, nickname : updateUser.Nickname , phone : updateUser.phone});
+        }
+        else {
+            throw new NotFoundException(`User with id ${id} not found`);
+        }
     }
 }
