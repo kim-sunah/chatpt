@@ -12,11 +12,14 @@ const style = {
 
 export default function SearchMain(props){
 	const [products,setProducts] = useState([])
-	const [searchParams, setSearchParams] = useSearchParams()
+	const [searchParams,setSearchParams] = useSearchParams()
+	const [searched,setSearched] = useState(false)
+	const [count,setCount] = useState(0)
 	const navigate = useNavigate()
 	
 	const search = async (e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize) => {
 		e?.preventDefault()
+		setSearched(true)
 		const url = new URL(server+'/product/search')
 		const params = new URLSearchParams()
 		params.append('key',key)
@@ -28,7 +31,8 @@ export default function SearchMain(props){
 		if(pageSize) params.append('pageSize',pageSize)
 		url.search = params.toString()
 		const res = await fetch(url)
-		const products_ = await res.json()
+		const {count:count_, res:products_} = await res.json()
+		setCount(count_)
 		setProducts(products_)
 		navigate('?'+params.toString())
 	}	
@@ -84,6 +88,14 @@ export default function SearchMain(props){
 			{/*<SearchForm search={search} sortProducts={sortProducts} />*/}
 			<SearchForm search={search} />
 			<div>
+				{searched? (
+					products.length? (
+						<div>
+							<h2>검색 결과 ({count})</h2>
+							<h3>{+searchParams.get('page')||1}/{1+(count-1)/(+searchParams.get('pageSize')||5)|0} 페이지</h3>
+						</div>
+						):(<h2>검색 결과가 없습니다.</h2>)
+					):(<h2>원하는 상품을 검색해보세요!</h2>)}
 				{products.map(product => <SearchCard key={product.id} product={product} />)}
 			</div>
 		</div>

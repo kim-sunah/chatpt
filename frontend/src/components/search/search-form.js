@@ -16,20 +16,23 @@ const buttonStyle = {
 
 const categoryList = ['Food', 'Health', 'Household', 'Pet', 'Cosmetics', 'Office', 'Appliances', 'Furniture', 'Media', 'Others']
 
+const pageSizeList = [5,10,20,50,100]
+
 export default function SearchForm(props){
 	const [key,setKey] = useState('')
 	const [antiKey,setAntiKey] = useState('')
 	const [show,setShow] = useState(false)
-	const [minSalePrice,setMinSalePrice] = useState(0)
-	const [maxSalePrice,setMaxSalePrice] = useState(0)
+	const [minSalePrice,setMinSalePrice] = useState(1)
+	const [maxSalePrice,setMaxSalePrice] = useState(4294967295)
 	const [categories,setCategories] = useState(0)
+	const [pageSize,setPageSize] = useState(5)
 	
 	const handleShow = () => setShow(true)
 	const handleClose = () => setShow(false)
 	
 	return (
 		<div style={style}>
-			<Form onSubmit={e => props.search(e,key,antiKey,categories,minSalePrice,maxSalePrice)}>
+			<Form onSubmit={e => props.search(e,key,antiKey,categories,minSalePrice,maxSalePrice,1,pageSize)}>
 				<Form.Group>
 					<Form.Control required placeholder='검색어를 입력해주세요.' onChange={e => setKey(e.target.value)} />
 				</Form.Group>
@@ -51,6 +54,7 @@ export default function SearchForm(props){
 							<Form.Control placeholder='검색어를 입력해주세요.' value={antiKey} onChange={e => setAntiKey(e.target.value)} />
 						</Form.Group>
 						<Form.Group>
+							<Form.Label>카테고리</Form.Label>
 							{categoryList.map((category,i) => (
 								<Form.Check key={i} type='checkbox' checked={(categories&(1<<i))>0} onChange={() => setCategories(categories^(1<<i))} label={category} />
 							))}
@@ -62,6 +66,12 @@ export default function SearchForm(props){
 						<Form.Group>
 							<Form.Label>최대 가격</Form.Label>
 							<Form.Control type='number' value={maxSalePrice} onChange={e => setMaxSalePrice(+e.target.value)} />
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>페이지 당 상품 개수</Form.Label>
+							{pageSizeList.map((pageSize_,i) => (
+								<Form.Check key={i} name='pageSize' type='radio' checked={pageSize===pageSize_} onChange={() => setPageSize(pageSize_)} label={pageSize_} />
+							))}
 						</Form.Group>
 						<br />
 						<Button onClick={handleClose}>닫기</Button>
