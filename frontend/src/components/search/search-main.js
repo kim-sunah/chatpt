@@ -26,7 +26,6 @@ export default function SearchMain(props){
 		if(maxSalePrice) params.append('maxSalePrice',maxSalePrice)
 		if(page) params.append('page',page)
 		if(pageSize) params.append('pageSize',pageSize)
-		console.log(key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize,params.toString())
 		url.search = params.toString()
 		const res = await fetch(url)
 		const products_ = await res.json()
@@ -78,7 +77,7 @@ export default function SearchMain(props){
 			return navigate('/')
 		}
 		if(key) search(e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize)
-	}, [])
+	}, [searchParams])
 	
 	return (
 		<div style={style}>
