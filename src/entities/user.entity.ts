@@ -46,6 +46,6 @@ export class User {
 	@OneToMany(() => Product, product => product.user_id)
 	products: Product[]
 
-    @OneToMany(()=>Delivery , (delivery) => delivery.user)
-    delivery : Delivery[]
+    // @OneToMany(()=>Delivery , (delivery) => delivery.user)
+    // delivery : Delivery[]
 }
