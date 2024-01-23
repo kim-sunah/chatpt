@@ -2,6 +2,8 @@ import {IsEmail,IsNotEmpty,IsOptional,IsString,IsStrongPassword} from 'class-val
 import {Column,CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity,PrimaryGeneratedColumn, OneToMany} from 'typeorm';
 import { Gender } from '../enum/Gender';
 import { Role } from '../enum/Role';
+import {Product} from './product.entity'
+import { Delivery } from './delivery.entity';
 
 @Entity('users')
 export class User {
@@ -40,4 +42,10 @@ export class User {
 
     @DeleteDateColumn()
     deletedAt: Date | null;
+	
+	@OneToMany(() => Product, product => product.user_id)
+	products: Product[]
+
+    @OneToMany(()=>Delivery , (delivery) => delivery.user)
+    delivery : Delivery[]
 }

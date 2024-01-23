@@ -1,6 +1,5 @@
 import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEnum } from "class-validator";
 
-
 export enum  Gender {
     Male,
     Female

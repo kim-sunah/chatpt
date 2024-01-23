@@ -5,10 +5,10 @@ export class Refund {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	payment_id: number
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	amount: number
 	
 	@Column('text',{nullable: true})

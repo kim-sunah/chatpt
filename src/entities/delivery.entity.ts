@@ -6,7 +6,7 @@ export class Delivery {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
 	
-	@Column('number',{unsigned: true})
+	@Column('int',{unsigned: true})
 	payment_id: number
 	
 	@Column()
