@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtConfig } from "src/_config/jwt.config";
 
 import { JwtAuthGuard } from "./guards/jwt-auth.guards";
-import { RoleGuard } from './guards/role.guard'
+import { RoleGuard } from "./guards/role.guard";
 import { SessionModule } from 'nestjs-session';
 import * as session from 'express-session';
 
