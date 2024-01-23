@@ -3,6 +3,7 @@ import {Category} from '../enum/Category'
 import {ProductStatus} from '../enum/ProductStatus'
 import {User} from './user.entity'
 import {ProductImage} from './product-image.entity'
+import {Inquiry} from './inquiry.entity'
 
 @Entity('product')
 @Index(['name','body'],{ fulltext: true, parser: 'ngram' })
@@ -61,4 +62,7 @@ export class Product {
 	
 	@OneToMany(() => ProductImage, productImage => productImage.product)
 	images: ProductImage[]
+	
+	@OneToMany(() => Inquiry, inquiry => inquiry.product)
+	inquiries: Inquiry[]
 }
