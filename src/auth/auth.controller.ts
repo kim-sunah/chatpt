@@ -16,10 +16,9 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
 
-
     @Post('/signup',)
     async signUp(@Body() createuserDto: CreateuserDto,) {
-        console.log("Asds")
+        
 
 
         const user = await this.authService.signUp(createuserDto);
@@ -61,8 +60,8 @@ export class AuthController {
     
     @Post("naver")
     async naverlogin(@Body("code") code: string){
-        const client_id = "iH61UrUrFwmW9V8Qjd0c"
-        const client_secret = "CIf1lOZB1R"
+        const client_id = process.env.client_id
+        const client_secret = process.env.client_secret
         try {
             const response = await fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&code=${code}&state=9kgsGTfH4j7IyAkg `, {
               method: "POST",
