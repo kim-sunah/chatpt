@@ -31,6 +31,7 @@ const ProductUpdate = props => {
 		}
 		const product_ = await res.json()
 		setProduct(product_)
+		console.log(product_)
 	}
 	
 	const getImages = async () => {
@@ -47,7 +48,7 @@ const ProductUpdate = props => {
 	
 	const updateProduct = async (e,body) => {
 		e.preventDefault()
-		const {thumbnail, ...body_} = body
+		const {thumbnail, image, ...body_} = body
 		const res = await fetch(server+`/product/${id}`, {method:'PATCH',
 		headers:{'Content-Type':'application/json', Authorization, refreshtoken},
 		body: JSON.stringify(body_)})
@@ -85,7 +86,6 @@ const ProductUpdate = props => {
 		body: formData})
 		const image__ = await res.json()
 		setImages([...images,image__])
-		console.log(images)
 	}
 	
 	const deleteImage = async e => {

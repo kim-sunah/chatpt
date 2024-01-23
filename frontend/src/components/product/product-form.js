@@ -36,7 +36,7 @@ const ProductForm = props => {
 	const [sale_price,setSalePrice] = useState(props.product?.sale_price || 1)
 	const [thumbnail,setThumbnail] = useState(props.product?.thumbnail || '')
 	const [images,setImages] = useState(props.images || [])
-	const [image_,setImage_] = useState('')
+	const [image_,setImage_] = useState([])
 	
 	useEffect(() => {
 	    setName(props.product?.name || '')
@@ -58,22 +58,23 @@ const ProductForm = props => {
 		const file = e.target.files[0]
 		if (file) setImage_(file)
 	}
+	console.log(props.product.category)
 	
 	return (
-		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,status,body:product_body,price,sale_price,thumbnail})}>
+		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,status,body:product_body,price,sale_price,thumbnail,image:image_})}>
 			<Form.Group>
 				<Form.Label>이름</Form.Label>
 				<Form.Control required onChange={e => setName(e.target.value)} defaultValue={props.product?.name || ''} />
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>카테고리</Form.Label>
-				<Form.Select onChange={e => setCategory(+e.target.value)} defaultValue={props.product?.category || 0}>
+				<Form.Select onChange={e => setCategory(+e.target.value)} value={category}>
 					{categoryList.map((category_,i) => <option key={i} value={i}>{category_}</option>)}
 				</Form.Select>
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>판매 상태</Form.Label>
-				<Form.Select value={status} onChange={e => setStatus(+e.target.value)} aria-label="Default select example">
+				<Form.Select value={status} onChange={e => setStatus(+e.target.value)}>
 					{statusList.map((status_,i) => <option key={i} value={i}>{status_}</option>)}
 				</Form.Select>
 			</Form.Group>
@@ -102,7 +103,7 @@ const ProductForm = props => {
 					<img style={imgStyle} src={image.original_url} key={image.id} data-image-id={image.id} onClick={props.deleteImage} />
 				)))}
 				<Form.Control type='file' onChange={handleImageChange} accept='.jpg, .jpeg, .png' />
-				<Button onClick={e => props.uploadImage(e,image_)}>이미지 추가</Button>
+				{props.product && <Button onClick={e => props.uploadImage(e,image_)}>이미지 추가</Button> }
 			</Form.Group>
 			<br />
 			<Button type='submit' className='me-2'>{props.tag || '상품 등록'}</Button>

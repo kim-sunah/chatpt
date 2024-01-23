@@ -73,7 +73,7 @@ export class ProductController {
 	@Patch(':id/thumbnail')
 	@UseInterceptors(FileInterceptor('image'))
 	async uploadThumbnail(@UploadedFile() image, @Param() param: Id){
-		 return await this.productService.uploadThumbnail(param.id, image.location)
+		return await this.productService.uploadThumbnail(param.id, image.location)
 	}
 	
 	// 상품 이미지 넣기
@@ -82,7 +82,7 @@ export class ProductController {
 	@Post(':id/image')
 	@UseInterceptors(FileInterceptor('image'))
 	async uploadImage(@UploadedFile() image, @Param() param: Id){
-		 return await this.productService.uploadImage(param.id, image.location)
+		return await this.productService.uploadImage(param.id, image.location)
 	}
 	
 	// 상품 이미지 가져오기 *
