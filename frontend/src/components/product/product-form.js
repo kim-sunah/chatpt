@@ -58,7 +58,6 @@ const ProductForm = props => {
 		const file = e.target.files[0]
 		if (file) setImage_(file)
 	}
-	console.log(props.product.category)
 	
 	return (
 		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,status,body:product_body,price,sale_price,thumbnail,image:image_})}>
