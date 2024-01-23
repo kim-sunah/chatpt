@@ -24,7 +24,7 @@ export class Payment {
 	@Column('int',{unsigned: true})
 	mileage: number
 	
-	@Column('enum',{enum: PayStatus, default: 0})
+	@Column('enum',{enum: PayStatus, default: PayStatus.Pending})
 	status: PayStatus
 	
 	@CreateDateColumn()

@@ -1,7 +1,11 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
+import {Column, Index, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany} from 'typeorm'
 import {InquiryStatus} from '../enum/InquiryStatus'
+import {Product} from './product.entity'
+import {User} from './user.entity'
+import {InquiryReply} from './inquiry-reply.entity'
 
 @Entity('inquiry')
+@Index(['product_id','status'])
 export class Inquiry {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
@@ -26,4 +30,15 @@ export class Inquiry {
 
     @DeleteDateColumn()
     deletedAt: Date | null
+	
+	@OneToMany(() => InquiryReply, inquiryReply => inquiryReply.inquiry)
+	replies: InquiryReply[]
+	
+	@ManyToOne(() => User, user => user.inquiries)
+	@JoinColumn({name: 'user_id'})
+	user: User
+	
+	@ManyToOne(() => Product, product => product.inquiries)
+	@JoinColumn({name: 'product_id'})
+	product?: Product | null
 }

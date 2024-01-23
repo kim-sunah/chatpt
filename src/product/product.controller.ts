@@ -15,85 +15,85 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 @Controller('product')
 export class ProductController {
 	constructor(private readonly productService: ProductService) {}
-	
+
 	// 상품 목록
 	@Get('?')
 	async getProducts(@Query() query: PageDto){
 		// const {page, pageSize} = query
 		// return await this.productService.getProducts(page,pageSize)
 	}
-	
+
 	// 상품 검색
 	@Get('search?')
 	async searchProducts(@Query() query: SearchProductDto){
-		// return await this.productService.searchProducts(query)
+		return await this.productService.searchProducts(query)
 	}
-	
+
+	// 내가 등록한 상품 목록
+	@UseGuards(RoleGuard)
+	@Roles(Role.Seller)
+	@Get('my')
+	async getMyProducts(){
+		return await this.productService.getMyProducts()
+	}
+
 	// 상품 id로 찾기
 	@Get(':id')
 	async getProductById(@Param() param: Id){
 		// return await this.productService.getProductById(param.id)
 	}
-	
+
 	// 상품 등록
 	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+	@Roles(Role.Seller)
 	@Post('')
 	async createProduct(@Body() body: CreateProductDto){
 		return await this.productService.createProduct(body)
 	}
-	
+
 	// 상품 삭제
 	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+	@Roles(Role.Seller)
 	@Delete(':id')
 	async softDeleteProduct(@Param() param: Id){
-		 await this.productService.softDeleteProduct(param.id)
+		await this.productService.softDeleteProduct(param.id)
 	}
-	
+
 	// 상품 수정
 	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+	@Roles(Role.Seller)
 	@Patch(':id')
 	async updateProduct(@Param() param: Id, @Body() body: UpdateProductDto){
-		 return await this.productService.updateProduct(param.id, body)
+		return await this.productService.updateProduct(param.id, body)
 	}
-	
-	// 내가 등록한 상품 목록
-	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
-	@Get('my')
-	async getMyProducts(){
-		// return await this.productService.getMyProducts()
-	}
-	
+
 	// 상품 썸네일 넣기/수정
 	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+	@Roles(Role.Seller)
 	@Patch(':id/thumbnail')
 	@UseInterceptors(FileInterceptor('image'))
 	async uploadThumbnail(@UploadedFile() image, @Param() param: Id){
-		 return await this.productService.uploadThumbnail(param.id, image.location)
+		return await this.productService.uploadThumbnail(param.id, image.location)
 	}
-	
+
 	// 상품 이미지 넣기
 	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+	@Roles(Role.Seller)
 	@Post(':id/image')
 	@UseInterceptors(FileInterceptor('image'))
 	async uploadImage(@UploadedFile() image, @Param() param: Id){
-		 return await this.productService.uploadImage(param.id, image.location)
+		return await this.productService.uploadImage(param.id, image.location)
 	}
-	
-	// 상품 이미지 가져오기
+
+	// 상품 이미지 가져오기 *
 	@Get(':id/image')
 	async getImages(@Param() param: Id){
 		// return await this.productService.getImages(param.id)
 	}
-	
+
 	// 상품 이미지 지우기
 	@UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+	@Roles(Role.Seller)
 	@Delete('image/:id')
 	async softDeleteImage(@Param() param: Id){
 		return await this.productService.softDeleteImage(param.id)

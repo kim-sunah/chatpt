@@ -8,6 +8,7 @@ import { UserModule } from "./user/user.module";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { AuthModule } from "./auth/auth.module";
 import {ProductModule} from './product/product.module'
+import {InquiryModule} from './inquiry/inquiry.module'
 import {LivecastModule} from './livecast/livecast.module'
 
 import { NestSessionOptions, SessionModule } from 'nestjs-session';
@@ -59,7 +60,7 @@ const typeOrmModuleOptions = {
     AuthModule,
 	ProductModule,
 	LivecastModule,
-   
+	InquiryModule
   ],
   controllers: [AppController],
   providers: [AppService],
