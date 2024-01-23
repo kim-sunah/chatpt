@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiFillShopping } from "react-icons/ai";
 import { AiFillShop } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
@@ -7,12 +7,18 @@ import "./style.css";
 import { Link } from 'react-router-dom';
 
 const Header = () => {
+    const [acessToken , setacessToken] = useState()
+    useEffect(()=>{
+        setacessToken(sessionStorage.getItem("accessToken"))
+        
+    },[])
 
     return (
         <header>
             <div className="div-header">
                 <div className="navbar">
-                    <Link to ="Login" className="list-item-link-LOGIN">LOGIN</Link>
+                    {!acessToken && <Link to = "Login" className="list-item-link-LOGIN">LOGIN</Link>}
+                    {acessToken   && <Link to ="" className="list-item-link-LOGIN">LOGOUT</Link>}
                     <div className="overlap">
                         <div className="list-item-link-JOIN">JOIN US</div>
                     

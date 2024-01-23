@@ -50,7 +50,7 @@ export class AuthService {
             // }
 
             const Nickname = Email.split("@")[0];
-            console.log("xcx")
+         
 
             const hashedPassword = await bcrypt.hashSync(Password, 12);
             const user = this.userRepository.create({registration_information:"site", email: Email, password: hashedPassword, nickname: Nickname, phone, gender: Gender})
@@ -197,7 +197,7 @@ export class AuthService {
 
     async naversignin(email : string){
         const user = await this.userRepository.findOne({ where: { email: email ,registration_information : "naver"} })
-        console.log(user)
+        
         
         if (!user) {
             throw new UnauthorizedException("존재하지 않는 이메일입니다.")
