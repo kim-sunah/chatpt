@@ -21,6 +21,7 @@ const Login = () => {
             .then(resData => {
                 console.log(resData); if (resData.statusCode === 200) {
                     navigate("/")
+                    sessionStorage.setItem("authority" , resData.authority)
                     sessionStorage.setItem("accessToken", resData.accessToken)
                     sessionStorage.setItem("refreshToken", resData.refreshToken)
                 }
@@ -39,6 +40,8 @@ const Login = () => {
                 fetch("http://localhost:4000/auth/kakaosingin",{method : "POST", headers:{"Content-Type" : "application/json"}, body : JSON.stringify({Email : data.profile.kakao_account.email , Nickname : data.profile.kakao_account.profile.nickname})})
                 .then(res=>res.json())
                 .then(resData=> {
+                    console.log(resData)
+                    sessionStorage.setItem("authority" , resData.authority)
                     sessionStorage.setItem("accessToken", resData.accessToken)
                     sessionStorage.setItem("refreshToken", resData.refreshToken)
                 })
@@ -47,6 +50,7 @@ const Login = () => {
         })
         .catch(err=>console.log(err))
         navigate("/")
+      
     }
     const kakaoOnFailure = (error) => {
         console.log(error);

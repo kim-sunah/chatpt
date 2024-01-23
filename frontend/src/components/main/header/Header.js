@@ -7,22 +7,27 @@ import "./style.css";
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-    const [acessToken, setacessToken] = useState()
-    useEffect(() => {
-        setacessToken(sessionStorage.getItem("accessToken"))
-
-    }, [])
+    const [Token , setToken] = useState(false)
+    useEffect(()=>{
+        if(sessionStorage.getItem("accessToken")){
+            setToken(true)
+        }
+    })
+    const Logouthanlder = () =>{
+        sessionStorage.removeItem("accessToken")
+        sessionStorage.removeItem("refreshToken")
+        sessionStorage.removeItem("authority")
+        window.location.reload()
+    }
+  
 
     return (
         <header>
             <div className="div-header">
                 <div className="navbar">
-                    {!acessToken && <Link to="Login" className="list-item-link-LOGIN">LOGIN</Link>}
-                    {acessToken && <Link to="" className="list-item-link-LOGIN">LOGOUT</Link>}
-                    <div className="overlap">
-                        <div className="list-item-link-JOIN">JOIN US</div>
-
-                    </div>
+                    {!Token && <Link to="Login" className="list-item-link-LOGIN">LOGIN</Link>}
+                    {Token && <Link to="" className="list-item-link-LOGIN" onClick={Logouthanlder}>LOGOUT     </Link>}
+                  
                     <div className="list-item-link-CART">CART</div>
                     <div className="list-item-link">
                         <div className="div">0</div>
@@ -32,7 +37,7 @@ const Header = () => {
                     <div className="list-item-2" />
                     <div className="list-item-link-2">BOOKMARK</div>
                     <div className="list-item-3" />
-                    <div className="list-item-link-3">NOTICE</div>
+                    {sessionStorage.getItem("authority") === "User" && <Link to="admin" className="list-item-link-3">관리자</Link>}
                     <div className="list-item-link-EVENT">EVENT</div>
                     <div className="list-item-link-FAQ">FAQ</div>
                     <div className="list-item-link-4">상품문의</div>
@@ -63,10 +68,6 @@ const Header = () => {
                     <div className="list-item-link-7">SEASON OFF</div>
                     <div className="list-item-link-ONLY">ONLY YOU</div>
                 </div>
-
-
-
-
             </div>
         </header>
     );
