@@ -41,4 +41,6 @@ export class UserController {
             message: '회원 정보를 성공적으로 업데이트했습니다.',
         };
     }
+
+    
 }

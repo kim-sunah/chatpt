@@ -10,7 +10,7 @@ export const Header = () => {
             <div className="overlap-group">
               <div className="input-search">
                 <div className="div-placeholder">
-                  <div className="text-wrapper">Search for projects</div>
+                  <div className="text-wrapper">Search for User</div>
                 </div>
               </div>
               <img className="SVG" alt="Svg" src="SVG.svg" />

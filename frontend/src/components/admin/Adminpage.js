@@ -1,9 +1,14 @@
 import "./Admin.css"
 import { Header } from "./Header "
-const Adminpage = () =>{
-    return(
-        <Header></Header>
-       
+import { Main } from "./Main"
+const Adminpage = () => {
+    return (
+        <>
+            <Header></Header>
+            <Main></Main>
+        </>
+
+
     )
 
 }
