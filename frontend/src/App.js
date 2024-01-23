@@ -12,7 +12,7 @@ import SearchMain from
 import ProductDetail from './components/product/product-detail'
 import ProductUpdate from './components/product/product-update'
 import ProductMy from './components/product/product-my'
-
+import InquiryMain from './components/inquiry/inquiry-main'
 
 const router = createBrowserRouter([
   {path : "/" , element : <Main></Main>, errorElement :<Errorpage></Errorpage>,children :[
@@ -27,8 +27,8 @@ const router = createBrowserRouter([
 		{ path: 'my', element: <ProductMy /> }
 	]},
 	{ path: 'productDetail', element: <ProductDetail /> },
-	{ path: 'search', element: <SearchMain /> }
-
+	{ path: 'search', element: <SearchMain /> },
+	{ path: 'inquiry', element: <InquiryMain /> }
 
 ])
 function App() {
