@@ -1,1 +1,1 @@
-export enum Category { Food, Health, Household, Pet, Cosmetics, Office, Appliances, Furniture, Media }
+export enum Category { Food, Health, Household, Pet, Cosmetics, Office, Appliances, Furniture, Media, Others }

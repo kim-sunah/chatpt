@@ -1,6 +1,5 @@
 import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEnum } from "class-validator";
 
-
 export enum  Gender {
     Male,
     Female
@@ -14,6 +13,14 @@ export class UpdateuserDto {
     @IsNotEmpty({message : "닉네임을 입력해주세요"})
     @IsString()
     Nickname : string
+
+    @IsString()
+    @IsNotEmpty({message : "패스워드를 입력해주세요"})
+    @IsStrongPassword({},{message:'비밀번호는 영문 알파벳 대/소문자, 숫자, 특수문자를 포함해야합니다.'})
+    Password : string
+
+    @IsEnum(Gender)
+    Gender : Gender
 
     @IsMobilePhone()
     @IsNotEmpty({message : "폰번호를 입력해주세요"})

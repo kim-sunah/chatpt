@@ -3,18 +3,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateuserDto } from './dto/update-user.dto';
-import { use } from 'passport';
 
 @Injectable()
 export class UserService {
-    [x: string]: any;
-    constructor(@InjectRepository(User)private readonly userRepository: Repository<User>,) {}
+    constructor(
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
+    ) {}
 
     async getUserInfo(id: number) {
         const user = await this.userRepository.findOneBy({ id });
+
         if (!user) {
             throw new NotFoundException('사용자를 찾을 수 없습니다.');
         }
+        
+
         return user;
     }
 
@@ -46,9 +50,5 @@ export class UserService {
         else {
             throw new NotFoundException(`User with id ${id} not found`);
         }
-
-        
-
-        
     }
 }
