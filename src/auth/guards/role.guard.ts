@@ -26,6 +26,7 @@ export class RoleGuard extends JwtAuthGuard {
 		
 		const user = await this.userRepository.findOne({where:{id}})
 		const roles = this.reflector.get<Role[]>('roles', context.getHandler())
+		req.user.role = user.authority
 		if(!roles) return true
 		return roles.some(role => user.authority===role)
     }

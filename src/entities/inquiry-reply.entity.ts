@@ -1,4 +1,6 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
+import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm'
+import {User} from './user.entity'
+import {Inquiry} from './inquiry.entity'
 
 @Entity('inquiry_reply')
 export class InquiryReply {
@@ -22,4 +24,12 @@ export class InquiryReply {
 
     @DeleteDateColumn()
     deletedAt: Date | null
+	
+	@ManyToOne(() => User, user => user.inquiryReplies)
+	@JoinColumn({name: 'user_id'})
+	user: User
+	
+	@ManyToOne(() => Inquiry, inquiry => inquiry.replies)
+	@JoinColumn({name: 'inquiry_id'})
+	inquiry: Inquiry
 }

@@ -5,6 +5,7 @@ import { Role } from '../enum/Role';
 import {Product} from './product.entity'
 import { Delivery } from './delivery.entity';
 import {Inquiry} from './inquiry.entity'
+import {InquiryReply} from './inquiry-reply.entity'
 
 @Entity('users')
 export class User {
@@ -49,4 +50,7 @@ export class User {
 
     @OneToMany(() => Inquiry, inquiry => inquiry.user_id)
 	inquiries: Inquiry[]
+	
+	@OneToMany(() => InquiryReply, inquiryReply => inquiryReply.user_id)
+	inquiryReplies: InquiryReply[]
 }
