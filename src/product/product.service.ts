@@ -42,12 +42,7 @@ export class ProductService {
 	// 상품 검색
 	async searchProducts(query){
 		const {page, pageSize, key, antiKey, minSalePrice, maxSalePrice, categories} = query
-		const count = await this.productRepository
-			.createQueryBuilder().select()
-			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
-			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
-			.andWhere(`category in (${this.categoryArray(categories).map(c => `'${c}'`).join(',')})`)
-			.getCount()
+		console.log(query)
 		const res = await this.productRepository
 			.createQueryBuilder().select()
 			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
@@ -55,7 +50,7 @@ export class ProductService {
 			.andWhere(`category in (${this.categoryArray(categories).map(c => `'${c}'`).join(',')})`)
 			.take(pageSize).skip((page-1)*pageSize)
 			.getMany()
-		return {count,res}
+		return res
 	}
 	
 	// 상품 id로 찾기

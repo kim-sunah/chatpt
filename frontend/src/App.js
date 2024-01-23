@@ -6,12 +6,7 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import Redirecturl from "./components/Redirecturl";
 import Mypage from "./components/mypage/Mypage";
-import ProductCreate from './components/product/product-create'
-import SearchMain from
-'./components/search/search-main'
-import ProductDetail from './components/product/product-detail'
-import ProductUpdate from './components/product/product-update'
-import ProductMy from './components/product/product-my'
+
 
 
 const router = createBrowserRouter([
@@ -21,13 +16,7 @@ const router = createBrowserRouter([
     {path : "mypage", element : <Mypage></Mypage>},
     {path: "Login/naver", element : <Redirecturl></Redirecturl>}
   ]},
-  { path: 'product', children: [
-		{ path: 'create', element: <ProductCreate /> },
-		{ path: 'update', element: <ProductUpdate /> },
-		{ path: 'my', element: <ProductMy /> }
-	]},
-	{ path: 'productDetail', element: <ProductDetail /> },
-	{ path: 'search', element: <SearchMain /> }
+
 
 
 ])
