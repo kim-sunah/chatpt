@@ -30,15 +30,14 @@ export class AuthController {
     }
     @Post('/sign-in')
     async signIn(@Body() signInDto: SignInDto) {
-
-
-        const { accessToken, refreshToken } = await this.authService.signIn(signInDto);
-        console.log(accessToken, refreshToken)
+        const { accessToken, refreshToken , authority} = await this.authService.signIn(signInDto);
+ 
         return {
             statusCode: HttpStatus.OK,
             message: '로그인에 성공했습니다.',
             accessToken,
-            refreshToken
+            refreshToken,
+            authority
         };
     }
 
@@ -100,12 +99,13 @@ export class AuthController {
 
      @Post("naversignin")
      async naversignin(@Body("email") email : string){
-        const { accessToken, refreshToken } = await this.authService.naversignin(email)
+        const { accessToken, refreshToken, authority } = await this.authService.naversignin(email)
         return {
             statusCode: HttpStatus.OK,
             message: '로그인에 성공했습니다.',
             accessToken,
-            refreshToken
+            refreshToken,
+            authority
         };
 
      }
@@ -125,12 +125,13 @@ export class AuthController {
     async getKakaoInfo(@Body() kakaoLoginDto : KakaoLoginDto) {
         console.log(kakaoLoginDto);
   
-        const { accessToken, refreshToken } = await this.authService.kakaosignIn(kakaoLoginDto.Email)
+        const { accessToken, refreshToken ,authority} = await this.authService.kakaosignIn(kakaoLoginDto.Email)
         return {
             statusCode: HttpStatus.OK,
             message: '로그인에 성공했습니다.',
             accessToken,
-            refreshToken
+            refreshToken,
+            authority
         };
        
     }
