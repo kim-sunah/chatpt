@@ -51,4 +51,19 @@ export class UserService {
             throw new NotFoundException(`User with id ${id} not found`);
         }
     }
+    async Alluser(){
+        const user = await this.userRepository.find();
+        const userCount = user.length;
+        return {userCount,user}
+    }
+
+    async limituser(email: string , registration_information : string){
+        const user = await this.userRepository.findOne({where : {email  , registration_information}})
+        if(!user){
+            throw new NotFoundException("존재하지 않는 유저입니다")
+        }
+        user.limit = true;
+        return await this.userRepository.update({email  , registration_information} , user);
+    }
+
 }

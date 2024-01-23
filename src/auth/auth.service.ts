@@ -74,6 +74,7 @@ export class AuthService {
         if (!(await bcrypt.compare(Password, user.password))) {
             throw new UnauthorizedException("존재하지 않는 비밀번호입니다.")
         }
+        const authority = user.authority;
 
    
         const accessToken = await this.createAccessToken(+user.id);
@@ -81,7 +82,7 @@ export class AuthService {
        
         const refreshToken = await this.createRefreshToken();
 
-        return { accessToken, refreshToken };
+        return { accessToken, refreshToken , authority};
 
     }
    
@@ -139,12 +140,10 @@ export class AuthService {
             throw new UnauthorizedException("존재하지 않는 이메일입니다.")
         }
     
+        const authority = user.authority;
         const accessToken = await this.createAccessToken(+user.id);
-   
-       
         const refreshToken = await this.createRefreshToken();
-
-        return { accessToken, refreshToken };
+        return { accessToken, refreshToken , authority};
 
     }
     async createAccessToken(id: number) {
@@ -204,12 +203,10 @@ export class AuthService {
         }
    
     
+        const authority = user.authority;
         const accessToken = await this.createAccessToken(+user.id);
-    
-       
         const refreshToken = await this.createRefreshToken();
-
-        return { accessToken, refreshToken };
+        return { accessToken, refreshToken , authority};
 
 
     }

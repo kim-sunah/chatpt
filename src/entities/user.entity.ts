@@ -36,6 +36,10 @@ export class User {
     @Column({type : "enum", enum : Role , default : Role.User})
     authority : Role
 
+
+    @Column({default : false})
+    limit : boolean
+
     @CreateDateColumn()
     createdAt: Date;
 

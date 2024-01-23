@@ -29,8 +29,9 @@ const Redirecturl = (props) => {
           throw new Error(`HTTP error! Status: ${userData.status}`);
         }
         const JWTTOKEN = await userData.json();
-      
+
         if(JWTTOKEN.statusCode === 200){
+          sessionStorage.setItem("authority" , JWTTOKEN.authority)
           sessionStorage.setItem("accessToken", JWTTOKEN.accessToken)
           sessionStorage.setItem("refreshToken", JWTTOKEN.refreshToken)
           navigate("/")
