@@ -14,9 +14,7 @@ import Adminpage from "./components/admin/Adminpage";
 const router = createBrowserRouter([
   {path : "/" , element : <Main></Main>, errorElement :<Errorpage></Errorpage>,children :[
     {path : "Signup", element : <Signup></Signup>},
-    
     {path: "Login/naver", element : <Redirecturl></Redirecturl>},
-   
   ]},
   {path : "Login" , element : <Login></Login>},
   {path : "mypage", element : <Mypage></Mypage>},

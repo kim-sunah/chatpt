@@ -1,13 +1,13 @@
 .header {
     background-color: #ffffff;
     height: 69px;
-    width: 100%;
+    width: 55%;
   
   }
   
   .header .div-container {
     height: 37px;
-    left: 192px;
+    left: 220px;
     position: relative;
     top: 16px;
     width: 100%;
@@ -16,6 +16,7 @@
   .header .div-flex {
    display: flex;
    justify-content: center;
+ 
   }
   
   .header .div-relative {

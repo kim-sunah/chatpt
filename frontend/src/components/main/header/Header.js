@@ -26,7 +26,7 @@ const Header = () => {
             <div className="div-header">
                 <div className="navbar">
                     {!Token && <Link to="Login" className="list-item-link-LOGIN">LOGIN</Link>}
-                    {Token && <Link to="" className="list-item-link-LOGIN" onClick={Logouthanlder}>LOGOUT     </Link>}
+                    {Token && <Link to="" className="list-item-link-LOGIN" onClick={Logouthanlder}>LOGOUT</Link>}
                   
                     <div className="list-item-link-CART">CART</div>
                     <div className="list-item-link">
