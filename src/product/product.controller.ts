@@ -9,7 +9,7 @@ import {FileInterceptor} from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
 import { extname } from 'path'
 import { ConfigService } from "@nestjs/config"
-import { RoleGuard } from '../auth/guard/role.guard'
+import { RoleGuard } from '../auth/guards/role.guard'
 import { Role } from '../enum/role'
 import { Roles } from '../auth/decorators/roles.decorator'
 

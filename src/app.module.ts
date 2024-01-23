@@ -9,7 +9,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { AuthModule } from "./auth/auth.module";
 import {ProductModule} from './product/product.module'
 import {LivecastModule} from './livecast/livecast.module'
-import { DeliveryModule } from './delivery/delivery.module';
+//import { DeliveryModule } from './delivery/delivery.module';
 import { NestSessionOptions, SessionModule } from 'nestjs-session';
 
 import { CacheModule } from "@nestjs/cache-manager";
@@ -59,7 +59,7 @@ const typeOrmModuleOptions = {
     AuthModule,
 	ProductModule,
 	LivecastModule,
-    DeliveryModule,
+    //DeliveryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
