@@ -41,7 +41,7 @@ export default function ProductCard(props){
 	}
 	
 	const getProduct = async () => {
-		const res = await fetch(server+`/product/${id}`)
+		const res = await fetch(server+`/product?id=${id}`)
 		if(res.status!==200){
 			alert('해당 상품이 존재하지 않습니다.')
 			navigate('/')
