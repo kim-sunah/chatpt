@@ -15,6 +15,8 @@ import ProductMy from './components/product/product-my'
 import InquiryMy from './components/inquiry/inquiry-my'
 import InquiryMain from './components/inquiry/inquiry-main'
 import InquiryGeneral from './components/inquiry/inquiry-general'
+import InquiryDetail from
+'./components/inquiry/inquiry-detail'
 import Adminpage from "./components/admin/Adminpage";
 
 const router = createBrowserRouter([
@@ -32,7 +34,8 @@ const router = createBrowserRouter([
 	  { path: 'inquiry', children: [
 		  { path: '', element: <InquiryMain /> },
 		  { path: 'my', element: <InquiryMy /> },
-		  { path: 'general', element: <InquiryGeneral /> }
+		  { path: 'general', element: <InquiryGeneral /> },
+		  { path: 'detail', element: <InquiryDetail /> }
 	  ]}
   ]},
 	

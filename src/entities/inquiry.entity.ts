@@ -6,6 +6,7 @@ import {InquiryReply} from './inquiry-reply.entity'
 
 @Entity('inquiry')
 @Index(['product_id','status'])
+@Index(['status','createdAt'])
 export class Inquiry {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;

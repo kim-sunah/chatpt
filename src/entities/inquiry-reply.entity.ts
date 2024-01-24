@@ -1,8 +1,9 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm'
+import {Column, Index, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm'
 import {User} from './user.entity'
 import {Inquiry} from './inquiry.entity'
 
 @Entity('inquiry_reply')
+@Index(['inquiry_id','createdAt'])
 export class InquiryReply {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;

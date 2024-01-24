@@ -39,6 +39,12 @@ export class InquiryController {
     async getInquiryByProductId(@Param() param: Id) {
         return await this.inquiryService.getInquiryByProductId(param.id);
     }
+	
+	// 문의 id로 찾기
+	@Get(':id')
+	async getInquiryById(@Param() param: Id){
+		return await this.inquiryService.getInquiryById(param.id)
+	}
 
     // 일반 문의 넣기
     @UseGuards(RoleGuard)
@@ -66,11 +72,16 @@ export class InquiryController {
 
     // 문의 답변하기
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
     @Post(':id')
     async replyInquiry(@Body() body: InquiryDto, @Param() param: Id) {
         return await this.inquiryService.replyInquiry(body.body, param.id);
     }
+	
+	// 문의별 답변 목록
+	@Get(':id/replies')
+	async getReplyByInquiryId(@Param() param: Id){
+		return await this.inquiryService.getReplyByInquiryId(param.id)
+	}
 
     // 문의 상태 바꾸기
     @UseGuards(RoleGuard)

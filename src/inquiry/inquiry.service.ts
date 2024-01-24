@@ -48,12 +48,16 @@ export class InquiryService {
 	
 	// 문의 답변하기
 	async replyInquiry(body: string, inquiry_id: number){
-		try{
+		const inquiry = await this.getInquiryById(inquiry_id)
+		if(!inquiry) throw new NotFoundException('해당 문의를 찾을 수 없습니다.')
+		if(this.req.user['role']==='Admin' || this.req.user['id']===inquiry.user_id)
 			return await this.inquiryReplyRepository.save({user_id:this.req.user['id'], inquiry_id, body})
-		}catch(e){
-			if(e instanceof QueryFailedError) throw new NotFoundException('해당 문의를 찾을 수 없습니다.')
-			throw e
-		}
+		throw new ForbiddenException('권한이 없습니다.')
+	}
+	
+	// 문의별 답변 목록
+	async getReplyByInquiryId(inquiry_id: number){
+		return await this.inquiryReplyRepository.find({where:{inquiry_id}})
 	}
 	
 	// 문의 상태 바꾸기
