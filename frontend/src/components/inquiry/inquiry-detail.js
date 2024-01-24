@@ -26,7 +26,7 @@ const InquiryDetail = props => {
 	}
 	
 	const getInquiry = async () => {
-		const res = await fetch(server+`/inquiry/${id}`)
+		const res = await fetch(server+`/inquiry?id=${id}`)
 		if(res.status!=200){
 			alert('해당 문의가 존재하지 않습니다.')
 			navigate('/')

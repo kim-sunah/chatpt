@@ -19,6 +19,7 @@ const InquiryMy = props => {
 	const getInquiries = async () => {
 		const res = await fetch(server+'/inquiry/my',{headers:{'Content-Type' : 'application/json', authorization,refreshtoken}})
 		const inquiries_ = await res.json()
+		console.log(inquiries)
 		setInquiries(inquiries_)
 	}
 	
@@ -32,7 +33,7 @@ const InquiryMy = props => {
 	
 	return (
 		<div style={style}>
-			{inquiries.map(inquiry => <InquiryCard key={inquiry.id} inquiry={inquiry} /> )}
+			{inquiries.map(inquiry => <InquiryCard key={inquiry.id} inquiry={inquiry} onClick={e => navigate(`../detail?id=${inquiry.id}`)} /> )}
 		</div>
 	)
 }

@@ -15,7 +15,7 @@ const statusList = ['접수 완료','답변 확인','처리 완료']
 
 const InquiryCard = props => {
 	return (
-		<Card style={style}>
+		<Card onClick={props.onClick} style={style}>
 			<Card.Body>{props.user_id && props.user_id!=props.inquiry.user_id && '관리자: '}{props.inquiry.body}</Card.Body>
 			<Card.Footer>
 				<p>작성시각: {(new Date(props.inquiry.createdAt)).toLocaleString()}</p>

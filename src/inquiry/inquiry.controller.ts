@@ -41,9 +41,9 @@ export class InquiryController {
     }
 	
 	// 문의 id로 찾기
-	@Get(':id')
-	async getInquiryById(@Param() param: Id){
-		return await this.inquiryService.getInquiryById(param.id)
+	@Get('')
+	async getInquiryById(@Query() query: Id){
+		return await this.inquiryService.getInquiryById(query.id)
 	}
 
     // 일반 문의 넣기
