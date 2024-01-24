@@ -7,7 +7,7 @@ const InquiryForm = props => {
 	return (
 		<Form onSubmit={e => props.createInquiry(e,inquiry_body)}>
 			<Form.Group>
-				<Form.Label>문의 내용</Form.Label>
+				<Form.Label>{props.reply? '답변 내용':'문의 내용'}</Form.Label>
 				<Form.Control required as="textarea" onChange={e => setBody(e.target.value)} />
 			</Form.Group> <br />
 			<Button type='submit'>제출</Button>

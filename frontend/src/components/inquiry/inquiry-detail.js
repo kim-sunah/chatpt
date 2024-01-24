@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import InquiryCard from './inquiry-card'
 import Card from 'react-bootstrap/Card'
+import InquiryForm from './inquiry-form'
 
 const style = {
 	width: 700,
@@ -37,7 +38,20 @@ const InquiryDetail = props => {
 	const getReplies = async () => {
 		const res = await fetch(server+`/inquiry/${id}/replies`)
 		const replies_ = await res.json()
-		setReplies(replies_)
+		setReplies(replies_.reverse())
+	}
+	
+	const createReply = async (e,body) => {
+		e.preventDefault()
+		const authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
+		const refreshtoken = window.sessionStorage.getItem('refreshToken')
+		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken) return alert('권한이 없습니다.')
+		const res = await fetch(server+`/inquiry/${id}`,{method:'post',
+		headers:{'Content-Type':'application/json', authorization, refreshtoken},
+		body: JSON.stringify({body})})
+		if(res.status!==201) return alert('권한이 없습니다.')
+		const reply = await res.json()
+		setReplies([reply,...replies])
 	}
 	
 	useEffect(() => {
@@ -53,7 +67,8 @@ const InquiryDetail = props => {
 				<p>상태: {statusList[inquiry.status]}</p>
 			</Card.Header>
 			<Card.Body>
-				{replies.map(reply => <InquiryCard key={reply.id} inquiry={reply} /> )}
+				<InquiryForm reply={true} createInquiry={createReply} />
+				{replies.map(reply => <InquiryCard key={reply.id} user_id={inquiry.user_id} inquiry={reply} /> )}
 			</Card.Body>
 		</Card>
 	)
