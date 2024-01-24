@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import SearchForm from './search-form'
 import SearchCard from './search-card'
 import {server} from '../../constant.js'
-import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { PaginationControl } from 'react-bootstrap-pagination-control'
@@ -20,6 +19,7 @@ export default function SearchMain(props){
 	const [searched,setSearched] = useState(false)
 	const [count,setCount] = useState(0)
 	const [page_,setPage_] = useState(1)
+	const [pageSize_,setPageSize_] = useState(5)
 	const navigate = useNavigate()
 	
 	const search = async (e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize) => {
@@ -36,7 +36,7 @@ export default function SearchMain(props){
 		if(pageSize) params.append('pageSize',pageSize)
 		url.search = params.toString()
 		const res = await fetch(url)
-		const {count:count_, res:products_} = await res.json()
+		const [products_,count_] = await res.json()
 		setCount(count_)
 		setProducts(products_)
 		navigate('?'+params.toString())
@@ -61,6 +61,7 @@ export default function SearchMain(props){
 			alert('잘못된 접근입니다.')
 			return navigate('/')
 		}
+		setPageSize_(pageSize)
 		const page = +searchParams.get('page')
 		if(searchParams.get('page') && (isNaN(page) || !Number.isInteger(page) || page<1)){
 			alert('잘못된 접근입니다.')
@@ -88,20 +89,6 @@ export default function SearchMain(props){
 		}
 		if(key) search(e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize)
 	}, [searchParams])
-
-	const [show,setShow] = useState(false)
-	const handleShow = () => setShow(true)
-	const handleClose = () => setShow(false)
-	const pageMove = e => {
-		e.preventDefault()
-		const page = +searchParams.get('page')
-		if(page!==page_){
-			const url = new URL(window.location.href)
-			url.searchParams.set('page',page_)
-			handleClose()
-			navigate('?'+url.searchParams.toString())
-		}
-	}
 	
 	return (
 		<div style={style}>
@@ -112,25 +99,17 @@ export default function SearchMain(props){
 					products.length? (
 						<div>
 							<h2>검색 결과 ({count})</h2>
-							<h3 onClick={handleShow}>{+searchParams.get('page')||1}/{1+(count-1)/(+searchParams.get('pageSize')||5)|0} 페이지</h3>
 						</div>
 						):(<h2>검색 결과가 없습니다.</h2>)
 					):(<h2>원하는 상품을 검색해보세요!</h2>)}
 				{products.map(product => <SearchCard key={product.id} product={product} />)}
 			</div>
-			<Modal show={show}>
-				<Modal.Header>페이지 이동</Modal.Header>
-				<Modal.Body>
-					<Form onSubmit={pageMove}>
-						<Form.Group>
-							<Form.Control type='number' onChange={e => setPage_(+e.target.value)} defaultValue={+searchParams.get('page')||1} />
-							<br />
-							<Button type='submit' className='me-2'>이동</Button>
-							<Button onClick={handleClose}>닫기</Button>
-						</Form.Group>
-					</Form>
-				</Modal.Body>
-			</Modal>
+			{searched && <PaginationControl page={page_} limit={pageSize_} total={count} changePage = {page => {
+				setPage_(page)
+				const url = new URL(window.location.href)
+				url.searchParams.set('page',page)
+				navigate('?'+url.searchParams.toString())
+			}} />}
 		</div>
 	)
 }
