@@ -14,13 +14,13 @@ const style = {
 const InquiryGeneral = props => {
 	const navigate = useNavigate()
 	// 인증
-	const Authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
+	const authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
 	const refreshtoken = window.sessionStorage.getItem('refreshToken')
 	
 	const createInquiry = async (e,body) => {
 		e.preventDefault()
 		const res = await fetch(server+'/inquiry',{method:'post',
-			headers:{'Content-Type':'application/json', Authorization, refreshtoken},
+			headers:{'Content-Type':'application/json', authorization, refreshtoken},
 			body: JSON.stringify({body})})
 		if(res.status!==201) return alert('오류가 발생했습니다. 다시 시도해주세요.')
 		alert('문의가 등록되었습니다.')

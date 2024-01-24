@@ -13,7 +13,7 @@ import {
 import { InquiryService } from './inquiry.service';
 import { RoleGuard } from '../auth/guard/role.guard';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guards';
-import { Role } from '../enum1/role';
+import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { InquiryDto } from './dtos/inquiry.dto';
 import { Id } from '../util/id';
@@ -82,7 +82,7 @@ export class InquiryController {
         return await this.inquiryService.updateStatus(status, param.id);
     }
 
-    // 문의 삭제(관리자)
+    // 문의 삭제
     @UseGuards(RoleGuard)
     @Delete(':id')
     async softDeleteInquiry(@Param() param: Id) {
