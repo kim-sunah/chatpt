@@ -5,7 +5,7 @@ import { AuthService } from '../auth.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reflector } from '@nestjs/core';
-import { Role } from '../../enum1/role';
+import { Role } from '../../enum/Role';
 
 @Injectable()
 export class RoleGuard extends JwtAuthGuard {

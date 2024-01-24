@@ -22,7 +22,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { RoleGuard } from '../auth/guard/role.guard';
-import { Role } from '../enum1/Role';
+import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 @Controller('product')
 export class ProductController {
