@@ -31,6 +31,9 @@ const Redirecturl = (props) => {
         const JWTTOKEN = await userData.json();
 
         if(JWTTOKEN.statusCode === 200){
+          if(JWTTOKEN.limit === true){
+            return alert("이용이 제한된 이용자입니다.")
+        }
           sessionStorage.setItem("authority" , JWTTOKEN.authority)
           sessionStorage.setItem("accessToken", JWTTOKEN.accessToken)
           sessionStorage.setItem("refreshToken", JWTTOKEN.refreshToken)

@@ -13,6 +13,7 @@ import {LivecastModule} from './livecast/livecast.module'
 import { NestSessionOptions, SessionModule } from 'nestjs-session';
 
 import { CacheModule } from "@nestjs/cache-manager";
+import { AdminModule } from './admin/admin.module';
 
 
 
@@ -59,7 +60,8 @@ const typeOrmModuleOptions = {
     AuthModule,
 	ProductModule,
 	LivecastModule,
-	InquiryModule
+	InquiryModule,
+	AdminModule
   ],
   controllers: [AppController],
   providers: [AppService],

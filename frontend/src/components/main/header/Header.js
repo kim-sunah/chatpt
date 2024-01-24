@@ -37,7 +37,7 @@ const Header = () => {
                     <div className="list-item-2" />
                     <div className="list-item-link-2">BOOKMARK</div>
                     <div className="list-item-3" />
-                    {sessionStorage.getItem("authority") === "User" && <Link to="admin" className="list-item-link-3">관리자</Link>}
+                    {sessionStorage.getItem("authority") === "User" && <Link to="admin/1" className="list-item-link-3">관리자</Link>}
                     <div className="list-item-link-EVENT">EVENT</div>
                     <div className="list-item-link-FAQ">FAQ</div>
                     <div className="list-item-link-4">상품문의</div>
