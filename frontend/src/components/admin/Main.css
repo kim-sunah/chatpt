@@ -1,0 +1,348 @@
+.main {
+    height: 1011px;
+    width: 1664px;
+  }
+  
+  .main .div-container {
+  
+    left: 288px;
+    position: relative;
+    width: 1280px;
+  }
+  
+  .main .heading {
+    height: 36px;
+    left: 24px;
+    position: absolute;
+    top: 24px;
+    width: 1232px;
+  }
+  
+  .main .text-wrapper {
+    color: #24262d;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 24px;
+    font-weight: 600;
+    height: 29px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 36px;
+    position: absolute;
+    top: 2px;
+    white-space: nowrap;
+    width: 127px;
+  }
+  
+  .main .link {
+    background-color: #7e3af2;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px -1px #0000000f, 0px 4px 6px -1px #0000001a;
+    height: 53px;
+    left: 24px;
+    overflow: hidden;
+    position: absolute;
+    top: 84px;
+    width: 1232px;
+  }
+  
+  .main .div-flex {
+    height: 21px;
+    left: 16px;
+    position: absolute;
+    top: 16px;
+    width: 208px;
+  }
+  
+  .main .SVG {
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 20px;
+  }
+  
+  .main .div {
+    color: #edebfe;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 14px;
+    font-weight: 600;
+    height: 21px;
+    left: 28px;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: -1px;
+    white-space: nowrap;
+    width: 180px;
+  }
+  
+  .main .text-wrapper-2 {
+    color: #edebfe;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 14px;
+    font-weight: 600;
+    height: 21px;
+    left: 1127px;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: 15px;
+    white-space: nowrap;
+    width: 90px;
+  }
+  
+  .main .div-grid {
+    height: 88px;
+    left: 24px;
+    position: absolute;
+    top: 169px;
+    width: 1232px;
+  }
+  
+  .main .div-flex-2 {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 1px #0000000d;
+    height: 88px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 290px;
+  }
+  
+  .main .div-p {
+    height: 44px;
+    left: 16px;
+    position: absolute;
+    top: 22px;
+    width: 44px;
+  }
+  
+  .main .div-2 {
+    height: 56px;
+    left: 76px;
+    position: absolute;
+    top: 16px;
+    width: 81px;
+  }
+  
+  .main .text-wrapper-3 {
+    color: #4c4f52;
+    font-family: "Inter-Medium", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    height: 21px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: -1px;
+    white-space: nowrap;
+    width: 81px;
+  }
+  
+  .main .text-wrapper-4 {
+    color: #24262d;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 18px;
+    font-weight: 600;
+    height: 27px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 27px;
+    position: absolute;
+    top: 28px;
+    white-space: nowrap;
+    width: 47px;
+  }
+  
+  .main .div-flex-3 {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 1px #0000000d;
+    height: 88px;
+    left: 314px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 290px;
+  }
+  
+  .main .div-3 {
+    height: 56px;
+    left: 76px;
+    position: absolute;
+    top: 16px;
+    width: 112px;
+  }
+  
+  .main .text-wrapper-5 {
+    color: #4c4f52;
+    font-family: "Inter-Medium", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    height: 21px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: -1px;
+    white-space: nowrap;
+    width: 113px;
+  }
+  
+  .main .text-wrapper-6 {
+    color: #24262d;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 18px;
+    font-weight: 600;
+    height: 27px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 27px;
+    position: absolute;
+    top: 28px;
+    white-space: nowrap;
+    width: 106px;
+  }
+  
+  .main .div-flex-4 {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 1px #0000000d;
+    height: 88px;
+    left: 628px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 290px;
+  }
+  
+  .main .div-4 {
+    height: 56px;
+    left: 76px;
+    position: absolute;
+    top: 16px;
+    width: 69px;
+  }
+  
+  .main .text-wrapper-7 {
+    color: #4c4f52;
+    font-family: "Inter-Medium", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    height: 21px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: -1px;
+    white-space: nowrap;
+    width: 69px;
+  }
+  
+  .main .text-wrapper-8 {
+    color: #24262d;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 18px;
+    font-weight: 600;
+    height: 27px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 27px;
+    position: absolute;
+    top: 28px;
+    white-space: nowrap;
+    width: 34px;
+  }
+  
+  .main .div-flex-5 {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 1px #0000000d;
+    height: 88px;
+    left: 942px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 290px;
+  }
+  
+  .main .div-5 {
+    height: 56px;
+    left: 76px;
+    position: absolute;
+    top: 16px;
+    width: 117px;
+  }
+  
+  .main .text-wrapper-9 {
+    color: #4c4f52;
+    font-family: "Inter-Medium", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    height: 21px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: absolute;
+    top: -1px;
+    white-space: nowrap;
+    width: 117px;
+  }
+  
+  .main .text-wrapper-10 {
+    color: #24262d;
+    font-family: "Inter-SemiBold", Helvetica;
+    font-size: 18px;
+    font-weight: 600;
+    height: 27px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 27px;
+    position: absolute;
+    top: 28px;
+    white-space: nowrap;
+    width: 23px;
+  }
+  
+  .main .div-w-full {
+    background-color: #ffffff01;
+    border-radius: 8px;
+    box-shadow: 0px 0px 0px 1px #0000000d;
+    height: 671px;
+    left: 24px;
+    overflow: hidden;
+    position: absolute;
+    top: 289px;
+    width: 1232px;
+  }
+ 
+  
+  .header-row {
+    display: flex;
+    gap: 15%;
+    justify-content: center;
+    background-color: #707275;
+    color: white;
+  }
+  
+  
+
+
+  
+  .userlist {
+    display: flex;
+    flex-direction: row; /* 가로로 나열되도록 설정 */
+    margin:  3%;
+    padding: 0;
+    list-style: none;
+    gap: 20%;
+  }
+  
+  .nicknameli {
+    font-weight: bold;
+  }
+  
+  

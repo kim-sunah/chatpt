@@ -12,6 +12,10 @@ const ProductMy = props => {
 	const navigate = useNavigate()
 	
 	const getProducts = async () => {
+		if(window.sessionStorage.getItem('authority')!=='seller'){
+			alert('권한이 없습니다.')
+			navigate('/')
+		}
 		const res = await fetch(server+`/product/my`,{headers:{'Content-Type' : 'application/json', authorization,refreshtoken}})
 		if(res.status!==200){
 			alert('권한이 없습니다.')

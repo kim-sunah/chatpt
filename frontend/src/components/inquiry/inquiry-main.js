@@ -24,7 +24,7 @@ const InquiryMain = props => {
 	
 	return (
 		<div style={style}>
-			{inquiries.map(inquiry => <InquiryCard inquiry={inquiry} /> )}
+			{inquiries.map(inquiry => <InquiryCard key={inquiry.id} inquiry={inquiry} /> )}
 		</div>
 	)
 }

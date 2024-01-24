@@ -11,9 +11,12 @@ const style = {
 	borderRadius: 15
 }
 
+const statusList = ['접수 완료','답변 확인','처리 완료']
+
 const InquiryCard = props => {
 	return (
 		<Card style={style}>
+			<Card.Header>{statusList[props.inquiry.status]}</Card.Header>
 			<Card.Body>{props.inquiry.body}</Card.Body>
 		</Card>
 	)

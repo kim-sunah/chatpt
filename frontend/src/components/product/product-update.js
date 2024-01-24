@@ -42,6 +42,10 @@ const ProductUpdate = props => {
 	}
 	
 	useEffect(() => {
+		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken || window.sessionStorage.getItem('authority')!=='seller'){
+			alert('권한이 없습니다.')
+			navigate('/')
+		}
 		getProduct()
 		getImages()
 	},[])
