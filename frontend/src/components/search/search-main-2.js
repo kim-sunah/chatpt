@@ -15,19 +15,47 @@ const style = {
 
 export default function SearchMain(props){
 	const [products,setProducts] = useState([])
+	const key = searchParams.get('key')
+	const antiKey = searchParams.get('antiKey')
+	const pageSize = +searchParams.get('pageSize')
+	if(searchParams.get('pageSize') & [5,10,20,50,100].indexOf(pageSize)===-1){
+		alert('잘못된 접근입니다.')
+		return navigate('/')
+	}
+	setPageSize_(pageSize)
+	const page = +searchParams.get('page')
+	if(searchParams.get('page') && (isNaN(page) || !Number.isInteger(page) || page<1)){
+		alert('잘못된 접근입니다.')
+		return navigate('/')
+	}
+	setPage_(page)
+	const categories = +searchParams.get('categories')
+	if(searchParams.get('categories') && (isNaN(categories) || !Number.isInteger(categories) || categories<1 || categories>1023)){
+		alert('잘못된 접근입니다.')
+		return navigate('/')
+	}
+	const minSalePrice = +searchParams.get('minSalePrice')
+	if(searchParams.get('minSalePrice') && (isNaN(minSalePrice) || !Number.isInteger(minSalePrice) || minSalePrice<1)){
+		alert('잘못된 접근입니다.')
+		return navigate('/')
+	}
+	const maxSalePrice = +searchParams.get('maxSalePrice')
+	if(searchParams.get('maxSalePrice') && (isNaN(maxSalePrice) || !Number.isInteger(maxSalePrice) || maxSalePrice<1)){
+		alert('잘못된 접근입니다.')
+		return navigate('/')
+	}
+	if(minSalePrice>maxSalePrice){
+		alert('잘못된 접근입니다.')
+		return navigate('/')
+	}
 	const [searchParams,setSearchParams] = useSearchParams()
-	const [key,setKey] = useState(searchParams.get('key') || '')
-	const [antiKey,setAntiKey] = useState(searchParams.get('antiKey') || '')
 	const [searched,setSearched] = useState(false)
 	const [count,setCount] = useState(0)
-	const [page,setPage] = useState(+searchParams.get('page') || 1)
-	const [pageSize,setPageSize] = useState(+searchParams.get('pageSize') || 5)
-	const [categories,setCategories] = useState(+searchParams.get('categories') || 1023)
-	const [minSalePrice,setMinSalePrice] = useState(1)
-	const [maxSalePrice,setMaxSalePrice] = useState(4294967295)
+	const [page_,setPage_] = useState(1)
+	const [pageSize_,setPageSize_] = useState(5)
 	const navigate = useNavigate()
 	
-	const search = async e => {
+	const search = async (e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize) => {
 		e?.preventDefault()
 		setSearched(true)
 		const url = new URL(server+'/product/search')
@@ -42,9 +70,11 @@ export default function SearchMain(props){
 		url.search = params.toString()
 		const res = await fetch(url)
 		const [products_,count_] = await res.json()
+		console.log(count_)
 		setCount(count_)
+		console.log(count_)
 		setProducts(products_)
-		navigate('?'+params.toString())
+		//navigate('?'+params.toString())
 	}	
 	
 	/* const sortProducts = (e) => {
@@ -59,13 +89,13 @@ export default function SearchMain(props){
 	} */
 	
 	useEffect(e => {
-		if(key) search()
+		if(key) search(e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize)
 	}, [searchParams])
 	
 	return (
 		<div style={style}>
 			{/*<SearchForm search={search} sortProducts={sortProducts} />*/}
-			<SearchForm search={search} key_={key} setKey={setKey} antiKey={antiKey} setAntiKey={setAntiKey} categories={categories} setCategories={setCategories} minSalePrice={minSalePrice} setMinSalePrice={setMinSalePrice} maxSalePrice={maxSalePrice} setMaxSalePrice={setMaxSalePrice} pageSize={pageSize} setPageSize={setPageSize} />
+			<SearchForm search={search} />
 			<div>
 				{searched? (
 					products.length? (
@@ -76,8 +106,8 @@ export default function SearchMain(props){
 					):(<h2>원하는 상품을 검색해보세요!</h2>)}
 				{products.map(product => <SearchCard key={product.id} product={product} />)}
 			</div>
-			{searched && <PaginationControl page={page} limit={pageSize} total={count} changePage = {page => {
-				setPage(page)
+			{searched && <PaginationControl page={page_} limit={pageSize_} total={count} changePage = {page => {
+				setPage_(page)
 				const url = new URL(window.location.href)
 				url.searchParams.set('page',page)
 				navigate('?'+url.searchParams.toString())

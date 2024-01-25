@@ -18,21 +18,14 @@ const categoryList = ['Food', 'Health', 'Household', 'Pet', 'Cosmetics', 'Office
 
 const pageSizeList = [5,10,20,50,100]
 
-export default function SearchForm(props){
-	const [key,setKey] = useState('')
-	const [antiKey,setAntiKey] = useState('')
+export default function SearchForm({search, key_, setKey, antiKey, setAntiKey, categories, setCategories, minSalePrice, setMinSalePrice, maxSalePrice, setMaxSalePrice, pageSize, setPageSize}){
 	const [show,setShow] = useState(false)
-	const [minSalePrice,setMinSalePrice] = useState(1)
-	const [maxSalePrice,setMaxSalePrice] = useState(4294967295)
-	const [categories,setCategories] = useState(0)
-	const [pageSize,setPageSize] = useState(5)
-	
 	const handleShow = () => setShow(true)
 	const handleClose = () => setShow(false)
 	
 	return (
 		<div style={style}>
-			<Form onSubmit={e => props.search(e,key,antiKey,categories,minSalePrice,maxSalePrice,1,pageSize)}>
+			<Form onSubmit={e => search(e)}>
 				<Form.Group>
 					<Form.Control required placeholder='검색어를 입력해주세요.' onChange={e => setKey(e.target.value)} />
 				</Form.Group>
