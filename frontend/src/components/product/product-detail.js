@@ -27,8 +27,6 @@ const imgStyle = {
 	margin: '10px 0'
 }
 
-
-
 const decimal1 = (total,count) => {
 	if(!count) return '0.0'
 	const rating = total*10/count|0

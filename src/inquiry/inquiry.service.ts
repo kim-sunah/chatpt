@@ -3,6 +3,7 @@ import { Repository, QueryFailedError, IsNull } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import {Inquiry} from '../entities/inquiry.entity'
 import {InquiryReply} from '../entities/inquiry-reply.entity'
+import {Product} from '../entities/product.entity'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
 
@@ -13,6 +14,8 @@ export class InquiryService {
         private readonly inquiryRepository: Repository<Inquiry>,
 		@InjectRepository(InquiryReply)
         private readonly inquiryReplyRepository: Repository<InquiryReply>,
+		@InjectRepository(Product)
+        private readonly productRepository: Repository<Product>,
 		@Inject(REQUEST) private readonly req: Request
     ) {}
 	
@@ -50,7 +53,8 @@ export class InquiryService {
 	async replyInquiry(body: string, inquiry_id: number){
 		const inquiry = await this.getInquiryById(inquiry_id)
 		if(!inquiry) throw new NotFoundException('해당 문의를 찾을 수 없습니다.')
-		if(this.req.user['role']==='Admin' || this.req.user['id']===inquiry.user_id)
+		// 관리자, 문의 작성자, (상품 관련이면) 상품 등록자만 답변 가능
+		if(this.req.user['role']==='Admin' || this.req.user['id']===inquiry.user_id || (inquiry.product_id && this.req.user['id']===(await this.productRepository.findOne({where:{id:inquiry.product_id}}))?.user_id))
 			return await this.inquiryReplyRepository.save({user_id:this.req.user['id'], inquiry_id, body})
 		throw new ForbiddenException('권한이 없습니다.')
 	}
