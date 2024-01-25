@@ -3,8 +3,9 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import {server} from '../../constant.js'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
-import InquiryForm from '../inquiry/inquiry-form'
+import InquiryForm from '../inquiry/Inquiry-form'
 import Button from 'react-bootstrap/Button'
+import './style.css'
 
 const style = {
 	margin: '10px auto',
@@ -25,6 +26,8 @@ const imgStyle = {
 	width: '100%',
 	margin: '10px 0'
 }
+
+
 
 const decimal1 = (total,count) => {
 	if(!count) return '0.0'
@@ -104,10 +107,9 @@ export default function ProductCard(props){
 			<Card.Body>
 				{images.map(image => <img key={image.id} style={imgStyle} src={image.original_url} />)}
 			</Card.Body>
-			<Modal show={show}>
+			<Modal dialogClassName="custom-modal" show={show}>
 				<Modal.Body>
-					<InquiryForm createInquiry={createInquiry} />
-					<Button className='mt-2' onClick={handleClose}>닫기</Button>
+					<InquiryForm createInquiry={createInquiry} handleClose={handleClose} />
 				</Modal.Body>
 			</Modal>
 		</Card>

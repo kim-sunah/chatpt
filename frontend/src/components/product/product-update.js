@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import ProductForm from './product-form'
+import ProductForm from './Product-form'
 import {server} from '../../constant.js'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Button from 'react-bootstrap/button'

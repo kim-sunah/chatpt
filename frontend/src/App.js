@@ -6,17 +6,17 @@ import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import Redirecturl from "./components/Redirecturl";
 import Mypage from "./components/mypage/Mypage";
-import ProductCreate from './components/product/product-create'
+import ProductCreate from './components/product/Product-create'
 import SearchMain from
-      './components/search/search-main'
-import ProductDetail from './components/product/product-detail'
-import ProductUpdate from './components/product/product-update'
-import ProductMy from './components/product/product-my'
-import InquiryMy from './components/inquiry/inquiry-my'
-import InquiryMain from './components/inquiry/inquiry-main'
-import InquiryGeneral from './components/inquiry/inquiry-general'
+      './components/search/Search-main'
+import ProductDetail from './components/product/Product-detail'
+import ProductUpdate from './components/product/Product-update'
+import ProductMy from './components/product/Product-my'
+import InquiryMy from './components/inquiry/Inquiry-my'
+import InquiryMain from './components/inquiry/Inquiry-main'
+import InquiryGeneral from './components/inquiry/Inquiry-general'
 import InquiryDetail from
-'./components/inquiry/inquiry-detail'
+'./components/inquiry/Inquiry-detail'
 import Adminpage from "./components/admin/Adminpage";
 
 const router = createBrowserRouter([

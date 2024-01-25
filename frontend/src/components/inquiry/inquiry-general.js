@@ -1,14 +1,12 @@
 import React, {useState,useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import InquiryForm from './inquiry-form'
+import InquiryForm from './Inquiry-form'
 import {server} from '../../constant.js'
 
 const style = {
 	margin: '10px auto',
 	padding: '15px',
-	width: 800,
-	border: '1px solid black',
-	borderRadius: 15
+	width: 1000
 }
 
 const InquiryGeneral = props => {

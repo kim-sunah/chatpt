@@ -5,7 +5,7 @@ import { AiFillShop } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import "./style.css";
 import { Link } from 'react-router-dom';
-import SearchForm from '../../search/search-form'
+import SearchForm from '../../search/Search-form'
 
 const Header = () => {
     const [Token , setToken] = useState(false)
@@ -41,13 +41,13 @@ const Header = () => {
                     {sessionStorage.getItem("authority") === "User" && <Link to="admin" className="list-item-link-3">관리자</Link>}
                     <div className="list-item-link-EVENT">EVENT</div>
                     <div className="list-item-link-FAQ">FAQ</div>
-                    <div className="list-item-link-4">상품문의</div>
+                    <Link to='inquiry/general' className="list-item-link-4">상품문의</Link>
                     <div className="list-item-link-5">교환/반품/취소</div>
                     <div className="list-item-link-6">REVIEW</div>
 
                 </div>
                 <div className="heading-link" />
-                <div className="form-fieldset">
+				<div className="form-fieldset">
                     <SearchForm />
                 </div>
                 <div className="navbar-2">

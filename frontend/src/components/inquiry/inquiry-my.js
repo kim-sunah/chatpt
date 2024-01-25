@@ -1,4 +1,4 @@
-import InquiryCard from './inquiry-card'
+import InquiryCard from './Inquiry-card'
 import React, {useState,useEffect} from 'react'
 import {server} from '../../constant'
 import { useNavigate } from 'react-router-dom'

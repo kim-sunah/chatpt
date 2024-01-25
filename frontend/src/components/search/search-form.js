@@ -1,14 +1,13 @@
 import React, {useState,useEffect} from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import {server, frontServer} from '../../constant.js'
+import {server} from '../../constant.js'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
 const style = {
 	width: 600,
-	textAlign:'center',
-	margin: '10px auto'
+	textAlign:'center'
 }
 
 const buttonStyle = {

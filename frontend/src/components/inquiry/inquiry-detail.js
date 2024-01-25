@@ -2,9 +2,9 @@ import React, {useState,useEffect} from 'react'
 import {server} from '../../constant'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
-import InquiryCard from './inquiry-card'
+import InquiryCard from './Inquiry-card'
 import Card from 'react-bootstrap/Card'
-import InquiryForm from './inquiry-form'
+import InquiryForm from './Inquiry-form'
 
 const style = {
 	width: 700,

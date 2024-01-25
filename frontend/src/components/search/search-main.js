@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import SearchForm from './search-form'
-import SearchCard from './search-card'
+import SearchForm from './Search-form'
+import SearchCard from './Search-card'
 import {server} from '../../constant.js'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -45,7 +45,6 @@ export default function SearchMain(props){
 	
 	useEffect(() => {
 		if(key) search()
-		console.log(count,products)
 	},[searchParams])
 	
 	/* const sortProducts = (e) => {
