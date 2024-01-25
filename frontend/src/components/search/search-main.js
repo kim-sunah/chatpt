@@ -14,22 +14,19 @@ const style = {
 }
 
 export default function SearchMain(props){
-	const [products,setProducts] = useState([])
 	const [searchParams,setSearchParams] = useSearchParams()
-	const [key,setKey] = useState(searchParams.get('key') || '')
-	const [antiKey,setAntiKey] = useState(searchParams.get('antiKey') || '')
-	const [searched,setSearched] = useState(false)
+	const key = searchParams.get('key') || ''
+	const antiKey = searchParams.get('antiKey') || ''
+	const page = +searchParams.get('page') || 1
+	const pageSize = +searchParams.get('pageSize') || 5
+	const categories = +searchParams.get('categories') || 1023
+	const minSalePrice = +searchParams.get('minSalePrice') || 1
+	const maxSalePrice = +searchParams.get('maxSalePrice') || 4294967295
 	const [count,setCount] = useState(0)
-	const [page,setPage] = useState(+searchParams.get('page') || 1)
-	const [pageSize,setPageSize] = useState(+searchParams.get('pageSize') || 5)
-	const [categories,setCategories] = useState(+searchParams.get('categories') || 1023)
-	const [minSalePrice,setMinSalePrice] = useState(1)
-	const [maxSalePrice,setMaxSalePrice] = useState(4294967295)
+	const [products,setProducts] = useState([])
 	const navigate = useNavigate()
 	
 	const search = async e => {
-		e?.preventDefault()
-		setSearched(true)
 		const url = new URL(server+'/product/search')
 		const params = new URLSearchParams()
 		params.append('key',key)
@@ -41,11 +38,15 @@ export default function SearchMain(props){
 		if(pageSize) params.append('pageSize',pageSize)
 		url.search = params.toString()
 		const res = await fetch(url)
-		const [products_,count_] = await res.json()
-		setCount(count_)
-		setProducts(products_)
-		navigate('?'+params.toString())
-	}	
+		const res_ = await res.json()
+		setProducts(res_[0])
+		setCount(res_[1])
+	}
+	
+	useEffect(() => {
+		if(key) search()
+		console.log(count,products)
+	},[searchParams])
 	
 	/* const sortProducts = (e) => {
 		if(e.target.value==='highSalePrice'){
@@ -58,29 +59,21 @@ export default function SearchMain(props){
 		}
 	} */
 	
-	useEffect(e => {
-		if(key) search()
-	}, [searchParams])
-	
 	return (
 		<div style={style}>
-			<SearchForm search={search} key_={key} setKey={setKey} antiKey={antiKey} setAntiKey={setAntiKey} categories={categories} setCategories={setCategories} minSalePrice={minSalePrice} setMinSalePrice={setMinSalePrice} maxSalePrice={maxSalePrice} setMaxSalePrice={setMaxSalePrice} pageSize={pageSize} setPageSize={setPageSize} />
 			<div>
-				{searched? (
-					products.length? (
-						<div>
-							<h2>검색 결과 ({count})</h2>
-						</div>
-						):(<h2>검색 결과가 없습니다.</h2>)
-					):(<h2>원하는 상품을 검색해보세요!</h2>)}
+				{products.length? (
+					<div>
+						<h2>검색 결과 ({count})</h2>
+					</div>
+					):(<h2>검색 결과가 없습니다.</h2>)}
 				{products.map(product => <SearchCard key={product.id} product={product} />)}
 			</div>
-			{searched && <PaginationControl page={page} limit={pageSize} total={count} changePage = {page => {
-				setPage(page)
+			{products.length? <PaginationControl page={page} limit={pageSize} total={count} changePage = {page => {
 				const url = new URL(window.location.href)
 				url.searchParams.set('page',page)
 				navigate('?'+url.searchParams.toString())
-			}} />}
+			}} />:''}
 		</div>
 	)
 }

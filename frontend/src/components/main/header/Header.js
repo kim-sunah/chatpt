@@ -48,7 +48,7 @@ const Header = () => {
                 </div>
                 <div className="heading-link" />
                 <div className="form-fieldset">
-                    <input></input>
+                    <SearchForm />
                 </div>
                 <div className="navbar-2">
                     <div className="div-df-allmenu-btn">
