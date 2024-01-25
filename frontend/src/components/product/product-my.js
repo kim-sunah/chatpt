@@ -8,15 +8,16 @@ import { PaginationControl } from 'react-bootstrap-pagination-control'
 
 export default function ProductMy(props){
 	const [searchParams,setSearchParams] = useSearchParams()
-	const [page,setPage] = useState(1)
-	const [pageSize,setPageSize] = useState(5)
+	const [page,setPage] = useState(+searchParams.get('page') || 1)
+	const pageSize = 5
+	//const [pageSize,setPageSize] = useState(+searchParams.get('pageSize') || 5)
 	const [count,setCount] = useState(0)
 	const [products,setProducts] = useState([])
 	const authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
 	const refreshtoken = window.sessionStorage.getItem('refreshToken')
 	const navigate = useNavigate()
 	
-	const getProducts = async (e,page,pageSize) => {
+	const getProducts = async () => {
 		if(window.sessionStorage.getItem('authority')!=='seller'){
 			alert('권한이 없습니다.')
 			navigate('/')
@@ -33,30 +34,29 @@ export default function ProductMy(props){
 		}
 		const [products_,count_] = await res.json()
 		setPage(page)
-		setPageSize(pageSize)
+		//setPageSize(pageSize)
 		setCount(count_)
 		setProducts(products_)
 		navigate('?'+params.toString())
 	}
 	
 	useEffect(e => {
-		const pageSize_ = searchParams.get('pageSize')
+		/* const pageSize_ = searchParams.get('pageSize')
 		if(pageSize_){
 			if([5,10,20,50,100].indexOf(+pageSize_)===-1){
 				alert('잘못된 접근입니다.')
 				return navigate('/')
 			}
 			setPageSize(+pageSize_)
-		}
+		} */
 		const page_ = searchParams.get('page')
 		if(page_){
 			if((isNaN(+page_) || !Number.isInteger(+page_) || +page_<1)){
 				alert('잘못된 접근입니다.')
 				return navigate('/')
 			}
-			setPage(+page_)
 		}
-		getProducts(e,page,pageSize)
+		getProducts()
 	},[searchParams])
 	
 	return (

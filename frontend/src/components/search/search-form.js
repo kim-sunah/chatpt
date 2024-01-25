@@ -25,7 +25,7 @@ export default function SearchForm({search, key_, setKey, antiKey, setAntiKey, c
 	
 	return (
 		<div style={style}>
-			<Form onSubmit={e => search(e)}>
+			<Form style={{display:'flex', justifyContent:'center', alignItems:'center'}} onSubmit={e => search(e)}>
 				<Form.Group>
 					<Form.Control required placeholder='검색어를 입력해주세요.' onChange={e => setKey(e.target.value)} />
 				</Form.Group>

@@ -64,7 +64,6 @@ export default function SearchMain(props){
 	
 	return (
 		<div style={style}>
-			{/*<SearchForm search={search} sortProducts={sortProducts} />*/}
 			<SearchForm search={search} key_={key} setKey={setKey} antiKey={antiKey} setAntiKey={setAntiKey} categories={categories} setCategories={setCategories} minSalePrice={minSalePrice} setMinSalePrice={setMinSalePrice} maxSalePrice={maxSalePrice} setMaxSalePrice={setMaxSalePrice} pageSize={pageSize} setPageSize={setPageSize} />
 			<div>
 				{searched? (
