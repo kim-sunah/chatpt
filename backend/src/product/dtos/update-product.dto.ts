@@ -1,6 +1,6 @@
 import { IsString, IsInt, Min, IsNotEmpty, IsEnum, IsOptional } from 'class-validator'
-import { Category } from 'backend/src/enum/Category'
-import { ProductStatus } from 'backend/src/enum/ProductStatus'
+import { Category } from 'src/enum/Category'
+import { ProductStatus } from 'src/enum/ProductStatus'
 
 export class UpdateProductDto {
 	@IsOptional()

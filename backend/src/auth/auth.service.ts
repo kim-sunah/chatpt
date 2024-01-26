@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { CreateuserDto } from './dtos/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'backend/src/entities/user.entity';
+import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { SignInDto } from './dtos/sign-in.dto';

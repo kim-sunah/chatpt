@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'backend/src/entities/user.entity';
+import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { Product } from 'backend/src/entities/product.entity';
+import { Product } from 'src/entities/product.entity';
 
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { IsString, IsEmail , IsMobilePhone , IsStrongPassword , IsNotEmpty, IsEnum, IsOptional } from "class-validator";
-import { Role } from "backend/src/enum/Role";
+
 import { IsEqualTo } from "../decorators/match.decorator";
 
 

@@ -16,14 +16,14 @@ import { CreateProductDto } from './dtos/create-product.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { SearchProductDto } from './dtos/search-product.dto';
 import { PageDto } from './dtos/page.dto';
-import { Id } from 'backend/src/util/id';
+import { Id } from 'src/util/id';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { RoleGuard } from '../auth/guard/role.guard';
 import { Role } from '../enum/Role';
-import { Roles } from 'backend/src/auth/decorators/roles.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 @Controller('product')
 export class ProductController {
     constructor(private readonly productService: ProductService) {}
