@@ -68,7 +68,7 @@ const InquiryDetail = props => {
 			</Card.Header>
 			<Card.Body>
 				<InquiryForm reply={true} createInquiry={createReply} />
-				{replies.map(reply => <InquiryCard key={reply.id} user_id={inquiry.user_id} inquiry={reply} /> )}
+				{replies.map(reply => <InquiryCard key={reply.id} inquiry={reply} /> )}
 			</Card.Body>
 		</Card>
 	)
