@@ -12,8 +12,16 @@ export class BadwordService {
 	
 	private pollingInterval: number = 5000
 	
-	@Cron('*/5 * * * * *')
-	handleInterval() {
-		console.log('Called every 5 seconds');
+	//@Cron('*/5 * * * * *')
+	//handleInterval() {
+	//	console.log('Called every 5 seconds');
+	//}
+	
+	async createBadword(badwords: string[]){
+		return await this.badwordRepository.createQueryBuilder()
+			.insert()
+			.values(badwords.map(badword => ({badword})))
+			.orIgnore()
+			.execute()
 	}
 }
