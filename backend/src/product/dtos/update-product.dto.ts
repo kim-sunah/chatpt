@@ -1,8 +1,9 @@
 import { IsString, IsInt, Min, IsNotEmpty, IsEnum, IsOptional } from 'class-validator'
-import { Category } from 'src/enum/Category'
-import { ProductStatus } from 'src/enum/ProductStatus'
+import { Category } from 'backend/src/enum/Category'
+import { ProductStatus } from 'backend/src/enum/ProductStatus'
 
-export class CreateProductDto {
+export class UpdateProductDto {
+	@IsOptional()
 	@IsNotEmpty()
     @IsString()
     name : string
@@ -19,6 +20,7 @@ export class CreateProductDto {
 	@IsString()
 	body: string
 	
+	@IsOptional()
 	@IsInt()
 	@Min(1)
 	price: number

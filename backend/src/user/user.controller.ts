@@ -3,10 +3,10 @@ import { UserService } from './user.service';
 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { UserInfo } from 'src/auth/decorators/userinfo.decorator';
-import { User } from 'src/entities/user.entity';
+import { UserInfo } from 'backend/src/auth/decorators/userinfo.decorator';
+import { User } from 'backend/src/entities/user.entity';
 import { UpdateuserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
+import { JwtAuthGuard } from 'backend/src/auth/guard/jwt-auth.guards';
 
 
 @ApiTags('회원')

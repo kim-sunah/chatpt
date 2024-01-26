@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpStatu
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
+import { JwtAuthGuard } from 'backend/src/auth/guard/jwt-auth.guards';
 
 @Controller('admin')
 // @UseGuards(JwtAuthGuard)

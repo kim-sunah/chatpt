@@ -1,6 +1,6 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt-auth.guards';
-import { User } from 'src/entities/user.entity';
+import { User } from 'backend/src/entities/user.entity';
 import { AuthService } from '../auth.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';

@@ -5,7 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto } from './dtos/sign-in.dto';
 
-import { User } from 'src/entities/user.entity';
+import { User } from 'backend/src/entities/user.entity';
 import {  Response } from 'express';
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
 
