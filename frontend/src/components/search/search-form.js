@@ -1,12 +1,13 @@
 import React, {useState,useEffect} from 'react'
+import { useSearchParams, useNavigate } from 'react-router-dom'
+import {server} from '../../constant.js'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
 const style = {
 	width: 600,
-	textAlign:'center',
-	margin: '10px auto'
+	textAlign:'center'
 }
 
 const buttonStyle = {
@@ -18,21 +19,43 @@ const categoryList = ['Food', 'Health', 'Household', 'Pet', 'Cosmetics', 'Office
 
 const pageSizeList = [5,10,20,50,100]
 
-export default function SearchForm(props){
-	const [key,setKey] = useState('')
-	const [antiKey,setAntiKey] = useState('')
+export default function SearchForm(){
 	const [show,setShow] = useState(false)
+	const [products,setProducts] = useState([])
+	const [searchParams,setSearchParams] = useSearchParams()
+	const [key,setKey] = useState(searchParams.get('key') || '')
+	const [antiKey,setAntiKey] = useState(searchParams.get('antiKey') || '')
+	const [searched,setSearched] = useState(false)
+	const [count,setCount] = useState(0)
+	const [page,setPage] = useState(+searchParams.get('page') || 1)
+	const [pageSize,setPageSize] = useState(+searchParams.get('pageSize') || 5)
+	const [categories,setCategories] = useState(+searchParams.get('categories') || 1023)
 	const [minSalePrice,setMinSalePrice] = useState(1)
 	const [maxSalePrice,setMaxSalePrice] = useState(4294967295)
-	const [categories,setCategories] = useState(0)
-	const [pageSize,setPageSize] = useState(5)
+	const navigate = useNavigate()
 	
+	const search = e => {
+		e?.preventDefault()
+		setSearched(true)
+		const url = new URL(server+'/product/search')
+		const params = new URLSearchParams()
+		params.append('key',key)
+		if(antiKey) params.append('antiKey',antiKey)
+		if(categories) params.append('categories',categories)
+		if(minSalePrice) params.append('minSalePrice',minSalePrice)
+		if(maxSalePrice) params.append('maxSalePrice',maxSalePrice)
+		if(page) params.append('page',page)
+		if(pageSize) params.append('pageSize',pageSize)
+		url.search = params.toString()
+		navigate('/search?'+params.toString())
+	}
+
 	const handleShow = () => setShow(true)
 	const handleClose = () => setShow(false)
 	
 	return (
 		<div style={style}>
-			<Form onSubmit={e => props.search(e,key,antiKey,categories,minSalePrice,maxSalePrice,1,pageSize)}>
+			<Form style={{display:'flex', justifyContent:'center', alignItems:'center'}} onSubmit={e => search(e)}>
 				<Form.Group>
 					<Form.Control required placeholder='검색어를 입력해주세요.' onChange={e => setKey(e.target.value)} />
 				</Form.Group>
