@@ -36,7 +36,7 @@ export class ProductController {
     }
 
     // 상품 검색
-    @Get('search?')
+    @Get('search')
     async searchProducts(@Query() query: SearchProductDto) {
         return await this.productService.searchProducts(query);
     }
@@ -45,8 +45,8 @@ export class ProductController {
     @UseGuards(RoleGuard)
     @Roles(Role.Seller)
     @Get('my')
-    async getMyProducts() {
-        return await this.productService.getMyProducts();
+    async getMyProducts(@Query() query: PageDto) {
+        return await this.productService.getMyProducts(query);
     }
 
     // 상품 id로 찾기

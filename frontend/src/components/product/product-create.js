@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import ProductForm from './product-form'
+import ProductForm from './Product-form'
 import {server} from '../../constant.js'
 import { useNavigate } from 'react-router-dom'
 
@@ -13,6 +13,13 @@ export default function ProductCreate(props){
 	// 인증
 	const Authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
 	const refreshtoken = window.sessionStorage.getItem('refreshToken')
+	
+	useEffect(() => {
+		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken || window.sessionStorage.getItem('authority')!=='seller'){
+			alert('권한이 없습니다.')
+			navigate('/')
+		}
+	}, [])
 
 	const createProduct = async (e,body) => {
 		e.preventDefault()

@@ -2,6 +2,10 @@ import React, {useState,useEffect} from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import {server} from '../../constant.js'
 import Card from 'react-bootstrap/Card'
+import Modal from 'react-bootstrap/Modal'
+import InquiryForm from '../inquiry/Inquiry-form'
+import Button from 'react-bootstrap/Button'
+import './style.css'
 
 const style = {
 	margin: '10px auto',
@@ -62,6 +66,29 @@ export default function ProductCard(props){
 		getImages()
 	},[])
 	
+	const [show,setShow] = useState(false)
+	const handleShow = () => {
+		const authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
+		const refreshtoken = window.sessionStorage.getItem('refreshToken')
+		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken){
+			alert('권한이 없습니다.')
+			navigate('/')
+		}
+		setShow(true)
+	}
+	const handleClose = () => setShow(false)
+	const createInquiry = async (e,body) => {
+		e.preventDefault()
+		const authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
+		const refreshtoken = window.sessionStorage.getItem('refreshToken')
+		const res = await fetch(server+'/inquiry',{method:'post',
+			headers:{'Content-Type':'application/json', authorization, refreshtoken},
+			body: JSON.stringify({body})})
+		if(res.status!==201) return alert('오류가 발생했습니다. 다시 시도해주세요.')
+		alert('문의가 등록되었습니다.')
+		navigate('/')
+	}
+	
 	return (
 		<Card style={style}>
 			<Card.Header style={{display:'flex'}}>
@@ -72,11 +99,17 @@ export default function ProductCard(props){
 					<h3>{product.sale_price}원</h3>
 					<p>{product.body}</p>
 					<p>{decimal1(product.rating_total,product.rating_count)} ({product.rating_count}) 판매량: {product.sales_volume}</p>
+					<Button onClick={handleShow}>상품 문의</Button>
 				</div>
 			</Card.Header>
 			<Card.Body>
 				{images.map(image => <img key={image.id} style={imgStyle} src={image.original_url} />)}
 			</Card.Body>
+			<Modal dialogClassName="custom-modal" show={show}>
+				<Modal.Body>
+					<InquiryForm createInquiry={createInquiry} handleClose={handleClose} />
+				</Modal.Body>
+			</Modal>
 		</Card>
 	)
 }
