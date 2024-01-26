@@ -42,20 +42,13 @@ export class ProductService {
 	// 상품 검색
 	async searchProducts(query){
 		const {page, pageSize, key, antiKey, minSalePrice, maxSalePrice, categories} = query
-		const count = await this.productRepository
-			.createQueryBuilder().select()
-			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
-			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
-			.andWhere(`category in (${this.categoryArray(categories).map(c => `'${c}'`).join(',')})`)
-			.getCount()
-		const res = await this.productRepository
+		return await this.productRepository
 			.createQueryBuilder().select()
 			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
 			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
 			.andWhere(`category in (${this.categoryArray(categories).map(c => `'${c}'`).join(',')})`)
 			.take(pageSize).skip((page-1)*pageSize)
-			.getMany()
-		return {count,res}
+			.getManyAndCount()
 	}
 
 	// 상품 id로 찾기
@@ -91,8 +84,9 @@ export class ProductService {
 	}
 
 	// 내가 등록한 상품 목록
-	async getMyProducts(){
-		return await this.productRepository.find({where:{user_id:this.req.user['id']}})
+	async getMyProducts(query){
+		const {page,pageSize} = query
+		return await this.productRepository.findAndCount({where:{user_id:this.req.user['id']}, take:pageSize, skip:(page-1)*pageSize})
 	}
 
 	// 상품 썸네일 넣기/수정

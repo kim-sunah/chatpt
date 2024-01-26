@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import ProductForm from './product-form'
+import ProductForm from './Product-form'
 import {server} from '../../constant.js'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import Button from 'react-bootstrap/button'
@@ -42,6 +42,10 @@ const ProductUpdate = props => {
 	}
 	
 	useEffect(() => {
+		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken || window.sessionStorage.getItem('authority')!=='seller'){
+			alert('권한이 없습니다.')
+			navigate('/')
+		}
 		getProduct()
 		getImages()
 	},[])

@@ -37,8 +37,8 @@ export default function SearchCard(props){
 	return (
 		<Card style={style}>
 			<Card.Header style={{display:'flex'}}>
-				<img onClick={() => window.open(`../productDetail?id=${id}`,'_blank')} style={imgStyle} src={thumbnail || 'default.png'} />
-				<div onClick={() => window.open(`../productDetail?id=${id}`,'_blank')} style={{width:250}}>
+				<img onClick={() => window.open(`../product/detail?id=${id}`,'_blank')} style={imgStyle} src={thumbnail || 'default.png'} />
+				<div onClick={() => window.open(`../product/detail?id=${id}`,'_blank')} style={{width:250}}>
 					<h2>{name}</h2>
 					<h4>{price}원</h4>
 					<h4>{sale_price}원</h4>

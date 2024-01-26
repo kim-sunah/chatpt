@@ -1,11 +1,11 @@
 import React, {useState,useEffect} from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import SearchForm from './search-form'
-import SearchCard from './search-card'
+import SearchForm from './Search-form'
+import SearchCard from './Search-card'
 import {server} from '../../constant.js'
-import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { PaginationControl } from 'react-bootstrap-pagination-control'
 
 const style = {
 	width: 700,
@@ -14,16 +14,19 @@ const style = {
 }
 
 export default function SearchMain(props){
-	const [products,setProducts] = useState([])
 	const [searchParams,setSearchParams] = useSearchParams()
-	const [searched,setSearched] = useState(false)
+	const key = searchParams.get('key') || ''
+	const antiKey = searchParams.get('antiKey') || ''
+	const page = +searchParams.get('page') || 1
+	const pageSize = +searchParams.get('pageSize') || 5
+	const categories = +searchParams.get('categories') || 1023
+	const minSalePrice = +searchParams.get('minSalePrice') || 1
+	const maxSalePrice = +searchParams.get('maxSalePrice') || 4294967295
 	const [count,setCount] = useState(0)
-	const [page_,setPage_] = useState(1)
+	const [products,setProducts] = useState([])
 	const navigate = useNavigate()
 	
-	const search = async (e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize) => {
-		e?.preventDefault()
-		setSearched(true)
+	const search = async e => {
 		const url = new URL(server+'/product/search')
 		const params = new URLSearchParams()
 		params.append('key',key)
@@ -35,11 +38,14 @@ export default function SearchMain(props){
 		if(pageSize) params.append('pageSize',pageSize)
 		url.search = params.toString()
 		const res = await fetch(url)
-		const {count:count_, res:products_} = await res.json()
-		setCount(count_)
-		setProducts(products_)
-		navigate('?'+params.toString())
-	}	
+		const res_ = await res.json()
+		setProducts(res_[0])
+		setCount(res_[1])
+	}
+	
+	useEffect(() => {
+		if(key) search()
+	},[searchParams])
 	
 	/* const sortProducts = (e) => {
 		if(e.target.value==='highSalePrice'){
@@ -52,84 +58,21 @@ export default function SearchMain(props){
 		}
 	} */
 	
-	useEffect(e => {
-		const key = searchParams.get('key')
-		const antiKey = searchParams.get('antiKey')
-		const pageSize = +searchParams.get('pageSize')
-		if(searchParams.get('pageSize') & [5,10,20,50,100].indexOf(pageSize)===-1){
-			alert('잘못된 접근입니다.')
-			return navigate('/')
-		}
-		const page = +searchParams.get('page')
-		if(searchParams.get('page') && (isNaN(page) || !Number.isInteger(page) || page<1)){
-			alert('잘못된 접근입니다.')
-			return navigate('/')
-		}
-		setPage_(page)
-		const categories = +searchParams.get('categories')
-		if(searchParams.get('categories') && (isNaN(categories) || !Number.isInteger(categories) || categories<1 || categories>1023)){
-			alert('잘못된 접근입니다.')
-			return navigate('/')
-		}
-		const minSalePrice = +searchParams.get('minSalePrice')
-		if(searchParams.get('minSalePrice') && (isNaN(minSalePrice) || !Number.isInteger(minSalePrice) || minSalePrice<1)){
-			alert('잘못된 접근입니다.')
-			return navigate('/')
-		}
-		const maxSalePrice = +searchParams.get('maxSalePrice')
-		if(searchParams.get('maxSalePrice') && (isNaN(maxSalePrice) || !Number.isInteger(maxSalePrice) || maxSalePrice<1)){
-			alert('잘못된 접근입니다.')
-			return navigate('/')
-		}
-		if(minSalePrice>maxSalePrice){
-			alert('잘못된 접근입니다.')
-			return navigate('/')
-		}
-		if(key) search(e,key,antiKey,categories,minSalePrice,maxSalePrice,page,pageSize)
-	}, [searchParams])
-
-	const [show,setShow] = useState(false)
-	const handleShow = () => setShow(true)
-	const handleClose = () => setShow(false)
-	const pageMove = e => {
-		e.preventDefault()
-		const page = +searchParams.get('page')
-		if(page!==page_){
-			const url = new URL(window.location.href)
-			url.searchParams.set('page',page_)
-			handleClose()
-			navigate('?'+url.searchParams.toString())
-		}
-	}
-	
 	return (
 		<div style={style}>
-			{/*<SearchForm search={search} sortProducts={sortProducts} />*/}
-			<SearchForm search={search} />
 			<div>
-				{searched? (
-					products.length? (
-						<div>
-							<h2>검색 결과 ({count})</h2>
-							<h3 onClick={handleShow}>{+searchParams.get('page')||1}/{1+(count-1)/(+searchParams.get('pageSize')||5)|0} 페이지</h3>
-						</div>
-						):(<h2>검색 결과가 없습니다.</h2>)
-					):(<h2>원하는 상품을 검색해보세요!</h2>)}
+				{products.length? (
+					<div>
+						<h2>검색 결과 ({count})</h2>
+					</div>
+					):(<h2>검색 결과가 없습니다.</h2>)}
 				{products.map(product => <SearchCard key={product.id} product={product} />)}
 			</div>
-			<Modal show={show}>
-				<Modal.Header>페이지 이동</Modal.Header>
-				<Modal.Body>
-					<Form onSubmit={pageMove}>
-						<Form.Group>
-							<Form.Control type='number' onChange={e => setPage_(+e.target.value)} defaultValue={+searchParams.get('page')||1} />
-							<br />
-							<Button type='submit' className='me-2'>이동</Button>
-							<Button onClick={handleClose}>닫기</Button>
-						</Form.Group>
-					</Form>
-				</Modal.Body>
-			</Modal>
+			{products.length? <PaginationControl page={page} limit={pageSize} total={count} changePage = {page => {
+				const url = new URL(window.location.href)
+				url.searchParams.set('page',page)
+				navigate('?'+url.searchParams.toString())
+			}} />:''}
 		</div>
 	)
 }

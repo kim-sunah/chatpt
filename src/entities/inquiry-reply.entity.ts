@@ -1,6 +1,7 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Index} from 'typeorm'
+import {Column, Index, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn} from 'typeorm'
 import {User} from './user.entity'
 import {Inquiry} from './inquiry.entity'
+import { Role } from '../enum/Role'
 
 @Entity('inquiry_reply')
 @Index(['inquiry_id','createdAt'])
@@ -13,6 +14,9 @@ export class InquiryReply {
 	
 	@Column('int',{unsigned: true})
 	inquiry_id: number
+	
+	@Column('enum',{enum:Role, default:Role.User})
+	role: Role
 	
 	@Column('text')
 	body: string
