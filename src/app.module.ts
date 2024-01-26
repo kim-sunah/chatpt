@@ -15,6 +15,8 @@ import { NestSessionOptions, SessionModule } from 'nestjs-session';
 import { CacheModule } from "@nestjs/cache-manager";
 import { CommentModule } from './comment/comment.module';
 
+import { AdminModule } from './admin/admin.module';
+
 
 
 const typeOrmModuleOptions = {
@@ -61,7 +63,8 @@ const typeOrmModuleOptions = {
 	ProductModule,
 	LivecastModule,
 	InquiryModule,
-	CommentModule
+      CommentModule,
+	AdminModule
   ],
   controllers: [AppController],
   providers: [AppService],

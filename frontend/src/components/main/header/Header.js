@@ -37,7 +37,7 @@ const Header = () => {
                     <div className="list-item-2" />
                     <div className="list-item-link-2">BOOKMARK</div>
                     <div className="list-item-3" />
-                    {sessionStorage.getItem("authority") === "User" && <Link to="admin" className="list-item-link-3">관리자</Link>}
+                    {sessionStorage.getItem("authority") === "User" && <Link to="http://localhost:3002/horizon-ui-chakra#/admin/default" className="list-item-link-3">관리자</Link>}
                     <div className="list-item-link-EVENT">EVENT</div>
                     <div className="list-item-link-FAQ">FAQ</div>
                     <div className="list-item-link-4">상품문의</div>
@@ -67,6 +67,7 @@ const Header = () => {
                     <div className="list-item-link-SHOES">SHOES&amp;BAG</div>
                     <div className="list-item-link-7">SEASON OFF</div>
                     <div className="list-item-link-ONLY">ONLY YOU</div>
+                 
                 </div>
             </div>
         </header>

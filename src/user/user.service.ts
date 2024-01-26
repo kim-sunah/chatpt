@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateuserDto } from './dto/update-user.dto';
+import { Product } from 'src/entities/product.entity';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @InjectRepository(Product) private readonly productRepositoy: Repository<Product>
     ) {}
 
     async getUserInfo(id: number) {
@@ -21,9 +23,7 @@ export class UserService {
 
         return user;
     }
-
     async updateUserinfo(id: number ,updateUser:  UpdateuserDto){
-        
         const user = await this.userRepository.findOne({where : {id : id}});
         if(user.email !== updateUser.Email){
             const existemail = await this.userRepository.findOne({where : {email : updateUser.Email}})
@@ -51,19 +51,19 @@ export class UserService {
             throw new NotFoundException(`User with id ${id} not found`);
         }
     }
-    async Alluser(){
-        const user = await this.userRepository.find();
-        const userCount = user.length;
-        return {userCount,user}
-    }
 
-    async limituser(email: string , registration_information : string){
-        const user = await this.userRepository.findOne({where : {email  , registration_information}})
+    async limituser(id: number ){
+        const user = await this.userRepository.findOne({where : {id : id}})
         if(!user){
             throw new NotFoundException("존재하지 않는 유저입니다")
         }
-        user.limit = true;
-        return await this.userRepository.update({email  , registration_information} , user);
+        if(user.limit === false){
+            user.limit = true;
+        }
+        else if(user.limit === true){
+            user.limit = false;
+        }
+        return await this.userRepository.update(id , user);
     }
 
 }
