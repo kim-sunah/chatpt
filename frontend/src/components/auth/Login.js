@@ -20,6 +20,9 @@ const Login = () => {
             .then(res => res.json())
             .then(resData => {
                 console.log(resData); if (resData.statusCode === 200) {
+                    if(resData.limit === true){
+                        return alert("이용이 제한된 이용자입니다.")
+                    }
                     navigate("/")
                     sessionStorage.setItem("authority" , resData.authority)
                     sessionStorage.setItem("accessToken", resData.accessToken)
@@ -41,6 +44,9 @@ const Login = () => {
                 .then(res=>res.json())
                 .then(resData=> {
                     console.log(resData)
+                    if(resData.limit === true){
+                        return alert("이용이 제한된 이용자입니다.")
+                    }
                     sessionStorage.setItem("authority" , resData.authority)
                     sessionStorage.setItem("accessToken", resData.accessToken)
                     sessionStorage.setItem("refreshToken", resData.refreshToken)

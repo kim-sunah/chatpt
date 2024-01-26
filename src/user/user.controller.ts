@@ -7,7 +7,7 @@ import { UserInfo } from 'src/auth/decorators/userinfo.decorator';
 import { User } from 'src/entities/user.entity';
 import { UpdateuserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
-import { LimituserDto } from './dto/limituser_update.dto';
+
 
 @ApiTags('회원')
 @UseGuards(JwtAuthGuard)
@@ -34,19 +34,12 @@ export class UserController {
         };
     }
 
-    @Get('/Alluser')
-    async Alluser() {
-        const user = await this.userService.Alluser();
-        return {
-            statusCode: HttpStatus.OK,
-            message: '회원 정보를 성공적으로 업데이트했습니다.',
-            user,
-        };
-    }
+ 
 
     @Put('/limituser')
-    async limituser(@Body() body: LimituserDto) {
-        await this.userService.limituser(body.email, body.registration_information);
+    async limituser(@Body("id") id: string) {
+        
+        await this.userService.limituser(+id);
         return {
             statusCode: HttpStatus.OK,
             message: '회원 정보를 성공적으로 업데이트했습니다.',

@@ -41,7 +41,7 @@ const router = createBrowserRouter([
 	
   {path : "Login" , element : <Login></Login>},
   {path : "mypage", element : <Mypage></Mypage>},
-  {path : "admin", element:<Adminpage></Adminpage>}
+  {path : "admin/:pages", element:<Adminpage></Adminpage>}
 
 ])
 function App() {

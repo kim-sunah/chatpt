@@ -327,12 +327,20 @@
     background-color: #707275;
     color: white;
   }
+  .header-row1 {
+    display: flex;
+    gap: 25%;
+    justify-content: center;
+    background-color: #707275;
+    color: white;
+  }
   
   
 
 
   
   .userlist {
+    font-weight: bold;
     display: flex;
     flex-direction: row; /* 가로로 나열되도록 설정 */
     margin:  3%;
@@ -340,9 +348,26 @@
     list-style: none;
     gap: 20%;
   }
+    
+  .userlist1 {
+    display: flex;
+    font-weight: bold;
+    flex-direction: row; /* 가로로 나열되도록 설정 */
+    margin:  3%;
+    padding: 0;
+    list-style: none;
+    gap: 23%;
+  }
   
   .nicknameli {
     font-weight: bold;
+  }
+
+  
+  .admininput{
+    width: 100%;
+    display: flex;
+    justify-content: right;
   }
   
   
