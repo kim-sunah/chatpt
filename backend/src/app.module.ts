@@ -16,6 +16,7 @@ import { CacheModule } from "@nestjs/cache-manager";
 import { CommentModule } from './comment/comment.module';
 
 import { AdminModule } from './admin/admin.module';
+import { BadwordModule } from './badword/badword.module';
 
 
 
@@ -64,7 +65,8 @@ const typeOrmModuleOptions = {
 	LivecastModule,
 	InquiryModule,
       CommentModule,
-	AdminModule
+	AdminModule,
+	BadwordModule
   ],
   controllers: [AppController],
   providers: [AppService],
