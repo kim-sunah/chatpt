@@ -5,20 +5,66 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
 
 @Controller('admin')
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
     @Post('/userinfo')
-    async Alluser(@Body("pages") page : string  , ) {
-        const {userCount, user , productCount, product} = await this.adminService.Alluser(+page);
+    async Allusercount(@Body("pages") page : string  ) {
+        const {users , products, productCount, userCount} = await this.adminService.Allusercount(+page);
+        return {
+            statusCode: HttpStatus.OK,
+            message: '회원 정보를 성공적으로 업데이트했습니다.',
+            productCount,
+            users,
+            userCount,
+            products,
+        };
+    }
+
+    @Get('/count')
+    async count(@Body("pages") page : string  , ) {
+        const {userCount , productCount} = await this.adminService.count(+page);
         return {
             statusCode: HttpStatus.OK,
             message: '회원 정보를 성공적으로 업데이트했습니다.',
             userCount,
-            user,
             productCount,
-            product,
+          
+        };
+    }
+
+    @Get('/Alluser')
+    async Recentlyuser() {
+        const {users} = await this.adminService.RecentlyAlluser();
+        return {
+            statusCode: HttpStatus.OK,
+            message: '회원 정보를 성공적으로 업데이트했습니다.',
+            users,
+        };
+    }
+
+
+    @Post('/productlist')
+    async productlist(@Body("pages") page : string  ) {
+        const { products, productCount} = await this.adminService.productlist(+page);
+        return {
+            statusCode: HttpStatus.OK,
+            message: '회원 정보를 성공적으로 업데이트했습니다.',
+            productCount,
+            products,
+        };
+    }
+
+
+    @Post('/userlist')
+    async userList(@Body("pages") page : string  ) {
+        const { users, userCount} = await this.adminService.userList(+page);
+        return {
+            statusCode: HttpStatus.OK,
+            message: '회원 정보를 성공적으로 업데이트했습니다.',
+            users,
+            userCount,
         };
     }
 
@@ -41,9 +87,5 @@ export class AdminController {
             message: '회원 정보를 성공적으로 업데이트했습니다.',
         };
     }
-
-
-    @Post("/search")
-    async adminusersearch("")
 
 }

@@ -18,7 +18,7 @@ export const Main = () => {
     const [usersearch, setusersearch]  = useState();
     useEffect(() => {
         fetch("http://localhost:4000/admin/userinfo", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ pages }) }).then(res => res.json()).then(resData => { console.log(resData); setproduct(resData.product); setProductcount(resData.productCount); setClient(resData.userCount); setUser(resData.user) }).catch(err => console.log(err))
-    }, [pages,])
+    }, [pages])
 
     const limithandler = (id) => {
         console.log(id)
@@ -58,6 +58,7 @@ export const Main = () => {
                                 <div className="text-wrapper-8">0</div>
                             </div>
                         </div>
+                        
                     </div>
 
                     {Clientclick && <table className="div-w-full">

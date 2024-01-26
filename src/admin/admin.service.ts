@@ -11,15 +11,15 @@ import { Product } from 'src/entities/product.entity';
 export class AdminService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, @InjectRepository(Product) private readonly productRepositoy: Repository<Product>) {}
 
-  async Alluser(page : number){
-    const users = await this.userRepository.find();
-    const products = await this.productRepositoy.find()
-    const userCount = users.length;
-    const productCount = products.length;
-    const product = await this.productRepositoy.find({skip : (page - 1) * 8, take: 8})
-    const user = await this.userRepository.find({skip : (page - 1) * 8,take: 8 });
+  async Allusercount(page : number){
+    const product = await this.productRepositoy.find()
+    const productCount = product.length;
+    const user = await this.userRepository.find();
+    const userCount = user.length;
+    const products = await this.productRepositoy.find({skip : (page - 1) * 6, take: 6})
+    const users = await this.userRepository.find({skip : (page - 1) * 6,take: 6 });
 
-    return {userCount, user , productCount, product}
+    return { users ,  products, productCount, userCount}
   }
   // async Allproduct(page : number){
   //   const products = await this.productRepositoy.find()
@@ -31,6 +31,35 @@ export class AdminService {
   // return {product}
 
   // }
+  async count(page : number){
+    const users = await this.userRepository.find();
+    const products = await this.productRepositoy.find()
+    const userCount = users.length;
+    const productCount = products.length;
+
+
+    return {userCount,productCount}
+  }
+
+  async RecentlyAlluser(){
+    const users = await this.userRepository.find({order: {createdAt: 'DESC',}, take: 8});
+    return {users}
+  }
+
+  async productlist(page : number){
+    const product = await this.productRepositoy.find()
+    const productCount = product.length;
+    const products = await this.productRepositoy.find({skip : (page - 1) * 5, take: 5})
+    return { products, productCount,}
+  }
+
+
+  async userList(page : number){
+    const user = await this.userRepository.find()
+    const userCount = user.length;
+    const users = await this.userRepository.find({skip : (page - 1) * 11, take: 11})
+    return {users, userCount}
+  }
 
 
   async limituser(id: number ){
