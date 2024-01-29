@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException, Scope, Inject } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, ForbiddenException, Scope, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import {Product} from '../entities/product.entity'
@@ -7,6 +7,7 @@ import {ProductImage} from '../entities/product-image.entity'
 import {Comment} from '../entities/comment.entity'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
+import { User } from '../entities/user.entity'
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {
@@ -15,10 +16,12 @@ export class ProductService {
 		private readonly productRepository: Repository<Product>,
 		@InjectRepository(ProductImage)
 		private readonly productImageRepository: Repository<ProductImage>,
+		@InjectRepository(User)
+        private readonly userRepository: Repository<User>,
 		@Inject(REQUEST) private readonly req: Request
 	) {}
 
-	// 상품 목록
+	// 수업 목록
 	async getProducts(page: number, pageSize: number){
 		return await this.productRepository.find({take: pageSize, skip:(page-1)*pageSize})
 	}
@@ -38,7 +41,7 @@ export class ProductService {
 		return arr
 	}
 
-	// 상품 검색
+	// 수업 검색
 	async searchProducts(query){
 		const {page, pageSize, key, antiKey, minSalePrice, maxSalePrice, categories} = query
 		return await this.productRepository
@@ -50,66 +53,68 @@ export class ProductService {
 			.getManyAndCount()
 	}
 
-	// 상품 id로 찾기
+	// 수업 id로 찾기
 	async getProductById(id: number){
 		const product = await this.productRepository.findOne({where:{id}})
-		if(!product) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
+		if(!product) throw new NotFoundException('해당 수업을 찾을 수 없습니다.')
 		return product
 	}
 
-	// 상품 id로 찾고 등록자 확인
+	// 수업 id로 찾고 등록자 확인
 	async checkUploader(id: number){
 		const product = await this.getProductById(id)
 		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
 		return product
 	}
 
-	// 상품 등록
+	// 수업 등록
 	async createProduct(body){
+		const user = await this.userRepository.findOne({where:{id:body.user_id}})
+		if(!user) throw new NotFoundException('해당 유저가 존재하지 않습니다.')
+		if(user.authority!=='Host') throw new BadRequestException('해당 유저의 등급이 호스트가 아닙니다.')
 		body.sale_price = body.sale_price || body.price
-		return await this.productRepository.save({...body, user_id:this.req.user['id']})
+		body.vacancy = body.capacity
+		return await this.productRepository.save({...body,host_name:user.nickname})
 	}
 
-	// 상품 삭제
+	// 수업 삭제
 	async softDeleteProduct(id: number){
-		await this.checkUploader(id)
 		await this.productRepository.softDelete(id)
 	}
 
-	// 상품 수정
+	// 수업 수정
 	async updateProduct(id: number, body){
-		await this.checkUploader(id)
 		return await this.productRepository.save({id,...body})
 	}
 
-	// 내가 등록한 상품 목록
+	// 내가 등록한 수업 목록
 	async getMyProducts(query){
 		const {page,pageSize} = query
 		return await this.productRepository.findAndCount({where:{user_id:this.req.user['id']}, take:pageSize, skip:(page-1)*pageSize})
 	}
 
-	// 상품 썸네일 넣기/수정
+	// 수업 썸네일 넣기/수정
 	async uploadThumbnail(id: number, thumbnail: string){
-		await this.checkUploader(id)
 		return await this.productRepository.save({id, thumbnail})
 	}
+	
+	// 수업 쇼츠 넣기/수정
+	async uploadShorts(id: number, shorts: string){
+		return await this.productRepository.save({id, shorts})
+	}
 
-	// 상품 이미지 넣기
+	// 수업 이미지 넣기
 	async uploadImage(product_id: number, original_url: string){
-		await this.checkUploader(product_id)
 		return await this.productImageRepository.save({product_id, original_url})
 	}
 
-	// 상품 이미지 가져오기
+	// 수업 이미지 가져오기
 	async getImages(product_id: number){
 		return await this.productImageRepository.find({where:{product_id}})
 	}
 
-	// 상품 이미지 지우기
+	// 수업 이미지 지우기
 	async softDeleteImage(id: number){
-		const image = await this.productImageRepository.findOne({where:{id}})
-		if(!image) throw new NotFoundException('해당 이미지를 찾을 수 없습니다.')
-		await this.checkUploader(image.product_id)
 		return await this.productImageRepository.softDelete(id)
 	}
 }

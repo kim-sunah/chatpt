@@ -1,4 +1,4 @@
-import { IsString, IsInt, Min, IsNotEmpty, IsEnum, IsOptional } from 'class-validator'
+import { IsString, IsInt, Min, IsNotEmpty, IsEnum, IsOptional, Max, IsDateString } from 'class-validator'
 import { Category } from 'src/enum/Category'
 import { ProductStatus } from 'src/enum/ProductStatus'
 
@@ -29,4 +29,20 @@ export class UpdateProductDto {
 	@IsInt()
 	@Min(1)
 	sale_price: number
+	
+	@IsOptional()
+	@IsInt()
+	@Min(1)
+	@Max(100)
+	capacity: number
+	
+	@IsOptional()
+	@IsDateString()
+	@IsNotEmpty()
+	start_on: string
+	
+	@IsOptional()
+	@IsDateString()
+	@IsNotEmpty()
+	end_on: string
 }
