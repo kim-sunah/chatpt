@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import InquiryForm from './Inquiry-form'
+import InquiryForm from './Inquiry-form.js'
 import {server} from '../../constant.js'
 
 const style = {
