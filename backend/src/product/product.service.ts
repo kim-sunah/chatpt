@@ -33,24 +33,28 @@ export class ProductService {
 		return keyQuery+(antiKeyQuery? ' '+antiKeyQuery:'')
 	}
 
-	// 카테고리 비트 풀기
-	categoryArray(categories){
+	// 비트 풀기
+	bitArray(code: number, enumSize: number){
 		const arr = []
-		for(let i=0,j=1;i<10;++i,j*=2)
-			if(categories&j) arr.push(i)
+		for(let i=0,j=1;i<enumSize;++i,j*=2)
+			if(code&j) arr.push(i)
 		return arr
 	}
 
 	// 수업 검색
 	async searchProducts(query){
-		const {page, pageSize, key, antiKey, minSalePrice, maxSalePrice, categories} = query
-		return await this.productRepository
+		const {page, pageSize, key, antiKey, minSalePrice, maxSalePrice, categories, status, orderBy, asc} = query
+		const queryBuilder = this.productRepository
 			.createQueryBuilder().select()
-			.where(`match(name, body) against ('${this.query(key,antiKey)}' in boolean mode)`)
-			.andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
-			.andWhere(`category in (${this.categoryArray(categories).map(c => `'${c}'`).join(',')})`)
-			.take(pageSize).skip((page-1)*pageSize)
-			.getManyAndCount()
+		queryBuilder.where(`match(name,host_name,body) against ('${this.query(key,antiKey)}' in boolean mode)`).andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
+		if(categories<1023)
+			queryBuilder.andWhere(`category in (${this.bitArray(categories,10).map(c => `'${c}'`).join(',')})`)
+		if(status<7)
+			queryBuilder.andWhere(`category in (${this.bitArray(status,3).map(c => `'${c}'`).join(',')})`)
+		if(orderBy==='sale_price' || orderBy==='capacity')
+			queryBuilder.addOrderBy(orderBy, asc? 'ASC':'DESC')
+		queryBuilder.take(pageSize).skip((page-1)*pageSize)
+		return await queryBuilder.getManyAndCount()
 	}
 
 	// 수업 id로 찾기

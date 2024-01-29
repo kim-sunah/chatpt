@@ -98,7 +98,7 @@ export class ProductController {
         return await this.productService.uploadThumbnail(param.id, image.location);
     }
 	
-	// 수업 쇼츠 넣기/ 수정
+	// 수업 쇼츠 넣기/수정
 	@UseGuards(RoleGuard)
     @Roles(Role.Admin)
     @Patch(':id/shorts')
