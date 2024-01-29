@@ -1,1 +1,0 @@
-export enum DeliveryStatus { Pending, Delayed, OnTheWay, Delivered }

@@ -36,12 +36,13 @@ export class InquiryService {
 	
 	// 문의 넣기
 	async createInquiry(body: string, product_id: number | undefined = undefined){
-		try{
-			return await this.inquiryRepository.save({user_id:this.req.user['id'], product_id, body})
-		}catch(e){
-			if(e instanceof QueryFailedError) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
-			throw e
+		let host_id = undefined
+		if(product_id){
+			const product = await this.productRepository.findOne({where:{id:product_id}})
+			if(!product) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
+			host_id = product.user_id
 		}
+		return await this.inquiryRepository.save({user_id:this.req.user['id'], product_id, host_id, body})
 	}
 	
 	// 내 문의 보기
