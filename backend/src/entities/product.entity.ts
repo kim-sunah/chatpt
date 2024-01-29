@@ -76,10 +76,10 @@ export class Product {
     @Column('bigint', { unsigned: true, default: 0 })
     revenue: number;
 	
-	@Column('datetime', { default: 'CURRENT_TIMESTAMP' })
+	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
 	start_on: Date
 	
-	@Column('datetime', { default: 'CURRENT_TIMESTAMP' })
+	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
 	end_on: Date
 
     @CreateDateColumn()
