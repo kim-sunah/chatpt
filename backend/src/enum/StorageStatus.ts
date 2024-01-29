@@ -1,1 +1,0 @@
-export enum StorageStatus { Pending, Cancelled, Stored }

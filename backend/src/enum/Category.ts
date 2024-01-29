@@ -1,1 +1,1 @@
-export enum Category { Food, Health, Household, Pet, Cosmetics, Office, Appliances, Furniture, Media, Others }
+export enum Category { Fitness, Yoga, Pilates, Hapkido, Taekwondo, Posture, Stretch, Ballet, Sports, Others }
