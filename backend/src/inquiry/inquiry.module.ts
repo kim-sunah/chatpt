@@ -7,9 +7,10 @@ import {InquiryReply} from '../entities/inquiry-reply.entity'
 import {AuthModule} from '../auth/auth.module'
 import {User} from '../entities/user.entity'
 import {Product} from '../entities/product.entity'
+import {BadwordModule} from '../badword/badword.module'
 
 @Module({
-	imports: [TypeOrmModule.forFeature([Inquiry,InquiryReply,User,Product]),AuthModule],
+	imports: [TypeOrmModule.forFeature([Inquiry,InquiryReply,User,Product]),AuthModule,BadwordModule],
     controllers: [InquiryController],
     providers: [InquiryService]
 })

@@ -11,6 +11,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 		ScheduleModule.forRoot()
 	],
 	controllers: [BadwordController],
-	providers: [BadwordService]
+	providers: [BadwordService],
+	exports: [BadwordService]
 })
 export class BadwordModule {}

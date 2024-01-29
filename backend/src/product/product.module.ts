@@ -12,6 +12,7 @@ import { S3Client } from "@aws-sdk/client-s3"
 import multerS3 from 'multer-s3'
 import { basename, extname } from "path"
 import {AuthModule} from '../auth/auth.module'
+import {BadwordModule} from '../badword/badword.module'
 
 const multerOptionsForImages = (configService: ConfigService) => {
 	return {
@@ -106,7 +107,8 @@ const multerOptionsForVideos = (configService: ConfigService) => {
             useFactory: multerOptionsForVideos,
             inject: [ConfigService]
         }),
-		AuthModule
+		AuthModule,
+		BadwordModule
 	],
 	controllers: [ProductController],
 	providers: [ProductService]

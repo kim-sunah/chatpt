@@ -8,6 +8,7 @@ import {Comment} from '../entities/comment.entity'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
 import { User } from '../entities/user.entity'
+import {BadwordService} from '../badword/badword.service'
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {
@@ -18,6 +19,7 @@ export class ProductService {
 		private readonly productImageRepository: Repository<ProductImage>,
 		@InjectRepository(User)
         private readonly userRepository: Repository<User>,
+		private readonly badwordService: BadwordService,
 		@Inject(REQUEST) private readonly req: Request
 	) {}
 
@@ -70,6 +72,8 @@ export class ProductService {
 		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
 		return product
 	}
+	
+	// 
 
 	// 수업 등록
 	async createProduct(body){
@@ -78,6 +82,8 @@ export class ProductService {
 		if(user.authority!=='Host') throw new BadRequestException('해당 유저의 등급이 호스트가 아닙니다.')
 		body.sale_price = body.sale_price || body.price
 		body.vacancy = body.capacity
+		const badwords = await this.badwordService.searchBadword(body.name+' '+body.body)
+		if(badwords.length) throw new BadRequestException('적절하지 못한 단어가 들어있습니다: '+badwords.map(badword => badword[1][0]).join(', '))
 		return await this.productRepository.save({...body,host_name:user.nickname})
 	}
 
@@ -88,6 +94,8 @@ export class ProductService {
 
 	// 수업 수정
 	async updateProduct(id: number, body){
+		const badwords = await this.badwordService.searchBadword(body.name+' '+body.body)
+		if(badwords.length) throw new BadRequestException('적절하지 못한 단어가 들어있습니다: '+badwords.map(badword => badword[1][0]).join(', '))
 		return await this.productRepository.save({id,...body})
 	}
 
