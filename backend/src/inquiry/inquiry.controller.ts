@@ -48,7 +48,7 @@ export class InquiryController {
 
     // 일반 문의 넣기
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller, Role.User)
+    @Roles(Role.Host, Role.User)
     @Post('')
     async createGeneralInquiry(@Body() body: InquiryDto) {
         return await this.inquiryService.createInquiry(body.body);
@@ -56,7 +56,7 @@ export class InquiryController {
 
     // 상품 문의 넣기
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller, Role.User)
+    @Roles(Role.Host, Role.User)
     @Post('product/:id')
     async createInquiry(@Body() body: InquiryDto, @Param() param: Id) {
         return await this.inquiryService.createInquiry(body.body, param.id);
@@ -64,7 +64,7 @@ export class InquiryController {
 
     // 내 문의 보기
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller, Role.User)
+    @Roles(Role.Host, Role.User)
     @Get('my')
     async getMyInquiries() {
         return await this.inquiryService.getMyInquiries();

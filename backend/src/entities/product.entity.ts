@@ -19,13 +19,17 @@ import { Inquiry } from './inquiry.entity';
 import { Comment } from './comment.entity';
 
 @Entity('product')
-@Index(['name', 'body'], { fulltext: true, parser: 'ngram' })
+@Index(['name', 'host_name', 'body'], { fulltext: true, parser: 'ngram' })
+@Index(['id','host_name','sale_price'])
 export class Product {
     @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
 
     @Column('int', { unsigned: true })
     user_id: number;
+	
+	@Column()
+	host_name: string;
 
     @Column()
     name: string;
@@ -37,16 +41,28 @@ export class Product {
     category: Category;
 
     @Column('enum', { enum: ProductStatus, default: ProductStatus.Salable })
+	@Index()
     status: ProductStatus;
-
-    @Column('text', { nullable: true })
-    body: string;
+	
+	@Column({ nullable: true })
+	shorts: string
 
     @Column('int', { unsigned: true })
     price: number;
 
     @Column('int', { unsigned: true })
+	@Index()
     sale_price: number;
+	
+	@Column('text', { nullable: true })
+    body: string;
+	
+	@Column('int', { unsigned: true, default: 5 })
+	capacity: number
+	
+	@Column('int', { unsigned: true, default: 5 })
+	@Index()
+	vacancy: number
 
     @Column('int', { unsigned: true, default: 0 })
     rating_count: number;
@@ -59,6 +75,12 @@ export class Product {
 
     @Column('bigint', { unsigned: true, default: 0 })
     revenue: number;
+	
+	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
+	start_on: Date
+	
+	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
+	end_on: Date
 
     @CreateDateColumn()
     createdAt: Date;
@@ -69,8 +91,11 @@ export class Product {
     @DeleteDateColumn()
     deletedAt: Date | null;
 
-    @ManyToOne(() => User, (user) => user.products)
-    @JoinColumn({ name: 'user_id' })
+    @ManyToOne(() => User, (user) => user.products, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+	@JoinColumn([
+		{ name: 'user_id', referencedColumnName: 'id' },
+		{ name: 'host_name', referencedColumnName: 'nickname' }
+	])
     user: User;
 
     @OneToMany(() => ProductImage, (productImage) => productImage.product)

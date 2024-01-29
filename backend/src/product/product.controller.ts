@@ -43,7 +43,7 @@ export class ProductController {
 
     // 내가 등록한 상품 목록
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+    @Roles(Role.Host)
     @Get('my')
     async getMyProducts(@Query() query: PageDto) {
         return await this.productService.getMyProducts(query);
@@ -57,7 +57,7 @@ export class ProductController {
 
     // 상품 등록
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+    @Roles(Role.Host)
     @Post('')
     async createProduct(@Body() body: CreateProductDto) {
         return await this.productService.createProduct(body);
@@ -65,7 +65,7 @@ export class ProductController {
 
     // 상품 삭제
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+    @Roles(Role.Host)
     @Delete(':id')
     async softDeleteProduct(@Param() param: Id) {
         await this.productService.softDeleteProduct(param.id);
@@ -73,7 +73,7 @@ export class ProductController {
 
     // 상품 수정
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+    @Roles(Role.Host)
     @Patch(':id')
     async updateProduct(@Param() param: Id, @Body() body: UpdateProductDto) {
         return await this.productService.updateProduct(param.id, body);
@@ -81,7 +81,7 @@ export class ProductController {
 
     // 상품 썸네일 넣기/수정
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+    @Roles(Role.Host)
     @Patch(':id/thumbnail')
     @UseInterceptors(FileInterceptor('image'))
     async uploadThumbnail(@UploadedFile() image, @Param() param: Id) {
@@ -90,7 +90,7 @@ export class ProductController {
 
     // 상품 이미지 넣기
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+    @Roles(Role.Host)
     @Post(':id/image')
     @UseInterceptors(FileInterceptor('image'))
     async uploadImage(@UploadedFile() image, @Param() param: Id) {
@@ -105,7 +105,7 @@ export class ProductController {
 
     // 상품 이미지 지우기
     @UseGuards(RoleGuard)
-    @Roles(Role.Seller)
+    @Roles(Role.Host)
     @Delete('image/:id')
     async softDeleteImage(@Param() param: Id) {
         return await this.productService.softDeleteImage(param.id);
