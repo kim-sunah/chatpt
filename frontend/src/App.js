@@ -19,8 +19,9 @@ import InquiryDetail from
 import Adminpage from "./components/admin/Adminpage";
 
 const router = createBrowserRouter([
+  
   {path : "/" , element : <Main></Main>, errorElement :<Errorpage></Errorpage>,children :[
-    {path : "Signup", element : <Signup></Signup>},
+    
     {path: "Login/naver", element : <Redirecturl></Redirecturl>},
       { path: 'product', children: [
           { path: 'create', element: <ProductCreate /> },
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
   ]},
 	
   {path : "Login" , element : <Login></Login>},
+  {path : "Signup", element : <Signup></Signup>},
   {path : "mypage", element : <Mypage></Mypage>},
   {path : "admin/:pages", element:<Adminpage></Adminpage>}
 
