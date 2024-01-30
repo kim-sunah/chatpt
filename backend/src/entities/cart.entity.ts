@@ -11,9 +11,6 @@ export class Cart {
 	@Column('int',{unsigned: true})
 	product_id: number
 	
-	@Column('int',{default:1, unsigned: true})
-	count: number
-	
 	@CreateDateColumn()
     createdAt: Date
 

@@ -19,8 +19,6 @@ import { AdminModule } from './admin/admin.module';
 import { BadwordModule } from './badword/badword.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 
-
-
 const typeOrmModuleOptions = {
   useFactory: async (
     configService: ConfigService

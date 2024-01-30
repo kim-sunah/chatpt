@@ -17,10 +17,12 @@ import { User } from './user.entity';
 import { ProductImage } from './product-image.entity';
 import { Inquiry } from './inquiry.entity';
 import { Comment } from './comment.entity';
+import {Livecast} from './livecast.entity'
 
 @Entity('product')
 @Index(['name', 'host_name', 'body'], { fulltext: true, parser: 'ngram' })
 @Index(['id','host_name','sale_price'])
+@Index(['id','user_id'])
 export class Product {
     @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
@@ -110,4 +112,7 @@ export class Product {
 
     @OneToMany(() => Comment, (comment) => comment.product)
     comment: Relation<Comment>[];
+	
+	@OneToMany(() => Livecast, (livecast) => livecast.product)
+    livecasts: Livecast[];
 }
