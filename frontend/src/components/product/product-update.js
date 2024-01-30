@@ -42,7 +42,7 @@ const ProductUpdate = props => {
 	}
 	
 	useEffect(() => {
-		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken || window.sessionStorage.getItem('authority')!=='seller'){
+		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken || window.sessionStorage.getItem('authority')!=='Host'){
 			alert('권한이 없습니다.')
 			navigate('/')
 		}

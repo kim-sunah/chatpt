@@ -12,7 +12,7 @@ const style = {
 }
 
 const statusList = ['접수 완료','답변 확인','처리 완료']
-const role = {'User':'작성자: ','seller':'판매자: ','Admin':'관리자: '}
+const role = {'User':'작성자: ','Host':'트레이너: ','Admin':'관리자: '}
 
 const InquiryCard = props => {
 	return (
