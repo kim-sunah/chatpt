@@ -1,7 +1,9 @@
-import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm'
+import {Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Index} from 'typeorm'
 import {LiveStatus} from '../enum/LiveStatus'
+import {Product} from '../entities/product.entity'
 
 @Entity('livecast')
+@Index(['product_id','start_time'])
 export class Livecast {
 	@PrimaryGeneratedColumn({unsigned: true})
     id: number;
@@ -16,6 +18,9 @@ export class Livecast {
 	status: LiveStatus
 	
 	@Column()
+	name: string
+	
+	@Column({default: ''})
 	url: string
 	
 	@Column()
@@ -32,4 +37,11 @@ export class Livecast {
 
     @DeleteDateColumn()
     deletedAt: Date | null
+	
+	@ManyToOne(() => Product, product => product.livecasts, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+	@JoinColumn([
+		{ name: 'product_id', referencedColumnName: 'id' },
+		{ name: 'host_id', referencedColumnName: 'user_id' }
+	])
+    product: Product
 }
