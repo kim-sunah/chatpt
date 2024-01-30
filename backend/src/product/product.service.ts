@@ -9,6 +9,7 @@ import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
 import { User } from '../entities/user.entity'
 import {BadwordService} from '../badword/badword.service'
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {
@@ -20,7 +21,8 @@ export class ProductService {
 		@InjectRepository(User)
         private readonly userRepository: Repository<User>,
 		private readonly badwordService: BadwordService,
-		@Inject(REQUEST) private readonly req: Request
+		@Inject(REQUEST) private readonly req: Request,
+		private readonly event : EventsGateway
 	) {}
 
 	// 수업 목록
@@ -88,13 +90,15 @@ export class ProductService {
 	
 	// 수업 승인
 	async acceptProduct(id: number){
+		this.event.findproductAll("acceptproduct")
 		const product = await this.getProductById(id)
-		return await this.productRepository.save({id,accepted:true})
+		return await this.productRepository.update(id ,{ accepted:true})
+		
 	}
 
 	// 수업 삭제
 	async softDeleteProduct(id: number){
-		await this.productRepository.softDelete(id)
+		await this.productRepository.delete(id)
 	}
 
 	// 수업 수정
