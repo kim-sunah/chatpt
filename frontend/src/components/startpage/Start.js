@@ -9,7 +9,7 @@ const Start = () =>{
   
 
     const Mainpagehalder = () =>{
-        localStorage.setItem("start" , "YES")
+        sessionStorage.setItem("start" , "YES")
         window.location.reload()
     }
 

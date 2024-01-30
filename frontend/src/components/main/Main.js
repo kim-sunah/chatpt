@@ -11,17 +11,10 @@ import Start from "../startpage/Start"
 
 const Main = () => {
 
-    const [Mainpage, setMainpage] = useState(false)
-    const [start, setstart] = useState(true)
-
-    const Mainpagehalder = () => {
-        setstart(false)
-        setMainpage(true)
-    }
     return (
-        <>  {!localStorage.getItem("start") &&   <Start></Start>}
+        <>  {!sessionStorage.getItem("start") &&   <Start></Start>}
           
-            {localStorage.getItem("start") === "YES" &&
+            {sessionStorage.getItem("start") === "YES" &&
                 <div>
                     <Header>
 
