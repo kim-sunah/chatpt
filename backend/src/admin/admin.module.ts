@@ -6,13 +6,16 @@ import { User } from 'src/entities/user.entity';
 import { Product } from 'src/entities/product.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from 'src/auth/auth.module';
+import { EventsGateway } from 'src/events/events.gateway';
+
+
 
 
 
 
 @Module({
-  imports : [TypeOrmModule.forFeature([User, Product]) , AuthModule, JwtModule],
+  imports : [TypeOrmModule.forFeature([User, Product]) , AuthModule, JwtModule  ],
   controllers: [AdminController],
-  providers: [AdminService],
+  providers: [AdminService,EventsGateway],
 })
 export class AdminModule {}

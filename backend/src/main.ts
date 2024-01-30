@@ -4,10 +4,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import session from 'express-session';
 import {TypeormStore} from "connect-typeorm"
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useWebSocketAdapter(new IoAdapter(app));
  
   app.useGlobalPipes(
     new ValidationPipe({

@@ -45,6 +45,17 @@ export class AdminController {
     }
 
 
+    @Post('/reservationproductlist')
+    async reservationproductlist(@Body("pages") page : string  ) {
+        const { products, productCount} = await this.adminService.reservationproductlist(+page);
+        return {
+            statusCode: HttpStatus.OK,
+            message: '회원 정보를 성공적으로 업데이트했습니다.',
+            productCount,
+            products,
+        };
+    }
+    
     @Post('/productlist')
     async productlist(@Body("pages") page : string  ) {
         const { products, productCount} = await this.adminService.productlist(+page);
@@ -68,19 +79,20 @@ export class AdminController {
         };
     }
 
-    // @Post("/productlist")
-    // async Allproduct(@Body("pages") page : string){
-    //   const product = await this.adminService.Allproduct(+page)
-    //   return {
-    //     statusCode: HttpStatus.OK,
-    //     message: '회원 정보를 성공적으로 업데이트했습니다.',
-    //     product,
-    // };
-    // }
+    @Post('/banuserList')
+    async banuserList(@Body("pages") page : string  ) {
+        const { users, userCount} = await this.adminService.banuserList(+page);
+        return {
+            statusCode: HttpStatus.OK,
+            message: '회원 정보를 성공적으로 업데이트했습니다.',
+            users,
+            userCount,
+        };
+    }
 
-
-    @Put('/limituser')
-    async limituser(@Body("id") id: string) {
+    @Patch('/limituser/:id')
+    async limituser(@Param("id") id: string) {
+        
         await this.adminService.limituser(+id);
         return {
             statusCode: HttpStatus.OK,

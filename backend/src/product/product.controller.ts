@@ -24,6 +24,7 @@ import { ConfigService } from '@nestjs/config';
 import { RoleGuard } from '../auth/guard/role.guard';
 import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+
 @Controller('product')
 export class ProductController {
     constructor(private readonly productService: ProductService) {}
@@ -64,18 +65,19 @@ export class ProductController {
     }
 	
 	// 수업 승인
-	@UseGuards(RoleGuard)
-	@Roles(Role.Admin)
+	// @UseGuards(RoleGuard)
+	// @Roles(Role.Admin)
 	@Patch('accept/:id')
 	async acceptProduct(@Param() param: Id){
 		return await this.productService.acceptProduct(param.id)
 	}
 
     // 수업 삭제
-    @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    // @UseGuards(RoleGuard)
+    // @Roles(Role.Admin)
     @Delete(':id')
     async softDeleteProduct(@Param() param: Id) {
+       
         await this.productService.softDeleteProduct(param.id);
     }
 

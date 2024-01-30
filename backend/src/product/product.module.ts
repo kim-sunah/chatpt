@@ -13,6 +13,7 @@ import multerS3 from 'multer-s3'
 import { basename, extname } from "path"
 import {AuthModule} from '../auth/auth.module'
 import {BadwordModule} from '../badword/badword.module'
+import { EventsGateway } from 'src/events/events.gateway';
 
 const multerOptionsForImages = (configService: ConfigService) => {
 	return {
@@ -111,6 +112,6 @@ const multerOptionsForVideos = (configService: ConfigService) => {
 		BadwordModule
 	],
 	controllers: [ProductController],
-	providers: [ProductService]
+	providers: [ProductService ,EventsGateway]
 })
 export class ProductModule {}
