@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import {server} from '../../constant.js'
 import Card from 'react-bootstrap/Card'
 import Modal from 'react-bootstrap/Modal'
-import InquiryForm from '../inquiry/Inquiry-form'
+import InquiryForm from '../inquiry/Inquiry-form.js'
 import Button from 'react-bootstrap/Button'
 import './style.css'
 

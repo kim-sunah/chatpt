@@ -1,6 +1,6 @@
 
 import React, {useRef, useState} from "react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 const Signup = () =>{
     const emailref = useRef()
@@ -44,53 +44,128 @@ const Signup = () =>{
 
     }
     return(
-        <div className="www-musinsa-com-by">
-        <div className="div">
-            <div className="main-section">
-                <form onSubmit={Singupsubmithanlder}>
-                    <div className="form" style={{display:"flex"}}>
-                        <input type="email" className="input" placeholder="Email" ref={emailref}/>
-                        <button type="button" className="email-button" onClick={emailsubmit} >이메일 인증</button>
-                    </div>
-                    <div className="form-2">
-                        <input className="input" placeholder="인증번호" ref={Emailauthentication}/>
-                    </div>
-                    <div className="form-3">
-                        <input className="input" type="password" placeholder="Password" ref={passwordref}/>
-                    </div>
-                    <div className="form-4">
-                        <input className="input" type="password" placeholder="ConfirmPassword" ref={Confirmpassword}/>
-                    </div>
-                    <div className="form-5">
-                        <input className="input" type="text" placeholder="Phone" ref={Phone}/>
-                    </div>
-                    <div className="Gender">
-                    <button type="button" className={Gender === "Male" ? "color-button"  : "Gender-button"} onClick={() => setGender("Male")}>
-                       남성
-                    </button>
-                    <button type="button" className={Gender === "Female" ? "color-button1"  : "Gender-button1"} onClick={() => setGender("Female")}>
-                        여성
-                       </button>
-                    </div>
-                    <button className="form-button" type="submit">
-                        <div className={errorCode ?  "error" : "text-wrapper-3"}> {errorCode ?   errorCode : "회원가입"}</div>
-                    </button>
-                    
-                </form>
-               
-                <div className="nav">
-                    <div className="link-2">
-                        <div className="before-2" />
-                        <div className="text-wrapper-8">회원 가입</div>
-                        
-                    </div>
-                    
-                </div>
-                {errorCode && <h5 className="error"> {errorCode}</h5>}
-            </div>
-            {errorCode && <h5 className="error"> {errorCode}</h5>}
-        </div>
+
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+  <div className="rounded-lg border bg-card text-card-foreground shadow-lg" data-v0-t="card">
+    <div className="flex flex-col p-6 space-y-1">
+      <h3 className="whitespace-nowrap tracking-tight text-2xl font-bold">회원가입</h3>
+      <p className="text-sm text-muted-foreground">계정을 생성하기 위해 아래의 정보를 입력해주세요</p>
     </div>
+    <div className="p-6">
+
+      <form className="space-y-4" onSubmit={Singupsubmithanlder}>
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            htmlFor="username"
+          >
+            사용자 이름
+          </label>
+          <input
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="username"
+            placeholder="m@example.com"
+            required=""
+            ref={emailref}
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            htmlFor="authNumber"
+          >
+            이메일 인증번호
+          </label>
+          <div className="flex justify-between">
+            <input
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              id="authNumber"
+              placeholder="인증번호를 입력하세요"
+              required=""
+              ref={Emailauthentication}
+            />
+            <button  onClick={emailsubmit} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 ml-2">
+              인증번호 발송
+            </button>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            htmlFor="password"
+          >
+            비밀번호
+          </label>
+          <input
+            type="password"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="password"
+            required=""
+            ref={passwordref}
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            htmlFor="confirmPassword"
+          >
+            비밀번호 확인
+          </label>
+          <input
+            type="password"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="confirmPassword"
+            required=""
+            ref={Confirmpassword}
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            htmlFor="phoneNumber"
+          >
+            폰 번호
+          </label>
+          <input
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="phoneNumber"
+            placeholder="폰 번호를 입력하세요"
+            required=""
+            ref={Phone}
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            htmlFor="gender">
+            성별
+          </label>
+          <div className="flex justify-between">
+            <button   type="button" onClick={() => setGender("Male")} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-1/2 mr-2">
+              남성
+            </button>
+            <button type="button" onClick={() => setGender("Female")} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-1/2 ml-2">
+              여성
+            </button>
+          </div>
+        </div>
+        
+      
+        <button  type="submit" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full">
+          회원가입
+        </button>
+      </form>
+    
+      <div className="mt-4 text-center text-sm">
+        이미 계정이 있으신가요?
+        <Link className="underline" to="/Login">
+          로그인
+        </Link>
+      </div>
+    </div>
+  </div>
+</div>
     )
 
 }

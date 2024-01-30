@@ -62,8 +62,12 @@ export class AuthController {
     async naverlogin(@Body("code") code: string){
         const client_id = process.env.client_id
         const client_secret = process.env.client_secret
+        console.log(client_id)
+        console.log( client_secret )
+        console.log( code)
+
         try {
-            const response = await fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&code=${code}&state=9kgsGTfH4j7IyAkg `, {
+            const response = await fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&code=${code}&state=9kgsGTfH4j7IyAkg  `, {
               method: "POST",
               headers: {"Content-Type": "application/json"}
             });
@@ -73,6 +77,8 @@ export class AuthController {
             }
         
             const resData = await response.json();
+            console.log(resData)
+           
     
             const responseData = await fetch(`https://openapi.naver.com/v1/nid/me`, {
                 method: "GET",
@@ -100,6 +106,7 @@ export class AuthController {
 
      @Post("naversignin")
      async naversignin(@Body("email") email : string){
+       
         const { accessToken, refreshToken, authority,limit } = await this.authService.naversignin(email)
         return {
             statusCode: HttpStatus.OK,
