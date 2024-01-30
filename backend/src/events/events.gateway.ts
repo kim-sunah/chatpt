@@ -24,6 +24,13 @@ export class EventsGateway {
     this.server.emit('events',message);
   }
 
+  @SubscribeMessage('Deleteproduct')
+  Deleteproduct(@MessageBody() message: string): void {
+    this.server.emit('events',message);
+  }
+
+
+
 
 
  
