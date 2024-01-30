@@ -18,9 +18,6 @@ export class AuthController {
 
     @Post('/signup',)
     async signUp(@Body() createuserDto: CreateuserDto,) {
-        
-
-
         const user = await this.authService.signUp(createuserDto);
         return {
             statusCode: HttpStatus.CREATED,
@@ -28,10 +25,19 @@ export class AuthController {
             user,
         };
     }
+    @Post("/hostsignup")
+    async hostsignup(@Body() createuserDto: CreateuserDto){
+        const user = await this.authService.hostsignup(createuserDto);
+        return {
+            statusCode: HttpStatus.CREATED,
+            message: '회원가입에 성공했습니다.',
+            user,
+        };
+
+    }
     @Post('/sign-in')
     async signIn(@Body() signInDto: SignInDto) {
         const { accessToken, refreshToken , authority , limit} = await this.authService.signIn(signInDto);
- 
         return {
             statusCode: HttpStatus.OK,
             message: '로그인에 성공했습니다.',
@@ -62,9 +68,6 @@ export class AuthController {
     async naverlogin(@Body("code") code: string){
         const client_id = process.env.client_id
         const client_secret = process.env.client_secret
-        console.log(client_id)
-        console.log( client_secret )
-        console.log( code)
 
         try {
             const response = await fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&code=${code}&state=9kgsGTfH4j7IyAkg  `, {
