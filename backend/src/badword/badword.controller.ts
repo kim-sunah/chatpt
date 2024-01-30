@@ -1,20 +1,26 @@
-import { Controller, Body, Get, Post } from '@nestjs/common'
+import { Controller, Body, Get, Post, UseGuards } from '@nestjs/common'
 import {BadwordService} from './badword.service'
 import {BadwordDto} from './dtos/badword.dto'
+import { RoleGuard } from '../auth/guard/role.guard';
+import { Role } from '../enum/Role';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('badword')
 export class BadwordController {
 	constructor(private readonly badwordService: BadwordService) {}
 	
 	// 금칙어 추가
-	@Post('')
+	@UseGuards(RoleGuard)
+    @Roles(Role.Admin)
+	@Post('add')
 	async createBadword(@Body() body: BadwordDto){
 		return await this.badwordService.createBadword(body.badwords)
 	}
 	
 	// 금칙어 검색
-	@Get('')
-	searchBadword(){
-		return this.badwordService.searchBadword()
+	@Post('')
+	searchBadword(@Body() body){
+		if(body.body)
+			return this.badwordService.searchBadword(body.body)
 	}
 }

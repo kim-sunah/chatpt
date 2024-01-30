@@ -1,4 +1,4 @@
-import { Injectable, Inject, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { Repository, QueryFailedError, IsNull } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import {Inquiry} from '../entities/inquiry.entity'
@@ -6,6 +6,7 @@ import {InquiryReply} from '../entities/inquiry-reply.entity'
 import {Product} from '../entities/product.entity'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
+import {BadwordService} from '../badword/badword.service'
 
 @Injectable()
 export class InquiryService {
@@ -16,6 +17,7 @@ export class InquiryService {
         private readonly inquiryReplyRepository: Repository<InquiryReply>,
 		@InjectRepository(Product)
         private readonly productRepository: Repository<Product>,
+		private readonly badwordService: BadwordService,
 		@Inject(REQUEST) private readonly req: Request
     ) {}
 	
@@ -42,6 +44,8 @@ export class InquiryService {
 			if(!product) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
 			host_id = product.user_id
 		}
+		const badwords = await this.badwordService.searchBadword(body)
+		if(badwords.length) throw new BadRequestException('적절하지 못한 단어가 들어있습니다: '+badwords.map(badword => badword[1][0]).join(', '))
 		return await this.inquiryRepository.save({user_id:this.req.user['id'], product_id, host_id, body})
 	}
 	
@@ -55,8 +59,11 @@ export class InquiryService {
 		const inquiry = await this.getInquiryById(inquiry_id)
 		if(!inquiry) throw new NotFoundException('해당 문의를 찾을 수 없습니다.')
 		// 관리자, 문의 작성자, (상품 관련이면) 상품 등록자만 답변 가능
-		if(this.req.user['role']==='Admin' || this.req.user['id']===inquiry.user_id || (inquiry.product_id && this.req.user['id']===(await this.productRepository.findOne({where:{id:inquiry.product_id}}))?.user_id))
+		if(this.req.user['role']==='Admin' || this.req.user['id']===inquiry.user_id || (inquiry.product_id && this.req.user['id']===(await this.productRepository.findOne({where:{id:inquiry.product_id}}))?.user_id)){
+			const badwords = await this.badwordService.searchBadword(body)
+			if(badwords.length) throw new BadRequestException('적절하지 못한 단어가 들어있습니다: '+badwords.map(badword => badword[1][0]).join(', '))
 			return await this.inquiryReplyRepository.save({user_id:this.req.user['id'], inquiry_id, body})
+		}
 		throw new ForbiddenException('권한이 없습니다.')
 	}
 	

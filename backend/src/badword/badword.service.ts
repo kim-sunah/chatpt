@@ -39,8 +39,7 @@ export class BadwordService {
 	}
 	
 	// 금칙어 검색
-	searchBadword(text: string = ''){
-		const body = ''
+	searchBadword(body: string){
 		return this.ahoCorasick.search(body)
 	}
 	
