@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, ForbiddenException, Scope, Inject } from '@nestjs/common'
+import { Injectable, BadRequestException, NotFoundException, ForbiddenException, Scope, Inject } from '@nestjs/common'
 import { Repository, QueryFailedError } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import {Wishlist} from '../entities/wishlist.entity'
@@ -14,16 +14,16 @@ export class WishlistService {
 	
 	// 찜 등록
 	async createWish(product_id: number){
-		const queryBuilder = this.wishlistRepository.createQueryBuilder()
-		return await queryBuilder.insert()
-			.values([{user_id:this.req.user['id'],product_id,deletedAt:null}])
-			.orUpdate(['user_id','product_id'],['deletedAt'])
-			.execute()
+		const user_id = this.req.user['id']
+		const wish = await this.wishlistRepository.findOne({where:{user_id,product_id},withDeleted: true})
+		if(!wish) return await this.wishlistRepository.save({user_id,product_id,deletedAt:null})
+		return await this.wishlistRepository.update({user_id,product_id},{deletedAt:null})
 	}
 	
 	// 찜 삭제
 	async deleteWish(id: number){
 		const wish = await this.wishlistRepository.findOne({where:{id}})
+		if(!wish) throw new NotFoundException('찜하지 않은 강의입니다.')
 		if(wish.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
 		await this.wishlistRepository.softDelete(id)
 	}

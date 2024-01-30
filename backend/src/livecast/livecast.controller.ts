@@ -28,7 +28,7 @@ export class LivecastController {
 	}
 	
 	// 강의별 스케줄 목록
-	@Get(':id')
+	@Get('product/:id')
 	async getLivecastsByProduct(@Param() param: Id, @Query() query: PageDto){
 		const { page, pageSize } = query
 		return await this.livecastService.getLivecastsByProduct(param.id, page, pageSize)
