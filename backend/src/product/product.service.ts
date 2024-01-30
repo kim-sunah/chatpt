@@ -48,7 +48,8 @@ export class ProductService {
 		const {page, pageSize, key, antiKey, minSalePrice, maxSalePrice, categories, status, orderBy, asc} = query
 		const queryBuilder = this.productRepository
 			.createQueryBuilder().select()
-		queryBuilder.where(`match(name,host_name,body) against ('${this.query(key,antiKey)}' in boolean mode)`).andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
+		queryBuilder.where('accepted = true')
+		queryBuilder.andWhere(`match(name,host_name,body) against ('${this.query(key,antiKey)}' in boolean mode)`).andWhere(`sale_price between ${minSalePrice} and ${maxSalePrice}`)
 		if(categories<1023)
 			queryBuilder.andWhere(`category in (${this.bitArray(categories,10).map(c => `'${c}'`).join(',')})`)
 		if(status<7)
@@ -71,20 +72,24 @@ export class ProductService {
 		const product = await this.getProductById(id)
 		if(product.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
 		return product
-	}
-	
-	// 
+	} 
 
 	// 수업 등록
 	async createProduct(body){
-		const user = await this.userRepository.findOne({where:{id:body.user_id}})
+		const user_id = this.req.user['id']
+		const user = await this.userRepository.findOne({where:{id:user_id}})
 		if(!user) throw new NotFoundException('해당 유저가 존재하지 않습니다.')
-		if(user.authority!=='Host') throw new BadRequestException('해당 유저의 등급이 호스트가 아닙니다.')
 		body.sale_price = body.sale_price || body.price
 		body.vacancy = body.capacity
 		const badwords = await this.badwordService.searchBadword(body.name+' '+body.body)
 		if(badwords.length) throw new BadRequestException('적절하지 못한 단어가 들어있습니다: '+badwords.map(badword => badword[1][0]).join(', '))
-		return await this.productRepository.save({...body,host_name:user.nickname})
+		return await this.productRepository.save({...body,user_id,	host_name:user.nickname})
+	}
+	
+	// 수업 승인
+	async acceptProduct(id: number){
+		const product = await this.getProductById(id)
+		return await this.productRepository.save({id,accepted:true})
 	}
 
 	// 수업 삭제

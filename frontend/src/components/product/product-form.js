@@ -24,7 +24,7 @@ const imgStyle = {
 	margin: '10px'
 }
 
-const categoryList = ['Food', 'Health', 'Household', 'Pet', 'Cosmetics', 'Office', 'Appliances', 'Furniture', 'Media', 'Others']
+const categoryList = ['Fitness', 'Yoga', 'Pilates', 'Hapkido', 'Taekwondo', 'Posture', 'Stretch', 'Ballet', 'Sports', 'Others']
 const statusList = ['Salable', 'Unsalable', 'Pending']
 
 const ProductForm = props => {

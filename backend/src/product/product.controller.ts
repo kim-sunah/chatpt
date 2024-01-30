@@ -57,11 +57,19 @@ export class ProductController {
 
     // 수업 등록
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Host)
     @Post('')
     async createProduct(@Body() body: CreateProductDto) {
         return await this.productService.createProduct(body);
     }
+	
+	// 수업 승인
+	@UseGuards(RoleGuard)
+	@Roles(Role.Admin)
+	@Patch('accept/:id')
+	async acceptProduct(@Param() param: Id){
+		return await this.productService.acceptProduct(param.id)
+	}
 
     // 수업 삭제
     @UseGuards(RoleGuard)

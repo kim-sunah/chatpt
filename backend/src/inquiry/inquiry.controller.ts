@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { InquiryService } from './inquiry.service';
 import { RoleGuard } from '../auth/guard/role.guard';
-import { JwtAuthGuard } from '../auth/guard/jwt-auth.guards';
 import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { InquiryDto } from './dtos/inquiry.dto';

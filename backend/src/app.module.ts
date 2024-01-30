@@ -17,6 +17,7 @@ import { CommentModule } from './comment/comment.module';
 
 import { AdminModule } from './admin/admin.module';
 import { BadwordModule } from './badword/badword.module';
+import { WishlistModule } from './wishlist/wishlist.module';
 
 
 
@@ -66,7 +67,8 @@ const typeOrmModuleOptions = {
 	InquiryModule,
       CommentModule,
 	AdminModule,
-	BadwordModule
+	BadwordModule,
+	WishlistModule
   ],
   controllers: [AppController],
   providers: [AppService],

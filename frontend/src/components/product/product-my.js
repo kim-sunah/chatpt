@@ -18,7 +18,7 @@ export default function ProductMy(props){
 	const navigate = useNavigate()
 	
 	const getProducts = async () => {
-		if(window.sessionStorage.getItem('authority')!=='seller'){
+		if(window.sessionStorage.getItem('authority')!=='Host'){
 			alert('권한이 없습니다.')
 			navigate('/')
 		}
