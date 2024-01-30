@@ -90,6 +90,10 @@ export class Product {
 
     @DeleteDateColumn()
     deletedAt: Date | null;
+	
+	@Column('boolean', { default: false })
+	@Index()
+	accepted: boolean
 
     @ManyToOne(() => User, (user) => user.products, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
 	@JoinColumn([

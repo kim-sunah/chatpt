@@ -3,10 +3,6 @@ import { Category } from 'src/enum/Category'
 import { ProductStatus } from 'src/enum/ProductStatus'
 
 export class CreateProductDto {
-	@IsInt()
-	@Min(1)
-	user_id: number
-
 	@IsNotEmpty()
     @IsString()
     name : string
