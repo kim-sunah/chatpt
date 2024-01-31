@@ -62,22 +62,6 @@ export class Product {
 	@Column('int', { unsigned: true, default: 5 })
 	capacity: number
 	
-	@Column('int', { unsigned: true, default: 5 })
-	@Index()
-	vacancy: number
-
-    @Column('int', { unsigned: true, default: 0 })
-    rating_count: number;
-
-    @Column('int', { unsigned: true, default: 0 })
-    rating_total: number;
-
-    @Column('int', { unsigned: true, default: 0 })
-    sales_volume: number;
-
-    @Column('bigint', { unsigned: true, default: 0 })
-    revenue: number;
-	
 	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
 	start_on: Date
 	

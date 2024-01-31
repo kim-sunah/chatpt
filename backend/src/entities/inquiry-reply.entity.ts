@@ -15,9 +15,6 @@ export class InquiryReply {
 	@Column('int',{unsigned: true})
 	inquiry_id: number
 	
-	@Column('enum',{enum:Role, default:Role.User})
-	role: Role
-	
 	@Column('text')
 	body: string
 	

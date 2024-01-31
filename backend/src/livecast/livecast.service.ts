@@ -2,7 +2,6 @@ import { Injectable, NotFoundException, ForbiddenException, Scope, Inject } from
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import {Livecast} from '../entities/livecast.entity'
-import {LiveComment} from '../entities/live-comment.entity'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
 import {Product} from '../entities/product.entity'
