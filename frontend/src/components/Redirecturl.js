@@ -9,7 +9,6 @@ const Redirecturl = (props) => {
 
   const naverLogin = async () => {
     try {
-      console.log("Asdsd")
       const response = await fetch("http://localhost:4000/auth/naver", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -8,17 +8,20 @@ import sport from "../../img/Designer.jpg"
 
 import { Link } from "react-router-dom"
 import Start from "../startpage/Start"
+import Nav from "./nav/Nav"
+import Bodymain from "./body/Bodymain"
 
 const Main = () => {
 
     return (
-        <>  {!sessionStorage.getItem("start") &&   <Start></Start>}
-          
-            {sessionStorage.getItem("start") === "YES" &&
-                <div>
-                    <Header>
+        <>  {!sessionStorage.getItem("start") && <Start></Start>}
 
+            {sessionStorage.getItem("start") === "YES" &&
+                <div className="bg-white">
+                    <Header>
                     </Header>
+                    <Nav></Nav>
+                    <Bodymain></Bodymain>
                     <main>
                         <Outlet></Outlet>
                     </main>

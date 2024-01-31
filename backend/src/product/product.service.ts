@@ -98,6 +98,7 @@ export class ProductService {
 
 	// 수업 삭제
 	async softDeleteProduct(id: number){
+		this.event.Deleteproduct("rejectproduct")
 		await this.productRepository.delete(id)
 	}
 

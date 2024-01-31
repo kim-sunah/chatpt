@@ -20,7 +20,8 @@ import Adminpage from "./components/admin/Adminpage";
 
 const router = createBrowserRouter([
   
-  {path : "/" , element : <Main></Main>, errorElement :<Errorpage></Errorpage>,children :[
+  {path : "/" , errorElement :<Errorpage></Errorpage>,children :[
+    {index : true , element : <Main></Main>},
     
     {path: "Login/naver", element : <Redirecturl></Redirecturl>},
       { path: 'product', children: [
