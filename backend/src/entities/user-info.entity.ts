@@ -20,7 +20,7 @@ export class UserInfo {
 	@Column('int', { unsigned: true })
     user_id: number;
 	
-	@Column('enum', { enum: Category, default: Category.Others })
+	@Column('enum', { enum: Category, nullable: true })
     category: Category
 	
 	@Column('text',{nullable: true})

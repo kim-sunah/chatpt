@@ -35,6 +35,9 @@ export class HostInfo {
 	@Column()
 	address: string
 	
+	@Column({nullable: true})
+	social_url: string
+	
 	@OneToOne(() => User)
 	@JoinColumn({name: 'host_id'})
 	host: User
