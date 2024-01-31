@@ -29,15 +29,6 @@ export class UserInfo {
 	@Column({nullable: true})
 	thumbnail: string
 	
-	@CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
-
-    @DeleteDateColumn()
-    deletedAt: Date | null;
-	
 	@OneToOne(() => User)
 	@JoinColumn({name: 'user_id'})
 	user: User
