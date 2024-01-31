@@ -44,10 +44,6 @@ export class Product {
 
     @Column('enum', { enum: Category, default: Category.Others })
     category: Category;
-
-    @Column('enum', { enum: ProductStatus, default: ProductStatus.Salable })
-	@Index()
-    status: ProductStatus;
 	
 	@Column({ nullable: true })
 	shorts: string

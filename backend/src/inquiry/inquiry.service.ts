@@ -38,15 +38,13 @@ export class InquiryService {
 	
 	// 문의 넣기
 	async createInquiry(body: string, product_id: number | undefined = undefined){
-		let host_id = undefined
 		if(product_id){
 			const product = await this.productRepository.findOne({where:{id:product_id}})
 			if(!product) throw new NotFoundException('해당 상품을 찾을 수 없습니다.')
-			host_id = product.user_id
 		}
 		const badwords = await this.badwordService.searchBadword(body)
 		if(badwords.length) throw new BadRequestException('적절하지 못한 단어가 들어있습니다: '+badwords.map(badword => badword[1][0]).join(', '))
-		return await this.inquiryRepository.save({user_id:this.req.user['id'], product_id, host_id, body})
+		return await this.inquiryRepository.save({user_id:this.req.user['id'], product_id, body})
 	}
 	
 	// 내 문의 보기
