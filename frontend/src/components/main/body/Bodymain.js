@@ -169,7 +169,7 @@ const Bodymain = () => {
             </section>
             <section>
                 <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음</h2>
-                <div className="flex flex-col sm:flex-row overflow-x-scroll hide-scrollbar mb-4">
+                <div className="flex flex-col sm:flex-row  hide-scrollbar mb-4" >
                     <div className="flex flex-col items-center mr-4">
                         <span className="relative flex shrink-0 overflow-hidden w-16 h-16 border rounded-full mb-2"></span>
                         <span className="text-lg">필사</span>

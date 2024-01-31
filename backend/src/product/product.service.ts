@@ -10,6 +10,8 @@ import { Request } from 'express'
 import { User } from '../entities/user.entity'
 import {BadwordService} from '../badword/badword.service'
 import { EventsGateway } from 'src/events/events.gateway';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {
@@ -22,7 +24,8 @@ export class ProductService {
         private readonly userRepository: Repository<User>,
 		private readonly badwordService: BadwordService,
 		@Inject(REQUEST) private readonly req: Request,
-		private readonly event : EventsGateway
+		private readonly event : EventsGateway,
+	
 	) {}
 
 	// 수업 목록

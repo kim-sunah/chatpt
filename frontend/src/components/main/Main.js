@@ -20,7 +20,7 @@ const Main = () => {
                 <div className="bg-white">
                     <Header>
                     </Header>
-                    <Nav></Nav>
+                    
                     <Bodymain></Bodymain>
                     <main>
                         <Outlet></Outlet>
