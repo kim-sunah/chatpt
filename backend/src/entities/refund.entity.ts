@@ -32,9 +32,6 @@ export class Refund {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @DeleteDateColumn()
-    deletedAt: Date | null;
-
     @OneToOne(() => Payment, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'payment_id' })
     payment: Relation<Payment>;

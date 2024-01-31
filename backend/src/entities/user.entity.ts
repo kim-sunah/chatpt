@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword } from 'class-validator';
 import {
-	Index,
+    Index,
     Column,
     CreateDateColumn,
     UpdateDateColumn,
@@ -8,7 +8,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     OneToMany,
-	OneToOne,
+    OneToOne,
     Relation,
 } from 'typeorm';
 import { Gender } from '../enum/Gender';
@@ -17,11 +17,11 @@ import { Product } from './product.entity';
 import { Inquiry } from './inquiry.entity';
 import { InquiryReply } from './inquiry-reply.entity';
 import { Comment } from './comment.entity';
-import { HostInfo } from './host-info.entity'
-import { UserInfo } from './user-info.entity'
+import { HostInfo } from './host-info.entity';
+import { UserInfo } from './user-info.entity';
 
 @Entity('users')
-@Index(['id','nickname'])
+@Index(['id', 'nickname'])
 export class User {
     @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
@@ -73,10 +73,10 @@ export class User {
 
     @OneToMany(() => Comment, (comment) => comment.user)
     comment: Relation<Comment>[];
-	
-	@OneToOne(() => HostInfo)
-	hostInfo?: HostInfo
-	
-	@OneToOne(() => UserInfo)
-	userInfo?: UserInfo
+
+    @OneToOne(() => HostInfo)
+    hostInfo?: HostInfo;
+
+    @OneToOne(() => UserInfo)
+    userInfo?: UserInfo;
 }

@@ -17,19 +17,20 @@ import { User } from './user.entity';
 import { ProductImage } from './product-image.entity';
 import { Inquiry } from './inquiry.entity';
 import { Comment } from './comment.entity';
+import { Livecast } from './livecast.entity';
 
 @Entity('product')
 @Index(['name', 'host_name', 'body'], { fulltext: true, parser: 'ngram' })
-@Index(['id','host_name','sale_price'])
+@Index(['id', 'host_name', 'sale_price'])
 export class Product {
     @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
 
     @Column('int', { unsigned: true })
     user_id: number;
-	
-	@Column()
-	host_name: string;
+
+    @Column()
+    host_name: string;
 
     @Column()
     name: string;
@@ -41,28 +42,28 @@ export class Product {
     category: Category;
 
     @Column('enum', { enum: ProductStatus, default: ProductStatus.Salable })
-	@Index()
+    @Index()
     status: ProductStatus;
-	
-	@Column({ nullable: true })
-	shorts: string
+
+    @Column({ nullable: true })
+    shorts: string;
 
     @Column('int', { unsigned: true })
     price: number;
 
     @Column('int', { unsigned: true })
-	@Index()
+    @Index()
     sale_price: number;
-	
-	@Column('text', { nullable: true })
+
+    @Column('text', { nullable: true })
     body: string;
-	
-	@Column('int', { unsigned: true, default: 5 })
-	capacity: number
-	
-	@Column('int', { unsigned: true, default: 5 })
-	@Index()
-	vacancy: number
+
+    @Column('int', { unsigned: true, default: 5 })
+    capacity: number;
+
+    @Column('int', { unsigned: true, default: 5 })
+    @Index()
+    vacancy: number;
 
     @Column('int', { unsigned: true, default: 0 })
     rating_count: number;
@@ -75,12 +76,12 @@ export class Product {
 
     @Column('bigint', { unsigned: true, default: 0 })
     revenue: number;
-	
-	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
-	start_on: Date
-	
-	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
-	end_on: Date
+
+    @Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
+    start_on: Date;
+
+    @Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
+    end_on: Date;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -90,17 +91,20 @@ export class Product {
 
     @DeleteDateColumn()
     deletedAt: Date | null;
-	
-	@Column('boolean', { default: false })
-	@Index()
-	accepted: boolean
 
-    @ManyToOne(() => User, (user) => user.products, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
-	@JoinColumn([
-		{ name: 'user_id', referencedColumnName: 'id' },
-		{ name: 'host_name', referencedColumnName: 'nickname' }
-	])
+    @Column('boolean', { default: false })
+    @Index()
+    accepted: boolean;
+
+    @ManyToOne(() => User, (user) => user.products, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+    @JoinColumn([
+        { name: 'user_id', referencedColumnName: 'id' },
+        { name: 'host_name', referencedColumnName: 'nickname' },
+    ])
     user: User;
+
+    @OneToMany(() => Livecast, (livecast) => livecast.hostInfo)
+    livecast: Relation<Livecast>[];
 
     @OneToMany(() => ProductImage, (productImage) => productImage.product)
     images: ProductImage[];
