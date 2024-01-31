@@ -16,6 +16,7 @@ import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { InquiryDto } from './dtos/inquiry.dto';
 import { Id } from '../util/id';
+import { PageDto } from '../product/dtos/page.dto'
 
 @Controller('inquiry')
 export class InquiryController {
@@ -23,20 +24,23 @@ export class InquiryController {
 
     // 문의 목록
     @Get('all')
-    async getInquiries() {
-        return await this.inquiryService.getInquiries();
+    async getInquiries(@Query() query: PageDto) {
+		const { page, pageSize } = query
+        return await this.inquiryService.getInquiries(page, pageSize);
     }
 
     // 일반 문의 목록
     @Get('general')
-    async getGeneralInquiry() {
-        return await this.inquiryService.getInquiryByProductId(0);
+    async getGeneralInquiry(@Query() query: PageDto) {
+		const { page, pageSize } = query
+        return await this.inquiryService.getInquiryByProductId(0,page, pageSize);
     }
 
     // 상품별 문의 목록
     @Get('product/:id')
-    async getInquiryByProductId(@Param() param: Id) {
-        return await this.inquiryService.getInquiryByProductId(param.id);
+    async getInquiryByProductId(@Param() param: Id, @Query() query: PageDto) {
+		const { page, pageSize } = query
+        return await this.inquiryService.getInquiryByProductId(param.id,page, pageSize);
     }
 	
 	// 문의 id로 찾기
@@ -65,8 +69,9 @@ export class InquiryController {
     @UseGuards(RoleGuard)
     @Roles(Role.Host, Role.User)
     @Get('my')
-    async getMyInquiries() {
-        return await this.inquiryService.getMyInquiries();
+    async getMyInquiries(@Query() query: PageDto) {
+		const { page, pageSize } = query
+        return await this.inquiryService.getMyInquiries(page, pageSize);
     }
 
     // 문의 답변하기
@@ -78,8 +83,9 @@ export class InquiryController {
 	
 	// 문의별 답변 목록
 	@Get(':id/replies')
-	async getReplyByInquiryId(@Param() param: Id){
-		return await this.inquiryService.getReplyByInquiryId(param.id)
+	async getReplyByInquiryId(@Param() param: Id, @Query() query: PageDto){
+		const { page, pageSize } = query
+		return await this.inquiryService.getReplyByInquiryId(param.id, page, pageSize)
 	}
 
     // 문의 상태 바꾸기

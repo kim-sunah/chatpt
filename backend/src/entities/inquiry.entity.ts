@@ -17,9 +17,6 @@ export class Inquiry {
 	@Column('int',{nullable: true, unsigned: true})
 	product_id: number
 	
-	@Column('int',{nullable: true, unsigned: true})
-	host_id: number
-	
 	@Column('text')
 	body: string
 	
