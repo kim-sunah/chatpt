@@ -2,7 +2,7 @@ import React, {useState,useEffect} from 'react'
 import ProductForm from './Product-form.js'
 import {server} from '../../constant.js'
 import { useLocation, useSearchParams, useNavigate } from 'react-router-dom'
-import Button from 'react-bootstrap/button'
+import Button from 'react-bootstrap/Button'
 import SearchCard from '../search/Search-card.js'
 import { PaginationControl } from 'react-bootstrap-pagination-control'
 
