@@ -86,7 +86,7 @@ export class ProductService {
 		if(!user) throw new NotFoundException('해당 유저가 존재하지 않습니다.')
 		body.sale_price = body.sale_price || body.price
 		body.vacancy = body.capacity
-		const badwords = await this.badwordService.searchBadword(body.name+' '+body.body)
+		const badwords = await this.badwordService.searchBadword(body.name+' '+body.body+' '+body.intro)
 		if(badwords.length) throw new BadRequestException('적절하지 못한 단어가 들어있습니다: '+badwords.map(badword => badword[1][0]).join(', '))
 		return await this.productRepository.save({...body,user_id,	host_name:user.nickname})
 	}

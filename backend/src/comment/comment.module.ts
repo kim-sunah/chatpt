@@ -5,9 +5,11 @@ import { Comment } from '../entities/comment.entity';
 import { CommentService } from './comment.service';
 import { CommentController } from './comment.controller';
 import { User } from 'src/entities/user.entity';
+import {AuthModule} from '../auth/auth.module'
+import {BadwordModule} from '../badword/badword.module'
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Comment, User, Product])],
+    imports: [TypeOrmModule.forFeature([Comment, User, Product]),AuthModule,BadwordModule],
     providers: [CommentService],
     controllers: [CommentController],
 })

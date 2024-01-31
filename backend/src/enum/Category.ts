@@ -1,1 +1,1 @@
-export enum Category { Fitness, Yoga, Pilates, Hapkido, Taekwondo, Posture, Stretch, Ballet, Sports, Others }
+export enum Category { Fitness='Fitness', Yoga='Yoga', Pilates='Pilates', Hapkido='Hapkido', Taekwondo='Taekwondo', Posture='Posture', Stretch='Stretch', Ballet='Ballet', Sports='Sports', Others='Others' }

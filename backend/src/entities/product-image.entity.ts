@@ -11,9 +11,6 @@ export class ProductImage {
 	
 	@Column()
 	original_url: string
-	
-	@Column({nullable: true})
-	server_url: string
 
 	@CreateDateColumn()
     createdAt: Date

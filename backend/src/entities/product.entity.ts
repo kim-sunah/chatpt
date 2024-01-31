@@ -35,16 +35,15 @@ export class Product {
 
     @Column()
     name: string;
+	
+	@Column()
+	intro: string;
 
     @Column({ nullable: true })
     thumbnail: string;
 
     @Column('enum', { enum: Category, default: Category.Others })
     category: Category;
-
-    @Column('enum', { enum: ProductStatus, default: ProductStatus.Salable })
-	@Index()
-    status: ProductStatus;
 	
 	@Column({ nullable: true })
 	shorts: string
@@ -62,27 +61,20 @@ export class Product {
 	@Column('int', { unsigned: true, default: 5 })
 	capacity: number
 	
-	@Column('int', { unsigned: true, default: 5 })
-	@Index()
-	vacancy: number
-
-    @Column('int', { unsigned: true, default: 0 })
-    rating_count: number;
-
-    @Column('int', { unsigned: true, default: 0 })
-    rating_total: number;
-
-    @Column('int', { unsigned: true, default: 0 })
-    sales_volume: number;
-
-    @Column('bigint', { unsigned: true, default: 0 })
-    revenue: number;
-	
 	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
 	start_on: Date
 	
 	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
 	end_on: Date
+	
+	@Column('tinyint')
+	weekday: number
+	
+	@Column('time')
+	start_at: string
+	
+	@Column('time')
+	end_at: string
 
     @CreateDateColumn()
     createdAt: Date;

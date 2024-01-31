@@ -35,14 +35,8 @@ export class HostInfo {
 	@Column()
 	address: string
 	
-	@CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
-
-    @DeleteDateColumn()
-    deletedAt: Date | null;
+	@Column({nullable: true})
+	social_url: string
 	
 	@OneToOne(() => User)
 	@JoinColumn({name: 'host_id'})
