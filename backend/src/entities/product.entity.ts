@@ -35,6 +35,9 @@ export class Product {
 
     @Column()
     name: string;
+	
+	@Column()
+	intro: string;
 
     @Column({ nullable: true })
     thumbnail: string;
@@ -67,6 +70,15 @@ export class Product {
 	
 	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
 	end_on: Date
+	
+	@Column('tinyint')
+	weekday: number
+	
+	@Column('time')
+	start_at: string
+	
+	@Column('time')
+	end_at: string
 
     @CreateDateColumn()
     createdAt: Date;
