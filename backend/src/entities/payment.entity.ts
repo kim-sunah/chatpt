@@ -30,9 +30,6 @@ export class Payment {
     spending: number;
 
     @Column('int', { unsigned: true })
-    count: number;
-
-    @Column('int', { unsigned: true })
     mileage: number;
 
     @Column('enum', { enum: PayStatus, default: PayStatus.Pending })
