@@ -24,7 +24,7 @@ export class CommentService {
     async commentfind(productId: number, page: number, pageSize: number){
         const comments = await this.commentRepository.findAndCount({
             where: { product_id: productId },
-			take: pageSize, skip: (page-1)*pageSize
+			take: pageSize, skip: (page-1)*pageSize, relations:['user']
         });
         if (comments[1] === 0) {
             throw new NotFoundException('해당 제품의 댓글을 찾을 수 없습니다.');

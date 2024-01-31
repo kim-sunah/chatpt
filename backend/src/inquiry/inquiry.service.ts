@@ -22,13 +22,13 @@ export class InquiryService {
     ) {}
 	
 	// 문의 목록
-	async getInquiries(){
-		return await this.inquiryRepository.find()
+	async getInquiries(page: number, pageSize: number){
+		return await this.inquiryRepository.findAndCount({take: pageSize, skip:(page-1)*pageSize,relations:['product','user']})
 	}
 	
 	// 상품별 문의 목록
-	async getInquiryByProductId(product_id: number){
-		return await this.inquiryRepository.find({where:{product_id: product_id? product_id:IsNull()}})
+	async getInquiryByProductId(product_id: number, page: number, pageSize: number){
+		return await this.inquiryRepository.findAndCount({where:{product_id: product_id? product_id:IsNull()},take: pageSize, skip:(page-1)*pageSize,relations:['user']})
 	}
 	
 	// id로 문의 찾기
@@ -48,8 +48,8 @@ export class InquiryService {
 	}
 	
 	// 내 문의 보기
-	async getMyInquiries(){
-		return await this.inquiryRepository.find({where:{user_id:this.req.user['id']}})
+	async getMyInquiries(page: number, pageSize: number){
+		return await this.inquiryRepository.findAndCount({where:{user_id:this.req.user['id']},take: pageSize, skip:(page-1)*pageSize,relations:['product']})
 	}
 	
 	// 문의 답변하기
@@ -66,8 +66,8 @@ export class InquiryService {
 	}
 	
 	// 문의별 답변 목록
-	async getReplyByInquiryId(inquiry_id: number){
-		return await this.inquiryReplyRepository.find({where:{inquiry_id}})
+	async getReplyByInquiryId(inquiry_id: number, page: number, pageSize: number){
+		return await this.inquiryReplyRepository.findAndCount({where:{inquiry_id},take: pageSize,skip:(page-1)*pageSize,relations:['user']})
 	}
 	
 	// 문의 상태 바꾸기
