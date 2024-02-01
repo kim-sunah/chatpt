@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn,
     ManyToOne,
     Relation,
-	Unique
+    Unique,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Product } from './product.entity';
@@ -50,3 +50,4 @@ export class Comment {
     })
     product: Relation<Product>;
 }
+//
