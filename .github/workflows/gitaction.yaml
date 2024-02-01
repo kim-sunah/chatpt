@@ -19,8 +19,9 @@ jobs:
                   node-version: '18.x'
 
             - name: Install dependencies
-              run: npm install
-
+              run: |
+                  cd $({github.workspace})\C:\dev\chatPT\shopping-mall  
+                  npm install
             # - name: Run tests
             #   run: npm run test
 
