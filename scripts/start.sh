@@ -10,11 +10,8 @@ TIME_NOW=$(date +%c)
 
 cd $PROJECT_ROOT
 
-
-
-
-
 pm2 delete $APP_NAME
+cd backend
 pm2 start npm --name $APP_NAME -- start
 
 cd $REACT_ROOT

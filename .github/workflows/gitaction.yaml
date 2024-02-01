@@ -18,10 +18,20 @@ jobs:
                   node-version: '18.x'
 
             - name: Install dependencies
-              run: npm install
+              run: |
+                  cd backend
+                  npm install
+                  cd ../frontend
+                  npm install
 
             # - name: Run tests
             #   run: npm run test
 
             - name: Build test
-              run: npm run build
+              run: |
+                  cd backend
+                  npm run build
+                  cd ../frontend
+                  npm run build
+              env:
+                  CI: ''
