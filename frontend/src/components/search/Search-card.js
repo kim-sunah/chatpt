@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react'
 import Card from 'react-bootstrap/Card'
 import { useNavigate } from 'react-router-dom'
-import Button from 'react-bootstrap/button'
+import Button from 'react-bootstrap/Button'
 
 const style = {
 	margin: '10px auto',
