@@ -14,6 +14,9 @@ import { basename, extname } from "path"
 import {AuthModule} from '../auth/auth.module'
 import {BadwordModule} from '../badword/badword.module'
 import { EventsGateway } from 'src/events/events.gateway';
+import { SearchService } from 'src/search/search.service';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
+
 
 const multerOptionsForImages = (configService: ConfigService) => {
 	return {
@@ -108,10 +111,17 @@ const multerOptionsForVideos = (configService: ConfigService) => {
             useFactory: multerOptionsForVideos,
             inject: [ConfigService]
         }),
+        ElasticsearchModule.registerAsync({
+            imports: [ConfigModule],
+            useFactory: async (configService: ConfigService) => ({
+              node: configService.get('ELASTICSEARCH_NODE'),
+            }),
+            inject: [ConfigService],
+          }),
 		AuthModule,
-		BadwordModule
+		BadwordModule,
 	],
 	controllers: [ProductController],
-	providers: [ProductService ,EventsGateway]
+	providers: [ProductService ,EventsGateway,SearchService]
 })
 export class ProductModule {}

@@ -24,10 +24,11 @@ import { ConfigService } from '@nestjs/config';
 import { RoleGuard } from '../auth/guard/role.guard';
 import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { SearchService } from 'src/search/search.service';
 
 @Controller('product')
 export class ProductController {
-    constructor(private readonly productService: ProductService) {}
+    constructor(private readonly productService: ProductService, private readonly elasticsearchService: SearchService ) {}
 
     // 수업 목록
     @Get('all')
@@ -37,9 +38,11 @@ export class ProductController {
     }
 
     // 수업 검색 .......
-    @Get('search')
-    async searchProducts(@Query() query: SearchProductDto) {
-        return await this.productService.searchProducts(query);
+    @Post('search')
+    async searchProducts(@Body() query: any) {
+        const indexName = 'products';
+        const result = await this.elasticsearchService.searchDocuments(indexName, query);
+    
     }
 
     // 내가 등록한 수업 목록

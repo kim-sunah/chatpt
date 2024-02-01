@@ -1,12 +1,13 @@
 
-import React, { useEffect, useState } from 'react';
-import { AiFillShopping } from "react-icons/ai";
-import { AiFillShop } from "react-icons/ai";
+import React, { useEffect, useState ,useRef} from 'react';
+import sport from "../../../img/logo.jpeg"
+import { BiLogIn } from "react-icons/bi";
 
 import { Link } from 'react-router-dom';
 import SearchForm from '../../search/Search-form'
 
 const Header = () => {
+    const searchref = useRef()
     const [Token , setToken] = useState(false)
     useEffect(()=>{
         if(sessionStorage.getItem("accessToken")){
@@ -19,11 +20,26 @@ const Header = () => {
         sessionStorage.removeItem("authority")
         window.location.reload()
     }
+
+    const searchhandler = (events) =>{
+        events.preventDefault()
+        fetch("http://localhost:4000/product/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",  // 이 부분을 확인하고 수정
+              },
+            body: JSON.stringify({ name: searchref.current.value})
+          })
+          .then(res => res.json())
+          .then(resData => console.log(resData))
+          .catch(err => console.log(err));   
+        
+    }
   
 
     return (
         <header className="flex items-center justify-between p-4 border-b">
-        <span className="text-xl font-bold">logo</span>
+        <span className="text-xl font-bold"><img src={sport} style={{width:"100px" ,height:"80px"}}></img></span>
         <div className="flex space-x-4">
           <div className="border rounded-full flex items-center px-3">
             <svg
@@ -41,7 +57,10 @@ const Header = () => {
               <circle cx="11" cy="11" r="8"></circle>
               <path d="m21 21-4.3-4.3"></path>
             </svg>
-            <input type="text" placeholder="Search" className="ml-2 outline-none" />
+            <form onSubmit={searchhandler}>
+                <input  type="text" placeholder="Search" className="ml-2 outline-none"  ref= {searchref}/>
+            </form>
+            
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -70,10 +89,12 @@ const Header = () => {
             strokeLinejoin="round"
             className="w-6 h-6"
           >
+            
             <circle cx="8" cy="21" r="1"></circle>
             <circle cx="19" cy="21" r="1"></circle>
             <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
           </svg>
+          <Link to="Login" style={{color:"black"}}><BiLogIn size="27.5"/></Link>
         </div>
       </header>
         // <header>
