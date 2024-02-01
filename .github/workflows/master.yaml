@@ -33,13 +33,13 @@ jobs:
 
             - name: Build test
               run: |
-       npm install
+                  npm install
 
-                  cd backend
-                  npm run build
-                  cd ../frontend
-                  npm run build
-              env: 
-                  CI: ""
+                    cd backend
+                    npm run build
+                    cd ../frontend
+                    npm run build
+              env:
+                  CI: ''
 
         # fill in the next steps (배포 등)
