@@ -21,7 +21,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  cd ${{ github.workspace }}
+                  cd frontend
                   npm install
 
             # - name: Run tests
