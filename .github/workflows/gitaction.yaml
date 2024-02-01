@@ -1,6 +1,8 @@
 name: Node.js CI
 
 on:
+    push:
+        branches: [gitaction]
     pull_request:
         branches: [gitaction]
 
@@ -37,3 +39,5 @@ jobs:
                   npm install
                   cd ../frontend
                   npm install
+              env:
+                  CI: ''

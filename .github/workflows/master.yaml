@@ -20,12 +20,20 @@ jobs:
                   node-version: '18.x'
 
             - name: Install dependencies
-              run: npm install
+              run: |
+                  cd backend 
+                  npm install
+                  cd ../frontend
+                  npm install
 
             # - name: Run tests
             #   run: npm run test
 
             - name: Build test
-              run: npm run build
+              run: |
+                  cd backend 
+                  npm install
+                  cd ../frontend
+                  npm install
 
         # fill in the next steps (배포 등)
