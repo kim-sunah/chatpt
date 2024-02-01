@@ -1,6 +1,8 @@
 name: Node.js CI
 
 on:
+    push:
+        branches: [gitaction2]
     pull_request:
         branches: [gitaction2]
 
