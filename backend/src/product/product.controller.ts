@@ -64,6 +64,7 @@ export class ProductController {
     @Roles(Role.Host)
     @Post('')
     async createProduct(@Body() body: CreateProductDto) {
+     
         return await this.productService.createProduct(body);
     }
 	
@@ -80,7 +81,6 @@ export class ProductController {
     // @Roles(Role.Admin)
     @Delete(':id')
     async softDeleteProduct(@Param() param: Id) {
-       
         await this.productService.softDeleteProduct(param.id);
     }
 

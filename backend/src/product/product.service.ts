@@ -12,6 +12,7 @@ import {BadwordService} from '../badword/badword.service'
 import { EventsGateway } from 'src/events/events.gateway';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { ConfigService } from '@nestjs/config';
+import { SearchService } from 'src/search/search.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {
@@ -25,6 +26,7 @@ export class ProductService {
 		private readonly badwordService: BadwordService,
 		@Inject(REQUEST) private readonly req: Request,
 		private readonly event : EventsGateway,
+		private readonly elasticsearchService: SearchService 
 	
 	) {}
 
@@ -93,8 +95,12 @@ export class ProductService {
 	
 	// 수업 승인
 	async acceptProduct(id: number){
-		this.event.findproductAll("acceptproduct")
+		const indexName = 'products';
 		const product = await this.getProductById(id)
+		this.event.findproductAll("acceptproduct")
+		const user = await this.userRepository.findOne({where : {id : product.user_id}})
+		const  Instructor_name = user.nickname
+		this.elasticsearchService.indexDocument(indexName, {productname : product.name , Instructor_name :Instructor_name , category : product.category , price : product.price , sale_price : product.sale_price , capacity : product.capacity , start_on : product.start_on , end_on : product.end_on })
 		return await this.productRepository.update(id ,{ accepted:true})
 		
 	}

@@ -8,7 +8,6 @@ export class SearchService {
   constructor(private readonly elasticsearchService : ElasticsearchService){}
   
   async indexDocument(index: string, document: any): Promise<any> {
-
     const result = await this.elasticsearchService.index({
       index,
       body: document,
@@ -16,16 +15,18 @@ export class SearchService {
 
     return result;
   }
-
   async searchDocuments(index: string, query: any): Promise<any> {
- 
     const result = await this.elasticsearchService.search({
       index,
       body: {
         query: {
-          match: {
-            name: query.name, 
-          },
+          bool: {
+            should: [
+              { match: { name: query.name } },
+              { match: { 강사: query.id } }
+            ],
+            minimum_should_match: 1
+          }
         },
       },
     });
