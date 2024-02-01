@@ -20,8 +20,8 @@ import { Comment } from './comment.entity';
 import {Livecast} from './livecast.entity'
 
 @Entity('product')
-@Index(['name', 'host_name', 'body'], { fulltext: true, parser: 'ngram' })
-@Index(['id','host_name','sale_price'])
+@Index(['name', 'body'], { fulltext: true, parser: 'ngram' })
+@Index(['id','sale_price'])
 @Index(['id','user_id'])
 export class Product {
     @PrimaryGeneratedColumn({ unsigned: true })
@@ -29,9 +29,6 @@ export class Product {
 
     @Column('int', { unsigned: true })
     user_id: number;
-	
-	@Column()
-	host_name: string;
 
     @Column()
     name: string;
@@ -92,7 +89,6 @@ export class Product {
     @ManyToOne(() => User, (user) => user.products, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
 	@JoinColumn([
 		{ name: 'user_id', referencedColumnName: 'id' },
-		{ name: 'host_name', referencedColumnName: 'nickname' }
 	])
     user: User;
 
