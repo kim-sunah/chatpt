@@ -41,4 +41,3 @@ export class Wishlist {
     @JoinColumn({ name: 'product_id' })
     product: Product;
 }
-//
