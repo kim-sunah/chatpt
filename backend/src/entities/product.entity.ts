@@ -58,10 +58,10 @@ export class Product {
 	@Column('int', { unsigned: true, default: 5 })
 	capacity: number
 	
-	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
+	@Column('date')
 	start_on: Date
 	
-	@Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
+	@Column('date')
 	end_on: Date
 	
 	@Column('tinyint')
