@@ -16,6 +16,7 @@ export class SearchService {
     return result;
   }
   async searchDocuments(index: string, query: any): Promise<any> {
+    console.log(query)
     const result = await this.elasticsearchService.search({
       index,
       body: {
@@ -24,11 +25,9 @@ export class SearchService {
             should: [
               { wildcard: { productname:`*${query.name}*` } },
               { wildcard: { Instructor_name:`*${query.name}*` } },
-              { wildcard: { category: `*${query.name}*` } },
-        
-              
+              { match: { category: query.category }},
             ],
-            minimum_should_match: 1
+            minimum_should_match: 2
           }
         },
         size: 30,

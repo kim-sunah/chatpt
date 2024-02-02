@@ -25,7 +25,8 @@ export class ProductService {
         private readonly userRepository: Repository<User>,
         private readonly badwordService: BadwordService,
         @Inject(REQUEST) private readonly req: Request,
-        private readonly event: EventsGateway
+        private readonly event: EventsGateway,
+        private readonly elasticsearchService: SearchService
     ) {}
 
     // 수업 목록
@@ -111,8 +112,11 @@ export class ProductService {
 
     // 수업 승인
     async acceptProduct(id: number) {
-        this.event.findproductAll('acceptproduct');
+       
         const product = await this.getProductById(id);
+        const Instructor = await this.userRepository.findOne({where : {id : product.user_id}})
+        const index = "products"
+        await this.elasticsearchService.indexDocument(index, {productname : product.name ,Instructor : Instructor.nickname , category : product.category, price : product.price , sale_price : product.sale_price , start : product.start_on , end : product.end_on, startTime : product.start_at , endTime : product.end_at })
         return await this.productRepository.update(id, { accepted: true });
     }
 

@@ -27,19 +27,8 @@ const Header = () => {
 
   const searchhandler = (events) => {
     events.preventDefault()
-    fetch("http://localhost:4000/product/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",  // 이 부분을 확인하고 수정
-      },
-      body: JSON.stringify({ name: searchref.current.value })
-    })
-      .then(res => res.json())
-      .then(resData => {if(resData.statusCode === 200){
-        navigate("/search")
-        dispatch(searchActions.search(searchref.current.value))
-      } console.log(resData)})
-      .catch(err => console.log(err));
+    dispatch(searchActions.search(searchref.current.value))
+    navigate("/search")
   }
 
 
