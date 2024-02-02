@@ -1,11 +1,12 @@
-import {Column, Index, PrimaryGeneratedColumn, Entity} from 'typeorm'
+import { Column, Index, PrimaryGeneratedColumn, Entity } from 'typeorm';
 
 @Entity('badword')
 export class Badword {
-	@PrimaryGeneratedColumn({unsigned: true})
+    @PrimaryGeneratedColumn({ unsigned: true })
     id: number;
-	
-	@Column()
-	@Index({ unique: true })
-	badword: string
+
+    @Column()
+    @Index({ unique: true })
+    badword: string;
 }
+//
