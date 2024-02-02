@@ -9,4 +9,3 @@ export class Badword {
     @Index({ unique: true })
     badword: string;
 }
-//
