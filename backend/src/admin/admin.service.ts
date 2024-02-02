@@ -51,7 +51,6 @@ export class AdminService {
     const product = await this.productRepositoy.find({where: {accepted: false}})
     const productCount = product.length;
     const products = await this.productRepositoy.find({skip : (page - 1) * 5, take: 5,where: {accepted: false}})
-    console.log(products)
     return { products, productCount,}
   }
 

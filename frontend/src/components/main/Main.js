@@ -18,8 +18,6 @@ const Main = () => {
 
             {sessionStorage.getItem("start") === "YES" &&
                 <div className="bg-white">
-                    <Header>
-                    </Header>
                     
                     <Bodymain></Bodymain>
                     <main>

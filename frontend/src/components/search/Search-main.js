@@ -1,78 +1,93 @@
-import React, {useState,useEffect} from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
-import SearchForm from './Search-form.js'
-import SearchCard from './Search-card.js'
-import {server} from '../../constant.js'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import { PaginationControl } from 'react-bootstrap-pagination-control'
+import React, { useState, useEffect } from 'react'
+import logo from "../../img/image2.png"
+import {useSelector} from "react-redux"
 
-const style = {
-	width: 700,
-	textAlign: 'center',
-	margin: '10px auto'
-}
+const SearchMain = () => {
 
-export default function SearchMain(props){
-	const [searchParams,setSearchParams] = useSearchParams()
-	const key = searchParams.get('key') || ''
-	const antiKey = searchParams.get('antiKey') || ''
-	const page = +searchParams.get('page') || 1
-	const pageSize = +searchParams.get('pageSize') || 5
-	const categories = +searchParams.get('categories') || 1023
-	const minSalePrice = +searchParams.get('minSalePrice') || 1
-	const maxSalePrice = +searchParams.get('maxSalePrice') || 4294967295
-	const [count,setCount] = useState(0)
-	const [products,setProducts] = useState([])
-	const navigate = useNavigate()
-	
-	const search = async e => {
-		const url = new URL(server+'/product/search')
-		const params = new URLSearchParams()
-		params.append('key',key)
-		if(antiKey) params.append('antiKey',antiKey)
-		if(categories) params.append('categories',categories)
-		if(minSalePrice) params.append('minSalePrice',minSalePrice)
-		if(maxSalePrice) params.append('maxSalePrice',maxSalePrice)
-		if(page) params.append('page',page)
-		if(pageSize) params.append('pageSize',pageSize)
-		url.search = params.toString()
-		const res = await fetch(url)
-		const res_ = await res.json()
-		setProducts(res_[0])
-		setCount(res_[1])
-	}
-	
+
+	const [selectedValue, setSelectedValue] = useState("강의명 순"); // 초기값 설정
+	const [category , setcategory] = useState("Yoga")
+	const [productlist , setproductlist] = useState("")
+	const search = useSelector((state) => state.search.search)
+
+	const handleSelectChange = (event) => {
+	  const selectedOption = event.target.value;
+	  setSelectedValue(selectedOption)
+	  // 여기에서 selectedValue를 사용하거나 필요한 작업을 수행할 수 있습니다.
+	};
+
+	const handlecategoryChange = (event) => {
+		const ategoryOption = event.target.value;
+		setcategory(ategoryOption)
+		// 여기에서 selectedValue를 사용하거나 필요한 작업을 수행할 수 있습니다.
+	};
 	useEffect(() => {
-		if(key) search()
-	},[searchParams])
-	
-	/* const sortProducts = (e) => {
-		if(e.target.value==='highSalePrice'){
-			const sortedProducts = [...products].sort((a, b) => b.sale_price - a.sale_price);
-			setProducts(sortedProducts)
-		}
-		else if(e.target.value==='lowSalePrice'){
-			const sortedProducts = [...products].sort((a, b) => a.sale_price - b.sale_price);
-			setProducts(sortedProducts)
-		}
-	} */
-	
+		fetch("http://localhost:4000/product/search", {
+			method: "POST",
+			headers: {
+			  "Content-Type": "application/json",  // 이 부분을 확인하고 수정
+			},
+			body: JSON.stringify({ name: search ,category :category })
+		  })
+			.then(res => res.json())
+			.then(resData => {if(resData.statusCode === 200){
+				setproductlist(resData.result)
+			} })
+			.catch(err => console.log(err));
+	}, [search]);
+  
 	return (
-		<div style={style}>
-			<div>
-				{products.length? (
-					<div>
-						<h2>검색 결과 ({count})</h2>
+		<div className="bg-white min-h-screen px-40 mx-5">
+			<main className="p-4">
+				<h1 className="text-3xl font-bold mb-6">{search} 에 대한 검색 결과</h1>
+				<div className="flex gap-4 mb-6">
+					<select onChange ={handlecategoryChange} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+						<option value="Yoga">요가</option>
+						<option value="Pilates">필라테스</option>
+						<option value="Health">헬스</option>
+						<option value="Others">그외.....</option>
+					</select>
+					<select onChange ={handleSelectChange} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+						<option value="강의명 순">강의명 순</option>
+						<option value="인기 순">인기 순</option>
+						<option value="강의 기간(짧은 순)">강의 기간(짧은 순)</option>
+						<option value="강의기간(긴 순)">강의기간(긴 순)</option>
+					</select>
+				</div>
+				<h2 className="text-2xl font-bold mb-4">검색한 상품</h2>
+
+				<div className="grid grid-cols-4 gap-4">
+					{productlist && productlist.map(product=>(
+						<div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full" data-v0-t="card">
+						<div className="p-6 max-w-md">
+							<img
+								alt="yoga class"
+								className="mb-4 h-48 w-full object-cover"
+								height="200"
+								src="/placeholder.svg"
+								width="200"
+								style={{ aspectRatio: '200 / 200', objectFit: 'cover' }}
+							/>
+							<h3 className="text-xl font-semibold mb-2">{product._source.productname}</h3>
+							<p className="text-sm mb-2">{product._source.Instructor}</p>
+						
+							<p className="text-sm mb-2">기간 : {product._source.start} ~{product._source.end}</p>
+							<p className="text-sm mb-2">시간 :  {product._source.startTime} ~ {product._source.endTime}</p>
+							<p className="text-lg font-bold">
+								{product._sourcesale_price}
+								<span className="text-sm line-through">{product._sourceprice}</span>
+							</p>
+						</div>
 					</div>
-					):(<h2>검색 결과가 없습니다.</h2>)}
-				{products.map(product => <SearchCard key={product.id} product={product} />)}
-			</div>
-			{products.length? <PaginationControl page={page} limit={pageSize} total={count} changePage = {page => {
-				const url = new URL(window.location.href)
-				url.searchParams.set('page',page)
-				navigate('?'+url.searchParams.toString())
-			}} />:''}
+
+					))}
+					
+					
+				</div>
+			</main>
 		</div>
+		
 	)
+
 }
+export default SearchMain

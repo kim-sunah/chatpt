@@ -5,16 +5,16 @@ const Bodymain = () => {
     const myStyle = {
         aspectRatio: '1000/200',
         objectFit: 'cover'
-      };
+    };
 
-      const imgStyle = {
+    const imgStyle = {
         aspectRatio: '200/200',
         objectFit: 'cover'
-      };
+    };
 
-    
+
     return (
-        <div className="p-4">
+        <div className="p-4 min-h-screen px-40 mx-40">
             <section className="mb-6">
                 <img
                     src={ss}

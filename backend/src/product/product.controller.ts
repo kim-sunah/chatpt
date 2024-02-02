@@ -10,6 +10,7 @@ import {
     Param,
     UploadedFile,
     UseInterceptors,
+    HttpStatus,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dtos/create-product.dto';
@@ -25,10 +26,11 @@ import { RoleGuard } from '../auth/guard/role.guard';
 import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { SearchService } from 'src/search/search.service';
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Controller('product')
 export class ProductController {
-    constructor(private readonly productService: ProductService, private readonly elasticsearchService: SearchService ) {}
+    constructor(private readonly productService: ProductService, private readonly elasticsearchService: SearchService, private readonly event: EventsGateway, ) {}
 
     // 수업 목록
     @Get('all')
@@ -41,7 +43,13 @@ export class ProductController {
     @Post('search')
     async searchProducts(@Body() query: any) {
         const indexName = 'products';
-        const result = await this.elasticsearchService.searchDocuments(indexName, query);
+        const result =  await this.elasticsearchService.searchDocuments(indexName, query);
+     
+        return {
+            statusCode: HttpStatus.OK,
+            result,
+        };
+      
     
     }
 
@@ -57,6 +65,7 @@ export class ProductController {
     @Get('')
     async getProductById(@Query() query: Id) {
         return await this.productService.getProductById(query.id);
+        
     }
 
     // 수업 등록
@@ -64,6 +73,7 @@ export class ProductController {
     @Roles(Role.Host)
     @Post('')
     async createProduct(@Body() body: CreateProductDto) {
+     
         return await this.productService.createProduct(body);
     }
 	
@@ -72,7 +82,12 @@ export class ProductController {
 	// @Roles(Role.Admin)
 	@Patch('accept/:id')
 	async acceptProduct(@Param() param: Id){
-		return await this.productService.acceptProduct(param.id)
+	    await this.productService.acceptProduct(param.id)
+        this.event.findproductAll('acceptproduct');
+        return {
+            statusCode: HttpStatus.OK,
+           
+        };
 	}
 
     // 수업 삭제
@@ -80,7 +95,6 @@ export class ProductController {
     // @Roles(Role.Admin)
     @Delete(':id')
     async softDeleteProduct(@Param() param: Id) {
-       
         await this.productService.softDeleteProduct(param.id);
     }
 

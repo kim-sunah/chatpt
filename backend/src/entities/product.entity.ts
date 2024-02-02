@@ -55,24 +55,24 @@ export class Product {
 
     @Column('text', { nullable: true })
     body: string;
-
-    @Column('int', { unsigned: true, default: 5 })
-    capacity: number;
-
-    @Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
-    start_on: Date;
-
-    @Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
-    end_on: Date;
-
-    @Column('tinyint')
-    weekday: number;
-
-    @Column('time')
-    start_at: string;
-
-    @Column('time')
-    end_at: string;
+	
+	  @Column('int', { unsigned: true, default: 5 })
+	  capacity: number
+	
+	  @Column('date')
+  	start_on: Date
+	
+  	@Column('date')
+	  end_on: Date
+	
+  	@Column('tinyint')
+  	weekday: number
+	
+	  @Column('time')
+  	start_at: string
+	
+  	@Column('time')
+	  end_at: string
 
     @CreateDateColumn()
     createdAt: Date;

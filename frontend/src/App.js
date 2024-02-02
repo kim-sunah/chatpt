@@ -17,10 +17,12 @@ import InquiryGeneral from './components/inquiry/Inquiry-general'
 import InquiryDetail from
 './components/inquiry/Inquiry-detail'
 import Adminpage from "./components/admin/Adminpage";
+import Root from "./components/Root";
+
 
 const router = createBrowserRouter([
   
-  {path : "/" , errorElement :<Errorpage></Errorpage>,children :[
+  {path : "/" ,element : <Root></Root>, errorElement :<Errorpage></Errorpage>,children :[
     {index : true , element : <Main></Main>},
     
     {path: "Login/naver", element : <Redirecturl></Redirecturl>},
