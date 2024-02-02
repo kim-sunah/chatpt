@@ -37,7 +37,6 @@ const Header = () => {
       .then(res => res.json())
       .then(resData => {if(resData.statusCode === 200){
         navigate("/search")
-        
         dispatch(searchActions.search(searchref.current.value))
       } console.log(resData)})
       .catch(err => console.log(err));

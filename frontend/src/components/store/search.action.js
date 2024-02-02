@@ -6,6 +6,9 @@ const searchslice = createSlice({
     reducers :{
         search(state,action){
             state.search = action.payload
+        },
+        searchlist(state ,action){
+
         }
     }
 })
