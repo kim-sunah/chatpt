@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSearchDto } from './dto/create-search.dto';
 import { UpdateSearchDto } from './dto/update-search.dto';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
@@ -22,15 +22,26 @@ export class SearchService {
         query: {
           bool: {
             should: [
-              { match: { name: query.name } },
-              { match: { 강사: query.id } }
+              { wildcard: { productname:`*${query.name}*` } },
+              { wildcard: { Instructor_name:`*${query.name}*` } },
+              { wildcard: { category: `*${query.name}*` } },
+        
+              
             ],
             minimum_should_match: 1
           }
         },
+        size: 30,
       },
     });
-    console.log(result.hits.hits[0]._source)
+    
+    if(result.hits.hits.length  < 1){
+      throw new NotFoundException("검색 결과를 찾을 수 없습니다")
+    }
+    return result.hits.hits
+    
+
+    
 
    
   }

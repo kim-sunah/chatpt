@@ -10,6 +10,7 @@ import {
     Param,
     UploadedFile,
     UseInterceptors,
+    HttpStatus,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dtos/create-product.dto';
@@ -41,7 +42,13 @@ export class ProductController {
     @Post('search')
     async searchProducts(@Body() query: any) {
         const indexName = 'products';
-        const result = await this.elasticsearchService.searchDocuments(indexName, query);
+        const result =  await this.elasticsearchService.searchDocuments(indexName, query);
+        console.log(result)
+        return {
+            statusCode: HttpStatus.OK,
+            result,
+        };
+      
     
     }
 
