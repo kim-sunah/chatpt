@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ubuntu/app"
+PROJECT_ROOT="/home/ubuntu/app/backend"
 REACT_ROOT="/home/ubuntu/app/frontend"
-APP_NAME="npm start"
-REACT_APP_NAME="npm start"
+APP_NAME="nest"
+REACT_APP_NAME="react"
 PM2_PATH="/home/ubuntu/.nvm/versions/node/v21.5.0/bin/pm2"
 
 TIME_NOW=$(date +%c)
@@ -11,10 +11,14 @@ TIME_NOW=$(date +%c)
 cd $PROJECT_ROOT
 
 pm2 delete $APP_NAME
-cd backend
+pm2 delete $REACT_APP_NAME
+
+# npm install
 pm2 start npm --name $APP_NAME -- start
 
 cd $REACT_ROOT 
-pm2 start npm --name $REACT_APP_NAME-- start
+
+# npm install
+pm2 start npm --name $REACT_APP_NAME -- start
 
 echo "$TIME_NOW > Deploy has been completed"
