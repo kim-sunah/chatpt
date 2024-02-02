@@ -8,9 +8,13 @@ import {
     ManyToOne,
     OneToOne,
     Relation,
+    JoinColumn,
 } from 'typeorm';
 import { PayStatus } from '../enum/PayStatus';
 import { Refund } from './refund.entity';
+import { Product } from './product.entity';
+import { Livecast } from './livecast.entity';
+import { User } from './user.entity';
 
 @Entity('payment')
 export class Payment {
@@ -43,6 +47,14 @@ export class Payment {
 
     @DeleteDateColumn()
     deletedAt: Date | null;
+
+    @ManyToOne(() => User, (user) => user.payments, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_id' })
+    user: Relation<User>;
+
+    @ManyToOne(() => Product, (product) => product.payments)
+    @JoinColumn({ name: 'product_id' })
+    product: Relation<Product>;
 
     @OneToOne(() => Refund, (refund) => refund.payment)
     refund: Relation<Refund>;
