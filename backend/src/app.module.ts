@@ -20,6 +20,7 @@ import { BadwordModule } from './badword/badword.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 import { EventsModule } from './events/events.module';
 import { SearchModule } from './search/search.module';
+import { PaymentModule } from './payment/payment.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -70,7 +71,8 @@ const typeOrmModuleOptions = {
 	BadwordModule,
 	WishlistModule,
 	EventsModule,
-	SearchModule
+	SearchModule,
+	PaymentModule
   ],
   controllers: [AppController],
   providers: [AppService],
