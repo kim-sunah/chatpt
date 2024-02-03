@@ -5,36 +5,54 @@ import {useSelector} from "react-redux"
 const SearchMain = () => {
 
 
-	const [selectedValue, setSelectedValue] = useState("강의명 순"); // 초기값 설정
-	const [category , setcategory] = useState("Yoga")
+	const [selectedValue, setSelectedValue] = useState("Order"); // 초기값 설정
+	const [category , setcategory] = useState("Category")
 	const [productlist , setproductlist] = useState("")
 	const search = useSelector((state) => state.search.search)
 
 	const handleSelectChange = (event) => {
 	  const selectedOption = event.target.value;
 	  setSelectedValue(selectedOption)
-	  // 여기에서 selectedValue를 사용하거나 필요한 작업을 수행할 수 있습니다.
+	
 	};
 
 	const handlecategoryChange = (event) => {
-		const ategoryOption = event.target.value;
-		setcategory(ategoryOption)
-		// 여기에서 selectedValue를 사용하거나 필요한 작업을 수행할 수 있습니다.
+		fetch("http://localhost:4000/product/categorysearch", {
+			method: "POST",
+			headers: {
+			  "Content-Type": "application/json", 
+			},
+			body: JSON.stringify({ name: search ,category : event.target.value , selected : selectedValue })
+		  })
+			.then(res => res.json())
+			.then(resData => {if(resData.statusCode === 200){
+			
+				setproductlist(resData.result)
+			}else{
+				setproductlist("")
+			}})
+			.catch(err => console.log(err));
+	
 	};
 	useEffect(() => {
 		fetch("http://localhost:4000/product/search", {
 			method: "POST",
 			headers: {
-			  "Content-Type": "application/json",  // 이 부분을 확인하고 수정
+			  "Content-Type": "application/json", 
 			},
-			body: JSON.stringify({ name: search ,category :category })
+			body: JSON.stringify({name: search})
 		  })
 			.then(res => res.json())
 			.then(resData => {if(resData.statusCode === 200){
+				
 				setproductlist(resData.result)
-			} })
+			}else{
+				setproductlist("")
+			}})
 			.catch(err => console.log(err));
 	}, [search]);
+
+
   
 	return (
 		<div className="bg-white min-h-screen px-40 mx-5">
@@ -42,14 +60,15 @@ const SearchMain = () => {
 				<h1 className="text-3xl font-bold mb-6">{search} 에 대한 검색 결과</h1>
 				<div className="flex gap-4 mb-6">
 					<select onChange ={handlecategoryChange} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+						<option value="Category">카테고리</option>
 						<option value="Yoga">요가</option>
 						<option value="Pilates">필라테스</option>
 						<option value="Health">헬스</option>
 						<option value="Others">그외.....</option>
 					</select>
 					<select onChange ={handleSelectChange} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-						<option value="강의명 순">강의명 순</option>
-						<option value="인기 순">인기 순</option>
+						<option value="Order">강의명 순</option>
+						<option value="Popularity">인기 순</option>
 						<option value="강의 기간(짧은 순)">강의 기간(짧은 순)</option>
 						<option value="강의기간(긴 순)">강의기간(긴 순)</option>
 					</select>
