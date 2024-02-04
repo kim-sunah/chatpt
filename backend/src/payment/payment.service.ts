@@ -47,7 +47,7 @@ export class PaymentService {
                 user_id: userId,
                 product_id: createPaymentDto.product_id,
                 pay_method_id: createPaymentDto.pay_method_id,
-                spending: paymentAmount,
+                spending: paymentAmount-createPaymentDto.mileage,
                 mileage: createPaymentDto.mileage,
             });
             await this.paymentRepository.save(payment);
