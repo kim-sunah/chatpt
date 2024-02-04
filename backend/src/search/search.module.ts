@@ -7,7 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     ElasticsearchModule.register({
-      node: 'http://localhost:9200', // Elasticsearch 서버 주소
+      node: "http://43.202.194.220:9200/"
     }),
   ],
 
