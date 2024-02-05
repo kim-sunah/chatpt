@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
 const buttonStyle = {
-	margin: '10px'
+	margin: '9px'
 }
 
 const style = {
