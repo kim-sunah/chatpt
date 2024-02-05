@@ -22,6 +22,7 @@ import { EventsModule } from './events/events.module';
 import { SearchModule } from './search/search.module';
 import { PaymentModule } from './payment/payment.module';
 
+
 const typeOrmModuleOptions = {
     useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
         namingStrategy: new SnakeNamingStrategy(),

@@ -80,7 +80,7 @@ const Header = () => {
           <circle cx="12" cy="7" r="4"></circle>
 
         </svg></Link>
-        <Link to="Login" style={{ color: "black" }}><BiLogIn size="24" /></Link>
+        <Link to="/Login" style={{ color: "black" }}><BiLogIn size="24" /></Link>
       </div>
     </header>
     

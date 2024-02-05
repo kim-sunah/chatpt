@@ -35,6 +35,9 @@ export class User {
 
     @Column()
     password: string;
+    
+    @Column()
+    profile_image : string
 
     @Column()
     nickname: string;
