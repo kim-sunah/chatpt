@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Button from 'react-bootstrap/button'
-import Form from 'react-bootstrap/form'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 const buttonStyle = {
 	margin: '10px'
