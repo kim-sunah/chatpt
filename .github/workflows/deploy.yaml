@@ -23,6 +23,12 @@ jobs:
         environment: production
 
         steps:
+            - name: Enable Debug Logging for the runner
+              run: echo "ACTIONS_RUNNER_DEBUG=true" >> $GITHUB_ENV
+
+            - name: Enable Debug Logging for each step
+              run: echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
+
             # (1) 기본 체크아웃
             - name: Checkout
               uses: actions/checkout@v3
