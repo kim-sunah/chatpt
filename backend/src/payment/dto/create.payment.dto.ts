@@ -1,15 +1,15 @@
-// import { IsInt, IsString, Min } from 'class-validator';
+import { IsInt, IsString, Min } from 'class-validator';
 
-// export class CreatePaymentDto {
-//     @IsInt()
-//     user_id: number;
+export class CreatePaymentDto {
+    @IsInt()
+    user_id: number;
 
-//     @IsInt()
-//     product_id: number;
+    @IsInt()
+    product_id: number;
 
-//     @IsString()
-//     pay_method_id?: string;
+    @IsInt()
+    pay_method_id?: number = 0;
 
-//     @IsInt()
-//     mileage: number;
-// }
+    @IsInt()
+    mileage: number;
+}

@@ -18,7 +18,7 @@ import InquiryDetail from
 './components/inquiry/Inquiry-detail'
 import Adminpage from "./components/admin/Adminpage";
 import Root from "./components/Root";
-
+import Payment from './components/payment/Payment-main'
 
 const router = createBrowserRouter([
   
@@ -44,7 +44,8 @@ const router = createBrowserRouter([
   {path : "Login" , element : <Login></Login>},
   {path : "Signup", element : <Signup></Signup>},
   {path : "mypage", element : <Mypage></Mypage>},
-  {path : "admin/:pages", element:<Adminpage></Adminpage>}
+  {path : "admin/:pages", element:<Adminpage></Adminpage>},
+  {path:'payment', element: <Payment />}
 
 ])
 function App() {
