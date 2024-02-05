@@ -22,7 +22,7 @@ const Login = () => {
         fetch("http://localhost:4000/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
             .then(res => res.json())
             .then(resData => {
-                console.log(resData); if (resData.statusCode === 200) {
+                 if (resData.statusCode === 200) {
                     if (resData.limit === true) {
                         return alert("이용이 제한된 이용자입니다.")
                     }
@@ -38,7 +38,7 @@ const Login = () => {
             })
     }
     const kakaoOnSuccess = async (data) => {
-        console.log(data.profile.kakao_account.profile.nickname)
+        
         fetch("http://localhost:4000/auth/kakaosingup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: data.profile.kakao_account.email, Nickname: data.profile.kakao_account.profile.nickname }) })
             .then(res => res.json())
             .then(resData => {
@@ -46,7 +46,7 @@ const Login = () => {
                     fetch("http://localhost:4000/auth/kakaosingin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: data.profile.kakao_account.email, Nickname: data.profile.kakao_account.profile.nickname }) })
                         .then(res => res.json())
                         .then(resData => {
-                            console.log(resData)
+                            
                             if (resData.limit === true) {
                                 return alert("이용이 제한된 이용자입니다.")
                             }

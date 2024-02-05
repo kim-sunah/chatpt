@@ -111,12 +111,8 @@ const multerOptionsForVideos = (configService: ConfigService) => {
             useFactory: multerOptionsForVideos,
             inject: [ConfigService]
         }),
-        ElasticsearchModule.registerAsync({
-            imports: [ConfigModule],
-            useFactory: async (configService: ConfigService) => ({
-              node: configService.get('ELASTICSEARCH_NODE'),
-            }),
-            inject: [ConfigService],
+        ElasticsearchModule.register({
+            node: "http://43.202.194.220:9200/"
           }),
 		AuthModule,
 		BadwordModule,

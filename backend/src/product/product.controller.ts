@@ -44,14 +44,23 @@ export class ProductController {
     async searchProducts(@Body() query: any) {
         const indexName = 'products';
         const result =  await this.elasticsearchService.searchDocuments(indexName, query);
-     
         return {
             statusCode: HttpStatus.OK,
             result,
         };
-      
-    
     }
+
+    @Post("categorysearch")
+    async categorysearcProducts(@Body() query: any) {
+        const indexName = 'products';
+        const result =  await this.elasticsearchService.categorysearchDocuments(indexName, query);
+        return {
+            statusCode: HttpStatus.OK,
+            result,
+        };
+    }
+
+
 
     // 내가 등록한 수업 목록
     @UseGuards(RoleGuard)

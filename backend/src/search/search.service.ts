@@ -5,15 +5,64 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
 export class SearchService {
-  constructor(private readonly elasticsearchService : ElasticsearchService){}
-  
+  constructor(private readonly elasticsearchService: ElasticsearchService) { }
+
   async indexDocument(index: string, document: any): Promise<any> {
+
+    const indexExists = await this.elasticsearchService.indices.exists({ index });
+
+    if (!indexExists) {
+      await this.elasticsearchService.indices.create({
+        index,
+        body: {
+          mappings: {
+            properties: {
+              productname: {
+                type: 'keyword',
+              },
+              Instructor_name: {
+                type: 'keyword',
+              },
+              category: {
+                type: 'keyword',
+              },
+              price : {
+                type : "keyword"
+              },
+              sale_price : {
+                type : "keyword"
+              },
+              start :{
+                type : "keyword"
+
+              },
+              end :{
+                type : "keyword"
+
+              },
+              startTime:{
+                type : "keyword"
+
+              },
+              endTime :{
+                type : "keyword"
+              }
+            },
+          },
+        },
+      });
+    }
     const result = await this.elasticsearchService.index({
       index,
       body: document,
     });
 
     return result;
+
+
+  
+
+   
   }
   async searchDocuments(index: string, query: any): Promise<any> {
     console.log(query)
@@ -23,25 +72,66 @@ export class SearchService {
         query: {
           bool: {
             should: [
-              { wildcard: { productname:`*${query.name}*` } },
-              { wildcard: { Instructor_name:`*${query.name}*` } },
-              { match: { category: query.category }},
+              { wildcard: { productname: `*${query.name}*` } },
+              { wildcard: { Instructor_name: `*${query.name}*` } },
+              { wildcard: { descirption: `*${query.name}*` } },
             ],
-            minimum_should_match: 2
-          }
+            minimum_should_match: 1,
+          },
         },
         size: 30,
+        sort: [
+          { productname: "desc"},
+        ],
       },
     });
-    
-    if(result.hits.hits.length  < 1){
-      throw new NotFoundException("검색 결과를 찾을 수 없습니다")
-    }
-    return result.hits.hits
-    
-
-    
-
    
+    if(result.hits.hits.length < 1){
+      throw new NotFoundException("검색한 상품에 일치하는 상품을 찾을수 없습니다.")
+
+    }
+    return result.hits.hits;
+  }
+
+  async categorysearchDocuments(index: string, query: any): Promise<any> {
+    let sortOptions: any = {};
+
+    if (query.select === "Other") {
+      sortOptions = {
+        productname: {
+          order: "asc",
+        },
+      };
+    } else {
+      // Add default sort options here if needed
+    }
+    console.log(query)
+    const result = await this.elasticsearchService.search({
+      index,
+      body: {
+        query: {
+          bool: {
+            should: [
+              { wildcard: { productname: `*${query.name}*` } },
+              { wildcard: { Instructor_name: `*${query.name}*` } },
+              { wildcard: { descirption: `*${query.name}*` } },
+              { match: { category: query.category } },
+            ],
+            minimum_should_match: 2,
+          },
+        },
+        size: 30,
+        sort: [
+          { productname: "desc"},
+        ],
+        
+      },
+    });
+   
+    if(result.hits.hits.length < 1){
+      throw new NotFoundException("검색한 상품에 일치하는 상품을 찾을수 없습니다.")
+
+    }
+    return result.hits.hits;
   }
 }

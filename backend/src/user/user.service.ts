@@ -52,6 +52,13 @@ export class UserService {
         }
     }
 
+    async Allproduct(id : number){
+        return await this.productRepositoy.find({where : {user_id : id}})
+        
+
+
+    }
+
     async limituser(id: number ){
         const user = await this.userRepository.findOne({where : {id : id}})
         if(!user){

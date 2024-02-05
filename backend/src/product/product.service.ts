@@ -117,6 +117,7 @@ export class ProductService {
         const index = 'products';
         await this.elasticsearchService.indexDocument(index, {
             productname: product.name,
+            descirption: product.body,
             Instructor: Instructor.nickname,
             category: product.category,
             price: product.price,

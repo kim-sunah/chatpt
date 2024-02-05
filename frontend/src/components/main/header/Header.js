@@ -62,7 +62,7 @@ const Header = () => {
           <circle cx="19" cy="21" r="1"></circle>
           <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
         </svg>
-        <svg
+        <Link to ="mypage"><svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -73,11 +73,13 @@ const Header = () => {
           strokeLinecap="round"
           strokeLinejoin="round"
           className="h-6 w-6"
+          style={{ color: "black" }}
+          
         >
           <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
           <circle cx="12" cy="7" r="4"></circle>
 
-        </svg>
+        </svg></Link>
         <Link to="Login" style={{ color: "black" }}><BiLogIn size="24" /></Link>
       </div>
     </header>

@@ -33,11 +33,18 @@ export class UserController {
         };
     }
 
- 
+    @Get("Allproduct")
+    async Allproduct(@UserInfo() userinfo: User){
+        const productlist = await this.userService.Allproduct(+userinfo.id)
+        
+        return {
+            statusCode: HttpStatus.OK,
+            productlist
 
+        };
+    }
     @Put('/limituser')
     async limituser(@Body("id") id: string) {
-        
         await this.userService.limituser(+id);
         return {
             statusCode: HttpStatus.OK,
