@@ -52,8 +52,6 @@ const SearchMain = () => {
 			.catch(err => console.log(err));
 	}, [search]);
 
-
-  
 	return (
 		<div className="bg-white min-h-screen px-40 mx-5">
 			<main className="p-4">
