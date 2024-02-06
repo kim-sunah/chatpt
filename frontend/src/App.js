@@ -19,6 +19,8 @@ import InquiryDetail from
 import Adminpage from "./components/admin/Adminpage";
 import Root from "./components/Root";
 import Payment from './components/payment/Payment-main'
+import PaymentToss from './components/payment/Payment-toss'
+import PaymentSuccess from './components/payment/Payment-success'
 
 const router = createBrowserRouter([
   
@@ -45,7 +47,11 @@ const router = createBrowserRouter([
   {path : "Signup", element : <Signup></Signup>},
   {path : "mypage", element : <Mypage></Mypage>},
   {path : "admin/:pages", element:<Adminpage></Adminpage>},
-  {path:'payment', element: <Payment />}
+  {path:'payment', children: [
+	{path:'', element: <Payment />},
+	{path:'success', element: <PaymentSuccess />}
+  ]},
+  {path:'payment_toss', element: <PaymentToss />}
 
 ])
 function App() {
