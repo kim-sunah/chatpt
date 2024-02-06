@@ -29,12 +29,9 @@ export class PaymentService {
             if (!product) {
                 throw new NotFoundException('강의 회차 정보가 없습니다.');
             }
-
-            const paymentAmount = product.sale_price;
-
             const user = await this.userRepository.findOne({ where: { id: userId } });
 
-            const afterPaidPoints = user.mileage - paymentAmount;
+            const afterPaidPoints = user.mileage - createPaymentDto.mileage;
 
             if (afterPaidPoints < 0) {
                 throw new BadRequestException('포인트가 부족합니다.');
@@ -47,7 +44,7 @@ export class PaymentService {
                 user_id: userId,
                 product_id: createPaymentDto.product_id,
                 pay_method_id: createPaymentDto.pay_method_id,
-                spending: paymentAmount-createPaymentDto.mileage,
+                spending: product.sale_price-createPaymentDto.mileage,
                 mileage: createPaymentDto.mileage,
             });
             await this.paymentRepository.save(payment);

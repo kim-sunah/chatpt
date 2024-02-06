@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk"
+import Modal from 'react-bootstrap/Modal'
+import PaymentToss from './Payment-toss'
+import {useSearchParams} from 'react-router-dom'
 
 const buttonStyle = {
-	margin: '9px'
+	margin: '10px'
 }
 
 const style = {
@@ -29,6 +33,8 @@ const Payment = props => {
 	const [ready,setReady] = useState(true)
 	const [message,setMessage] = useState('')
 	const [spending,setSpending] = useState(0)
+	const [show,setShow] = useState(false)
+	const [searchParams] = useSearchParams()
 	
 	const getUser = async () => {
 		const res = await fetch("http://localhost:4000/users/Mypage", {method : "GET" , headers:{"Content-Type" : "application/json", Authorization, refreshtoken} })
@@ -37,9 +43,11 @@ const Payment = props => {
 	}
 	
 	const getProduct = async () => {
-		const res = await fetch('http://localhost:4000/product?id=19')
+		const id = searchParams.get('id')
+		const res = await fetch(`http://localhost:4000/product?id=${id}`)
 		if(res.status!==200) return alert('해당 상품이 존재하지 않습니다.')
 		setProduct(await res.json())
+		setSpending(product.sale_price)
 	}
 	
 	const handleMileage = e => {
@@ -80,19 +88,21 @@ const Payment = props => {
 		console.log(rsp)
     }
 
-  const requestKakaoPay = async () => {
-    const { IMP } = window;
-    IMP.init(process.env.REACT_APP_IAMPORT_CODE);
-
-    IMP.request_pay({
-      pg: 'TC0ONETIME',
-      merchant_uid: new Date().getTime(),
-      name: product.name,
-      amount: spending,
-      buyer_email: user.email,
-      buyer_name: user.nickname
-    },callback) ;
-  };
+	const requestKakaoPay = async () => {
+		const { IMP } = window;
+		IMP.init(process.env.REACT_APP_IAMPORT_CODE)
+		IMP.request_pay({
+			merchant_uid: new Date().getTime(),
+			name: product.name,
+			amount: spending,
+			buyer_email: user.email,
+			buyer_name: user.nickname
+		},callback) ;
+	};
+	
+	const handleShow = () => setShow(true)
+	const handleClose = () => setShow(false)
+  
 
   return (
     <div style={style}>
@@ -105,9 +115,13 @@ const Payment = props => {
 		<p>보유 마일리지: {user.mileage}</p>
 		<p>결제 금액: {spending}</p>
 		<Button style={buttonStyle} disabled={!spending} onClick={requestKakaoPay}>카카오페이로 결제하기</Button>
+		<Button style={buttonStyle} disabled={!spending} onClick={handleShow}>통합 결제하기</Button>
 		<Button style={buttonStyle} disabled={spending} onClick={() => callback({success:true})}>마일리지로 결제하기</Button>
+		<Modal show={show}>
+			<PaymentToss product={product} user={user} spending={spending} mileage={mileage} callback={callback} />
+		</Modal>
     </div>
   );
 };
 
-export default Payment;
+export default Payment
