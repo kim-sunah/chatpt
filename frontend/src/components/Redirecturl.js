@@ -9,7 +9,7 @@ const Redirecturl = (props) => {
 
   const naverLogin = async () => {
     try {
-      const response = await fetch("http://localhost:4000/auth/naver", {
+      const response = await fetch("http://localhost:4000/auth/naversignup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: code })
@@ -17,28 +17,40 @@ const Redirecturl = (props) => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const responseData = await response.json();
-      if (responseData.statusCode === 200) {
-        const userData = await fetch("http://localhost:4000/auth/naversignin", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: responseData.naveruser.email })
-        });
-        if (!userData.ok) {
-          throw new Error(`HTTP error! Status: ${userData.status}`);
+      const resData = await response.json();
+      console.log(resData)
+      if(resData.statusCode === 200){
+        sessionStorage.setItem("authority" , resData.authority)
+        sessionStorage.setItem("accessToken", resData.accessToken)
+        sessionStorage.setItem("refreshToken", resData.refreshToken)
+        navigate("/")    
         }
-        const JWTTOKEN = await userData.json();
+        else{
+            navigate("/Login")   
+            alert(resData.message) 
+        }
+      
+      // if (responseData.statusCode === 200) {
+      //   const userData = await fetch("http://localhost:4000/auth/naversignin", {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({ email: responseData.naveruser.email })
+      //   });
+      //   if (!userData.ok) {
+      //     throw new Error(`HTTP error! Status: ${userData.status}`);
+      //   }
+      //   const JWTTOKEN = await userData.json();
 
-        if(JWTTOKEN.statusCode === 200){
-          if(JWTTOKEN.limit === true){
-            return alert("이용이 제한된 이용자입니다.")
-        }
-          sessionStorage.setItem("authority" , JWTTOKEN.authority)
-          sessionStorage.setItem("accessToken", JWTTOKEN.accessToken)
-          sessionStorage.setItem("refreshToken", JWTTOKEN.refreshToken)
-          navigate("/")
-        }
-      }
+      //   if(JWTTOKEN.statusCode === 200){
+      //     if(JWTTOKEN.limit === true){
+      //       return alert("이용이 제한된 이용자입니다.")
+      //   }
+      //     sessionStorage.setItem("authority" , JWTTOKEN.authority)
+      //     sessionStorage.setItem("accessToken", JWTTOKEN.accessToken)
+      //     sessionStorage.setItem("refreshToken", JWTTOKEN.refreshToken)
+      //     navigate("/")
+      //   }
+      // }
     } catch (err) {
       console.log(err);
     }

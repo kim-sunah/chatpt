@@ -19,10 +19,9 @@ const Userinfo = () => {
         <div>
         {!update &&
         <div className="max-w-2xl mx-auto bg-white p-6">
-            {info &&  <div className="flex mt-10">
-                <div className="flex-shrink-0"> 
-                    <div className="h-32 w-32 rounded-full bg-gray-300"></div>
-                </div>
+            {info &&  <div className="flex mt-0">
+                    <img src={info.profile_image} className="h-32 w-32 rounded-full bg-gray-300 mt-10 mr-10" />
+            
                 <div className="ml-4 flex-1 ml-10">
                     <h1 className="text-xl font-bold">내 정보 <button onClick ={updatehalder} style={{fontSize:"10px", color : "blue"}}> 내 정보 수정</button></h1>
                    
@@ -36,12 +35,6 @@ const Userinfo = () => {
                             <span className="text-sm text-gray-600">{info.email}</span>
                         </div>
                         <div className="flex items-center justify-between mt-4">
-                            <span className="text-sm font-medium text-gray-700">intro</span>
-                            <span className="text-sm text-gray-600">
-                                강남에서 최
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between mt-4">
                             <span className="text-sm font-medium text-gray-700">phone</span>
                             <span className="text-sm text-gray-600">{info.phone}</span>
                         </div>
@@ -53,8 +46,7 @@ const Userinfo = () => {
                     </div>
                 </div>
             </div>}
-           
-            <div className="mt-6">
+            <div style={{marginTop:"30%"}}>
                 <h3 className="text-lg font-bold">수강 완료한 강의 목록</h3>
                 <div className="mt-4 grid grid-cols-2 gap-4">
                     <div className="bg-gray-200 p-4 rounded-lg">

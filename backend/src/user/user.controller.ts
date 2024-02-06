@@ -8,6 +8,7 @@ import { User } from 'src/entities/user.entity';
 import { UpdateuserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { userInfo } from 'os';
 
 @ApiTags('회원')
 @UseGuards(JwtAuthGuard)
@@ -31,9 +32,9 @@ export class UserController {
 
     @Post("update")
     @UseInterceptors(FileInterceptor('image'))
-    async uploadImage(@UploadedFile() file: Express.Multer.File) {
-       
-        await this.userService.upload(file.originalname, file.buffer)
+    async uploadImage(@UploadedFile() file: Express.Multer.File, @UserInfo() userinfo: User, @Body() body : UpdateuserDto) {
+        await this.userService.upload(file.originalname, file.buffer , userinfo.id)
+        await this.userService.updateUserinfo(userinfo.id , body)
     }
 
     @Get("Allproduct")

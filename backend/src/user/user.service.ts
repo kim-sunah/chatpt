@@ -6,16 +6,21 @@ import { UpdateuserDto } from './dto/update-user.dto';
 import { Product } from 'src/entities/product.entity';
 import {S3Client, PutObjectCommand} from "@aws-sdk/client-s3"
 import { ConfigService } from '@nestjs/config';
+import { basename, extname } from 'path';
 
 @Injectable()
 export class UserService {
 
-    private readonly s3Client = new S3Client({region : this.configService.getOrThrow("S3_REGION")})    
+
     constructor(
         @InjectRepository(User)private readonly userRepository: Repository<User>,
         @InjectRepository(Product) private readonly productRepositoy: Repository<Product>,
         private readonly configService : ConfigService
     ) {}
+    private readonly s3Client = new S3Client({region : this.configService.getOrThrow("S3_REGION"), credentials: {
+        accessKeyId: process.env.AWS_S3_accessKeyId,
+        secretAccessKey: process.env.AWS_S3_secretAccessKey
+    }})    
 
     async getUserInfo(id: number) {
         const user = await this.userRepository.findOneBy({ id });
@@ -35,23 +40,32 @@ export class UserService {
                 throw new BadRequestException("이미 사용중인 이메일입니다.")
             }
         }
-        if(user.phone !== updateUser.phone){
-            const existphone = await this.userRepository.findOne({where : {phone : updateUser.phone}})
-            if(existphone){
-                throw new BadRequestException("이미 사용중인 번호입니다.")
-            }
-        }
+        // if(user.phone !== updateUser.phone){
+        //     const existphone = await this.userRepository.findOne({where : {phone : updateUser.phone}})
+        //     if(existphone){
+        //         throw new BadRequestException("이미 사용중인 번호입니다.")
+        //     }
+        // }
         if(user){
-            await this.userRepository.update(id, {email : updateUser.Email , phone : updateUser.phone});
+            await this.userRepository.update(id, {email : updateUser.Email });
         }
         else {
             throw new NotFoundException(`User with id ${id} not found`);
         }
     }
 
-    async upload(filename: string, file: Buffer) {
+    async upload(filename: string, file: Buffer, id : number) {
+       
+      
+     
+            const ext = extname(filename); // 확장자
+            const baseName = basename(filename, ext); // 확장자 제외
+            const fileName = `images/${baseName}-${Date.now()}${ext}`
+        
         try {
-            await this.s3Client.send(new PutObjectCommand({ Bucket: "chatpt-githubaction-s3-bucket", Key: filename, Body: file }));
+            await this.s3Client.send(new PutObjectCommand({ Bucket: "chatpt-githubaction-s3-bucket", Key: fileName, Body: file }));
+            await this.userRepository.update(id , {profile_image : "https://chatpt-githubaction-s3-bucket.s3.ap-northeast-2.amazonaws.com/" + fileName 
+        })
             console.log('Upload successful');
         } catch (error) {
             console.error('Error uploading to S3:', error);

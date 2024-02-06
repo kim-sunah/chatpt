@@ -13,18 +13,20 @@ export class UpdateuserDto {
 
 
     @IsString()
+    @IsOptional()
     @IsNotEmpty({message : "패스워드를 입력해주세요"})
     @IsStrongPassword({},{message:'비밀번호는 영문 알파벳 대/소문자, 숫자, 특수문자를 포함해야합니다.'})
     Password : string
 
 
     @IsString()
+    @IsOptional()
     @IsEqualTo("Password")
     ConfirmPassword : string
 
 
-    @IsMobilePhone()
-    @IsNotEmpty({message : "폰번호를 입력해주세요"})
-    phone : string
+    // @IsMobilePhone()
+    // @IsNotEmpty({message : "폰번호를 입력해주세요"})
+    // phone : string
 
 }

@@ -20,89 +20,28 @@ import { firstValueFrom } from 'rxjs';
 import axios from 'axios';
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
 import { Role } from 'src/enum/Role';
+import { Gender } from 'src/enum/Gender';
 
 @Injectable()
 export class AuthService {
-    [x: string]: any;
-    constructor(
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
-        private readonly jwtService: JwtService,
-        private readonly mailerService: MailerService,
-        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
-    ) {}
-    async signUp({ Email, Password, Gender, phone, Emailauthentication }: CreateuserDto) {
+    constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, private readonly jwtService: JwtService, private readonly mailerService: MailerService, @Inject(CACHE_MANAGER) private readonly cacheManager: Cache) { }
+
+    async signUp({ Email, Password, Gender, phone, nickname, Emailauthentication }: CreateuserDto) {
         const email_Emailauthentication = await this.cacheManager.get(Email);
         try {
-            const existedUser = await this.userRepository.findOne({
-                where: { email: Email, registration_information: 'site' },
-            });
+            const existedUser = await this.userRepository.findOne({ where: { email: Email } });
+
             if (existedUser) {
-                throw new BadRequestException({ message: '이미 사용중인 이메일입니다' });
+                throw new BadRequestException(['This Email is already in use']);
             }
             if (email_Emailauthentication !== Emailauthentication) {
-                throw new BadRequestException({ message: '인증번호가 일치하지 않습니다' });
+                throw new BadRequestException(['Authentication number does not match']);
             }
-
-            const exitphone = await this.userRepository.findOne({ where: { phone: phone } });
-            if (exitphone) {
-                throw new BadRequestException('이미 사용중인 번호입니다.');
-            }
-
-            const Nickname = Email.split('@')[0];
             const hashedPassword = await bcrypt.hashSync(Password, 12);
-            const user = this.userRepository.create({
-                registration_information: 'site',
-                email: Email,
-                password: hashedPassword,
-                nickname: Nickname,
-                phone,
-                gender: Gender,
-            });
+            const user = this.userRepository.create({ email: Email, password: hashedPassword, registration_information: "SITE", nickname, phone, gender: Gender });
             return await this.userRepository.save(user);
-        } catch (error) {
-            if (error instanceof BadRequestException) {
-                throw error;
-            }
-            throw new InternalServerErrorException('회원 가입 중 오류가 발생했습니다.');
         }
-    }
-
-    async hostsignup({ Email, Password, Gender, phone, Emailauthentication }: CreateuserDto) {
-        const email_Emailauthentication = await this.cacheManager.get(Email);
-        try {
-            const existedUser = await this.userRepository.findOne({
-                where: { email: Email, registration_information: 'site' },
-            });
-
-            if (existedUser) {
-                throw new BadRequestException({ message: '이미 사용중인 이메일입니다' });
-            }
-
-            if (email_Emailauthentication !== Emailauthentication) {
-                throw new BadRequestException({ message: '인증번호가 일치하지 않습니다' });
-            }
-
-            const exitphone = await this.userRepository.findOne({ where: { phone: phone } });
-            if (exitphone) {
-                throw new BadRequestException('이미 사용중인 번호입니다.');
-            }
-
-            const Nickname = Email.split('@')[0];
-
-            const hashedPassword = await bcrypt.hashSync(Password, 12);
-
-            const user = this.userRepository.create({
-                registration_information: 'site',
-                email: Email,
-                password: hashedPassword,
-                nickname: Nickname,
-                phone,
-                gender: Gender,
-                authority: Role.Host,
-            });
-            return await this.userRepository.save(user);
-        } catch (error) {
+        catch (error) {
             if (error instanceof BadRequestException) {
                 throw error;
             }
@@ -111,7 +50,7 @@ export class AuthService {
     }
 
     async signIn({ Email, Password }: SignInDto) {
-        const user = await this.userRepository.findOne({ where: { email: Email, registration_information: 'site' } });
+        const user = await this.userRepository.findOne({ where: { email: Email } });
 
         if (!user) {
             throw new UnauthorizedException('존재하지 않는 이메일입니다.');
@@ -119,7 +58,6 @@ export class AuthService {
         if (!(await bcrypt.compare(Password, user.password))) {
             throw new UnauthorizedException('존재하지 않는 비밀번호입니다.');
         }
-
         const authority = user.authority;
         const limit = user.limit;
         const accessToken = await this.createAccessToken(+user.id);
@@ -127,40 +65,21 @@ export class AuthService {
         return { accessToken, refreshToken, authority, limit };
     }
 
-    async Emailauthentication(email: string, sixDigitNumber: string) {
-        this.mailerService
-            .sendMail({
-                to: email,
-                from: 'chlxodud04@naver.com',
-                subject: '이메일 인증번호',
-                html: `<b>${sixDigitNumber}</b>`,
-            })
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((error) => {
-                new ConflictException(error);
-            });
-        console.log(email);
-        await this.cacheManager.set(email, sixDigitNumber, 30000);
-        return { sucess: '이메일 인증' };
-    }
 
-    async kakosignUp({ Email, Nickname }: KakaoLoginDto) {
+    async kakosignUp({ Email, Nickname, profile_image }: KakaoLoginDto) {
         try {
-            const existedUser = await this.userRepository.findOne({
-                where: { email: Email, registration_information: 'Kakao' },
-            });
-            if (existedUser) {
-                return;
-            } else {
-                const user = this.userRepository.create({
-                    registration_information: 'Kakao',
-                    email: Email,
-                    nickname: Nickname,
-                });
-                return await this.userRepository.save(user);
+
+            const KAKAO_USER = await this.userRepository.findOne({ where: { email: Email, registration_information: "KAKAO" } });
+            if (KAKAO_USER) {
+                return
             }
+            const existedUser = await this.userRepository.findOne({ where: { email: Email } });
+            if (existedUser) {
+                throw new BadRequestException("This Email is already in use")
+            }
+            const user = this.userRepository.create({ email: Email, nickname: Nickname, registration_information: "KAKAO", profile_image: profile_image });
+            return await this.userRepository.save(user);
+
         } catch (error) {
             if (error instanceof BadRequestException) {
                 throw error;
@@ -170,18 +89,56 @@ export class AuthService {
     }
 
     async kakaosignIn(Email: string) {
-        console.log('asdasdas');
-        const user = await this.userRepository.findOne({ where: { email: Email, registration_information: 'Kakao' } });
+        const user = await this.userRepository.findOne({ where: { email: Email } });
         if (!user) {
             throw new UnauthorizedException('존재하지 않는 이메일입니다.');
         }
-
         const authority = user.authority;
         const limit = user.limit;
         const accessToken = await this.createAccessToken(+user.id);
         const refreshToken = await this.createRefreshToken();
         return { accessToken, refreshToken, authority, limit };
     }
+
+    async naversignup(email: string, gender: string, phone: string, name: string) {
+        var USER_GENDER;
+        const NAVER_USER = await this.userRepository.findOne({ where: { email: email, registration_information : "NAVER"}});
+        if (NAVER_USER) {
+            return
+        }
+        const user = await this.userRepository.findOne({ where: { email: email}});
+        if (user) {
+            throw new BadRequestException("This Email is already in use")
+        }
+       
+        if(gender === "M"){
+            USER_GENDER = "Male"
+        }
+        else if(gender === "F"){
+            USER_GENDER = "Female"
+        }
+        else if(gender === "U"){
+            USER_GENDER = "UNKNOW"
+        }
+        const naveruser = this.userRepository.create({ registration_information: 'NAVER', email, nickname: name, phone, gender : USER_GENDER});
+        return await this.userRepository.save(naveruser);
+        
+    }
+
+    async naversignin(email: string) {
+        const user = await this.userRepository.findOne({ where: { email: email, registration_information: 'naver' } });
+        if (!user) {
+            throw new UnauthorizedException('존재하지 않는 이메일입니다.');
+        }
+        const authority = user.authority;
+        const limit = user.limit;
+        const accessToken = await this.createAccessToken(+user.id);
+        const refreshToken = await this.createRefreshToken();
+        return { accessToken, refreshToken, authority, limit };
+    }
+
+
+
     async createAccessToken(id: number) {
         const payload = { id: id };
         return await this.jwtService.signAsync(payload, { expiresIn: '5m' });
@@ -213,36 +170,24 @@ export class AuthService {
         }
     }
 
-    async naverlogin(email: string, gender: string, phone: string, name: string) {
-        const user = await this.userRepository.findOne({ where: { email: email, registration_information: 'naver' } });
 
-        if (user) {
-            return { email: user.email };
-        } else {
-            const naveruser = this.userRepository.create({
-                registration_information: 'naver',
-                email,
-                nickname: name,
-                phone,
-                gender,
+
+    async Emailauthentication(email: string, sixDigitNumber: string) {
+        this.mailerService
+            .sendMail({
+                to: email,
+                from: 'chlxodud04@naver.com',
+                subject: '이메일 인증번호',
+                html: `<b>${sixDigitNumber}</b>`,
+            })
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => {
+                new ConflictException(error);
             });
-            return await this.userRepository.save(naveruser);
-        }
+        console.log(email);
+        await this.cacheManager.set(email, sixDigitNumber, 30000);
+        return { sucess: '이메일 인증' };
     }
-
-    async naversignin(email: string) {
-        const user = await this.userRepository.findOne({ where: { email: email, registration_information: 'naver' } });
-
-        if (!user) {
-            throw new UnauthorizedException('존재하지 않는 이메일입니다.');
-        }
-
-        const authority = user.authority;
-        const limit = user.limit;
-        const accessToken = await this.createAccessToken(+user.id);
-        const refreshToken = await this.createRefreshToken();
-        return { accessToken, refreshToken, authority, limit };
-    }
-
-    //
 }

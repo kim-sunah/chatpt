@@ -18,12 +18,38 @@ const Bodymain = () => {
             <section className="mb-6">
                 <img
                     src={ss}
-                    className="w-full h-64 object-cover mb-6"
+                    className="w-full h-80 object-cover mb-6"
                     width="1000"
                     height="500"
                     style={myStyle}
                 />
-                <h1 className="text-2xl font-bold mb-6">결산이 남이 결산하신 '플랜타시' 에 대한 추천강의</h1>
+                
+            </section>
+            <section>
+                <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음</h2>
+                <div className="flex flex-col sm:flex-row  hide-scrollbar mb-4" >
+                    <div className="flex flex-col items-center mr-8">
+                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
+                        <span className="text-lg">필사</span>
+                    </div>
+                    <div className="flex flex-col items-center mr-8">
+                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
+                        <span className="text-lg">요가</span>
+                    </div>
+                    <div className="flex flex-col items-center mr-8">
+                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
+                        <span className="text-lg">플랜타시</span>
+                    </div>
+                    <div className="flex flex-col items-center mr-8">
+                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
+                        <span className="text-lg">자체개선</span>
+                    </div>
+                    <div className="flex flex-col items-center mr-8">
+                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
+                        <span className="text-lg">스토리텔링</span>
+                    </div>
+                </div>
+                
             </section>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full" data-v0-t="card">
@@ -167,31 +193,7 @@ const Bodymain = () => {
                     </div>
                 </div>
             </section>
-            <section>
-                <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음</h2>
-                <div className="flex flex-col sm:flex-row  hide-scrollbar mb-4" >
-                    <div className="flex flex-col items-center mr-4">
-                        <span className="relative flex shrink-0 overflow-hidden w-16 h-16 border rounded-full mb-2"></span>
-                        <span className="text-lg">필사</span>
-                    </div>
-                    <div className="flex flex-col items-center mr-4">
-                        <span className="relative flex shrink-0 overflow-hidden w-16 h-16 border rounded-full mb-2"></span>
-                        <span className="text-lg">요가</span>
-                    </div>
-                    <div className="flex flex-col items-center mr-4">
-                        <span className="relative flex shrink-0 overflow-hidden w-16 h-16 border rounded-full mb-2"></span>
-                        <span className="text-lg">플랜타시</span>
-                    </div>
-                    <div className="flex flex-col items-center mr-4">
-                        <span className="relative flex shrink-0 overflow-hidden w-16 h-16 border rounded-full mb-2"></span>
-                        <span className="text-lg">자체개선</span>
-                    </div>
-                    <div className="flex flex-col items-center mr-4">
-                        <span className="relative flex shrink-0 overflow-hidden w-16 h-16 border rounded-full mb-2"></span>
-                        <span className="text-lg">스토리텔링</span>
-                    </div>
-                </div>
-            </section>
+           
         </div>
     )
 

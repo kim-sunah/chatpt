@@ -42,6 +42,7 @@ const multerOptionsForImages = (configService: ConfigService) => {
                 callback(null, fileName)
             }
 		}),
+
       // 파일 크기 제한
         limits: {
             fileSize: 2 * 1024 * 1024
