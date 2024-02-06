@@ -19,15 +19,19 @@ import InquiryDetail from
 import Adminpage from "./components/admin/Adminpage";
 import Root from "./components/Root";
 import Payment from './components/payment/Payment-main'
+<<<<<<< HEAD
 import PaymentToss from './components/payment/Payment-toss'
 import PaymentSuccess from './components/payment/Payment-success'
+=======
+import KakaoRedirect from "./components/KakaoRedirect";
+>>>>>>> c77ce58d4e00acaa60a6306579feb53252c15a6a
 
 const router = createBrowserRouter([
   
   {path : "/" ,element : <Root></Root>, errorElement :<Errorpage></Errorpage>,children :[
     {index : true , element : <Main></Main>},
+
     
-    {path: "Login/naver", element : <Redirecturl></Redirecturl>},
       { path: 'product', children: [
           { path: 'create', element: <ProductCreate /> },
           { path: 'update', element: <ProductUpdate /> },
@@ -51,8 +55,8 @@ const router = createBrowserRouter([
 	{path:'', element: <Payment />},
 	{path:'success', element: <PaymentSuccess />}
   ]},
-  {path:'payment_toss', element: <PaymentToss />}
-
+  {path : "Login/kakao" , element :<KakaoRedirect></KakaoRedirect>},
+  {path: "Login/naver", element : <Redirecturl></Redirecturl>},
 ])
 function App() {
   return (

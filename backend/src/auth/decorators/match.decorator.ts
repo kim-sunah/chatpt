@@ -22,7 +22,7 @@ export function IsEqualTo(property: string, validationOptions?: ValidationOption
  
         defaultMessage(args: ValidationArguments) {  //검증에 실패했을떄
           const [relatedPropertyName] = args.constraints;
-          return `${propertyName} 가 ${relatedPropertyName}와 일치 않습니다`;
+          return `Confirm Password does not match Password"`;
         },
       },
     });

@@ -25,16 +25,7 @@ export class AuthController {
             user,
         };
     }
-    @Post("/hostsignup")
-    async hostsignup(@Body() createuserDto: CreateuserDto){
-        const user = await this.authService.hostsignup(createuserDto);
-        return {
-            statusCode: HttpStatus.CREATED,
-            message: '회원가입에 성공했습니다.',
-            user,
-        };
 
-    }
     @Post('/sign-in')
     async signIn(@Body() signInDto: SignInDto) {
         const { accessToken, refreshToken , authority , limit} = await this.authService.signIn(signInDto);
@@ -64,13 +55,10 @@ export class AuthController {
     }
 
     
-    @Post("naver")
-    async naverlogin(@Body("code") code: string){
-        const client_id = process.env.client_id
-        const client_secret = process.env.client_secret
-
+    @Post("naversignup")
+    async naversignup(@Body("code") code: string){
         try {
-            const response = await fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&code=${code}&state=9kgsGTfH4j7IyAkg  `, {
+            const response = await fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.client_id}&client_secret=${process.env.client_secret}&code=${code}&state=9kgsGTfH4j7IyAkg  `, {
               method: "POST",
               headers: {"Content-Type": "application/json"}
             });
@@ -78,11 +66,7 @@ export class AuthController {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        
             const resData = await response.json();
-            console.log(resData)
-           
-    
             const responseData = await fetch(`https://openapi.naver.com/v1/nid/me`, {
                 method: "GET",
                 headers: {"Authorization": "Bearer " + resData.access_token}
@@ -92,52 +76,27 @@ export class AuthController {
                 throw new Error(`HTTP error! Status: ${responseData.status}`);
               }
               const userData = await responseData.json();
-             
-            const naveruser = await this.authService.naverlogin(userData.response.email , userData.response.gender, userData.response.mobile, userData.response.name)
-           
+              await this.authService.naversignup(userData.response.email , userData.response.gender, userData.response.mobile, userData.response.name)
+              const { accessToken, refreshToken, authority,limit } = await this.authService.naversignin(userData.response.email)
+
             return {
                 statusCode: HttpStatus.OK,
                 message: '로그인에 성공했습니다.',
-                naveruser
+                accessToken,
+                refreshToken,
+                authority,
+                limit
                
             };
           } catch (err) {
-            console.log(err);
-            return null; // 또는 적절한 오류 처리를 수행할 수 있습니다.
+            return err; // 또는 적절한 오류 처리를 수행할 수 있습니다.
           }
-     }
-
-     @Post("naversignin")
-     async naversignin(@Body("email") email : string){
-       
-        const { accessToken, refreshToken, authority,limit } = await this.authService.naversignin(email)
-        return {
-            statusCode: HttpStatus.OK,
-            message: '로그인에 성공했습니다.',
-            accessToken,
-            refreshToken,
-            authority,
-            limit
-        };
-
      }
     @Post('kakaosingup')
     async postKakaoInfo(@Body() kakaoLoginDto : KakaoLoginDto) {
-        console.log(kakaoLoginDto);
-  
-        const kakao = await this.authService.kakosignUp(kakaoLoginDto)
-        return {
-            statusCode: HttpStatus.OK,
-            message: '로그인에 성공했습니다.',
-            kakao,
-        };
-       
-    }
-    @Post('kakaosingin')
-    async getKakaoInfo(@Body() kakaoLoginDto : KakaoLoginDto) {
-        console.log(kakaoLoginDto);
-  
+        await this.authService.kakosignUp(kakaoLoginDto)
         const { accessToken, refreshToken ,authority , limit} = await this.authService.kakaosignIn(kakaoLoginDto.Email)
+
         return {
             statusCode: HttpStatus.OK,
             message: '로그인에 성공했습니다.',
@@ -148,10 +107,5 @@ export class AuthController {
         };
        
     }
-
-    
-   
-  
-  
 }
 
