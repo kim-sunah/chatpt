@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createBrowserHistory } from 'history'
 
-const widgetClientKey = "test_ck_ma60RZblrqPm4GWZp6YxVwzYWBn1";
+const widgetClientKey = process.env.REACT_APP_WIDGET_CLIENT_KEY
 const customerKey = "RTD_YhbsTBDpIQ4cYKASB";
 
 export default function PaymentToss({product,user,spending,mileage,callback}) {

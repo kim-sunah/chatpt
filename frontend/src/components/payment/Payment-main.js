@@ -4,9 +4,10 @@ import Form from 'react-bootstrap/Form'
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk"
 import Modal from 'react-bootstrap/Modal'
 import PaymentToss from './Payment-toss'
+import {useSearchParams} from 'react-router-dom'
 
 const buttonStyle = {
-	margin: '9px'
+	margin: '10px'
 }
 
 const style = {
@@ -33,6 +34,7 @@ const Payment = props => {
 	const [message,setMessage] = useState('')
 	const [spending,setSpending] = useState(0)
 	const [show,setShow] = useState(false)
+	const [searchParams] = useSearchParams()
 	
 	const getUser = async () => {
 		const res = await fetch("http://localhost:4000/users/Mypage", {method : "GET" , headers:{"Content-Type" : "application/json", Authorization, refreshtoken} })
@@ -41,7 +43,8 @@ const Payment = props => {
 	}
 	
 	const getProduct = async () => {
-		const res = await fetch('http://localhost:4000/product?id=19')
+		const id = searchParams.get('id')
+		const res = await fetch(`http://localhost:4000/product?id=${id}`)
 		if(res.status!==200) return alert('해당 상품이 존재하지 않습니다.')
 		setProduct(await res.json())
 		setSpending(product.sale_price)
