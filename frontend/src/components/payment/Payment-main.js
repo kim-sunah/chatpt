@@ -4,23 +4,60 @@ import Form from 'react-bootstrap/Form'
 import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk"
 import Modal from 'react-bootstrap/Modal'
 import PaymentToss from './Payment-toss'
-import {useSearchParams} from 'react-router-dom'
+import {useNavigate, useSearchParams} from 'react-router-dom'
 
 const buttonStyle = {
 	margin: '10px'
 }
 
 const style = {
-	margin: '10px auto',
-	textAlign: 'center'
+	margin: '20px auto',
+	textAlign: 'center',
+	width: 600
+}
+
+const radioStyle = {
+	width: 300,
+	margin: '10px auto'
 }
 
 const formStyle = {
-	width: 500,
+	width: 600,
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'space-around',
 	margin: '0 auto'
+}
+
+const wrapStyle = {
+	margin: '15px auto',
+	width: 550
+}
+
+const productStyle = {
+	padding: '5px',
+	display: 'flex',
+	margin: '5px auto',
+	width: 600,
+	height: 110,
+}
+
+const imageStyle = {
+	maxWidth: 80,
+	maxHeight: 80,
+	objectFit: 'cover',
+	margin: '10px'
+}
+
+const infoStyle = {
+	margin: '10px',
+	textAlign: 'left'
+}
+
+const tagStyle = {
+	textAlign: 'left',
+	paddingLeft: 10,
+	fontWeight: 700
 }
 
 const Payment = props => {
@@ -31,15 +68,24 @@ const Payment = props => {
 	const [product,setProduct] = useState({})
 	const [mileage,setMileage] = useState(0)
 	const [ready,setReady] = useState(true)
-	const [message,setMessage] = useState('')
 	const [spending,setSpending] = useState(0)
 	const [show,setShow] = useState(false)
 	const [searchParams] = useSearchParams()
+	const [method,setMethod] = useState('kakao')
+	const navigate = useNavigate()
 	
 	const getUser = async () => {
 		const res = await fetch("http://localhost:4000/users/Mypage", {method : "GET" , headers:{"Content-Type" : "application/json", Authorization, refreshtoken} })
-		if(res.status!==200) return alert('로그인을 해주세요.')
-		setUser((await res.json()).user)
+		if(res.status!==200){
+			alert('로그인을 해주세요.')
+			navigate('/Login')
+		}
+		const user_ = (await res.json()).user
+		if(user_.authority!=='User'){
+			alert('권한이 없습니다.')
+			navigate('/')
+		}
+		setUser(user_)
 	}
 	
 	const getProduct = async () => {
@@ -47,20 +93,13 @@ const Payment = props => {
 		const res = await fetch(`http://localhost:4000/product?id=${id}`)
 		if(res.status!==200) return alert('해당 상품이 존재하지 않습니다.')
 		setProduct(await res.json())
-		setSpending(product.sale_price)
 	}
 	
 	const handleMileage = e => {
 		const mileage_ = +e.target.value
-		if(isNaN(mileage_) || !Number.isInteger(mileage_) || mileage_<0 || mileage_>product.sale_price || mileage_>user.mileage){
-			setReady(false)
-			setMessage('마일리지 사용량이 적절한 값이 아니거나 상품 가격 또는 보유 마일리지를 초과합니다.')
-			setSpending(product.sale_price)
-			return
-		}
+		if(isNaN(mileage_) || !Number.isInteger(mileage_) || mileage_<0 || mileage_>product.sale_price || mileage_>user.mileage) return setReady(false)
 		setReady(true)
 		setMileage(mileage_)
-		setSpending(product.sale_price-mileage_)
 	}
 	
   useEffect(() => {
@@ -78,12 +117,13 @@ const Payment = props => {
     };
 	
   }, []);
+  
+  useEffect(() => {
+	  if (product.sale_price && !isNaN(mileage))
+        setSpending(product.sale_price - mileage)
+  },[product,mileage])
 	
 	const callback = async (rsp,isKakao=true) => {
-		if(!isKakao){
-			setMileage(product.sale_price)
-			setSpending(0)
-		}
 		if(rsp.success){
 			const res = await fetch(`http://localhost:4000/payment`,{method:'post',headers:{'Content-Type':'application/json', Authorization, refreshtoken},
 			body: JSON.stringify({user_id:user.id,product_id:product.id,spending,mileage,method: isKakao? 'KAKAOPAY':'MILEAGE'})})
@@ -106,23 +146,74 @@ const Payment = props => {
 	
 	const handleShow = () => setShow(true)
 	const handleClose = () => setShow(false)
+	
+	const pay = () => {
+		if(spending===0) callback({success:true},false)
+		else if(method==='kakao') callback({success:true})
+		else handleShow()
+	}
   
 
   return (
     <div style={style}>
-		<p>상품 가격: {product.sale_price}</p>
-		<Form.Group style={formStyle}>
-			<Form.Label >마일리지 사용</Form.Label>
-			<Form.Control style={{width:300}} onChange={e => handleMileage(e)} size="lg" type="text" placeholder="0" />
-		</Form.Group><br />
-		{!ready && <p>{message}</p>}
-		<p>보유 마일리지: {user.mileage}</p>
-		<p>결제 금액: {spending}</p>
-		<Button style={buttonStyle} disabled={!spending} onClick={requestKakaoPay}>카카오페이로 결제하기</Button>
-		<Button style={buttonStyle} disabled={!spending} onClick={handleShow}>통합 결제하기</Button>
-		<Button style={buttonStyle} disabled={spending} onClick={() => callback({success:true},false)}>마일리지로 결제하기</Button>
+		<div style={wrapStyle}>
+			<h4 style={tagStyle}>강의 정보</h4>
+			<div style={productStyle}>
+				<img src={product.thumbnail} style={imageStyle} />
+				<div style={infoStyle}>
+					<h4>{product.name}</h4>
+					<h6>{product.intro}</h6>
+					<p>{product.sale_price}원</p>
+				</div>
+			</div>
+		</div><hr />
+		<div style={wrapStyle}>
+			<h4 style={tagStyle}>구매자 정보</h4>
+			<div style={infoStyle}>
+				<h6>{user.nickname}</h6>
+				<h6>{user.email}</h6>
+				<h6>{user.phone}</h6>
+			</div>
+		</div><hr />
+		<div style={wrapStyle}>
+			<h5 style={tagStyle}>보유 마일리지: {user.mileage}</h5>
+			<Form.Group style={formStyle}>
+				<Form.Label >마일리지 사용</Form.Label>
+				<Form.Control value={mileage} style={{width:300}} onChange={e => handleMileage(e)} size="lg" type="text" placeholder="0" />
+				<Button onClick={() => setMileage(Math.min(product.sale_price,user.mileage))}>전액 사용</Button>
+			</Form.Group><br />
+			{!ready && <p>마일리지 사용량이 적절한 값이 아니거나 상품 가격 또는 보유 마일리지를 초과합니다.</p>}
+		</div><hr />
+		<div style={wrapStyle}>
+			<h5 style={tagStyle}>주문 내역</h5>
+			<table style={{width:'100%'}}>
+				<tr>
+					<td>상품 가격</td>
+					<td>{product.sale_price}</td>
+				</tr>
+				<tr>
+					<td>마일리지 사용</td>
+					<td>{mileage}</td>
+				</tr>
+				<tr>
+					<th>결제 금액</th>
+					<th>{spending}</th>
+				</tr>
+			</table>
+		</div><hr />
+		<div style={wrapStyle}>
+			<h5 style={tagStyle}>결제 수단</h5>
+			<div style={radioStyle}>
+				<Form.Check defaultChecked disabled={mileage===product.sale_price} onChange={() => setMethod('kakao')} name='method' type='radio' label='카카오페이' />
+				<Form.Check name='method' disabled={mileage===product.sale_price} onChange={() => setMethod('toss')} type='radio' label='토스페이먼츠' />
+			</div>
+		</div>
+		<Button style={buttonStyle} onClick={pay} disabled={!ready}>{mileage===product.sale_price && '마일리지로'} 결제하기</Button> <br />
+		{/*<Button style={buttonStyle} disabled={!ready || !spending} onClick={requestKakaoPay}>카카오페이로 결제하기</Button>
+		<Button style={buttonStyle} disabled={!ready || !spending} onClick={handleShow}>통합 결제하기</Button>
+			<Button style={buttonStyle} disabled={!ready || spending} onClick={() => callback({success:true},false)}>마일리지로 결제하기</Button>*/}
 		<Modal show={show}>
-			<PaymentToss product={product} user={user} spending={spending} mileage={mileage} callback={callback} />
+			<PaymentToss product={product} user={user} spending={spending} mileage={mileage} callback={callback} handleClose={handleClose} />
 		</Modal>
     </div>
   );
