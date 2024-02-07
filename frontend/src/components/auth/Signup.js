@@ -25,7 +25,8 @@ const Signup = () => {
       .then(res => res.json())
       .then(resData => {
         if (resData.statusCode !== 201) {
-          console.log(resData.message)
+          console.log(resData.message.includes('phone'))
+        
           setphoneerror(resData.message.some(str => str.includes('phone')))
           setemailerror(resData.message.some(str => str.includes('Email')))
           setnicknameerror(resData.message.some(str => str.includes('nickname')))
@@ -71,11 +72,8 @@ const Signup = () => {
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 htmlFor="username"
-               
-               
-
               >
-                회원가입
+                Email
               </label>
               <input
                 className="flex h-10 w-full rounded-md border-red-500 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -83,9 +81,9 @@ const Signup = () => {
                 placeholder="m@example.com"
                 required=""
                 style={{border: emailerror === true ? "1px solid red" : "1px solid black"}}
-                
                 ref={emailref}
               />
+              {emailerror && <p>emailerror</p>}
 
             </div>
             <div className="space-y-2">
@@ -108,6 +106,7 @@ const Signup = () => {
                   인증번호 발송
                 </button>
               </div>
+              {Authenticationerror && <p> {Authenticationerror} </p>}
             </div>
             <div className="space-y-2">
               <label
@@ -124,6 +123,7 @@ const Signup = () => {
                 ref={passwordref}
               />
             </div>
+            {passworderror && <p> {passworderror}</p>}
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
