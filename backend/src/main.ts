@@ -8,7 +8,6 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as winston from 'winston'
 import SlackHook from 'winston-slack-webhook-transport'
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useWebSocketAdapter(new IoAdapter(app));
@@ -34,7 +33,7 @@ async function bootstrap() {
     transports: [
       new winston.transports.Console(),
 	  new SlackHook({
-		webhookUrl: 'https://hooks.slack.com/services/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',
+		webhookUrl: process.env.SLACK_WEBHOOK_URL,
         channel: '#project',
         username: 'LoggerBot',
 		level: 'error',
