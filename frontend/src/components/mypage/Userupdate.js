@@ -36,6 +36,7 @@ const Userupdate = (props) => {
         .then(resData =>{
             console.log(resData)
             if(resData.statusCode === 400){
+               
                 setphoneerror(resData.message.some(str => str.includes('phone')))
                 setpassworderror(resData.message.some(str => str.includes('password')))
                 setConfirmerror(resData.message.some(str => str.includes('Confirm')))
