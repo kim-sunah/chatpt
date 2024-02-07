@@ -27,8 +27,8 @@ export class Payment {
     @Column('int', { unsigned: true })
     product_id: number;
 
-    @Column('int', { unsigned: true })
-    pay_method_id: number;
+    @Column({default: 'MILEAGE'})
+    method: string;
 
     @Column('int', { unsigned: true })
     spending: number;
