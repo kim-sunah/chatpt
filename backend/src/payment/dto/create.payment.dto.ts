@@ -1,4 +1,4 @@
-import { IsInt, IsString, Min } from 'class-validator';
+import { IsInt, IsString, IsOptional } from 'class-validator';
 
 export class CreatePaymentDto {
     @IsInt()
@@ -7,8 +7,9 @@ export class CreatePaymentDto {
     @IsInt()
     product_id: number;
 
-    @IsInt()
-    pay_method_id?: number = 0;
+	@IsOptional()
+    @IsString()
+    method: string = 'MILEAGE';
 
     @IsInt()
     mileage: number;

@@ -19,9 +19,10 @@ export default function PaymentSuccess(){
 		async function confirm() {
 		  try {
 			const res = await fetch('https://api.tosspayments.com/v1/payments/confirm',{method:'post',headers:{Authorization:process.env.REACT_APP_TOSS_API_KEY},body:JSON.stringify(requestData)})
+			const approval = await res.json()
 			if(res.status!==200) throw new Error('결제가 승인되지 않았습니다. 다시 한 번 시도해주세요.')
 			await fetch(`http://localhost:4000/payment`,{method:'post',headers:{'Content-Type':'application/json', Authorization, refreshtoken},
-			body: JSON.stringify({user_id,product_id,spending:requestData.amount,mileage})})
+			body: JSON.stringify({user_id,product_id,spending:requestData.amount,mileage,method:approval.method})})
 		  } catch (error) {
 			console.error("Error confirming payment:", error);
 		  }

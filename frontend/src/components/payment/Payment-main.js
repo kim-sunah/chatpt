@@ -82,7 +82,7 @@ const Payment = props => {
 	const callback = async (rsp) => {
 		if(rsp.success){
 			const res = await fetch(`http://localhost:4000/payment`,{method:'post',headers:{'Content-Type':'application/json', Authorization, refreshtoken},
-			body: JSON.stringify({user_id:user.id,product_id:product.id,spending,mileage})})
+			body: JSON.stringify({user_id:user.id,product_id:product.id,spending,mileage,method:'KAKAOPAY'})})
 			console.log(await res.json())
 		}else alert('결제에 실패했습니다.')
 		console.log(rsp)
