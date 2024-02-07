@@ -102,6 +102,7 @@ const Payment = props => {
 		setMileage(mileage_)
 	}
 	
+	
   useEffect(() => {
 	  getUser()
 	  getProduct()
@@ -163,7 +164,7 @@ const Payment = props => {
 				<div style={infoStyle}>
 					<h4>{product.name}</h4>
 					<h6>{product.intro}</h6>
-					<p>{product.sale_price}원</p>
+					<p>{product.sale_price.toLocaleString()}원</p>
 				</div>
 			</div>
 		</div><hr />
@@ -176,7 +177,7 @@ const Payment = props => {
 			</div>
 		</div><hr />
 		<div style={wrapStyle}>
-			<h5 style={tagStyle}>보유 마일리지: {user.mileage}</h5>
+			<h5 style={tagStyle}>보유 마일리지 {user.mileage.toLocaleString()}</h5>
 			<Form.Group style={formStyle}>
 				<Form.Label >마일리지 사용</Form.Label>
 				<Form.Control value={mileage} style={{width:300}} onChange={e => handleMileage(e)} size="lg" type="text" placeholder="0" />
@@ -189,15 +190,15 @@ const Payment = props => {
 			<table style={{width:'100%'}}>
 				<tr>
 					<td>상품 가격</td>
-					<td>{product.sale_price}</td>
+					<td>{product.sale_price.toLocaleString()}원</td>
 				</tr>
 				<tr>
 					<td>마일리지 사용</td>
-					<td>{mileage}</td>
+					<td>{mileage.toLocaleString()}원</td>
 				</tr>
 				<tr>
 					<th>결제 금액</th>
-					<th>{spending}</th>
+					<th>{spending.toLocaleString()}원</th>
 				</tr>
 			</table>
 		</div><hr />
