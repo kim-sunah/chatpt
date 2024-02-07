@@ -181,7 +181,10 @@ const Payment = props => {
 			<Form.Group style={formStyle}>
 				<Form.Label >마일리지 사용</Form.Label>
 				<Form.Control value={mileage} style={{width:300}} onChange={e => handleMileage(e)} size="lg" type="text" placeholder="0" />
-				<Button onClick={() => setMileage(Math.min(product.sale_price,user.mileage))}>전액 사용</Button>
+				<Button onClick={() => {
+					setMileage(Math.min(product.sale_price,user.mileage))
+					setReady(true)
+				}}>전액 사용</Button>
 			</Form.Group><br />
 			{!ready && <p>마일리지 사용량이 적절한 값이 아니거나 상품 가격 또는 보유 마일리지를 초과합니다.</p>}
 		</div><hr />
