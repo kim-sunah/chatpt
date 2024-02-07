@@ -10,13 +10,12 @@ const Signup = () => {
   const Phone = useRef()
   const nickname = useRef()
   const [Gender, setGender] = useState("")
-  const [errorCode, seterrorCode] = useState()
-  const [phoneerror, setphoneerror] = useState()
-  const [emailerror, setemailerror] = useState()
-  const [nicknameerror, setnicknameerror] = useState()
-  const [passworderror , setpassworderror] = useState()
-  const [Confirmerror , setConfirmerror] = useState()
-  const [Authenticationerror, setAuthenticationerror] = useState()
+  const [phoneerrormessage, setphoneerrormessage] = useState()
+  const [emailerrormessage, setemailerrormessage] = useState()
+  const [nicknameerrormessage, setnicknameerrormessage] = useState()
+  const [passworderrormessage , setpassworderrormessage] = useState()
+  const [Confirmerrormessage , setConfirmerrormessage] = useState()
+  const [Authenticationerromessage, setAuthenticationerrormessage] = useState()
   const navigate = useNavigate()
 
   const Singupsubmithanlder = (events) => {
@@ -25,14 +24,46 @@ const Signup = () => {
       .then(res => res.json())
       .then(resData => {
         if (resData.statusCode !== 201) {
-          console.log(resData.message.includes('phone'))
-        
-          setphoneerror(resData.message.some(str => str.includes('phone')))
-          setemailerror(resData.message.some(str => str.includes('Email')))
-          setnicknameerror(resData.message.some(str => str.includes('nickname')))
-          setpassworderror(resData.message.some(str => str.includes('password')))
-          setConfirmerror(resData.message.some(str => str.includes('Confirm')))
-          setAuthenticationerror(resData.message.some(str => str.includes('Authentication')))
+          if(resData.message.findIndex(message => message.includes('Email')) !== -1){
+            setemailerrormessage(resData.message[resData.message.findIndex(message => message.includes('Email'))])
+          }
+          if(resData.message.findIndex(message => message.includes('Email')) === -1){
+            setemailerrormessage()
+          }
+          if(resData.message.findIndex(message => message.includes('nickname')) !== -1){
+            setnicknameerrormessage(resData.message[resData.message.findIndex(message => message.includes('nickname'))])
+          }
+          if(resData.message.findIndex(message => message.includes('nickname')) === -1){
+            setnicknameerrormessage()
+          }
+          if(resData.message.findIndex(message => message.includes('phone')) !== -1){
+            setphoneerrormessage(resData.message[resData.message.findIndex(message => message.includes('phone'))])
+            
+          }
+          if(resData.message.findIndex(message => message.includes('phone')) === -1){
+            setphoneerrormessage()
+          }
+          if(resData.message.findIndex(message => message.includes('password')) !== -1){
+            setpassworderrormessage(resData.message[resData.message.findIndex(message => message.includes('password'))])
+          }
+          if(resData.message.findIndex(message => message.includes('password')) === -1){
+            setpassworderrormessage()
+          }
+          if(resData.message.findIndex(message => message.includes('Confirm')) !== -1){
+            setConfirmerrormessage(resData.message[resData.message.findIndex(message => message.includes('Confirm'))])
+            
+          }
+          if(resData.message.findIndex(message => message.includes('Confirm')) === -1){
+            setConfirmerrormessage()
+          }
+          if(resData.message.findIndex(message => message.includes('Authentication')) !== -1){
+            setAuthenticationerrormessage(resData.message[resData.message.findIndex(message => message.includes('Authentication'))])
+          }
+          if(resData.message.findIndex(message => message.includes('Authentication')) === -1){
+            setAuthenticationerrormessage()
+            
+          }
+         
         }
        
         else if (resData.statusCode === 201) {
@@ -80,10 +111,10 @@ const Signup = () => {
                 id="username"
                 placeholder="m@example.com"
                 required=""
-                style={{border: emailerror === true ? "1px solid red" : "1px solid black"}}
+                style={{border: emailerrormessage ? "1px solid red" : "1px solid black"}}
                 ref={emailref}
               />
-              {emailerror && <p>emailerror</p>}
+              {emailerrormessage && <p style={{color : "red"}}>*{emailerrormessage}</p>}
 
             </div>
             <div className="space-y-2">
@@ -99,14 +130,14 @@ const Signup = () => {
                   id="authNumber"
                   placeholder="인증번호를 입력하세요"
                   required=""
-                  style={{border: Authenticationerror === true ? "1px solid red" : "1px solid black"}}
+                  style={{border: Authenticationerromessage ? "1px solid red" : "1px solid black"}}
                   ref={Emailauthentication}
                 />
                 <button onClick={emailsubmit} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 ml-2">
                   인증번호 발송
                 </button>
               </div>
-              {Authenticationerror && <p> {Authenticationerror} </p>}
+              {Authenticationerromessage && <p style={{color : "red"}}>* {Authenticationerromessage} </p>}
             </div>
             <div className="space-y-2">
               <label
@@ -119,11 +150,11 @@ const Signup = () => {
                 type="password"
                 className="flex h-10 w-full rounded-md  border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="password"
-                style={{border: passworderror === true ? "1px solid red" : "1px solid black"}}
+                style={{border: passworderrormessage  ? "1px solid red" : "1px solid black"}}
                 ref={passwordref}
               />
             </div>
-            {passworderror && <p> {passworderror}</p>}
+            {passworderrormessage && <p style={{color : "red"}}> *{passworderrormessage}</p>}
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -135,10 +166,11 @@ const Signup = () => {
                 type="password"
                 className="flex h-10 w-full rounded-md  border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="confirmPassword"
-                style={{border: Confirmerror === true ? "1px solid red" : "1px solid black"}}
+                style={{border: Confirmerrormessage  ? "1px solid red" : "1px solid black"}}
                 ref={Confirmpassword}
               />
             </div>
+            {Confirmerrormessage && <p style={{color : "red"}}>*{Confirmerrormessage}</p>}
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -150,10 +182,11 @@ const Signup = () => {
                 className="flex h-10 w-full rounded-md  border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="phoneNumber"
                 placeholder="nickname"
-                style={{border: nicknameerror === true ? "1px solid red" : "1px solid black"}}
+                style={{border: nicknameerrormessage  ? "1px solid red" : "1px solid black"}}
                 ref={nickname}
               />
             </div>
+            {nicknameerrormessage && <p style={{color : "red"}}>*{nicknameerrormessage}</p>}
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -166,10 +199,11 @@ const Signup = () => {
                 id="phoneNumber"
                 placeholder="폰 번호를 입력하세요"
                 type="text"
-                style={{border: phoneerror === true ? "1px solid red" : "1px solid black"}}
+                style={{border: phoneerrormessage  ? "1px solid red" : "1px solid black"}}
                 ref={Phone}
               />
             </div>
+            {phoneerrormessage && <p style={{color : "red"}}> *{phoneerrormessage}</p>}
 
             <div className="space-y-2">
               <label

@@ -16,7 +16,9 @@ import InquiryMain from './components/inquiry/Inquiry-main'
 import InquiryGeneral from './components/inquiry/Inquiry-general'
 import InquiryDetail from
   './components/inquiry/Inquiry-detail'
-import Adminpage from "./components/admin/Adminpage";
+import Adminpage from "./components/admin/layouts/admin/index"
+import Admin from "./components/admin/views/admin/default/index.jsx"
+import AdminTable from "./components/admin/views/admin/dataTables/index.jsx"
 import Root from "./components/Root";
 import Payment from './components/payment/Payment-main'
 import PaymentToss from './components/payment/Payment-toss'
@@ -28,8 +30,7 @@ const router = createBrowserRouter([
   {
     path: "/", element: <Root></Root>, errorElement: <Errorpage></Errorpage>, children: [
       { index: true, element: <Main></Main> },
-
-
+      { path: "mypage", element: <Mypage></Mypage> },
       {
         path: 'product', children: [
           { path: 'create', element: <ProductCreate /> },
@@ -47,15 +48,18 @@ const router = createBrowserRouter([
           { path: 'detail', element: <InquiryDetail /> }
         ]
       },
-
       { path: "Message", element: <Message></Message> },
     ]
   },
-
   { path: "Login", element: <Login></Login> },
   { path: "Signup", element: <Signup></Signup> },
-  { path: "mypage", element: <Mypage></Mypage> },
-  { path: "admin/:pages", element: <Adminpage></Adminpage> },
+  {path : "admin" , element :<Adminpage></Adminpage>, children:[
+    {path : "default" , element : <Admin></Admin>},
+    {path : "data-tables",element :<AdminTable></AdminTable>}
+  ]},
+
+    
+
   {
     path: 'payment', children: [
       { path: '', element: <Payment /> },

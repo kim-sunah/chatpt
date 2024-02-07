@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import logo from "../../../img/chat_PT_logo.png"
 import { BiLogIn } from "react-icons/bi";
 import { BiLogOut } from "react-icons/bi";
+import { BsFillFilePersonFill } from "react-icons/bs";
 
 import { Link, useNavigate } from 'react-router-dom';
 import SearchForm from '../../search/Search-form'
@@ -37,10 +38,10 @@ const Header = () => {
 
 
   return (
-    // <div className="bg-white min-h-screen px-40 mx-5">
-    <header className="flex items-center justify-between p-4 border-b px-20 mx-40">
+    // <div className="bg-white min-h-screen px-40 mx-5">className="p-6 min-h-screen px-40 mx-40"
+    <header className="flex items-center justify-between p-6 border-b px-20 mx-40 ">
       <Link to="/">Chat PT</Link>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 ">
         <form onSubmit={searchhandler}>
           <input
             type="text"
@@ -53,6 +54,7 @@ const Header = () => {
         <Link to="message"><BiSolidCommentDetail size="30" style={{ color: "black" }} /></Link>
 
         <Link to="mypage"><BiSolidUser size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>
+        {sessionStorage.getItem("authority") === "Host" && <Link to= "admin"><BsFillFilePersonFill size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>}
 
         {sessionStorage.getItem("accessToken") ? <BiLogOut size="30" onClick={Logouthanlder} style={{ color: "black" }} /> : <Link to="Login" style={{ color: "black" }}><BiLogIn size="30" /> </Link>}
 
