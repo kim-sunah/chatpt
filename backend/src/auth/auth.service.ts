@@ -16,11 +16,9 @@ import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { firstValueFrom } from 'rxjs';
-import axios from 'axios';
+
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
-import { Role } from 'src/enum/Role';
-import { Gender } from 'src/enum/Gender';
+
 
 @Injectable()
 export class AuthService {
@@ -187,7 +185,7 @@ export class AuthService {
                 new ConflictException(error);
             });
         console.log(email);
-        await this.cacheManager.set(email, sixDigitNumber, 30000);
+        await this.cacheManager.set(email, sixDigitNumber, 60000);
         return { sucess: '이메일 인증' };
     }
 }

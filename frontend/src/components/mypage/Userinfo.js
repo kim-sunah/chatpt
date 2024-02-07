@@ -20,7 +20,7 @@ const Userinfo = () => {
         {!update &&
         <div className="max-w-2xl mx-auto bg-white p-6">
             {info &&  <div className="flex mt-0">
-                    <img src={info.profile_image} className="h-32 w-32 rounded-full bg-gray-300 mt-10 mr-10" />
+                    <img src={info.profile_image} className="h-40 w-40 rounded-full bg-gray-300 mt-10 mr-10" />
             
                 <div className="ml-4 flex-1 ml-10">
                     <h1 className="text-xl font-bold">내 정보 <button onClick ={updatehalder} style={{fontSize:"10px", color : "blue"}}> 내 정보 수정</button></h1>

@@ -54,7 +54,7 @@ const Signup = () => {
         // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {status: 500,});
       })
   }
-  console.log(phoneerror)
+
   return (
 
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
