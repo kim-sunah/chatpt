@@ -43,8 +43,8 @@ export class PaymentService {
             const payment = this.paymentRepository.create({
                 user_id: userId,
                 product_id: createPaymentDto.product_id,
-                pay_method_id: createPaymentDto.pay_method_id,
                 spending: product.sale_price-createPaymentDto.mileage,
+				method: createPaymentDto.method,
                 mileage: createPaymentDto.mileage,
             });
             await this.paymentRepository.save(payment);
