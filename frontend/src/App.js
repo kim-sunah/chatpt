@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Main from './components/main/Main';
 
 import Errorpage from './components/error/Errorpage';
@@ -15,45 +15,55 @@ import InquiryMy from './components/inquiry/Inquiry-my'
 import InquiryMain from './components/inquiry/Inquiry-main'
 import InquiryGeneral from './components/inquiry/Inquiry-general'
 import InquiryDetail from
-'./components/inquiry/Inquiry-detail'
+  './components/inquiry/Inquiry-detail'
 import Adminpage from "./components/admin/Adminpage";
 import Root from "./components/Root";
 import Payment from './components/payment/Payment-main'
 import PaymentToss from './components/payment/Payment-toss'
 import PaymentSuccess from './components/payment/Payment-success'
 import KakaoRedirect from "./components/KakaoRedirect";
-
+import Message from "./components/message/Message";
 const router = createBrowserRouter([
-  
-  {path : "/" ,element : <Root></Root>, errorElement :<Errorpage></Errorpage>,children :[
-    {index : true , element : <Main></Main>},
 
-    
-      { path: 'product', children: [
+  {
+    path: "/", element: <Root></Root>, errorElement: <Errorpage></Errorpage>, children: [
+      { index: true, element: <Main></Main> },
+
+
+      {
+        path: 'product', children: [
           { path: 'create', element: <ProductCreate /> },
           { path: 'update', element: <ProductUpdate /> },
           { path: 'my', element: <ProductMy /> },
-		  { path: 'detail', element: <ProductDetail /> }
-        ]},
+          { path: 'detail', element: <ProductDetail /> }
+        ]
+      },
       { path: 'search', element: <SearchMain /> },
-	  { path: 'inquiry', children: [
-		  { path: '', element: <InquiryMain /> },
-		  { path: 'my', element: <InquiryMy /> },
-		  { path: 'general', element: <InquiryGeneral /> },
-		  { path: 'detail', element: <InquiryDetail /> }
-	  ]}
-  ]},
-	
-  {path : "Login" , element : <Login></Login>},
-  {path : "Signup", element : <Signup></Signup>},
-  {path : "mypage", element : <Mypage></Mypage>},
-  {path : "admin/:pages", element:<Adminpage></Adminpage>},
-  {path:'payment', children: [
-	{path:'', element: <Payment />},
-	{path:'success', element: <PaymentSuccess />}
-  ]},
-  {path : "Login/kakao" , element :<KakaoRedirect></KakaoRedirect>},
-  {path: "Login/naver", element : <Redirecturl></Redirecturl>},
+      {
+        path: 'inquiry', children: [
+          { path: '', element: <InquiryMain /> },
+          { path: 'my', element: <InquiryMy /> },
+          { path: 'general', element: <InquiryGeneral /> },
+          { path: 'detail', element: <InquiryDetail /> }
+        ]
+      },
+
+      { path: "Message", element: <Message></Message> },
+    ]
+  },
+
+  { path: "Login", element: <Login></Login> },
+  { path: "Signup", element: <Signup></Signup> },
+  { path: "mypage", element: <Mypage></Mypage> },
+  { path: "admin/:pages", element: <Adminpage></Adminpage> },
+  {
+    path: 'payment', children: [
+      { path: '', element: <Payment /> },
+      { path: 'success', element: <PaymentSuccess /> }
+    ]
+  },
+  { path: "Login/kakao", element: <KakaoRedirect></KakaoRedirect> },
+  { path: "Login/naver", element: <Redirecturl></Redirecturl> },
 ])
 function App() {
   return (

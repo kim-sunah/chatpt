@@ -4,9 +4,9 @@ import logo from "../../../img/chat_PT_logo.png"
 import { BiLogIn } from "react-icons/bi";
 import { BiLogOut } from "react-icons/bi";
 
-import { Link ,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchForm from '../../search/Search-form'
-import {useDispatch} from "react-redux"
+import { useDispatch } from "react-redux"
 import { searchActions } from '../../store/search.action';
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { BiSolidUser } from "react-icons/bi";
@@ -26,7 +26,7 @@ const Header = () => {
     sessionStorage.removeItem("refreshToken")
     sessionStorage.removeItem("authority")
     navigate("/")
- 
+
   }
 
   const searchhandler = (events) => {
@@ -39,7 +39,7 @@ const Header = () => {
   return (
     // <div className="bg-white min-h-screen px-40 mx-5">
     <header className="flex items-center justify-between p-4 border-b px-20 mx-40">
-      <Link to ="/"><img src={logo} className="text-2xl font-bold" style={{width:"120px", height:"120px"}} ></img></Link>
+      <Link to="/">Chat PT</Link>
       <div className="flex items-center space-x-4">
         <form onSubmit={searchhandler}>
           <input
@@ -50,17 +50,17 @@ const Header = () => {
           />
         </form>
 
-        <BiSolidCommentDetail size="30"  style={{ color: "black"}}/>
+        <Link to="message"><BiSolidCommentDetail size="30" style={{ color: "black" }} /></Link>
 
-        <Link to ="mypage"><BiSolidUser size="30" style={{ color: "black"  , marginLeft:"10%"}}/></Link>
-       
-        {sessionStorage.getItem("accessToken") ? <BiLogOut size="30" onClick={Logouthanlder} style={{ color: "black" }}/> :  <Link to="Login" style={{ color: "black" }}><BiLogIn size="30"/> </Link>}
+        <Link to="mypage"><BiSolidUser size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>
+
+        {sessionStorage.getItem("accessToken") ? <BiLogOut size="30" onClick={Logouthanlder} style={{ color: "black" }} /> : <Link to="Login" style={{ color: "black" }}><BiLogIn size="30" /> </Link>}
 
 
       </div>
     </header>
-    
-  
+
+
   );
 
 }
