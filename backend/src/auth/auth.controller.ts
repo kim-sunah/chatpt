@@ -41,17 +41,10 @@ export class AuthController {
 
     @Post("/Email_authentication")
     async Emailauthentication(@Body("Email") email: string) {
-
         let randomFraction = Math.random();
-
-        // 0에서 999999까지의 정수로 변환
-        let randomNumber = Math.floor(randomFraction * 1000000);
-
-        // 6자리로 만들기 위해 문자열로 변환하고 앞에 0 추가
+        let randomNumber = Math.floor(randomFraction * 1000000)
         let sixDigitNumber = randomNumber.toString().padStart(6, '0')
-
         return this.authService.Emailauthentication(email, sixDigitNumber)
-
     }
 
     

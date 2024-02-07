@@ -53,8 +53,8 @@ const Mypage = () => {
 
     }
     return (
-        <div>
-            <Header></Header>
+        <div className="p-6 min-h-screen px-40 mx-40">
+        
             <div className="bg-gray-900 text-white mx-40">
                 <div className="max-w-screen-xl mx-auto py-8 px-4">
                     <header className="flex justify-between items-center py-4">

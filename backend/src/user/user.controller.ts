@@ -25,16 +25,22 @@ export class UserController {
             user,
         };
     }
-    @Put('/MypageUpdate')
+    @Post('MypageUpdate')
     async updateUserinfo(@UserInfo() userinfo: User, @Body() updateUser: UpdateuserDto) {
-        console.log(userinfo)
+        const updateuser = await this.userService.updateUserinfo(userinfo.id , updateUser)
+        return {
+            statusCode: HttpStatus.OK,
+            updateuser,
+        };
+        
     }
 
     @Post("update")
     @UseInterceptors(FileInterceptor('image'))
-    async uploadImage(@UploadedFile() file: Express.Multer.File, @UserInfo() userinfo: User, @Body() body : UpdateuserDto) {
+    async uploadImage(@UploadedFile() file: Express.Multer.File, @UserInfo() userinfo: User) {
         await this.userService.upload(file.originalname, file.buffer , userinfo.id)
-        await this.userService.updateUserinfo(userinfo.id , body)
+        
+        
     }
 
     @Get("Allproduct")
@@ -44,8 +50,6 @@ export class UserController {
         return {
             statusCode: HttpStatus.OK,
             productlist,
-
-
         };
     }
     @Put('/limituser')

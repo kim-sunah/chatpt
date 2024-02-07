@@ -16,11 +16,9 @@ import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { firstValueFrom } from 'rxjs';
-import axios from 'axios';
+
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
-import { Role } from 'src/enum/Role';
-import { Gender } from 'src/enum/Gender';
+
 
 @Injectable()
 export class AuthService {
@@ -32,7 +30,7 @@ export class AuthService {
             const existedUser = await this.userRepository.findOne({ where: { email: Email } });
 
             if (existedUser) {
-                throw new BadRequestException(['This Email is already in use']);
+                throw new BadRequestException([`This Email is already in ${existedUser.registration_information} use`]);
             }
             if (email_Emailauthentication !== Emailauthentication) {
                 throw new BadRequestException(['Authentication number does not match']);
@@ -75,7 +73,7 @@ export class AuthService {
             }
             const existedUser = await this.userRepository.findOne({ where: { email: Email } });
             if (existedUser) {
-                throw new BadRequestException("This Email is already in use")
+                throw new BadRequestException(`This Email is already in ${existedUser.registration_information} use`)
             }
             const user = this.userRepository.create({ email: Email, nickname: Nickname, registration_information: "KAKAO", profile_image: profile_image });
             return await this.userRepository.save(user);
@@ -108,7 +106,7 @@ export class AuthService {
         }
         const user = await this.userRepository.findOne({ where: { email: email}});
         if (user) {
-            throw new BadRequestException("This Email is already in use")
+            throw new BadRequestException(`This Email is already in ${user.registration_information} use`)
         }
        
         if(gender === "M"){
@@ -187,7 +185,7 @@ export class AuthService {
                 new ConflictException(error);
             });
         console.log(email);
-        await this.cacheManager.set(email, sixDigitNumber, 30000);
+        await this.cacheManager.set(email, sixDigitNumber, 60000);
         return { sucess: '이메일 인증' };
     }
 }
