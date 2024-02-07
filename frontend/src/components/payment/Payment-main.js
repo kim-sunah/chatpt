@@ -79,10 +79,14 @@ const Payment = props => {
 	
   }, []);
 	
-	const callback = async (rsp) => {
+	const callback = async (rsp,isKakao=true) => {
+		if(!isKakao){
+			setMileage(product.sale_price)
+			setSpending(0)
+		}
 		if(rsp.success){
 			const res = await fetch(`http://localhost:4000/payment`,{method:'post',headers:{'Content-Type':'application/json', Authorization, refreshtoken},
-			body: JSON.stringify({user_id:user.id,product_id:product.id,spending,mileage,method:'KAKAOPAY'})})
+			body: JSON.stringify({user_id:user.id,product_id:product.id,spending,mileage,method: isKakao? 'KAKAOPAY':'MILEAGE'})})
 			console.log(await res.json())
 		}else alert('결제에 실패했습니다.')
 		console.log(rsp)
@@ -116,7 +120,7 @@ const Payment = props => {
 		<p>결제 금액: {spending}</p>
 		<Button style={buttonStyle} disabled={!spending} onClick={requestKakaoPay}>카카오페이로 결제하기</Button>
 		<Button style={buttonStyle} disabled={!spending} onClick={handleShow}>통합 결제하기</Button>
-		<Button style={buttonStyle} disabled={spending} onClick={() => callback({success:true})}>마일리지로 결제하기</Button>
+		<Button style={buttonStyle} disabled={spending} onClick={() => callback({success:true},false)}>마일리지로 결제하기</Button>
 		<Modal show={show}>
 			<PaymentToss product={product} user={user} spending={spending} mileage={mileage} callback={callback} />
 		</Modal>
