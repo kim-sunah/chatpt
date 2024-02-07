@@ -5,6 +5,4 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 ** s3 이미지 접근
 https://velog.io/@ililil9482/S3-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%98%AC%EB%A6%AC%EA%B3%A0-url%EB%A1%9C-%EC%A0%91%EA%B7%BC%ED%95%98%EA%B8%B0-w.-CloudFront
 
-* 새로고침 state 처리?
-
 -----------------------------
