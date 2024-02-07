@@ -16,6 +16,7 @@ export class PaymentService {
         @InjectRepository(Livecast) private readonly livecastRepository: Repository<Livecast>
     ) {}
 
+	// 구매하기
     async create(userId: number, createPaymentDto: CreatePaymentDto) {
         const queryRunner = this.paymentRepository.manager.connection.createQueryRunner();
         await queryRunner.connect();
@@ -74,13 +75,16 @@ export class PaymentService {
         }
     }
 
-    async findAll(userId: number) {
-        const payments = await this.paymentRepository.find({
+	// 내 구매 목록
+    async findAll(userId: number, page: number, pageSize: number) {
+        const payments = await this.paymentRepository.findAndCount({
             where: { user_id: userId },
             relations: ['product'],
+			take: pageSize,
+			skip: (page-1)*pageSize
         });
 
-        const formattedPayments = payments.map((payment) => ({
+        const formattedPayments = payments[0].map((payment) => ({
             payment_id: payment.id,
             product: {
                 product_id: payment.product.id,
@@ -90,9 +94,20 @@ export class PaymentService {
             createdAt: payment.createdAt,
         }));
 
-        return formattedPayments;
+        return [formattedPayments,payments[1]]
     }
 
+	// 구매자+강의 조합 찾기
+	async findOneWithUserAndProduct(user_id: number, product_id: number){
+		return await this.paymentRepository.findOne({where:{user_id,product_id}})
+	}
+	
+	// 상품별 구매 목록
+	async getByProduct(product_id: number, page: number, pageSize: number){
+		return await this.paymentRepository.findAndCount({where:{product_id}, take:pageSize, skip:(page-1)*pageSize, relations:['user']})
+	}
+
+	// 구매자+id 조합 찾기
     async findOne(id: number, userId: number) {
         const payment = await this.paymentRepository.findOne({
             where: { id, user_id: userId },

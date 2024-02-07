@@ -8,6 +8,7 @@ import {BadwordService} from '../badword/badword.service'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
 import {Product} from '../entities/product.entity'
+import {Payment} from '../entities/payment.entity'
 
 @Injectable()
 export class CommentService {
@@ -16,6 +17,8 @@ export class CommentService {
         private readonly commentRepository: Repository<Comment>,
 		@InjectRepository(Product)
 		private readonly productRepository: Repository<Product>,
+		@InjectRepository(Payment)
+		private readonly paymentRepository: Repository<Payment>,
 		private readonly badwordService: BadwordService,
 		@Inject(REQUEST) private readonly req: Request
     ) {}
@@ -41,6 +44,8 @@ export class CommentService {
     async comment(createCommentDto: CreateCommentDto, productId: number, userId: number): Promise<Comment> {
 		const product = await this.productRepository.findOne({where:{id:productId}})
 		if(!product) throw new NotFoundException('해당 강의가 존재하지 않습니다.')
+		const payment = await this.paymentRepository.findOne({where:{user_id:userId,product_id:productId}})
+		if(!payment) throw new BadRequestException('구매한 강의에만 리뷰를 작성할 수 있습니다.')
 		if(new Date().toJSON().slice(0, 10)<=product.end_on.toJSON().slice(0,10)) throw new BadRequestException('리뷰는 종강일부터 작성 가능합니다.')
 		if(await this.commentRepository.findOne({where:{user_id:userId,product_id:productId}})) throw new ConflictException('이미 리뷰한 강의입니다. 변경 사항이 있으시면 리뷰 내용을 수정하시기 바랍니다.')
 		const badwords = await this.badwordService.searchBadword(createCommentDto.comment)

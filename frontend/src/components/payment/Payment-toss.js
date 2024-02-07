@@ -3,11 +3,12 @@ import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 import { nanoid } from "nanoid";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createBrowserHistory } from 'history'
+import Button from 'react-bootstrap/Button'
 
 const widgetClientKey = process.env.REACT_APP_WIDGET_CLIENT_KEY
 const customerKey = "RTD_YhbsTBDpIQ4cYKASB";
 
-export default function PaymentToss({product,user,spending,mileage,callback}) {
+export default function PaymentToss({product,user,spending,mileage,callback,handleClose}) {
   const [paymentWidget, setPaymentWidget] = useState(null);
   const paymentMethodsWidgetRef = useRef(null);
   const navigate = useNavigate();
@@ -68,7 +69,8 @@ export default function PaymentToss({product,user,spending,mileage,callback}) {
     <div>
       <div id="payment-widget" />
       <div id="agreement" />
-      <button onClick={handlePaymentRequest}>결제하기</button>
+      <Button style={{margin: '10px'}} onClick={handlePaymentRequest}>결제하기</Button>
+	  <Button style={{margin: '10px'}} onClick={handleClose}>닫기</Button>
     </div>
   );
 }
