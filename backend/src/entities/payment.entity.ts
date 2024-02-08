@@ -40,7 +40,7 @@ export class Payment {
     status: PayStatus;
 
     @CreateDateColumn()
-    createdAt: Date;
+	createdAt: Date
 
     @UpdateDateColumn()
     updatedAt: Date;

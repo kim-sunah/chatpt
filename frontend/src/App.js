@@ -39,6 +39,12 @@ const router = createBrowserRouter([
           { path: 'detail', element: <ProductDetail /> }
         ]
       },
+	  {
+		path: 'payment', children: [
+		  { path: '', element: <Payment /> },
+		  { path: 'success', element: <PaymentSuccess /> }
+		]
+	  },
       { path: 'search', element: <SearchMain /> },
       {
         path: 'inquiry', children: [
@@ -60,12 +66,7 @@ const router = createBrowserRouter([
 
     
 
-  {
-    path: 'payment', children: [
-      { path: '', element: <Payment /> },
-      { path: 'success', element: <PaymentSuccess /> }
-    ]
-  },
+  
   { path: "Login/kakao", element: <KakaoRedirect></KakaoRedirect> },
   { path: "Login/naver", element: <Redirecturl></Redirecturl> },
 ])
