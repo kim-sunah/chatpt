@@ -29,6 +29,12 @@ export class PaymentController {
             data: payment,
         };
     }
+	
+	// 인기 강의 찾기
+	@Get('best')
+	async getTopProducts(){
+		return await this.paymentService.getTopProducts()
+	}
 
 	// 내 구매 목록
     @ApiBearerAuth()
