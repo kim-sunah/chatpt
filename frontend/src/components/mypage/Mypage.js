@@ -6,13 +6,13 @@ import Allproduct from "./Allproduct"
 import Likeproduct from "./Likeproduct"
 import Userinfo from "./Userinfo"
 
-
+import PaymentMy from '../payment/Payment-my'
 
 const Mypage = () => {
     const navigate = useNavigate()
     const [productlist , setproductlist] = useState(true)
     const [like ,setlike] = useState(false)
-    const [Paymentlist , sePayment] = useState(false)
+    const [paymentlist , setPayment] = useState(false)
     const [info , setinfo] = useState(false);
 
     useEffect(() => {
@@ -25,21 +25,21 @@ const Mypage = () => {
     const productlisthanlder = () =>{
         setproductlist(true)
         setlike(false)
-        sePayment(false)
+        setPayment(false)
         setinfo(false)
 
     }
     const likehandler =() =>{
         setproductlist(false)
         setlike(true)
-        sePayment(false)
+        setPayment(false)
         setinfo(false)
 
     }
     const Paymentlisthandler = () =>{
         setproductlist(false)
         setlike(false)
-        sePayment(true)
+        setPayment(true)
         setinfo(false)
 
     }
@@ -47,7 +47,7 @@ const Mypage = () => {
     const infohandler = () =>{
         setproductlist(false)
         setlike(false)
-        sePayment(false)
+        setPayment(false)
         setinfo(true)
         
 
@@ -105,6 +105,7 @@ const Mypage = () => {
                             {productlist && <Allproduct></Allproduct>}
                             {like && <Likeproduct></Likeproduct>}
                             {info && <Userinfo></Userinfo>}
+							{paymentlist && <PaymentMy />}
                     </div>
                    
                 </main>
