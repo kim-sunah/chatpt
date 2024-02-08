@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux"
 import { searchActions } from '../../store/search.action';
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { BiSolidUser } from "react-icons/bi";
+import { auto } from '@popperjs/core';
 
 const Header = () => {
   const searchref = useRef()
@@ -42,6 +43,7 @@ const Header = () => {
     <header className="flex items-center justify-between p-6 border-b px-20 mx-40 ">
       <Link to="/">Chat PT</Link>
       <div className="flex items-center space-x-4 ">
+        <p style={{margin : "0px auto"}}> 강사 </p>
         <form onSubmit={searchhandler}>
           <input
             type="text"

@@ -51,10 +51,10 @@ export class AuthService {
         const user = await this.userRepository.findOne({ where: { email: Email } });
 
         if (!user) {
-            throw new UnauthorizedException('존재하지 않는 이메일입니다.');
+            throw new BadRequestException(['This Email does not exist.']);
         }
         if (!(await bcrypt.compare(Password, user.password))) {
-            throw new UnauthorizedException('존재하지 않는 비밀번호입니다.');
+            throw new BadRequestException(['A password that does not exist.']);
         }
         const authority = user.authority;
         const limit = user.limit;

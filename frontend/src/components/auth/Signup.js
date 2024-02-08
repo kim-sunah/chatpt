@@ -111,10 +111,10 @@ const Signup = () => {
                 id="username"
                 placeholder="m@example.com"
                 required=""
-                style={{border: emailerrormessage ? "1px solid red" : "1px solid black"}}
+                style={{border: emailerrormessage ? "1px solid red" : "1px solid gray"}}
                 ref={emailref}
               />
-              {emailerrormessage && <p style={{color : "red"}}>*{emailerrormessage}</p>}
+              {emailerrormessage && <p style={{color : "red" , marginTop:"5%"}}>*{emailerrormessage}</p>}
 
             </div>
             <div className="space-y-2">
@@ -130,14 +130,14 @@ const Signup = () => {
                   id="authNumber"
                   placeholder="인증번호를 입력하세요"
                   required=""
-                  style={{border: Authenticationerromessage ? "1px solid red" : "1px solid black"}}
+                  style={{border: Authenticationerromessage ? "1px solid red" : "1px solid gray"}}
                   ref={Emailauthentication}
                 />
                 <button onClick={emailsubmit} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 ml-2">
                   인증번호 발송
                 </button>
               </div>
-              {Authenticationerromessage && <p style={{color : "red"}}>* {Authenticationerromessage} </p>}
+              {Authenticationerromessage && <p style={{color : "red" , marginTop:"5%"}}>* {Authenticationerromessage} </p>}
             </div>
             <div className="space-y-2">
               <label
@@ -150,11 +150,11 @@ const Signup = () => {
                 type="password"
                 className="flex h-10 w-full rounded-md  border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="password"
-                style={{border: passworderrormessage  ? "1px solid red" : "1px solid black"}}
+                style={{border: passworderrormessage  ? "1px solid red" : "1px solid gray"}}
                 ref={passwordref}
               />
             </div>
-            {passworderrormessage && <p style={{color : "red"}}> *{passworderrormessage}</p>}
+            {passworderrormessage && <p style={{color : "red" , marginTop:"5%"}}> *{passworderrormessage}</p>}
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -166,11 +166,11 @@ const Signup = () => {
                 type="password"
                 className="flex h-10 w-full rounded-md  border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="confirmPassword"
-                style={{border: Confirmerrormessage  ? "1px solid red" : "1px solid black"}}
+                style={{border: Confirmerrormessage  ? "1px solid red" : "1px solid gray"}}
                 ref={Confirmpassword}
               />
             </div>
-            {Confirmerrormessage && <p style={{color : "red"}}>*{Confirmerrormessage}</p>}
+            {Confirmerrormessage && <p style={{color : "red" , marginTop:"5%"}}>*{Confirmerrormessage}</p>}
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -182,11 +182,11 @@ const Signup = () => {
                 className="flex h-10 w-full rounded-md  border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="phoneNumber"
                 placeholder="nickname"
-                style={{border: nicknameerrormessage  ? "1px solid red" : "1px solid black"}}
+                style={{border: nicknameerrormessage  ? "1px solid red" : "1px solid gray"}}
                 ref={nickname}
               />
             </div>
-            {nicknameerrormessage && <p style={{color : "red"}}>*{nicknameerrormessage}</p>}
+            {nicknameerrormessage && <p style={{color : "red" , marginTop:"5%"}}>*{nicknameerrormessage}</p>}
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -199,11 +199,11 @@ const Signup = () => {
                 id="phoneNumber"
                 placeholder="폰 번호를 입력하세요"
                 type="text"
-                style={{border: phoneerrormessage  ? "1px solid red" : "1px solid black"}}
+                style={{border: phoneerrormessage  ? "1px solid red" : "1px solid gray"}}
                 ref={Phone}
               />
             </div>
-            {phoneerrormessage && <p style={{color : "red"}}> *{phoneerrormessage}</p>}
+            {phoneerrormessage && <p style={{color : "red", marginTop:"5%"}}> *{phoneerrormessage}</p>}
 
             <div className="space-y-2">
               <label
