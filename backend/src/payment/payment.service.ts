@@ -120,4 +120,19 @@ export class PaymentService {
             createdAt: payment.createdAt,
         };
     }
+	
+	// 인기 강의 찾기
+	async getTopProducts(){
+		const oneWeekAgo = new Date()
+		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+		return await this.paymentRepository.createQueryBuilder('payment')
+			.leftJoinAndSelect('payment.product','product')
+			.select('COUNT(*)','count')
+			.addSelect('product')
+			.where('payment.createdAt >= :oneWeekAgo', { oneWeekAgo })
+			.groupBy('payment.product_id')
+			.orderBy('count','DESC')
+			.limit(5)
+			.getRawMany()
+	}
 }
