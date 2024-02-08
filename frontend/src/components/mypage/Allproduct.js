@@ -2,15 +2,14 @@ import { useEffect, useState } from "react"
 import logo from "../../img/Designer.jpeg"
 const Allproduct = () => {
     const [productlist, setproductlist] = useState()
-    const [username, setusername] = useState()
+    
     useEffect(() => {
         fetch("http://localhost:4000/payment/my", {method : "GET" , headers :  { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
         .then(res => res.json())
         .then(resData => { 
-          
+            console.log(resData.payments[0])
             if(resData.statusCode === 200){
-                setproductlist(resData.payments)
-                setusername(resData.username.nickanme)
+                setproductlist(resData.payments[0])
         }})
         .catch(err=> {
             console.log(err)

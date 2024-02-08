@@ -5,8 +5,6 @@ import logo from "../../img/Designer.jpeg"
 import Allproduct from "./Allproduct"
 import Likeproduct from "./Likeproduct"
 import Userinfo from "./Userinfo"
-import Paymentlist from "./Paymentlist"
-
 import PaymentMy from '../payment/Payment-my'
 
 const Mypage = () => {
@@ -103,7 +101,6 @@ const Mypage = () => {
                 <main className="bg-white text-black pt-10">
                     <div className="max-w-screen-xl mx-auto px-4">
                             {productlist && <Allproduct></Allproduct>}
-                            {Paymentlists && <Paymentlist></Paymentlist>}
                             {like && <Likeproduct></Likeproduct>}
                             {info && <Userinfo></Userinfo>}
 							{paymentlist && <PaymentMy />}

@@ -9,11 +9,9 @@ const style = {
 	width: 800,
 	margin: '15px auto'
 }
-
 const tableStyle = {
 	
 }
-
 const switchStyle = {
 	margin:'0 10px',
 	borderColor: '#ccc'
