@@ -6,58 +6,81 @@ import Modal from 'react-bootstrap/Modal'
 import PaymentToss from './Payment-toss'
 import {useNavigate, useSearchParams} from 'react-router-dom'
 
-const buttonStyle = {
-	margin: '10px'
-}
-
 const style = {
 	margin: '20px auto',
 	textAlign: 'center',
-	width: 600
-}
-
-const radioStyle = {
-	width: 300,
-	margin: '10px auto'
-}
-
-const formStyle = {
-	width: 600,
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'space-around',
-	margin: '0 auto'
+	width: 750 // Increased width for better alignment
 }
 
 const wrapStyle = {
 	margin: '15px auto',
-	width: 550
+	width: 700 // Adjusted width for better spacing
 }
 
 const productStyle = {
-	padding: '5px',
+	padding: '10px', // Increased padding for better spacing
 	display: 'flex',
-	margin: '5px auto',
-	width: 600,
-	height: 110,
+	margin: '10px auto', // Adjusted margin for better spacing
+	width: 700, // Adjusted width for better alignment
+	height: 130, // Increased height for better alignment
+	//border: '1px solid #ccc', // Added border for better visibility
+	borderRadius: '5px' // Added border radius for better aesthetics
 }
 
 const imageStyle = {
-	maxWidth: 80,
-	maxHeight: 80,
+	width: 100, // Adjusted width for better visibility
+	height: 100, // Adjusted height for better visibility
 	objectFit: 'cover',
-	margin: '10px'
+	marginRight: '20px' // Increased margin for better spacing
 }
 
 const infoStyle = {
-	margin: '10px',
+	margin: 'auto', // Centered content horizontally
 	textAlign: 'left'
 }
 
 const tagStyle = {
 	textAlign: 'left',
-	paddingLeft: 10,
-	fontWeight: 700
+	//paddingLeft: 20, // Increased padding for better alignment
+	fontWeight: 700,
+	margin: '25px auto'
+}
+
+const formStyle = {
+	width: '100%',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'space-between',
+	margin: '0 auto'
+}
+
+const radioStyle = {
+	width: '100%', // Increased width for better alignment
+	margin: '10px auto',
+	textAlign: 'left'
+}
+
+const buttonStyle = {
+	margin: '10px',
+	width: 500 // Adjusted width for better visibility
+}
+
+const tableStyle = {
+	width: '100%',
+}
+
+const priceStyle = {
+	width: '100%',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'space-between',
+	margin: '10px auto'
+}
+
+const borderStyle = {
+	height: 3,
+	width: '100%',
+	backgroundColor: '#ccc'
 }
 
 const Payment = props => {
@@ -158,61 +181,60 @@ const Payment = props => {
   return (
     <div style={style}>
 		<div style={wrapStyle}>
-			<h4 style={tagStyle}>강의 정보</h4>
+			<h5 style={tagStyle}>강의 정보</h5>
 			<div style={productStyle}>
 				<img src={product.thumbnail} style={imageStyle} />
 				<div style={infoStyle}>
-					<h4>{product.name}</h4>
+					<h5>{product.name}</h5>
 					<h6>{product.intro}</h6>
-					<p>{product.sale_price?.toLocaleString()}원</p>
+					<h5>{product.sale_price?.toLocaleString()}원</h5>
 				</div>
 			</div>
-		</div><hr />
+		</div><div style={borderStyle} />
 		<div style={wrapStyle}>
-			<h4 style={tagStyle}>구매자 정보</h4>
+			<h5 style={tagStyle}>구매자 정보</h5>
 			<div style={infoStyle}>
 				<h6>{user.nickname}</h6>
 				<h6>{user.email}</h6>
 				<h6>{user.phone}</h6>
 			</div>
-		</div><hr />
+		</div><div style={borderStyle} />
 		<div style={wrapStyle}>
-			<h5 style={tagStyle}>보유 마일리지 {user.mileage?.toLocaleString()}</h5>
+			<h5 style={tagStyle}>마일리지</h5>
 			<Form.Group style={formStyle}>
-				<Form.Label >마일리지 사용</Form.Label>
+				<Form.Label style={{}}>마일리지 사용</Form.Label>
 				<Form.Control value={mileage} style={{width:300}} onChange={e => handleMileage(e)} size="lg" type="text" placeholder="0" />
-				<Button onClick={() => {
+				<Button variant='dark' onClick={() => {
 					setMileage(Math.min(product.sale_price,user.mileage))
 					setReady(true)
 				}}>전액 사용</Button>
 			</Form.Group><br />
+			<h6 style={{textAlign:'right',fontWeight:700}}>보유 마일리지 {user.mileage?.toLocaleString()}</h6>
 			{!ready && <p>마일리지 사용량이 적절한 값이 아니거나 상품 가격 또는 보유 마일리지를 초과합니다.</p>}
-		</div><hr />
+		</div><div style={borderStyle} />
 		<div style={wrapStyle}>
 			<h5 style={tagStyle}>주문 내역</h5>
-			<table style={{width:'100%'}}>
-				<tr>
-					<td>상품 가격</td>
-					<td>{product.sale_price?.toLocaleString()}원</td>
-				</tr>
-				<tr>
-					<td>마일리지 사용</td>
-					<td>{mileage?.toLocaleString()}원</td>
-				</tr>
-				<tr>
-					<th>결제 금액</th>
-					<th>{spending?.toLocaleString()}원</th>
-				</tr>
-			</table>
-		</div><hr />
+			<div style={priceStyle}>
+				<h6>상품 가격</h6>
+				<h6>{product.sale_price?.toLocaleString()}원</h6>
+			</div>
+			<div style={priceStyle}>
+				<h6>마일리지 사용</h6>
+				<h6>{mileage?.toLocaleString()}원</h6>
+			</div><hr />
+			<div style={priceStyle}>
+				<h5>결제 금액</h5>
+				<h5>{spending?.toLocaleString()}원</h5>
+			</div>
+		</div><div style={borderStyle} />
 		<div style={wrapStyle}>
 			<h5 style={tagStyle}>결제 수단</h5>
 			<div style={radioStyle}>
-				<Form.Check defaultChecked disabled={mileage===product.sale_price} onChange={() => setMethod('kakao')} name='method' type='radio' label='카카오페이' />
-				<Form.Check name='method' disabled={mileage===product.sale_price} onChange={() => setMethod('toss')} type='radio' label='토스페이먼츠' />
+				<Form.Check style={{margin:'15px auto'}} defaultChecked disabled={mileage===product.sale_price} onChange={() => setMethod('kakao')} name='method' type='radio' label='카카오페이' />
+				<Form.Check style={{margin:'15px auto'}} name='method' disabled={mileage===product.sale_price} onChange={() => setMethod('toss')} type='radio' label='토스페이먼츠' />
 			</div>
 		</div>
-		<Button style={buttonStyle} onClick={pay} disabled={!ready}>{mileage===product.sale_price && '마일리지로'} 결제하기</Button> <br />
+		<Button variant='dark' style={buttonStyle} onClick={pay} disabled={!ready}>{mileage===product.sale_price && '마일리지로'} 결제하기</Button> <br />
 		{/*<Button style={buttonStyle} disabled={!ready || !spending} onClick={requestKakaoPay}>카카오페이로 결제하기</Button>
 		<Button style={buttonStyle} disabled={!ready || !spending} onClick={handleShow}>통합 결제하기</Button>
 			<Button style={buttonStyle} disabled={!ready || spending} onClick={() => callback({success:true},false)}>마일리지로 결제하기</Button>*/}
