@@ -29,7 +29,7 @@ export default function PaymentMy(){
 	
 	const getPayments = async () => {
 		const res = await fetch(server+`/payment/my?page=${page}`,{headers:{'Content-Type' : 'application/json', authorization,refreshtoken}})
-		const [payments_,count_] = (await res.json()).data
+		const [payments_,count_] = (await res.json()).payments
 		setPayments(payments_)
 		setCount(count_)
 		console.log(page,payments_)
