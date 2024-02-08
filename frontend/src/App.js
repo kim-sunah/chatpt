@@ -21,10 +21,11 @@ import Admin from "./components/admin/views/admin/default/index.jsx"
 import AdminTable from "./components/admin/views/admin/dataTables/index.jsx"
 import Root from "./components/Root";
 import Payment from './components/payment/Payment-main'
-import PaymentToss from './components/payment/Payment-toss'
+import PaymentMy from './components/payment/Payment-my'
 import PaymentSuccess from './components/payment/Payment-success'
 import KakaoRedirect from "./components/KakaoRedirect";
 import Message from "./components/message/Message";
+
 const router = createBrowserRouter([
 
   {
@@ -42,7 +43,8 @@ const router = createBrowserRouter([
 	  {
 		path: 'payment', children: [
 		  { path: '', element: <Payment /> },
-		  { path: 'success', element: <PaymentSuccess /> }
+		  { path: 'success', element: <PaymentSuccess /> },
+		  { path: 'my', element: <PaymentMy /> }
 		]
 	  },
       { path: 'search', element: <SearchMain /> },
