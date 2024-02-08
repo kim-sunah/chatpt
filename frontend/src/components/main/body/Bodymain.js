@@ -15,7 +15,7 @@ const divStyle = {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundSize: 'cover',
- 
+	backgroundPosition: 'center',
     height: '400px'
 }
 const slideImages = [
@@ -60,9 +60,9 @@ const Bodymain = () => {
         <div className="p-6 min-h-screen px-40 mx-40">
 
             <Slide>
-                {slideImages.map((slideImage, index) => (
-                    <div key={index} className="mb-6">
-                        <div style={{ ...divStyle, 'backgroundImage': `url(${slideImage.url})` }}>
+                {weekBest.map(product => (
+                    <div key={product.product_id} className="mb-6">
+                        <div style={{ ...divStyle, 'backgroundImage': `url(${product.product_thumbnail})` }}>
                             
                         </div>
                     </div>
