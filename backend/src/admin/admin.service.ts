@@ -43,7 +43,7 @@ export class AdminService {
   }
 
   async RecentlyAlluser(){
-    const users = await this.userRepository.find({order: {createdAt: 'DESC',}, take: 8});
+    const users = await this.userRepository.find({order: {createdAt: 'DESC',}, take: 6});
     return {users}
   }
 
