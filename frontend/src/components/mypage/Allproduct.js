@@ -4,15 +4,24 @@ const Allproduct = () => {
     const [productlist, setproductlist] = useState()
     const [username, setusername] = useState()
     useEffect(() => {
-        fetch("http://localhost:4000/users/Allproduct", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } }).then(res => res.json()).then(resData => { setproductlist(resData.productlist) ; setusername(resData.username.nickanme)}).catch(err => console.log(err))
-
+        fetch("http://localhost:4000/payment/my", {method : "GET" , headers :  { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
+        .then(res => res.json())
+        .then(resData => { 
+          
+            if(resData.statusCode === 200){
+                setproductlist(resData.payments)
+                setusername(resData.username.nickanme)
+        }})
+        .catch(err=> {
+            console.log(err)
+        })
 
     }, [])
     console.log(productlist)
     return (
         <div className="grid grid-cols-4 gap-8">
-            {productlist && productlist.map(produt => (
-                <div key = {produt.id} className="rounded-lg overflow-hidden">
+            {productlist && productlist.map(product => (
+                <div key = {product.id} className="rounded-lg overflow-hidden">
                     <img
                         src={logo}
                         alt="Course thumbnail"
@@ -22,10 +31,10 @@ const Allproduct = () => {
                         style={{ aspectratio: 300 / 200, objectfit: "cover" }}
                     />
                     <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">{produt.name}</h3>
-                        <p className="text-sm mb-4">{username}</p>
+                        <h3 className="text-lg font-semibold mb-2">{product.product.name}</h3>
+                        <p className="text-sm mb-4">{product.product.intro}</p>
                         <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center">
+                            <div className="flex items-center" style={{marginLeft :"90%"}}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"

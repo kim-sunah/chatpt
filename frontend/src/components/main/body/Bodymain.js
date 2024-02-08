@@ -48,6 +48,7 @@ const Bodymain = () => {
 
     return (
         <div className="p-6 min-h-screen px-40 mx-40">
+
             <Slide>
                 {slideImages.map((slideImage, index) => (
                     <div key={index} className="mb-6">
@@ -84,7 +85,7 @@ const Bodymain = () => {
 
             </section>
             <h2 className="text-xl font-bold mb-4 mt-20">당신에게 추천하는 강의</h2>
-            <div className="grid grid-cols-5 gap-8">
+            <div className="grid grid-cols-5 gap-8  overflow-hidden">
 
                 <div className="rounded-lg overflow-hidden">
                     <img

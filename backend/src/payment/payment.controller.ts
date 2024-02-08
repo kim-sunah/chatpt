@@ -37,12 +37,12 @@ export class PaymentController {
     async findAll(@Request() req, @Query() query: PageDto) {
         const userId = req.user.id;
 		const { page, pageSize } = query
-        const payments = await this.paymentService.findAll(userId, page, pageSize);
-
+        
+       const {payments} = await this.paymentService.findAll(userId, page, pageSize);
         return {
             statusCode: HttpStatus.OK,
             message: '구매한 강의 목록 조회에 성공했습니다.',
-            data: payments,
+            payments
         };
     }
 	

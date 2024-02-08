@@ -5,6 +5,7 @@ import logo from "../../img/Designer.jpeg"
 import Allproduct from "./Allproduct"
 import Likeproduct from "./Likeproduct"
 import Userinfo from "./Userinfo"
+import Paymentlist from "./Paymentlist"
 
 
 
@@ -12,34 +13,33 @@ const Mypage = () => {
     const navigate = useNavigate()
     const [productlist , setproductlist] = useState(true)
     const [like ,setlike] = useState(false)
-    const [Paymentlist , sePayment] = useState(false)
+    const [Paymentlists , setPaymentlists] = useState(false)
     const [info , setinfo] = useState(false);
 
     useEffect(() => {
         if(!sessionStorage.getItem("refreshToken") && !sessionStorage.getItem("acessToken")){
             navigate("/Login")
         }
-      
     }, [])
 
     const productlisthanlder = () =>{
         setproductlist(true)
         setlike(false)
-        sePayment(false)
+        setPaymentlists(false)
         setinfo(false)
 
     }
     const likehandler =() =>{
         setproductlist(false)
         setlike(true)
-        sePayment(false)
+        setPaymentlists(false)
         setinfo(false)
 
     }
     const Paymentlisthandler = () =>{
         setproductlist(false)
         setlike(false)
-        sePayment(true)
+        setPaymentlists(true)
         setinfo(false)
 
     }
@@ -47,7 +47,7 @@ const Mypage = () => {
     const infohandler = () =>{
         setproductlist(false)
         setlike(false)
-        sePayment(false)
+        setPaymentlists(false)
         setinfo(true)
         
 
@@ -85,7 +85,7 @@ const Mypage = () => {
 
                     <div className="flex space-x-4 pb-2">
                         <button onClick ={productlisthanlder}className="hover:border-b-2 border-transparent hover:border-white">
-                            모든 강의
+                            구매한  강의
                         </button>
                         <button onClick ={likehandler}className="hover: border-b-2 border-transparent hover:border-white">
                             찜하기
@@ -103,6 +103,7 @@ const Mypage = () => {
                 <main className="bg-white text-black pt-10">
                     <div className="max-w-screen-xl mx-auto px-4">
                             {productlist && <Allproduct></Allproduct>}
+                            {Paymentlists && <Paymentlist></Paymentlist>}
                             {like && <Likeproduct></Likeproduct>}
                             {info && <Userinfo></Userinfo>}
                     </div>
