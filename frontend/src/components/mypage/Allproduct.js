@@ -7,7 +7,6 @@ const Allproduct = () => {
         fetch("http://localhost:4000/payment/my", {method : "GET" , headers :  { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
         .then(res => res.json())
         .then(resData => { 
-            console.log(resData.payments[0])
             if(resData.statusCode === 200){
                 setproductlist(resData.payments[0])
         }})

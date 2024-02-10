@@ -2,6 +2,7 @@ import ss from "../../../img/picture.png"
 import logo from "../../../img/Designer.jpeg"
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
+import { Link } from "react-router-dom";
 const spanStyle = {
     padding: '20px',
     background: '#efefef',
@@ -87,7 +88,7 @@ const Bodymain = () => {
             <h2 className="text-xl font-bold mb-4 mt-20">당신에게 추천하는 강의</h2>
             <div className="grid grid-cols-5 gap-8  overflow-hidden">
 
-                <div className="rounded-lg overflow-hidden">
+                <Link to ="product/18"><div className="rounded-lg overflow-hidden">
                     <img
                         src={logo}
                         alt="Course thumbnail"
@@ -119,7 +120,7 @@ const Bodymain = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div></Link>
                 <div className="rounded-lg overflow-hidden">
                     <img
                         src={logo}

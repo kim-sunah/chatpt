@@ -26,18 +26,18 @@ import PaymentSuccess from './components/payment/Payment-success'
 import KakaoRedirect from "./components/KakaoRedirect";
 import Message from "./components/message/Message";
 
+
 const router = createBrowserRouter([
 
   {
     path: "/", element: <Root></Root>, errorElement: <Errorpage></Errorpage>, children: [
       { index: true, element: <Main></Main> },
       { path: "mypage", element: <Mypage></Mypage> },
-      {
-        path: 'product', children: [
+        {path: 'product', children: [
           { path: 'create', element: <ProductCreate /> },
           { path: 'update', element: <ProductUpdate /> },
           { path: 'my', element: <ProductMy /> },
-          { path: 'detail', element: <ProductDetail /> }
+          { path: ':id', element: <ProductDetail /> }
         ]
       },
 	  {
