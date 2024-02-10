@@ -135,4 +135,8 @@ export class PaymentService {
 			.limit(5)
 			.getRawMany()
 	}
+	
+	// 주어진 product_id 배열 안에서 인기 강의 찾기
+	async getTopProductsWithId(productIds: number[]){
+	}
 }

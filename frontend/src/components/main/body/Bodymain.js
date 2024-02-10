@@ -34,6 +34,7 @@ const slideImages = [
 ];
 const Bodymain = () => {
 	const [weekBest,setWeekBest] = useState([])
+	const [yourBest,setYourBest] = useState([])
 
     const myStyle = {
         aspectRatio: '1000/200',
@@ -51,9 +52,28 @@ const Bodymain = () => {
 		const res = await fetch("http://localhost:4000/payment/best")
 		setWeekBest(await res.json())
 	}
+	
+	const turnedOn = false
+	const getYourBest = async () => {
+		if(turnedOn){
+			const name = localStorage.getItem('name')
+			if(name){
+				const res = await fetch('http://localhost:4000/product/search',{method:'post',headers: { 'Content-Type': 'application/json'}, body:JSON.stringify({name})})
+				const yourBest_ = await res.json()
+				console.log(yourBest_.result)
+			}
+		}
+		console.log(weekBest)
+		const yourBest_ = [...yourBest]
+		for(let i=0;i<5,yourBest_.length<5;++i){
+			if(!yourBest.filter(product => product.id===weekBest[i].id).length) yourBest_.push(weekBest[i])
+		}
+		setYourBest(yourBest_)
+	}
 
 	useEffect(() => {
 		getWeekBest()
+		getYourBest()
 	},[])
 
     return (
@@ -69,7 +89,7 @@ const Bodymain = () => {
                 ))}
             </Slide>
             <section>
-                <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음</h2>
+                <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음 {localStorage.getItem('name')}</h2>
                 <div className="flex flex-col sm:flex-row  hide-scrollbar mb-4" >
                     <div className="flex flex-col items-center mr-8">
                         <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
@@ -96,173 +116,41 @@ const Bodymain = () => {
             </section>
             <h2 className="text-xl font-bold mb-4 mt-20">당신에게 추천하는 강의</h2>
             <div className="grid grid-cols-5 gap-8  overflow-hidden">
-
-                <div className="rounded-lg overflow-hidden">
-                    <img
-                        src={logo}
-                        alt="Course thumbnail"
-                        className="w-full h-40 w-40 object-cover"
-                        width="300"
-                        height="200"
-                        style={{ aspectratio: 300 / 200, objectfit: "cover" }}
-                    />
-                    <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">asd</h3>
-                        <p className="text-sm mb-4">asd</p>
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center" style={{ marginLeft: "90%" }}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="text-yellow-400 w-4 h-4"
-                                >
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                </svg>
-                                <span className="text-xs font-semibold ml-1">4.5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="rounded-lg overflow-hidden">
-                    <img
-                        src={logo}
-                        alt="Course thumbnail"
-                        className="w-full h-40 w-40 object-cover"
-                        width="300"
-                        height="200"
-                        style={{ aspectratio: 300 / 200, objectfit: "cover" }}
-                    />
-                    <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">asd</h3>
-                        <p className="text-sm mb-4">asd</p>
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center" style={{ marginLeft: "90%" }}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="text-yellow-400 w-4 h-4"
-                                >
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                </svg>
-                                <span className="text-xs font-semibold ml-1">4.5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="rounded-lg overflow-hidden">
-                    <img
-                        src={logo}
-                        alt="Course thumbnail"
-                        className="w-full h-40 w-40 object-cover"
-                        width="300"
-                        height="200"
-                        style={{ aspectratio: 300 / 200, objectfit: "cover" }}
-                    />
-                    <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">asd</h3>
-                        <p className="text-sm mb-4">asd</p>
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center" style={{ marginLeft: "90%" }}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="text-yellow-400 w-4 h-4"
-                                >
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                </svg>
-                                <span className="text-xs font-semibold ml-1">4.5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="rounded-lg overflow-hidden">
-                    <img
-                        src={logo}
-                        alt="Course thumbnail"
-                        className="w-full h-40 w-40 object-cover"
-                        width="300"
-                        height="200"
-                        style={{ aspectratio: 300 / 200, objectfit: "cover" }}
-                    />
-                    <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">asd</h3>
-                        <p className="text-sm mb-4">asd</p>
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center" style={{ marginLeft: "90%" }}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="text-yellow-400 w-4 h-4"
-                                >
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                </svg>
-                                <span className="text-xs font-semibold ml-1">4.5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="rounded-lg overflow-hidden">
-                    <img
-                        src={logo}
-                        alt="Course thumbnail"
-                        className="w-full h-40 w-40 object-cover"
-                        width="300"
-                        height="200"
-                        style={{ aspectratio: 300 / 200, objectfit: "cover" }}
-                    />
-                    <div className="p-4">
-                        <h3 className="text-lg font-semibold mb-2">asd</h3>
-                        <p className="text-sm mb-4">asd</p>
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center" style={{ marginLeft: "90%" }}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="text-yellow-400 w-4 h-4"
-                                >
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                </svg>
-                                <span className="text-xs font-semibold ml-1">4.5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+				{yourBest.map(product => (
+					<div key={product.product_id} className="rounded-lg overflow-hidden">
+						<img
+							src={product.product_thumbnail}
+							alt="Course thumbnail"
+							className="w-full h-40 w-40 object-cover"
+							width="300"
+							height="200"
+							style={{ aspectratio: 300 / 200, objectfit: "cover" }}
+						/>
+						<div className="p-4">
+							<h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
+							<p className="text-sm mb-4">{product.product_intro}</p>
+							<div className="flex items-center justify-between mb-2">
+								<div className="flex items-center" style={{ marginLeft: "90%" }}>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										className="text-yellow-400 w-4 h-4"
+									>
+										<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+									</svg>
+									<span className="text-xs font-semibold ml-1">4.5</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				))}
             </div>
             <h2 className="text-xl font-bold mb-4">최근 인기있는 강의</h2>
             <div className="grid grid-cols-5 gap-8 mt-10">

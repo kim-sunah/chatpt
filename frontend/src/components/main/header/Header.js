@@ -33,6 +33,7 @@ const Header = () => {
 
   const searchhandler = (events) => {
     events.preventDefault()
+	localStorage.setItem('name',searchref.current.value)
     dispatch(searchActions.search(searchref.current.value))
     navigate("/search")
   }
