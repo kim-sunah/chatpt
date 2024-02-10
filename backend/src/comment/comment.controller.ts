@@ -40,8 +40,9 @@ export class CommentController {
         @Body() createCommentDto: SwCreateDto,
         @UserInfo() userId: number
     ) {
-        console.error('Error in createComment:', error);
-        return this.commentService.comment(createCommentDto, productId, userId['id']);
+      
+        // console.error('Error in createComment:', error);
+        // return this.commentService.comment(createCommentDto, productId, userId['id']);
     }
 
 	// 리뷰 수정
@@ -53,8 +54,9 @@ export class CommentController {
         @Param('commentId') commentId: number,
         @UserInfo() userId: number
     ) {
-        console.error('Error in commentUpdate:', error);
-        return this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
+        console.log("xczxcxz")
+        // console.error('Error in commentUpdate:', error);
+        // return this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
     }
 
 	// 리뷰 삭제

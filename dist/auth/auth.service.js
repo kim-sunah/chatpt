@@ -123,7 +123,7 @@ let AuthService = class AuthService {
         }
     }
     async kakaosignIn(Email) {
-        console.log("asdasdas");
+        
         const user = await this.userRepository.findOne({ where: { email: Email, registration_information: "Kakao" } });
         if (!user) {
             throw new common_1.UnauthorizedException("존재하지 않는 이메일입니다.");
