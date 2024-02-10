@@ -8,6 +8,7 @@ import { SwCreateDto } from './dto/swcreate-comment.dto';
 import { SwUpdateDto } from './dto/swupdate-comment.dto';
 import { error } from 'console';
 import { PageDto } from '../product/dtos/page.dto'
+import { use } from 'passport';
 
 @Controller('comment')
 export class CommentController {
@@ -40,9 +41,9 @@ export class CommentController {
         @Body() createCommentDto: SwCreateDto,
         @UserInfo() userId: number
     ) {
-      
-        // console.error('Error in createComment:', error);
-        // return this.commentService.comment(createCommentDto, productId, userId['id']);
+       
+        console.error('Error in createComment:', error);
+        return this.commentService.comment(createCommentDto, productId, userId['id']);
     }
 
 	// 리뷰 수정

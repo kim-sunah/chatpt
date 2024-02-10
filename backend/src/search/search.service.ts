@@ -8,9 +8,7 @@ export class SearchService {
   constructor(private readonly elasticsearchService: ElasticsearchService) { }
 
   async indexDocument(index: string, document: any): Promise<any> {
-
     const indexExists = await this.elasticsearchService.indices.exists({ index });
-
     if (!indexExists) {
       await this.elasticsearchService.indices.create({
         index,
