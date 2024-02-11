@@ -9,6 +9,8 @@ import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
 import {Product} from '../entities/product.entity'
 import {Payment} from '../entities/payment.entity'
+import { User } from 'src/entities/user.entity';
+import { cp } from 'fs';
 
 @Injectable()
 export class CommentService {
@@ -19,19 +21,22 @@ export class CommentService {
 		private readonly productRepository: Repository<Product>,
 		@InjectRepository(Payment)
 		private readonly paymentRepository: Repository<Payment>,
+        @InjectRepository(User) 
+        private readonly userRepository: Repository<User>,
 		private readonly badwordService: BadwordService,
 		@Inject(REQUEST) private readonly req: Request
     ) {}
 
 	// 강의별 리뷰 목록
     async commentfind(productId: number, page: number, pageSize: number){
-        const comments = await this.commentRepository.findAndCount({
+        const comments = await this.commentRepository.find({
             where: { product_id: productId },
 			take: pageSize, skip: (page-1)*pageSize, relations:['user']
         });
-        if (comments[1] === 0) {
+        if (!comments) {
             throw new NotFoundException('해당 제품의 댓글을 찾을 수 없습니다.');
         }
+    
         return comments;
     }
 	

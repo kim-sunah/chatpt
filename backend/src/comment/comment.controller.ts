@@ -8,6 +8,7 @@ import { SwCreateDto } from './dto/swcreate-comment.dto';
 import { SwUpdateDto } from './dto/swupdate-comment.dto';
 import { error } from 'console';
 import { PageDto } from '../product/dtos/page.dto'
+import { use } from 'passport';
 
 @Controller('comment')
 export class CommentController {
@@ -52,8 +53,9 @@ export class CommentController {
         @Param('commentId') commentId: number,
         @UserInfo() userId: number
     ) {
-        console.error('Error in commentUpdate:', error);
-        return this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
+        console.log("xczxcxz")
+        // console.error('Error in commentUpdate:', error);
+        // return this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
     }
 
 	// 리뷰 삭제
