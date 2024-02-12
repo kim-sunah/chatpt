@@ -37,32 +37,28 @@ const Bodymain = () => {
 	const [weekBest,setWeekBest] = useState([])
 	const [yourBest,setYourBest] = useState([])
 
-	const getWeekBest = async () => {
-		const res = await fetch('http://localhost:4000/payment/best')
-		setWeekBest(await res.json())
-	}
+    const myStyle = {
+        aspectRatio: '1000/200',
+        objectFit: 'cover',
+        width: "2000px",
+        height: "400px"
+    };
+
+    const imgStyle = {
+        aspectRatio: '200/400',
+        objectFit: 'cover'
+    };
 	
 	const turnedOn = true
-	const getYourBest = async () => {
-		if(turnedOn){
-			const name = localStorage.getItem('name')
-			if(name){
-				const res = await fetch(`http://localhost:4000/payment/personalBest?key=${name}`)
-				const yourBest_ = await res.json()
-			}
-		}
-		console.log(weekBest)
-		const yourBest_ = [...yourBest]
-		for(let i=0;i<5,yourBest_.length<5;++i){
-			if(!yourBest.filter(product => product.id===weekBest[i].id).length) yourBest_.push(weekBest[i])
-		}
-		setYourBest(yourBest_)
-		console.log(yourBest_)
-	}
-	
 	const getBest = async() => {
 		const res = await fetch('http://localhost:4000/payment/best')
 		const weekBest_ = await res.json()
+		if(weekBest_.length<5){
+			const res2 = await fetch('http://localhost:4000/product/latest')
+			const latests = await res2.json()
+			for(let i=0;i<latests.length && weekBest_.length<5;++i)
+				if(!weekBest_.filter(product => product.product_id===latests[i].id).length) weekBest_.push({product_id:latests[i].id,product_intro:latests[i].intro, product_thumbnail:latests[i].thumbnail, product_name:latests[i].name})
+		}
 		let yourBest_ = []
 		setWeekBest(weekBest_)
 		if(turnedOn){
@@ -72,9 +68,9 @@ const Bodymain = () => {
 				yourBest_ = await res.json()
 			}
 		}
-		 for(let i=0;i<5 && yourBest_.length<5;++i){
-             if(!yourBest_.filter(product => product.product_id===weekBest_[i].product_id).length) yourBest_.push(weekBest_[i])
-          }
+		for(let i=0;i<weekBest_.length && yourBest_.length<5;++i){
+			if(!yourBest_.filter(product => product.product_id===weekBest_[i].product_id).length) yourBest_.push(weekBest_[i])
+		}
 		setYourBest(yourBest_)
 	}
 
