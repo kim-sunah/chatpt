@@ -38,6 +38,12 @@ export class ProductController {
         const { page, pageSize } = query;
         return await this.productService.getProducts(page, pageSize);
     }
+	
+	// 최근 등록 수업 목록
+	@Get('latest')
+	async getLatestProducts(){
+		return await this.productService.getLatestProducts()
+	}
 
     // 수업 검색 .......
     @Post('search')
