@@ -33,6 +33,11 @@ export class ProductService {
     async getProducts(page: number, pageSize: number) {
         return await this.productRepository.find({ take: pageSize, skip: (page - 1) * pageSize });
     }
+	
+	// 최근 등록 수업 목록
+	async getLatestProducts(){
+		return await this.productRepository.find({take:5, order:{'id':'DESC'}})
+	}
 
     // 쿼리 검색 문자열 만들기
     query(key, antiKey) {
