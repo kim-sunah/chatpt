@@ -11,6 +11,7 @@ import {Product} from '../entities/product.entity'
 import {Payment} from '../entities/payment.entity'
 import { User } from 'src/entities/user.entity';
 import { cp } from 'fs';
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Injectable()
 export class CommentService {
@@ -24,7 +25,8 @@ export class CommentService {
         @InjectRepository(User) 
         private readonly userRepository: Repository<User>,
 		private readonly badwordService: BadwordService,
-		@Inject(REQUEST) private readonly req: Request
+		@Inject(REQUEST) private readonly req: Request,
+        private readonly event : EventsGateway
     ) {}
 
 	// 강의별 리뷰 목록
@@ -66,6 +68,7 @@ export class CommentService {
         if (!savedComment) {
             throw new Error('댓글 작성 중 오류가 발생했습니다.');
         }
+        this.event.createcomment("createcomment")
         return savedComment;
     }
 

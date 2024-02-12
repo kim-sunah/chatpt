@@ -37,18 +37,6 @@ const Bodymain = () => {
 	const [weekBest,setWeekBest] = useState([])
 	const [yourBest,setYourBest] = useState([])
 
-    const myStyle = {
-        aspectRatio: '1000/200',
-        objectFit: 'cover',
-        width: "2000px",
-        height: "400px"
-    };
-
-    const imgStyle = {
-        aspectRatio: '200/400',
-        objectFit: 'cover'
-    };
-
 	const getWeekBest = async () => {
 		const res = await fetch('http://localhost:4000/payment/best')
 		setWeekBest(await res.json())
@@ -84,9 +72,9 @@ const Bodymain = () => {
 				yourBest_ = await res.json()
 			}
 		}
-		for(let i=0;i<5 && yourBest_.length<5;++i){
-			if(!yourBest_.filter(product => product.product_id===weekBest_[i].product_id).length) yourBest_.push(weekBest_[i])
-		}
+		 for(let i=0;i<5 && yourBest_.length<5;++i){
+             if(!yourBest_.filter(product => product.product_id===weekBest_[i].product_id).length) yourBest_.push(weekBest_[i])
+          }
 		setYourBest(yourBest_)
 	}
 
@@ -110,7 +98,7 @@ const Bodymain = () => {
                 <div className="flex flex-col sm:flex-row  hide-scrollbar mb-4" >
                     <div className="flex flex-col items-center mr-8">
                         <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
-                        <span className="text-lg">필사</span>
+                        <span className="text-lg">필라테스</span>
                     </div>
                     <div className="flex flex-col items-center mr-8">
                         <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>

@@ -13,11 +13,7 @@ const Mypage = () => {
     const [paymentlist, setPayment] = useState(false)
     const [info, setinfo] = useState(false);
 
-    useEffect(() => {
-        if (!sessionStorage.getItem("refreshToken") && !sessionStorage.getItem("acessToken")) {
-            navigate("/Login")
-        }
-    }, [])
+
 
     const productlisthanlder = () => {
         setproductlist(true)

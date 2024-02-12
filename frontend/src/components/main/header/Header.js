@@ -56,7 +56,9 @@ const Header = () => {
 
         <Link to="message"><BiSolidCommentDetail size="30" style={{ color: "black" }} /></Link>
 
-        <Link to="mypage"><BiSolidUser size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>
+        <Link to={sessionStorage.getItem("accessToken") ?  "/mypage" : "/Login"}><BiSolidUser size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>
+      
+        
         {sessionStorage.getItem("authority") === "Host" && <Link to= "admin"><BsFillFilePersonFill size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>}
 
         {sessionStorage.getItem("accessToken") ? <BiLogOut size="30" onClick={Logouthanlder} style={{ color: "black" }} /> : <Link to="Login" style={{ color: "black" }}><BiLogIn size="30" /> </Link>}

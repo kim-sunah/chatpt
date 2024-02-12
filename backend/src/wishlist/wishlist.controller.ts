@@ -12,17 +12,23 @@ export class WishlistController {
 	constructor(private readonly wishlistService: WishlistService) {}
 	
 	// 찜 등록
-	@Roles(Role.User)
+	// @Roles(Role.User)
 	@Post(':id')
 	async createWish(@Param() param: Id){
 		return await this.wishlistService.createWish(param.id)
 	}
 	
 	// 찜 삭제
-	@Roles(Role.User)
+	// @Roles(Role.User)
 	@Delete(':id')
 	async deleteWish(@Param() param: Id){
 		return await this.wishlistService.deleteWish(param.id)
+	}
+	//찜 여부 확인
+	@Get(":id")
+	async Wish(@Param() param: Id){
+		
+		return await this.wishlistService.Wish(param.id)
 	}
 	
 	// 내 찜 목록
