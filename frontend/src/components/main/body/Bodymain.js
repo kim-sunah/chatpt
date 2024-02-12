@@ -50,18 +50,17 @@ const Bodymain = () => {
     };
 
 	const getWeekBest = async () => {
-		const res = await fetch("http://localhost:4000/payment/best")
+		const res = await fetch('http://localhost:4000/payment/best')
 		setWeekBest(await res.json())
 	}
 	
-	const turnedOn = false
+	const turnedOn = true
 	const getYourBest = async () => {
 		if(turnedOn){
 			const name = localStorage.getItem('name')
 			if(name){
-				const res = await fetch('http://localhost:4000/product/search',{method:'post',headers: { 'Content-Type': 'application/json'}, body:JSON.stringify({name})})
+				const res = await fetch(`http://localhost:4000/payment/personalBest?key=${name}`)
 				const yourBest_ = await res.json()
-				console.log(yourBest_.result)
 			}
 		}
 		console.log(weekBest)
@@ -70,11 +69,29 @@ const Bodymain = () => {
 			if(!yourBest.filter(product => product.id===weekBest[i].id).length) yourBest_.push(weekBest[i])
 		}
 		setYourBest(yourBest_)
+		console.log(yourBest_)
+	}
+	
+	const getBest = async() => {
+		const res = await fetch('http://localhost:4000/payment/best')
+		const weekBest_ = await res.json()
+		let yourBest_ = []
+		setWeekBest(weekBest_)
+		if(turnedOn){
+			const name = localStorage.getItem('name')
+			if(name){
+				const res = await fetch(`http://localhost:4000/payment/personalBest?key=${name}`)
+				yourBest_ = await res.json()
+			}
+		}
+		for(let i=0;i<5 && yourBest_.length<5;++i){
+			if(!yourBest_.filter(product => product.product_id===weekBest_[i].product_id).length) yourBest_.push(weekBest_[i])
+		}
+		setYourBest(yourBest_)
 	}
 
 	useEffect(() => {
-		getWeekBest()
-		getYourBest()
+		getBest()
 	},[])
 
     return (
@@ -89,7 +106,7 @@ const Bodymain = () => {
                 ))}
             </Slide>
             <section>
-                <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음 {localStorage.getItem('name')}</h2>
+                <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음</h2>
                 <div className="flex flex-col sm:flex-row  hide-scrollbar mb-4" >
                     <div className="flex flex-col items-center mr-8">
                         <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
@@ -114,49 +131,52 @@ const Bodymain = () => {
                 </div>
 
             </section>
-            {/*<h2 className="text-xl font-bold mb-4 mt-20">당신에게 추천하는 강의</h2>
-            <div className="grid grid-cols-5 gap-8  overflow-hidden">
-				{yourBest.map(product => (
-					<div key={product.product_id} className="rounded-lg overflow-hidden">
-						<img
-							src={product.product_thumbnail}
-							alt="Course thumbnail"
-							className="w-full h-40 w-40 object-cover"
-							width="300"
-							height="200"
-							style={{ aspectratio: 300 / 200, objectfit: "cover" }}
-						/>
-						<div className="p-4">
-							<h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
-							<p className="text-sm mb-4">{product.product_intro}</p>
-							<div className="flex items-center justify-between mb-2">
-								<div className="flex items-center" style={{ marginLeft: "90%" }}>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										className="text-yellow-400 w-4 h-4"
-									>
-										<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-									</svg>
-									<span className="text-xs font-semibold ml-1">4.5</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				))}
-            </div>*/}    
+            <h2 className="text-xl font-bold mb-4">당신에게 추천하는 강의</h2>
+                <div className="max-w-screen-xl mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5 gap-8">
+				{yourBest.length && yourBest.map(product => (
+                <Link to = {`product/${product.product_id}`}><div key ={product.product_id} className="rounded-lg overflow-hidden">
+                    <img
+                        src={product.product_thumbnail}
+                        alt="Course thumbnail"
+                        className="w-full h-36 object-cover"
+                        width="240"
+                        height="160"
+                        style={{ aspectratio: 240 / 160, objectfit: "cover" }}
+                    />
+                    <div className="p-4">
+                        <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
+                        <p className="text-sm mb-4">{product.product_intro}</p>
+                        <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center" style={{marginLeft :"90%"}}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="text-yellow-400 w-4 h-4"
+                                >
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <span className="text-xs font-semibold ml-1">4.5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div></Link>
+
+
+            ))}
+            </div></div>
             <main className="bg-white text-black pt-8">
             <h2 className="text-xl font-bold mb-4">최근 인기있는 강의</h2>
                 <div className="max-w-screen-xl mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5 gap-8">
-            {weekBest && weekBest.map(product => (
+            {weekBest.length && weekBest.map(product => (
               
                 <Link to = {`product/${product.product_id}`}><div key ={product.product_id} className="rounded-lg overflow-hidden">
                     <img
