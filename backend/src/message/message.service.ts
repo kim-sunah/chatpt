@@ -4,9 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Message } from '../entities/message.entity';
 import { User } from 'src/entities/user.entity';
+
 var amqp = require('amqplib/callback_api');
 const url =
-  'amqps://b-e4d218f5-5560-4786-b2bc-f3185dca9ce3.mq.ap-northeast-2.amazonaws.com:5671';
+  'amqps://chatPT:chatPT123456@b-e4d218f5-5560-4786-b2bc-f3185dca9ce3.mq.ap-northeast-2.amazonaws.com:5671';
+
 @Injectable()
 export class MessageService {
   constructor(
@@ -54,6 +56,7 @@ export class MessageService {
           channel.assertQueue(queue, {
             durable: false,
           });
+
           //메세지 보내기
           channel.sendToQueue(queue, Buffer.from(message));
         });
@@ -64,6 +67,7 @@ export class MessageService {
       throw new Error('메세지전송에 실패하였습니다.');
     }
   }
+
   async isRead(id: number) {
     try {
       const role = (await this.userRepository.findOne({ where: { id: id } }))
@@ -76,6 +80,7 @@ export class MessageService {
         .select(`SUM(m.${sumField})`, 'sum')
         .where(`m.${whereField} = :id`, { id })
         .getRawOne();
+
       console.log(sumResult.sum);
       return { isRead: sumResult.sum > 0 ? true : false };
     } catch (err) {
@@ -83,12 +88,16 @@ export class MessageService {
     }
   }
 
-  async receive(id: number, userId: number, message: string) {
+  async sendMessage(hostId: number, userId: number, body) {
+    const message = '안녕하세요 반갑습니다!';
+    const createMessage = await this.messageRepository.save({
+      host_id: hostId,
+      gest_id: userId,
+      last_message: message,
+    });
     try {
-      const msg = await this.messageRepository.findOne({ where: { id: id } });
-      msg.last_message = message;
-      await this.messageRepository.update(id, msg);
-      const queue = id;
+      await this.messageRepository.save(createMessage);
+      var queue = createMessage.id.toString();
       amqp.connect(url, function (error0, connection) {
         if (error0) {
           throw error0;
@@ -97,12 +106,13 @@ export class MessageService {
           if (error1) {
             throw error1;
           }
+
           channel.assertQueue(queue, {
             durable: false,
           });
-          channel.consume(queue, function (msg) {}, {
-            noAck: true,
-          });
+
+          //메세지 보내기
+          channel.sendToQueue(queue, Buffer.from(body.message));
         });
       });
       return true;
