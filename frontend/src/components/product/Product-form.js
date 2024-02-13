@@ -49,26 +49,8 @@ const ProductForm = props => {
 	const [capacity,setCapacity] = useState(props.product?.capacity || 1)
 	const [start_on,setStartOn] = useState(props.product?.start_on || (new Date().toISOString().slice(0,10)))
 	const [end_on,setEndOn] = useState(props.product?.end_on || (new Date().toISOString().slice(0,10)))
-	const [weekday,setWeekday] = useState(props.product?.weekday || 0)
 	const [start_at,setStartAt] = useState(props.product?.start_at || '06:00:00')
 	const [end_at,setEndAt] = useState(props.product?.end_at || '07:00:00')
-	
-	useEffect(() => {
-		setName(props.product?.name || '')
-	    setCategory(props.product?.category || 'Others')
-		setBody(props.product?.body || '')
-		setPrice(props.product?.price || 1)
-		setSalePrice(props.product?.sale_price || 1)
-		setThumbnail(props.product?.thumbnail || '')
-		setIntro(props.product?.intro || '')
-		setCapacity(props.product?.capacity || 1)
-		setWeekday(props.product?.weekday || 0)
-		setStartOn(props.product?.start_on || (new Date().toISOString().slice(0,10)))
-		setEndOn(props.product?.end_on || (new Date().toISOString().slice(0,10)))
-		setStartAt(props.product?.start_at || '06:00:00')
-		setEndAt(props.product?.end_at || '07:00:00')
-		setShorts(props.product?.shorts || '')
-	}, [props.product, props.images])
 	
 	const handleFileChange = e => {
 		const file = e.target.files[0]
@@ -84,9 +66,42 @@ const ProductForm = props => {
 		const file = e.target.files[0]
 		if (file) setShorts(file)
 	}
+
+	const bitToString = weekday => {
+		let res = ''
+		for(let i=1,j=0;i<=64;i*=2,++j)
+			if(weekday&i) res += j
+		return res
+	}
+	
+	const stringToBit = weekdayString => {
+		let res = 0
+		for(let c of [...weekdayString])
+			res ^= 1<<+c
+		return res
+	}
+	
+	const [weekday,setWeekday] = useState(props.product?.weekday? stringToBit(props.product.weekday):0)
+	
+	useEffect(() => {
+		setName(props.product?.name || '')
+	    setCategory(props.product?.category || 'Others')
+		setBody(props.product?.body || '')
+		setPrice(props.product?.price || 1)
+		setSalePrice(props.product?.sale_price || 1)
+		setThumbnail(props.product?.thumbnail || '')
+		setIntro(props.product?.intro || '')
+		setCapacity(props.product?.capacity || 1)
+		setWeekday(props.product?.weekday? stringToBit(props.product.weekday):0)
+		setStartOn(props.product?.start_on || (new Date().toISOString().slice(0,10)))
+		setEndOn(props.product?.end_on || (new Date().toISOString().slice(0,10)))
+		setStartAt(props.product?.start_at || '06:00:00')
+		setEndAt(props.product?.end_at || '07:00:00')
+		setShorts(props.product?.shorts || '')
+	}, [props.product, props.images])
 	
 	return (
-		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,image:image_,intro,capacity,start_on,end_on,weekday,start_at,end_at,shorts})}>
+		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,image:image_,intro,capacity,start_on,end_on,weekday:bitToString(weekday),start_at,end_at,shorts})}>
 			<Form.Group>
 				<Form.Label>이름</Form.Label>
 				<Form.Control required onChange={e => setName(e.target.value)} value={name} />

@@ -65,8 +65,8 @@ export class Product {
   	@Column('date')
 	  end_on: Date
 	
-  	@Column('tinyint')
-  	weekday: number
+  	@Column({default:'0123456'})
+  	weekday: string
 	
 	  @Column('time')
   	start_at: string
