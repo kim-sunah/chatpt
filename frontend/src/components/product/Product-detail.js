@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSearchParams, useNavigate, useParams } from 'react-router-dom'
-import { server } from '../../constant.js'
-import Card from 'react-bootstrap/Card'
-import Modal from 'react-bootstrap/Modal'
-import InquiryForm from '../inquiry/Inquiry-form.js'
+import { useParams } from 'react-router-dom'
+import openSocket from 'socket.io-client';
+
 import Button from 'react-bootstrap/Button'
 import './style.css'
 import logo from "../../img/Designer.jpeg"
-import { Flex } from '@chakra-ui/react'
+
 import "./product.css"
 
 
@@ -22,23 +20,54 @@ export default function ProductCard(props) {
 	const [fourstar, setfourstar] = useState(false)
 	const [fivestar, setfivestar] = useState(false)
 	const [starsum, setstarsum] = useState()
+	const [wish, setwish] = useState(false);
 
 	useEffect(() => {
 		fetch(`http://localhost:4000/comment/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 			.then(res => res.json())
 			.then(resData => { setcommentList(resData); console.log(resData) })
 			.catch(err => console.log(err))
+		if (sessionStorage.getItem("accessToken")) {
+			fetch(`http://localhost:4000/wishlist/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+				.then(res => res.json())
+				.then(resData => { setwish(resData); console.log(resData) })
+				.catch(err => { console.log(err) })
+		}
+
+
+		const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
+		socket.on('events', (data) => {
+			if (data === "LIKE") {
+				setwish(true)
+			}
+			else if (data === "UNLIKE") {
+				setwish(false)
+			}
+			else if (data === "createcomment")
+				fetch(`http://localhost:4000/comment/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+					.then(res => res.json())
+					.then(resData => { setcommentList(resData) })
+					.catch(err => console.log(err))
+		});
 	}, [])
+	console.log(wish)
+
 
 	const commenthandler = (event) => {
 		event.preventDefault()
-		if(!starsum || !comment){
+		if (!starsum || !comment) {
 			alert("충족되지 않은 입력란이 존재합니다.")
 		}
-		fetch(`http://localhost:4000/comment/30`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: comment.current.value, rating: starsum }) })
+		fetch(`http://localhost:4000/comment/${id}`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: comment.current.value, rating: starsum }) })
 			.then(res => res.json())
 			.then(resData => console.log(resData))
 			.catch(err => console.log(err))
+		setonestar(false)
+		settwostar(false)
+		setthreestar(false)
+		setfourstar(false)
+		setfivestar(false)
+		comment.current.value = ""
 	}
 
 	const starhandler = (event) => {
@@ -84,6 +113,22 @@ export default function ProductCard(props) {
 			setfivestar(true)
 			setstarsum(5)
 		}
+	}
+
+	const wishListhandler = (event) => {
+		event.preventDefault()
+		if (!wish) {
+			fetch(`http://localhost:4000/wishlist/${id}`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+				.then(res => res.json())
+				.catch(err => console.log(err))
+		}
+		else if (wish) {
+			fetch(`http://localhost:4000/wishlist/${id}`, { method: "DELETE", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+				.then(res => res.json())
+				.catch(err => console.log(err))
+
+		}
+
 	}
 	return (
 
@@ -146,12 +191,14 @@ export default function ProductCard(props) {
 										width="24"
 										height="24"
 										viewBox="0 0 24 24"
-										fill="none"
+										fill={wish ? "red" : "white"}
 										stroke="currentColor"
 										strokeWidth="2"
 										strokeLinecap="round"
 										strokeLinejoin="round"
 										className="w-6 h-6"
+										onClick={wishListhandler}
+
 									>
 										<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
 									</svg>
@@ -292,7 +339,6 @@ export default function ProductCard(props) {
 									</div>
 
 								</div>
-
 							</form>
 						</div>
 					</div>

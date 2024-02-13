@@ -30,6 +30,21 @@ export class EventsGateway {
   }
 
 
+  @SubscribeMessage('GetwishList')
+  GetwishList(@MessageBody() message: string): void {
+    this.server.emit('events',message);
+  }
+  @SubscribeMessage('UnwishList')
+  UnwishList(@MessageBody() message: string): void {
+    this.server.emit('events',message);
+  }
+
+  @SubscribeMessage('createcomment')
+  createcomment(@MessageBody() message: string): void {
+    this.server.emit('events',message);
+  }
+
+
 
 
 
