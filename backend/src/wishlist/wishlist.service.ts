@@ -4,28 +4,45 @@ import { InjectRepository } from '@nestjs/typeorm'
 import {Wishlist} from '../entities/wishlist.entity'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
+import { EventsGateway } from 'src/events/events.gateway'
 
 @Injectable({scope: Scope.REQUEST})
 export class WishlistService {
 	constructor(
 		@InjectRepository(Wishlist) private readonly wishlistRepository: Repository<Wishlist>,
-		@Inject(REQUEST) private readonly req: Request
+		@Inject(REQUEST) private readonly req: Request,
+		private readonly event: EventsGateway
 	){}
 	
 	// 찜 등록
 	async createWish(product_id: number){
 		const user_id = this.req.user['id']
-		const wish = await this.wishlistRepository.findOne({where:{user_id,product_id},withDeleted: true})
-		if(!wish) return await this.wishlistRepository.save({user_id,product_id,deletedAt:null})
-		return await this.wishlistRepository.update({user_id,product_id},{deletedAt:null})
+		console.log(user_id , product_id)
+		const wish = await this.wishlistRepository.findOne({where:{user_id,product_id}})
+	
+		this.event.GetwishList("LIKE")
+
+		return await this.wishlistRepository.save({user_id,product_id})
 	}
 	
 	// 찜 삭제
 	async deleteWish(id: number){
-		const wish = await this.wishlistRepository.findOne({where:{id}})
+		const wish = await this.wishlistRepository.findOne({where:{product_id : id}})
 		if(!wish) throw new NotFoundException('찜하지 않은 강의입니다.')
-		if(wish.user_id!==this.req.user['id']) throw new ForbiddenException('권한이 없습니다.')
-		await this.wishlistRepository.softDelete(id)
+		if(wish.user_id!==this.req.user['id']) {
+			throw new ForbiddenException('권한이 없습니다.')
+		}
+		this.event.GetwishList("UNLIKE")
+		await this.wishlistRepository.delete(wish.id)
+	}
+	//찜 여부 확인
+	async Wish(product_id: number){
+		const user_id = this.req.user['id']
+		const wish = await this.wishlistRepository.findOne({where:{user_id,product_id}})
+		if(wish){
+			return true
+		}
+		return false;
 	}
 	
 	// 내 찜 목록

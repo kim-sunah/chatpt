@@ -8,10 +8,11 @@ import { User } from 'src/entities/user.entity';
 import {Payment} from '../entities/payment.entity'
 import {AuthModule} from '../auth/auth.module'
 import {BadwordModule} from '../badword/badword.module'
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Comment, User, Product,Payment]),AuthModule,BadwordModule],
-    providers: [CommentService],
+    providers: [CommentService,EventsGateway],
     controllers: [CommentController],
 })
 export class CommentModule {}

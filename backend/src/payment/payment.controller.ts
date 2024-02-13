@@ -35,6 +35,12 @@ export class PaymentController {
 	async getTopProducts(){
 		return await this.paymentService.getTopProducts()
 	}
+	
+	// 주어진 product_id 배열 안에서 인기 강의 찾기
+	@Get('personalBest')
+	async getPersonalTopProducts(@Query() query: any){
+		return await this.paymentService.getPersonalTopProducts(query.key)
+	}
 
 	// 내 구매 목록
     @ApiBearerAuth()

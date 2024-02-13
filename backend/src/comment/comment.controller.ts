@@ -41,8 +41,6 @@ export class CommentController {
         @Body() createCommentDto: SwCreateDto,
         @UserInfo() userId: number
     ) {
-       
-        console.error('Error in createComment:', error);
         return this.commentService.comment(createCommentDto, productId, userId['id']);
     }
 

@@ -10,7 +10,6 @@ import SearchForm from '../../search/Search-form'
 import { useDispatch } from "react-redux"
 import { searchActions } from '../../store/search.action';
 import { BiSolidCommentDetail } from "react-icons/bi";
-import { TbMessageCircle2, TbMessageCircleExclamation } from "react-icons/tb";
 import { BiSolidUser } from "react-icons/bi";
 import { auto } from '@popperjs/core';
 
@@ -19,32 +18,22 @@ const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [Token, setToken] = useState(false)
-  const [isRead, setIsRead] = useState([])
   useEffect(() => {
     if (sessionStorage.getItem("accessToken")) {
       setToken(true)
     }
-    getIsRead()
-  }, [])
+  })
   const Logouthanlder = () => {
     sessionStorage.removeItem("accessToken")
     sessionStorage.removeItem("refreshToken")
     sessionStorage.removeItem("authority")
     navigate("/")
-  }
-  const getIsRead = async () => {
-    fetch("http://localhost:4000/message/isRead",
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }
-      })
-      .then(res => res.json())
-      .then(resData => setIsRead(resData.isRead))
-      .catch(err => console.log(err))
+
   }
 
   const searchhandler = (events) => {
     events.preventDefault()
+	localStorage.setItem('name',searchref.current.value)
     dispatch(searchActions.search(searchref.current.value))
     navigate("/search")
   }
@@ -55,7 +44,7 @@ const Header = () => {
     <header className="flex items-center justify-between p-6 border-b px-20 mx-40  max-w-screen-xl mx-auto">
       <Link to="/">Chat PT</Link>
       <div className="flex items-center space-x-4 ">
-        <p style={{ margin: "0px auto" }}> 강사 </p>
+        <p style={{margin : "0px auto"}}> 강사 </p>
         <form onSubmit={searchhandler}>
           <input
             type="text"
@@ -65,12 +54,12 @@ const Header = () => {
           />
         </form>
 
-        {sessionStorage.getItem("accessToken") ? <Link to="message">{isRead == false ? <TbMessageCircle2 size="30" style={{ color: "black" }} /> : <TbMessageCircleExclamation size="30" style={{ color: "black" }} />} </Link> : <></>}
+        <Link to="message"><BiSolidCommentDetail size="30" style={{ color: "black" }} /></Link>
 
-        <Link to="mypage">
-          <BiSolidUser size="30" style={{ color: "black", marginLeft: "10%" }} />
-        </Link>
-        {sessionStorage.getItem("authority") === "Host" && <Link to="admin"><BsFillFilePersonFill size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>}
+        <Link to={sessionStorage.getItem("accessToken") ?  "/mypage" : "/Login"}><BiSolidUser size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>
+      
+        
+        {sessionStorage.getItem("authority") === "Host" && <Link to= "admin"><BsFillFilePersonFill size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>}
 
         {sessionStorage.getItem("accessToken") ? <BiLogOut size="30" onClick={Logouthanlder} style={{ color: "black" }} /> : <Link to="Login" style={{ color: "black" }}><BiLogIn size="30" /> </Link>}
 
