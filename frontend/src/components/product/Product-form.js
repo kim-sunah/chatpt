@@ -26,7 +26,7 @@ const imgStyle = {
 }
 
 const categoryList = [['헬스','Fitness'], ['요가','Yoga'], ['필라테스','Pilates'], ['합기도','Hapkido'], ['태권도','Taekwondo'], ['자세교정','Posture'], ['스트레칭','Stretch'], ['발레','Ballet'], ['스포츠','Sports'], ['기타','Others']]
-const weekdayList = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일']
+const weekdayList = ['일','월','화','수','목','금','토']
 
 const ProductForm = props => {
 	const [name,setName] = useState(props.product?.name || '')
@@ -113,9 +113,9 @@ const ProductForm = props => {
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>수업 요일</Form.Label>
-				<Form.Select onChange={e => setWeekday(+e.target.value)} value={weekday}>
-					{weekdayList.map((weekday_,i) => <option key={i} value={i}>{weekday_}</option>)}
-				</Form.Select>
+				<div style={{display:'flex',justifyContent:'space-between'}}>
+					{weekdayList.map((weekday_,i) => <Form.Check key={i} onChange={() => setWeekday(weekday^(1<<i))} checked={(weekday&(1<<i))>0} label={weekday_}/>)}
+				</div>
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>수업 시작 시간</Form.Label>
