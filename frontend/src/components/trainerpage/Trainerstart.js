@@ -4,7 +4,7 @@ const Trainerstart = () => {
     const HostHandler = () =>{
         fetch("http://localhost:4000/users/Hostupdate", {method :"PUT" ,headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
         .then(res => res.json())
-        .then(resData => {console.log(resData)})
+        .then(resData => {window.location.reload()})
         .catch(err => console.log(err))
 
     }

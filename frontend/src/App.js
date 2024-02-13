@@ -26,6 +26,7 @@ import KakaoRedirect from './components/KakaoRedirect';
 import Message from './components/message/Message';
 import TrainerPage from './components/trainerpage/Trainer-main.js';
 import Trainerstart from './components/trainerpage/Trainerstart.js';
+import TrainerRoot from './components/trainerpage/TrainerRoot.js';
 
 const router = createBrowserRouter([
     {path: '/',element: <Root></Root>,errorElement: <Errorpage></Errorpage>,children: [
@@ -71,7 +72,7 @@ const router = createBrowserRouter([
         ],
     },
     // { path: 'TrainerPage', element: <TrainerPage /> },
-    { path: 'TrainerPage', element: <Trainerstart />, children : [
+    { path: 'TrainerPage', element: <TrainerRoot />, children : [
         
     ]},
   
