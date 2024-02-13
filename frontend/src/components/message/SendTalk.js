@@ -1,4 +1,13 @@
+const io = openSocket('http://localhost:4000', { transports: ['websocket'] });
+
 const SendTalk = () => {
+    // io.on('connection', message => {
+    //     message.on('message', (message, sender, color, time) => {
+    //         connectMessage(roomId, JSON.stringify({
+    //             message, sender, color, time
+    //         }))
+    //     })
+    // })
     return (
         <>
             <div class="flex-1 overflow-y-auto">

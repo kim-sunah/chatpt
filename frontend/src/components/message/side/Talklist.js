@@ -1,5 +1,28 @@
 import { useEffect, useState } from "react"
+import openSocket from 'socket.io-client';
 const TackList = () => {
+
+    // socket.on('events', (data) => {
+    //     if (data === "userban") {
+    //         fetch("http://localhost:4000/admin/userlist",
+    //             {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
+    //                     "refreshtoken": sessionStorage.getItem("refreshToken")
+    //                 },
+    //                 body: JSON.stringify({ pages: pages })
+    //             }).
+    //             then(res => res.json())
+    //             .then(resData => {
+    //                 setusercount(resData.userCount);
+    //                 setuserList(resData.users)
+    //             })
+    //             .catch(err => console.log(err))
+    //     }
+    // });
+
     const [messageList, setMessageList] = useState();
     useEffect(() => {
         fetch("http://localhost:4000/message", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
