@@ -24,6 +24,7 @@ export default function ProductCreate(props){
 	const createProduct = async (e,body) => {
 		e.preventDefault()
 		const {thumbnail, image, ...body_} = body
+		console.log(body_)
 		const res = await fetch(server+'/product', {method:'post',
 			headers:{'Content-Type':'application/json', Authorization, refreshtoken},
 			body: JSON.stringify(body_)})
