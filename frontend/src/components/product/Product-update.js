@@ -62,7 +62,6 @@ const ProductUpdate = props => {
 		headers:{'Content-Type':'application/json', Authorization, refreshtoken},
 		body: JSON.stringify(body_)})
 		if(res.status!==200) return alert('오류가 발생했습니다. 다시 시도해주세요.')
-		console.log(thumbnail,shorts)
 		if(thumbnail && thumbnail!==product.thumbnail){
 			const formData = new FormData()
 			formData.append('image', thumbnail)
