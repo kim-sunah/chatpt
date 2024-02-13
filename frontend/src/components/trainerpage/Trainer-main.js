@@ -16,14 +16,16 @@ const TrainerPage = () => {
     const [pageNation, setPageNation] = useState(1);
     const [product_Id, setProduct_Id] = useState(0);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [revenue_Id, setRevenue_Id] = useState({ sum: '0', sum2: '0' });
 
     const navigate = useNavigate();
 
     useEffect(() => {
         getUser();
         getProduct();
+        getRevenue();
         // getPayment();
-    }, []);
+    }, [product_Id, selectedUser]);
 
     useEffect(() => {
         getPayment();
@@ -89,6 +91,29 @@ const TrainerPage = () => {
             });
     };
 
+    const getRevenue = async () => {
+        if (product_Id === 0 || !selectedUser) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`http://localhost:4000/payment/revenue/${product_Id}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
+            });
+
+            if (res.status === 200) {
+                const revenueData = await res.json();
+                setRevenue_Id(revenueData);
+            } else {
+                alert('수익 정보를 가져오는데 실패했습니다.');
+                throw new Error('수익 정보 불러오기 실패');
+            }
+        } catch (error) {
+            console.error('수익 데이터를 가져오는 중 에러가 발생했습니다:', error);
+        }
+    };
+
     const handleLectureRegistration = () => {
         navigate('/product/create');
     };
@@ -102,11 +127,13 @@ const TrainerPage = () => {
         navigate(`/message?user=${userId}`);
     };
 
-    const handleEditProduct = (productId) => {
-        navigate(`/product/update?id={id}`);
+    const handleEditProduct = (e, productId) => {
+        e.preventDefault();
+        navigate(`../product/update?id=${productId}`);
     };
 
-    const handleDeleteProduct = async (productId) => {
+    const handleDeleteProduct = async (e, productId) => {
+        e.preventDefault();
         if (window.confirm('정말로 이 강의를 삭제하시겠습니까?')) {
             try {
                 const res = await fetch(`http://localhost:4000/product/${productId}`, {
@@ -116,7 +143,6 @@ const TrainerPage = () => {
 
                 if (res.status === 200) {
                     alert(`프로덕트 삭제 - ID: ${productId}`);
-                    // 성공적인 삭제 후, 제품 목록을 업데이트하려면 getProduct()를 호출할 수 있습니다.
                     getProduct();
                 } else {
                     alert('프로덕트 삭제에 실패했습니다.');
@@ -126,10 +152,6 @@ const TrainerPage = () => {
             }
         }
     };
-
-    console.log(user);
-    console.log(payment);
-
     return (
         <div className="mainpage">
             <h1>강사 페이지</h1>
@@ -174,13 +196,13 @@ const TrainerPage = () => {
                                         <div className="flex space-x-2">
                                             <button
                                                 className="messageButton editButton"
-                                                onClick={() => handleEditProduct(product.id)}
+                                                onClick={(e) => handleEditProduct(e, product.id)}
                                             >
                                                 수정하기
                                             </button>
                                             <button
                                                 className="messageButton deleteButton"
-                                                onClick={() => handleDeleteProduct(product.id)}
+                                                onClick={(e) => handleDeleteProduct(e, product.id)}
                                             >
                                                 삭제하기
                                             </button>
@@ -214,6 +236,12 @@ const TrainerPage = () => {
 
                 {product_Id !== 0 && (
                     <>
+                        <div className="revenueTotal">
+                            <div style={{ fontSize: '11px' }}>
+                                <strong>총 매출액:</strong>{' '}
+                                {revenue_Id ? parseInt(revenue_Id.sum) + parseInt(revenue_Id.sum2) : 0}원
+                            </div>
+                        </div>
                         {payment[0]?.map((payment) => {
                             const user = payment.user;
                             return (
@@ -256,5 +284,4 @@ const TrainerPage = () => {
         </div>
     );
 };
-
 export default TrainerPage;
