@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PaginationControl } from 'react-bootstrap-pagination-control';
 import { Link } from 'react-router-dom';
 import './trainerpage.css';
+import { linkStyles } from './../admin/theme/components/link';
+import Form from 'react-bootstrap/Form';
 
 const TrainerPage = () => {
     const Authorization = 'Bearer ' + window.sessionStorage.getItem('accessToken');
@@ -12,14 +14,19 @@ const TrainerPage = () => {
     const [payment, setPayment] = useState({});
     const [pageCount, setPageCount] = useState(0);
     const [pageNation, setPageNation] = useState(1);
+    const [product_Id, setProduct_Id] = useState(0);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         getUser();
         getProduct();
-        getPayment();
+        // getPayment();
     }, []);
+
+    useEffect(() => {
+        getPayment();
+    }, [product_Id]);
 
     const getUser = async () => {
         const res = await fetch('http://localhost:4000/users/Mypage', {
@@ -56,8 +63,12 @@ const TrainerPage = () => {
     };
 
     const getPayment = () => {
+        if (product_Id === 0) {
+            return;
+        }
+        console.log(product_Id);
         const id = searchParams.get('id');
-        return fetch(`http://localhost:4000/payment/${id}`, {
+        return fetch(`http://localhost:4000/payment/${product_Id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
         })
@@ -149,17 +160,27 @@ const TrainerPage = () => {
             </div>
             <div className="userListContainer">
                 <h2>강의를 수강하는 유저 목록</h2>
-                {user[0]?.map((user) => {
+                <Form.Select onChange={(e) => setProduct_Id(+e.target.value)} value={product_Id}>
+                    {products[0]?.map((product) => {
+                        return (
+                            <option key={product.id} value={product.id}>
+                                {product.name}
+                            </option>
+                        );
+                    })}
+                </Form.Select>
+
+                {payment[0]?.map((payment) => {
+                    const user = payment.user;
                     return (
                         <Link to={`../user/${user.id}}`}>
                             <div className="rounded-lg overflow-hidden">
-                                <h3>{user.user.nickname}</h3>
-                                <div>이름: {user.name}</div>
+                                <h3>{user.nickname}</h3>
                                 <div>성별: {user.gender}</div>
                                 <div>이메일: {user.email}</div>
-                                <div>결제일: {new Date(user.payment.createdAt).toLocaleDateString()}</div>
-                                <div>결제금액: {user.payment}원</div>
-                                <div>결제수단: {user.payment.method}</div>
+                                <div>결제일: {new Date(payment.createdAt).toLocaleDateString()}</div>
+                                <div>결제금액: {payment.spending}원</div>
+                                <div>결제수단: {payment.method}</div>
                             </div>
                         </Link>
                     );
