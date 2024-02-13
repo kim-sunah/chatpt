@@ -69,7 +69,7 @@ const Userupdate = (props) => {
                         <div className="flex-shrink-0" style={{ display: "flex", width: "100%", justifyContent: "center" }}>
                             <img src={props.info.imgurl} className="h-32 w-32 rounded-full bg-gray-300"></img>
                         </div>
-                        <label for="file">
+                        <label htmlFor="file">
                             <div class="btn-upload">파일 업로드하기</div>
                         </label>
                         <input type="file" name="file" id="file" onChange={onUpload}></input>
@@ -82,22 +82,6 @@ const Userupdate = (props) => {
                                 onChange={(e) => setemail(e.target.value)}
                                 value={props.info.email}
                             />
-                            
-                            <div className="flex justify-between" >
-                                <input
-                                    className="flex h-10 w-full rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    id="authNumber"
-                                    placeholder="인증번호를 입력하세요"
-                                    required=""
-                                    style={{ border: Authenticationerror === true ? "1px solid red" : "1px solid gray" }}
-                                    ref={Authentication_number}
-                                />
-                                <button onClick={emailsubmit} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 ml-2">
-                                    인증번호 발송
-                                </button>
-                            </div>
-
-
                             <input
                                 className="flex h-10 w-full rounded-md  border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                 placeholder="새로운 패스워드"

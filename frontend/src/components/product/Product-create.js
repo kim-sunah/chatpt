@@ -23,7 +23,7 @@ export default function ProductCreate(props){
 
 	const createProduct = async (e,body) => {
 		e.preventDefault()
-		const {thumbnail, image, shorts, ...body_} = body
+		const {thumbnail, images, shorts, ...body_} = body
 		console.log(body_)
 		const res = await fetch(server+'/product', {method:'post',
 			headers:{'Content-Type':'application/json', Authorization, refreshtoken},
@@ -37,12 +37,15 @@ export default function ProductCreate(props){
 				headers:{Authorization, refreshtoken},
 				body: formData})
 		}
-		if(image){
-			const formData = new FormData()
-			formData.append('image', image)
-			const res = await fetch(server+`/product/${id}/image`, {method:'post',
-				headers:{Authorization, refreshtoken},
-				body: formData})
+		if(images.length){
+			await Promise.all(images.map(async image => {
+				const formData = new FormData()
+				formData.append('image', image)
+				await fetch(server+`/product/${id}/image`, {method:'post',
+					headers:{Authorization, refreshtoken},
+					body: formData})
+			}))
+			
 		}
 		if(shorts){
 			const formData = new FormData()
