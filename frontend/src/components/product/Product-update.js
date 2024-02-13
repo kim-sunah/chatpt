@@ -19,7 +19,6 @@ const ProductUpdate = props => {
 		alert('해당 상품이 존재하지 않습니다.')
 		navigate('/')
 	}
-	// 인증
 	const Authorization = 'Bearer '+window.sessionStorage.getItem('accessToken')
 	const refreshtoken = window.sessionStorage.getItem('refreshToken')
 	
@@ -30,8 +29,14 @@ const ProductUpdate = props => {
 			navigate('/')
 		}
 		const product_ = await res.json()
+		const res2 = await fetch('http://localhost:4000/users/Mypage', {          headers: { Authorization, refreshtoken },
+        })
+		const user_ = await res2.json()
+		if(user_.user.id!==product_.user_id){
+			alert('권한이 없습니다.')
+			navigate('/')
+		}
 		setProduct(product_)
-		console.log(product_)
 	}
 	
 	const getImages = async () => {

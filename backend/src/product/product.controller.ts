@@ -115,7 +115,7 @@ export class ProductController {
 
     // 수업 수정
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin,Role.Host)
     @Patch(':id')
     async updateProduct(@Param() param: Id, @Body() body: UpdateProductDto) {
         return await this.productService.updateProduct(param.id, body);
