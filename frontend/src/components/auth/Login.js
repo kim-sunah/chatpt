@@ -55,37 +55,6 @@ const Login = () => {
                 // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {status: 500,});
             })
     }
-    const kakaoOnSuccess = async (data) => {
-        fetch("http://localhost:4000/auth/kakaosingup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: data.profile.kakao_account.email, Nickname: data.profile.kakao_account.profile.nickname }) })
-            .then(res => res.json())
-            .then(resData => {
-                if (resData.statusCode === 200) {
-                    fetch("http://localhost:4000/auth/kakaosingin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: data.profile.kakao_account.email, Nickname: data.profile.kakao_account.profile.nickname }) })
-                        .then(res => res.json())
-                        .then(resData => {
-                            if (resData.limit === true) {
-                                return alert("이용이 제한된 이용자입니다.")
-                            }
-                            else{
-                                sessionStorage.setItem("authority", resData.authority)
-                                sessionStorage.setItem("accessToken", resData.accessToken)
-                                sessionStorage.setItem("refreshToken", resData.refreshToken)
-                                navigate("/")
-                            }
-                           
-                        })
-                        .catch(err => console.log(err))
-                }
-            })
-            .catch(err => console.log(err))
-
-
-    }
-    const kakaoOnFailure = (error) => {
-        console.log(error);
-    };
-
-
     const NaverLogin = () => {
         const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&state=false&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`;
         window.location.href = NAVER_AUTH_URL;
