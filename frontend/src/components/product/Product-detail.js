@@ -21,16 +21,18 @@ export default function ProductCard(props) {
 	const [fivestar, setfivestar] = useState(false)
 	const [starsum, setstarsum] = useState()
 	const [wish, setwish] = useState(false);
+	const [Review, setReview] = useState(false)
+	const [MyReview , setMyReview] = useState()
 
 	useEffect(() => {
 		fetch(`http://localhost:4000/comment/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 			.then(res => res.json())
-			.then(resData => { setcommentList(resData); console.log(resData) })
+			.then(resData => { setcommentList(resData)})
 			.catch(err => console.log(err))
 		if (sessionStorage.getItem("accessToken")) {
-			fetch(`http://localhost:4000/wishlist/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+			fetch(`http://localhost:4000/wishlist/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 				.then(res => res.json())
-				.then(resData => { setwish(resData); console.log(resData) })
+				.then(resData => { setwish(resData)})
 				.catch(err => { console.log(err) })
 		}
 
@@ -50,7 +52,6 @@ export default function ProductCard(props) {
 					.catch(err => console.log(err))
 		});
 	}, [])
-	console.log(wish)
 
 
 	const commenthandler = (event) => {
@@ -60,7 +61,11 @@ export default function ProductCard(props) {
 		}
 		fetch(`http://localhost:4000/comment/${id}`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: comment.current.value, rating: starsum }) })
 			.then(res => res.json())
-			.then(resData => console.log(resData))
+			.then(resData => {
+				if (resData.statusCode !== 200) {
+					alert(resData.message)
+				}
+			})
 			.catch(err => console.log(err))
 		setonestar(false)
 		settwostar(false)
@@ -128,6 +133,21 @@ export default function ProductCard(props) {
 				.catch(err => console.log(err))
 
 		}
+
+	}
+
+	const AllReviews = (event) => {
+		event.preventDefault()
+		setReview(false)
+
+	}
+	const MyReviews = (event) => {
+		event.preventDefault()
+		setReview(true)
+		fetch(`http://localhost:4000/comment/my/${id}`,{method : "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }})
+		.then(res => res.json())
+		.then(resData => {setMyReview(resData[0]); console.log(resData[0])})
+		.catch(err => console.log(err))
 
 	}
 	return (
@@ -231,46 +251,156 @@ export default function ProductCard(props) {
 
 					<div class="col-span-1 md:col-span-3">
 						<div class="mt-8 bg-white p-4 rounded-lg shadow">
-							<h3 class="text-lg font-semibold">리뷰 섹션</h3>
-							{commentList && commentList.map(comment => (
-								<div key={comment.id} className="flex items-center space-x-4 mt-10">
+							<div style={{ display: "flex" }}>
+								<h3 class="text-lg font-semibold" onClick={AllReviews}>모든 리뷰&nbsp;&nbsp;/ </h3>
+								<h3 class="text-lg font-semibold"  onClick={MyReviews}>&nbsp;&nbsp;내 리뷰</h3>
+							</div>
+							{!Review && <div>
+								{commentList && commentList.map(comment => (
+									<div key={comment.id} className="flex items-center space-x-4 mt-10">
+										<div class="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+											{comment.rating}
+										</div>
+										<span className="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
+											<img className="aspect-square h-full w-full" alt="profile" src={comment.user.profile_image} />
+										</span>
+
+										<div class="grid gap-1.5">
+											<div className="flex items-center gap-2">
+												<div className="font-semibold">{comment.user.nickname}</div>
+												<div className="text-gray-500 text-xs dark:text-gray-400">{comment.createdAt.split("T")[0]}</div>
+											</div>
+											<div>{comment.body}</div>
+										</div>
+									</div>
+								))}
+								<form onSubmit={commenthandler} className="mt-4">
+									<textarea
+										className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
+										placeholder="Write your review here..."
+										ref={comment}
+									></textarea>
+									<div className="mt-4">
+										<div className="flex items-center space-x-2" >
+											<div className="flex items-center space-x-2">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="24"
+													height="24"
+													viewBox="0 0 24 24"
+													fill={onestar ? "black" : "white"}
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													className="w-6 h-6 "
+													onClick={() => starhandler("one")}
+												>
+													<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+												</svg>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="24"
+													height="24"
+													viewBox="0 0 24 24"
+													fill={twostar ? "black" : "white"}
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													className="w-6 h-6 "
+													onClick={() => starhandler("two")}
+												>
+													<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+												</svg>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="24"
+													height="24"
+													viewBox="0 0 24 24"
+													fill={threestar ? "black" : "white"}
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													className="w-6 h-6 "
+													onClick={() => starhandler("three")}
+												>
+													<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+												</svg>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="24"
+													height="24"
+													viewBox="0 0 24 24"
+													fill={fourstar ? "black" : "white"}
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													className="w-6 h-6"
+													onClick={() => starhandler("four")}
+												>
+													<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+												</svg>
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="24"
+													height="24"
+													viewBox="0 0 24 24"
+													fill={fivestar ? "black" : "white"}
+													stroke="currentColor"
+													strokeWidth="2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													className="w-6 h-6"
+													onClick={() => starhandler("five")}
+												>
+													<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+												</svg>
+											</div>
+											<Button type="submit" variant="outline" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Submit Review</Button>
+										</div>
+
+									</div>
+								</form>
+							</div>}
+							{Review && MyReview && <div>
+								<div class="mt-4 flex items-center space-x-4">
 									<div class="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-										{comment.rating}
+										4.5
 									</div>
-									<span className="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-										<img className="aspect-square h-full w-full" alt="profile" src={comment.user.profile_image} />
+									<span class="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
+										<img src={MyReview.profile_image} class="flex h-full w-full items-center justify-center rounded-full bg-muted">YU</img>
 									</span>
-
 									<div class="grid gap-1.5">
-										<div className="flex items-center gap-2">
-											<div className="font-semibold">{comment.user.nickname}</div>
-											<div className="text-gray-500 text-xs dark:text-gray-400">{comment.createdAt.split("T")[0]}</div>
+										<div class="flex items-center gap-2">
+											<div class="font-semibold">asd</div>
+											<div class="text-gray-500 text-xs dark:text-gray-400">{MyReview.createdAt}</div>
 										</div>
-										<div>{comment.body}</div>
+										<div>{MyReview.body}</div>
 									</div>
 								</div>
-							))}
-							<form onSubmit={commenthandler} className="mt-4">
-								<textarea
-									className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
-									placeholder="Write your review here..."
-									ref={comment}
-								></textarea>
-								<div className="mt-4">
-									<div className="flex items-center space-x-2" >
-										<div className="flex items-center space-x-2">
+								<div class="mt-4">
+									<textarea
+										class="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
+										placeholder="Modify your review here..."
+									></textarea>
+								</div>
+								<div class="mt-4">
+									<div class="flex items-center space-x-2">
+										<div class="flex items-center space-x-2">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
 												width="24"
 												height="24"
 												viewBox="0 0 24 24"
-												fill={onestar ? "black" : "white"}
+												fill="none"
 												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												className="w-6 h-6 "
-												onClick={() => starhandler("one")}
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="w-6 h-6 fill-primary"
 											>
 												<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
 											</svg>
@@ -279,13 +409,12 @@ export default function ProductCard(props) {
 												width="24"
 												height="24"
 												viewBox="0 0 24 24"
-												fill={twostar ? "black" : "white"}
+												fill="none"
 												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												className="w-6 h-6 "
-												onClick={() => starhandler("two")}
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="w-6 h-6 fill-primary"
 											>
 												<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
 											</svg>
@@ -294,13 +423,12 @@ export default function ProductCard(props) {
 												width="24"
 												height="24"
 												viewBox="0 0 24 24"
-												fill={threestar ? "black" : "white"}
+												fill="none"
 												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												className="w-6 h-6 "
-												onClick={() => starhandler("three")}
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="w-6 h-6 fill-primary"
 											>
 												<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
 											</svg>
@@ -309,13 +437,12 @@ export default function ProductCard(props) {
 												width="24"
 												height="24"
 												viewBox="0 0 24 24"
-												fill={fourstar ? "black" : "white"}
+												fill="none"
 												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												className="w-6 h-6"
-												onClick={() => starhandler("four")}
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="w-6 h-6 fill-muted stroke-muted-foreground"
 											>
 												<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
 											</svg>
@@ -324,22 +451,22 @@ export default function ProductCard(props) {
 												width="24"
 												height="24"
 												viewBox="0 0 24 24"
-												fill={fivestar ? "black" : "white"}
+												fill="none"
 												stroke="currentColor"
-												strokeWidth="2"
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												className="w-6 h-6"
-												onClick={() => starhandler("five")}
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="w-6 h-6 fill-muted stroke-muted-foreground"
 											>
 												<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
 											</svg>
 										</div>
-										<Button type="submit" variant="outline" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Submit Review</Button>
+										<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+											Update Review
+										</button>
 									</div>
-
 								</div>
-							</form>
+							</div>}
 						</div>
 					</div>
 				</div>

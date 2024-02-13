@@ -15,6 +15,7 @@ const TrainerPage = () => {
     const [pageCount, setPageCount] = useState(0);
     const [pageNation, setPageNation] = useState(1);
     const [product_Id, setProduct_Id] = useState(0);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     const navigate = useNavigate();
 
@@ -92,8 +93,38 @@ const TrainerPage = () => {
         navigate('/product/create');
     };
 
-    const handleMessageButton = () => {
-        navigate('/message');
+    // const handleMessageButton = () => {
+    //     navigate('/message');
+    // };
+
+    const handleSendMessage = (userId) => {
+        setSelectedUser(userId);
+        navigate(`/message?user=${userId}`);
+    };
+
+    const handleEditProduct = (productId) => {
+        navigate(`/product/update?id={id}`);
+    };
+
+    const handleDeleteProduct = async (productId) => {
+        if (window.confirm('정말로 이 강의를 삭제하시겠습니까?')) {
+            try {
+                const res = await fetch(`http://localhost:4000/product/${productId}`, {
+                    method: 'DELETE',
+                    headers: { Authorization, refreshtoken },
+                });
+
+                if (res.status === 200) {
+                    alert(`프로덕트 삭제 - ID: ${productId}`);
+                    // 성공적인 삭제 후, 제품 목록을 업데이트하려면 getProduct()를 호출할 수 있습니다.
+                    getProduct();
+                } else {
+                    alert('프로덕트 삭제에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('프로덕트 삭제 중 에러가 발생했습니다:', error);
+            }
+        }
     };
 
     console.log(user);
@@ -107,10 +138,10 @@ const TrainerPage = () => {
             </button>
             <div className="lectureListContainer">
                 <h2>등록한 강의 목록</h2>
-                {products[0]?.map((product) => {
-                    return (
-                        <Link to={`../product/${product.id}`}>
-                            <div key={product.id} className="rounded-lg overflow-hidden">
+                <div className="productGrid">
+                    {products[0]?.map((product) => (
+                        <Link to={`../product/${product.id}`} key={product.id} className="productItemContainer">
+                            <div className="productItem">
                                 <img
                                     src={product.thumbnail}
                                     alt="Course thumbnail"
@@ -121,32 +152,45 @@ const TrainerPage = () => {
                                 />
                                 <div className="p-4">
                                     <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+                                    <div className="flex items-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="text-yellow-400 w-4 h-4"
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <span className="text-xs font-semibold ml-1">4.5</span>
+                                    </div>
                                     <p className="text-sm mb-4">{product.intro}</p>
                                     <div className="flex items-center justify-between mb-2">
-                                        <div className="flex items-center" style={{ marginLeft: '90%' }}>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="text-yellow-400 w-4 h-4"
+                                        <div className="flex space-x-2">
+                                            <button
+                                                className="messageButton editButton"
+                                                onClick={() => handleEditProduct(product.id)}
                                             >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <span className="text-xs font-semibold ml-1">4.5</span>
+                                                수정하기
+                                            </button>
+                                            <button
+                                                className="messageButton deleteButton"
+                                                onClick={() => handleDeleteProduct(product.id)}
+                                            >
+                                                삭제하기
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </Link>
-                    );
-                })}
-
+                    ))}
+                </div>
                 <PaginationControl
                     page={pageNation}
                     between={4}
@@ -161,36 +205,56 @@ const TrainerPage = () => {
             <div className="userListContainer">
                 <h2>강의를 수강하는 유저 목록</h2>
                 <Form.Select onChange={(e) => setProduct_Id(+e.target.value)} value={product_Id}>
-                    {products[0]?.map((product) => {
-                        return (
-                            <option key={product.id} value={product.id}>
-                                {product.name}
-                            </option>
-                        );
-                    })}
+                    {products[0]?.map((product) => (
+                        <option key={product.id} value={product.id}>
+                            {product.name}
+                        </option>
+                    ))}
                 </Form.Select>
 
-                {payment[0]?.map((payment) => {
-                    const user = payment.user;
-                    return (
-                        <Link to={`../user/${user.id}}`}>
-                            <div className="rounded-lg overflow-hidden">
-                                <h3>{user.nickname}</h3>
-                                <div>성별: {user.gender}</div>
-                                <div>이메일: {user.email}</div>
-                                <div>결제일: {new Date(payment.createdAt).toLocaleDateString()}</div>
-                                <div>결제금액: {payment.spending}원</div>
-                                <div>결제수단: {payment.method}</div>
-                            </div>
-                        </Link>
-                    );
-                })}
-
-                <button className="messageButton" onClick={handleMessageButton}>
-                    메시지 보내기
-                </button>
+                {product_Id !== 0 && (
+                    <>
+                        {payment[0]?.map((payment) => {
+                            const user = payment.user;
+                            return (
+                                <div key={user.id} className="userItem">
+                                    <div className="userDetails">
+                                        <div style={{ fontSize: '11px' }}>
+                                            <strong>이름:</strong> {user.nickname}
+                                        </div>
+                                        <div style={{ fontSize: '11px' }}>
+                                            <strong>이메일:</strong> {user.email}
+                                        </div>
+                                        <div style={{ fontSize: '11px' }}>
+                                            <strong>결제일:</strong> {new Date(payment.createdAt).toLocaleDateString()}
+                                        </div>
+                                        <div style={{ fontSize: '11px' }}>
+                                            <strong>결제금액:</strong> {payment.spending}원
+                                        </div>
+                                        <div style={{ fontSize: '11px' }}>
+                                            <strong>결제수단:</strong> {payment.method}
+                                        </div>
+                                        <div style={{ fontSize: '11px' }}>
+                                            <strong>마일리지 사용:</strong> {payment.mileage}포인트
+                                        </div>
+                                        <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+                                            <button
+                                                className="messageButton"
+                                                style={{ fontSize: '11px' }}
+                                                onClick={() => handleSendMessage(user.id)}
+                                            >
+                                                메시지 보내기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </>
+                )}
             </div>
         </div>
     );
 };
+
 export default TrainerPage;

@@ -11,6 +11,8 @@ const Userinfo = () => {
     }
 
 
+
+
     return (
         <div>
             {!update &&
@@ -58,7 +60,7 @@ const Userinfo = () => {
                         </div>
                     </div>
                 </div>}
-            {update && <Userupdate info={{ email: info.email, phone: info.phone }}></Userupdate>}
+            {update && <Userupdate info={{ email: info.email, imgurl : info.profile_image}}></Userupdate>}
         </div>
     )
 

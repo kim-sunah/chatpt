@@ -19,7 +19,7 @@ import { User } from 'src/entities/user.entity';
 import { UpdateuserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { userInfo } from 'os';
+
 
 @ApiTags('회원')
 @UseGuards(JwtAuthGuard)
@@ -42,10 +42,9 @@ export class UserController {
     @UserInfo() userinfo: User,
     @Body() updateUser: UpdateuserDto
   ) {
-    const updateuser = await this.userService.updateUserinfo(
-      userinfo.id,
-      updateUser
-    );
+ 
+    const updateuser = await this.userService.updateUserinfo(userinfo.id,updateUser);
+   
     return {
       statusCode: HttpStatus.OK,
       updateuser,

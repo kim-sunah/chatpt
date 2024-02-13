@@ -1,6 +1,5 @@
 import { IsString, IsInt, Min, IsNotEmpty, IsEnum, IsOptional, IsDateString, Max } from 'class-validator'
 import { Category } from 'src/enum/Category'
-import { ProductStatus } from 'src/enum/ProductStatus'
 
 export class CreateProductDto {
 	@IsNotEmpty()
@@ -12,12 +11,12 @@ export class CreateProductDto {
 	category: Category
 	
 	@IsOptional()
-	@IsEnum(ProductStatus)
-	status: ProductStatus
+	@IsString()
+	body: string
 	
 	@IsOptional()
 	@IsString()
-	body: string
+	intro: string
 	
 	@IsInt()
 	@Min(1)
@@ -41,4 +40,12 @@ export class CreateProductDto {
 	@IsDateString()
 	@IsNotEmpty()
 	end_on: string
+	
+	@IsInt()
+	@Min(0)
+	@Max(6)
+	weekday: number
+	
+	// start_at
+	// end_at
 }

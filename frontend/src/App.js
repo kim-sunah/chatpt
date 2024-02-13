@@ -74,7 +74,8 @@ const router = createBrowserRouter([
             { path: 'data-tables', element: <AdminTable></AdminTable> },
         ],
     },
-    { path: 'TrainerPage', element: <TrainerPage /> },
+    { path: '/trainer', element: <TrainerPage /> },
+    { path: 'trainerpage', element: <TrainerPage /> },
     { path: 'Login/kakao', element: <KakaoRedirect></KakaoRedirect> },
     { path: 'Login/naver', element: <Redirecturl></Redirecturl> },
 ]);
