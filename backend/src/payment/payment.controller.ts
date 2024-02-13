@@ -64,6 +64,12 @@ export class PaymentController {
         };
     }
 	
+	// 상품별 매출액
+	@Get('revenue/:id')
+	async getRevenue(@Param() param: Id){
+		return await this.paymentService.getRevenue(param.id)
+	}
+	
 	// 상품별 구매 목록
 	@UseGuards(JwtAuthGuard)
 	@Get(':id')

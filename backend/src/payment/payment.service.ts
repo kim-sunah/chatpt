@@ -94,6 +94,15 @@ export class PaymentService {
 		return await this.paymentRepository.findOne({where:{user_id,product_id}})
 	}
 	
+	// 상품별 매출액
+	async getRevenue(product_id: number){
+		return await this.paymentRepository.createQueryBuilder()
+			.select('SUM(spending)','sum')
+			.addSelect('SUM(mileage)','sum2')
+			.where(`product_id=${product_id}`)
+			.getRawOne()
+	}
+	
 	// 상품별 구매 목록
 	async getByProduct(product_id: number, page: number, pageSize: number){
 		return await this.paymentRepository.findAndCount({where:{product_id}, take:pageSize, skip:(page-1)*pageSize, relations:['user']})
