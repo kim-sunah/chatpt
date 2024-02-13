@@ -1,4 +1,4 @@
-import { Body, Query, Controller, Delete, Get, Param, Patch, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Query, Controller, Delete, Get, Param, Patch, Post, UseGuards, Request, HttpStatus } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from '../auth/decorators/userinfo.decorator';
@@ -37,8 +37,6 @@ export class CommentController {
 	@UseGuards(JwtAuthGuard)
 	@Get('my/:id')
 	async getComments(@Param("id") param : string){
-       
-		
         return this.commentService.getComments(+param);
 	}
 
@@ -64,9 +62,13 @@ export class CommentController {
         @Param('commentId') commentId: number,
         @UserInfo() userId: number
     ) {
-        console.log("xczxcxz")
-        // console.error('Error in commentUpdate:', error);
-        // return this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
+       
+        console.error('Error in commentUpdate:', error);
+       this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
+        return {
+            statusCode: HttpStatus.OK,
+
+          };
     }
 
 	// 리뷰 삭제

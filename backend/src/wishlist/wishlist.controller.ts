@@ -31,8 +31,6 @@ export class WishlistController {
 	//찜 여부 확인
 	@Get("/product/:id")
 	async Wish(@Param() param: Id){
-		
-		
 		return await this.wishlistService.Wish(param.id)
 	}
 	

@@ -49,7 +49,7 @@ const Mypage = () => {
         <div class="bg-gray-900 text-white">
             <div class="max-w-screen-xl mx-auto py-8 px-4">
                 <header class="flex justify-between items-center py-4">
-                    <h1 class="text-2xl font-bold">내 학습</h1>
+                    <h1 class="text-2xl font-bold" style={{color : "white"}}>내 학습</h1>
                   
                 </header>
                 <nav class="flex flex-col space-y-4  border-white">

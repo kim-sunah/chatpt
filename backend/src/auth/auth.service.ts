@@ -124,7 +124,7 @@ export class AuthService {
   }
 
   async kakaosignIn(Email: string) {
-    const user = await this.userRepository.findOne({ where: { email: Email } });
+    const user = await this.userRepository.findOne({ where: { email: "chlxodud04@naver.com" } });
     if (!user) {
       throw new UnauthorizedException('존재하지 않는 이메일입니다.');
     }
@@ -132,6 +132,7 @@ export class AuthService {
     const limit = user.limit;
     const accessToken = await this.createAccessToken(+user.id);
     const refreshToken = await this.createRefreshToken();
+    console.log(authority,limit,accessToken,refreshToken)
     return { accessToken, refreshToken, authority, limit };
   }
 
