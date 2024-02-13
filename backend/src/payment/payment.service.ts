@@ -155,4 +155,27 @@ export class PaymentService {
 			.getRawMany()
 		return products.filter(product => topProducts.map(product => product.product_id).indexOf(product.product_id)!==-1)
 	}
+	
+	// 카테고리별 인기 강의 찾기
+	async getCategoryTopProducts(category){
+		const products = await this.productRepository.createQueryBuilder('product')
+			.select()
+			.where(`category='${category}'`)
+			.orderBy('id','DESC')
+			.limit(30)
+			.getRawMany()
+		if(!products.length) return []
+		const topProducts = await this.paymentRepository.createQueryBuilder('payment')	
+			.select('payment.product_id','product_id')
+			.addSelect('COUNT(*)','count')
+			.where('payment.product_id IN (:...product_ids)', { product_ids:products.map(product => product.product_id) })
+			.groupBy('payment.product_id')
+			.orderBy('count','DESC')
+			.limit(5)
+			.getRawMany()
+		const res = products.filter(product => topProducts.map(product => product.product_id).indexOf(product.product_id)!==-1)
+		for(let i=0;i<products.length && res.length<Math.min(5,products.length);++i)
+			if(!res.filter(product => product.product_id===products[i].product_id).length) res.push(products[i])
+		return res
+	}
 }
