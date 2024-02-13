@@ -21,9 +21,6 @@ export class UpdateuserDto {
     @IsEqualTo("Password")
     ConfirmPassword : string
 
-    @IsMobilePhone()
-    phone : string
-
 
     @IsString()
     Authentication_number : string

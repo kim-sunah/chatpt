@@ -133,7 +133,7 @@ const Bodymain = () => {
                         <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
                         <p className="text-sm mb-4">{product.product_intro}</p>
                         <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center" style={{marginLeft :"90%"}}>
+                            <div className="flex items-center" style={{marginLeft :"80%"}}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
@@ -176,7 +176,7 @@ const Bodymain = () => {
                         <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
                         <p className="text-sm mb-4">{product.product_intro}</p>
                         <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center" style={{marginLeft :"90%"}}>
+                            <div className="flex items-center" style={{marginLeft :"80%"}}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"

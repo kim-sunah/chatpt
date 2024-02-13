@@ -38,24 +38,12 @@ export class UserService {
     }
     async updateUserinfo(id: number ,updateUser:  UpdateuserDto){
         const email_Emailauthentication = await this.cacheManager.get(updateUser.Email);
-
-        console.log(email_Emailauthentication)
-        console.log(updateUser)
-
         const user = await this.userRepository.findOne({where : {id : id}});
         const hashedPassword = await bcrypt.hashSync(updateUser.Password, 12);
-    
-        if(user.phone !== updateUser.phone){
-            const existphone = await this.userRepository.findOne({where : {phone : updateUser.phone}})
-            if(existphone){
-                throw new BadRequestException(["이미 사용중인 번호입니다."])
-            }
-        }
         if(email_Emailauthentication !== updateUser.Authentication_number){
             throw new BadRequestException(["Authentication number does not match"])
         }
-
-        return await this.userRepository.update(id , {password : hashedPassword , phone : updateUser.phone})
+        return await this.userRepository.update(id , {email : updateUser.Email , password : hashedPassword })
     
       
     }
@@ -79,8 +67,6 @@ export class UserService {
     async Allproduct(id : number){
         const productlist = await this.productRepositoy.find({where : {user_id : id}})
         return productlist
-        
-
 
     }
 

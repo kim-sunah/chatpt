@@ -50,28 +50,7 @@ const Mypage = () => {
             <div class="max-w-screen-xl mx-auto py-8 px-4">
                 <header class="flex justify-between items-center py-4">
                     <h1 class="text-2xl font-bold">내 학습</h1>
-                    <div class="relative">
-                        <input
-                            class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-800 border-none pl-10"
-                            placeholder="내 강의 검색"
-                            type="search"
-                        />
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6"
-                        >
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.3-4.3"></path>
-                        </svg>
-                    </div>
+                  
                 </header>
                 <nav class="flex flex-col space-y-4  border-white">
                     <div className="flex space-x-4 pb-2">
