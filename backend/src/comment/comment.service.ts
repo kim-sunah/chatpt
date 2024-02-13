@@ -47,6 +47,11 @@ export class CommentService {
 		return await this.commentRepository.findAndCount({where:{user_id:this.req.user['id']},take: pageSize, skip:(page-1)*pageSize,relations:['product']})
 	}
 
+    async getComments(id : number){
+		return await this.commentRepository.findAndCount({where:{user_id:this.req.user['id'], product_id : id},relations:['user']})
+	}
+
+
 	// 리뷰 쓰기
     async comment(createCommentDto: CreateCommentDto, productId: number, userId: number): Promise<Comment> {
 		const product = await this.productRepository.findOne({where:{id:productId}})
