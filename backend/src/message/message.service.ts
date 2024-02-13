@@ -82,13 +82,11 @@ export class MessageService {
     }
   }
 
-  async receive(id: number, userId: number,message:string) {
-
-
+  async receive(id: number, userId: number, message: string) {
     try {
-      const msg=await this.messageRepository.findOne({where : {id : id}})
+      const msg = await this.messageRepository.findOne({ where: { id: id } });
       msg.last_message = message;
-      await this.messageRepository.update(id, msg)
+      await this.messageRepository.update(id, msg);
       const queue = id;
       amqp.connect(url, function (error0, connection) {
         if (error0) {
@@ -99,11 +97,10 @@ export class MessageService {
             throw error1;
           }
           channel.assertQueue(queue, {
-            durable: false
+            durable: false,
           });
-          channel.consume(queue, function(msg) {
-          }, {
-            noAck: true
+          channel.consume(queue, function (msg) {}, {
+            noAck: true,
           });
         });
       });
