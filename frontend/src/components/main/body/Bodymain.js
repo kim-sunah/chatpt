@@ -66,6 +66,7 @@ const Bodymain = () => {
 			if(name){
 				const res = await fetch(`http://localhost:4000/payment/personalBest?key=${name}`)
 				yourBest_ = await res.json()
+				console.log(yourBest_,name)
 			}
 		}
 		for(let i=0;i<weekBest_.length && yourBest_.length<5;++i){
