@@ -94,14 +94,18 @@ const ProductUpdate = props => {
 		}
 	}
 	
-	const uploadImage = async (e,image_) => {
-		const formData = new FormData()
-		formData.append('image', image_)
-		const res = await fetch(server+`/product/${id}/image`, {method:'post',
-		headers:{Authorization, refreshtoken},
-		body: formData})
-		const image__ = await res.json()
-		setImages([...images,image__])
+	const uploadImage = async (e,images_) => {
+		console.log(images_)
+		const res = await Promise.all(images_.map(async image => {
+			const formData = new FormData()
+			formData.append('image', image)
+			const res = await fetch(server+`/product/${id}/image`, {method:'post',
+			headers:{Authorization, refreshtoken},
+			body: formData})
+			return await res.json()	
+		}))
+		console.log(res)
+		setImages([...images,...res])
 	}
 	
 	const deleteImage = async e => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import openSocket from 'socket.io-client';
 
 import Button from 'react-bootstrap/Button'
@@ -9,9 +9,9 @@ import logo from "../../img/Designer.jpeg"
 import "./product.css"
 
 
-
 export default function ProductCard(props) {
 	const { id } = useParams()
+	const navigate = useNavigate()
 	const comment = useRef()
 	const updatecommnet = useRef()
 	const [commentList, setcommentList] = useState()
@@ -257,7 +257,7 @@ export default function ProductCard(props) {
 							</div>
 
 							<div className="mt-4">
-								<button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
+								<button onClick={() => navigate(`../../payment?id=${id}`)} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
 									지금 구매
 								</button>
 							</div>
