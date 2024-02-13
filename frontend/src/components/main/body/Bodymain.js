@@ -93,24 +93,24 @@ const Bodymain = () => {
                 <h2 className="text-xl font-bold mb-4">카테고리별 클래스 모음</h2>
                 <div className="flex flex-col sm:flex-row  hide-scrollbar mb-4" >
                     <div className="flex flex-col items-center mr-8">
-                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
-                        <span className="text-lg">필라테스</span>
+                        <img src="https://chatpt-githubaction-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/%EC%9E%90%EC%84%B8%EA%B5%90%EC%A0%95.png" className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></img>
+                        <span className="text-lg">자세개선</span>
                     </div>
                     <div className="flex flex-col items-center mr-8">
-                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
+                        <img src="https://chatpt-githubaction-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/%EC%9A%94%EA%B0%80.jpg" className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></img>
                         <span className="text-lg">요가</span>
                     </div>
                     <div className="flex flex-col items-center mr-8">
-                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
-                        <span className="text-lg">플랜타시</span>
+                        <img src="https://chatpt-githubaction-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/%ED%95%84%EB%9D%BC%ED%85%8C%EC%8A%A4.png" className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></img>
+                        <span className="text-lg">필라테스</span>
                     </div>
                     <div className="flex flex-col items-center mr-8">
-                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
-                        <span className="text-lg">자체개선</span>
+                        <img src="https://chatpt-githubaction-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/%ED%97%AC%EC%8A%A4.png" className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></img>
+                        <span className="text-lg">헬스</span>
                     </div>
                     <div className="flex flex-col items-center mr-8">
-                        <span className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></span>
-                        <span className="text-lg">스토리텔링</span>
+                        <img src="https://chatpt-githubaction-s3-bucket.s3.ap-northeast-2.amazonaws.com/images/%EB%B0%9C%EB%A0%88.png" className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"></img>
+                        <span className="text-lg">발레</span>
                     </div>
                 </div>
 

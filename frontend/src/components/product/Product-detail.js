@@ -20,17 +20,21 @@ export default function ProductCard(props) {
 	const [fourstar, setfourstar] = useState(false)
 	const [fivestar, setfivestar] = useState(false)
 	const [starsum, setstarsum] = useState()
-	const [wish, setwish] = useState();
+	const [wish, setwish] = useState(false);
 
 	useEffect(() => {
 		fetch(`http://localhost:4000/comment/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 			.then(res => res.json())
 			.then(resData => { setcommentList(resData); console.log(resData) })
 			.catch(err => console.log(err))
-		fetch(`http://localhost:4000/wishlist/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
-			.then(res => res.json())
-			.then(resData => { setwish(resData) })
-			.catch(err => { console.log(err) })
+		if (sessionStorage.getItem("accessToken")) {
+			fetch(`http://localhost:4000/wishlist/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+				.then(res => res.json())
+				.then(resData => { setwish(resData); console.log(resData) })
+				.catch(err => { console.log(err) })
+		}
+
+
 		const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
 		socket.on('events', (data) => {
 			if (data === "LIKE") {
@@ -42,10 +46,11 @@ export default function ProductCard(props) {
 			else if (data === "createcomment")
 				fetch(`http://localhost:4000/comment/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 					.then(res => res.json())
-					.then(resData => { setcommentList(resData)})
+					.then(resData => { setcommentList(resData) })
 					.catch(err => console.log(err))
 		});
 	}, [])
+	console.log(wish)
 
 
 	const commenthandler = (event) => {
@@ -57,12 +62,12 @@ export default function ProductCard(props) {
 			.then(res => res.json())
 			.then(resData => console.log(resData))
 			.catch(err => console.log(err))
-			setonestar(false)
-			settwostar(false)
-			setthreestar(false)
-			setfourstar(false)
-			setfivestar(false)
-			comment.current.value =""
+		setonestar(false)
+		settwostar(false)
+		setthreestar(false)
+		setfourstar(false)
+		setfivestar(false)
+		comment.current.value = ""
 	}
 
 	const starhandler = (event) => {
