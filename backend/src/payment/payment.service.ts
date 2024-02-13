@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePaymentDto } from './dto/create.payment.dto';
@@ -30,6 +30,8 @@ export class PaymentService {
             if (!product) {
                 throw new NotFoundException('강의 회차 정보가 없습니다.');
             }
+			const existPayment = await this.paymentRepository.findOne({where:{user_id:userId,product_id:createPaymentDto.product_id}})
+			if(existPayment) throw new ConflictException('이미 구매한 강의입니다.')
             const user = await this.userRepository.findOne({ where: { id: userId } });
 
             const afterPaidPoints = user.mileage - createPaymentDto.mileage;
@@ -76,25 +78,15 @@ export class PaymentService {
     }
 
 	// 내 구매 목록
+   
     async findAll(userId: number, page: number, pageSize: number) {
-        const payments = await this.paymentRepository.findAndCount({
+        return await this.paymentRepository.findAndCount({
             where: { user_id: userId },
             relations: ['product'],
 			take: pageSize,
-			skip: (page-1)*pageSize
+			skip: (page-1)*pageSize,
+			order: {id:'DESC'}
         });
-
-        const formattedPayments = payments[0].map((payment) => ({
-            payment_id: payment.id,
-            product: {
-                product_id: payment.product.id,
-                product_name: payment.product.name,
-                // Add other product properties as needed
-            },
-            createdAt: payment.createdAt,
-        }));
-
-        return [formattedPayments,payments[1]]
     }
 
 	// 구매자+강의 조합 찾기
@@ -128,4 +120,19 @@ export class PaymentService {
             createdAt: payment.createdAt,
         };
     }
+	
+	// 인기 강의 찾기
+	async getTopProducts(){
+		const oneWeekAgo = new Date()
+		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+		return await this.paymentRepository.createQueryBuilder('payment')
+			.leftJoinAndSelect('payment.product','product')
+			.select('COUNT(*)','count')
+			.addSelect('product')
+			.where('payment.createdAt >= :oneWeekAgo', { oneWeekAgo })
+			.groupBy('payment.product_id')
+			.orderBy('count','DESC')
+			.limit(5)
+			.getRawMany()
+	}
 }

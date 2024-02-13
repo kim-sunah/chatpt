@@ -116,6 +116,7 @@ export class ProductService {
         const Instructor = await this.userRepository.findOne({ where: { id: product.user_id } });
         const index = 'products';
         await this.elasticsearchService.indexDocument(index, {
+            id : product.id,
             productname: product.name,
             descirption: product.body,
             Instructor: Instructor.nickname,

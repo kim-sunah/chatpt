@@ -12,7 +12,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         const req = context.switchToHttp().getRequest();
         const accessToken = req.headers.authorization.split(' ')[1];
         const refreshToken = req.headers.refreshtoken;
-        console.log("asdas")
         
 
         if (!accessToken || !refreshToken) {

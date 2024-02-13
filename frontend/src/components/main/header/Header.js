@@ -40,7 +40,7 @@ const Header = () => {
 
   return (
     // <div className="bg-white min-h-screen px-40 mx-5">className="p-6 min-h-screen px-40 mx-40"
-    <header className="flex items-center justify-between p-6 border-b px-20 mx-40 ">
+    <header className="flex items-center justify-between p-6 border-b px-20 mx-40  max-w-screen-xl mx-auto">
       <Link to="/">Chat PT</Link>
       <div className="flex items-center space-x-4 ">
         <p style={{margin : "0px auto"}}> 강사 </p>
