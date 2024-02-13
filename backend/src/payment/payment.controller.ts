@@ -41,6 +41,12 @@ export class PaymentController {
 	async getPersonalTopProducts(@Query() query: any){
 		return await this.paymentService.getPersonalTopProducts(query.key)
 	}
+	
+	// 카테고리별 인기 강의 찾기
+	@Get('categoryBest')
+	async getCategoryTopProducts(@Query() query: any){
+		return await this.paymentService.getCategoryTopProducts(query.category)
+	}
 
 	// 내 구매 목록
     @ApiBearerAuth()
@@ -57,6 +63,12 @@ export class PaymentController {
             payments
         };
     }
+	
+	// 상품별 매출액
+	@Get('revenue/:id')
+	async getRevenue(@Param() param: Id){
+		return await this.paymentService.getRevenue(param.id)
+	}
 	
 	// 상품별 구매 목록
 	@UseGuards(JwtAuthGuard)
