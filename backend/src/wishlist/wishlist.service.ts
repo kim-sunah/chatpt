@@ -5,11 +5,13 @@ import {Wishlist} from '../entities/wishlist.entity'
 import { REQUEST } from '@nestjs/core'
 import { Request } from 'express'
 import { EventsGateway } from 'src/events/events.gateway'
+import { Product } from 'src/entities/product.entity'
 
 @Injectable({scope: Scope.REQUEST})
 export class WishlistService {
 	constructor(
 		@InjectRepository(Wishlist) private readonly wishlistRepository: Repository<Wishlist>,
+		@InjectRepository(Product) private readonly ProducttRepository: Repository<Product>,
 		@Inject(REQUEST) private readonly req: Request,
 		private readonly event: EventsGateway
 	){}
@@ -51,10 +53,9 @@ export class WishlistService {
 	
 	// 내 찜 목록
 	async getMyWish(){
-		return await this.wishlistRepository.createQueryBuilder('wishlist')
-			.leftJoinAndSelect('wishlist.product','product')
-			.where(`wishlist.user_id=${this.req.user['id']}`)
-			.getManyAndCount()
+		return await this.wishlistRepository.find({where : {user_id : this.req.user['id']},  relations:['product']})
+		
+		
 		
 	}
 }

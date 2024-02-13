@@ -112,9 +112,10 @@ export class AuthController {
   }
   @Post('kakaosingup')
   async postKakaoInfo(@Body() kakaoLoginDto: KakaoLoginDto) {
-    await this.authService.kakosignUp(kakaoLoginDto);
-    const { accessToken, refreshToken, authority, limit } =
-      await this.authService.kakaosignIn(kakaoLoginDto.Email);
+    const userinfo = await this.authService.kakosignUp(kakaoLoginDto);
+    
+    const { accessToken, refreshToken, authority, limit } = await this.authService.kakaosignIn(kakaoLoginDto.Email);
+    
     return {
       statusCode: HttpStatus.OK,
       message: '로그인에 성공했습니다.',

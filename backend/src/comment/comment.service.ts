@@ -79,9 +79,9 @@ export class CommentService {
 
 	// 리뷰 수정
     async commentUpdate(userId: number, commentId: number, updateCommentDto: UpdateCommentDto): Promise<Comment> {
-        const comment = await this.commentRepository.findOne({
-            where: { id: commentId, user_id: userId },
-        });
+       console.log(userId , commentId, updateCommentDto)
+        const comment = await this.commentRepository.findOne({ where: { product_id: commentId, user_id: userId }});
+        
         if (!comment) {
             throw new NotFoundException('댓글을 찾을 수 없습니다.');
         }
