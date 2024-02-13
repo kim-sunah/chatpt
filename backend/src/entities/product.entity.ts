@@ -41,6 +41,7 @@ export class Product {
     thumbnail: string;
 
     @Column('enum', { enum: Category, default: Category.Others })
+	@Index()
     category: Category;
 
     @Column({ nullable: true })
