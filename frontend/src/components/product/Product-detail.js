@@ -31,8 +31,8 @@ export default function ProductCard(props) {
 			.then(res => res.json())
 			.then(resData => { setcommentList(resData); })
 			.catch(err => console.log(err))
-
-		fetch(`http://localhost:4000/wishlist/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+		if(sessionStorage.getItem("accessToken")){
+			fetch(`http://localhost:4000/wishlist/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 			.then(res => res.json())
 			.then(resData => { setwish(resData) })
 			.catch(err => { console.log(err) })
@@ -40,6 +40,9 @@ export default function ProductCard(props) {
 			.then(res => res.json())
 			.then(resData => { setMyReview(resData[0][0]) })
 			.catch(err => console.log(err))
+
+		}
+		
 		const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
 		socket.on('events', (data) => {
 			if (data === "LIKE") {
@@ -185,6 +188,7 @@ export default function ProductCard(props) {
 
 	}
 
+
 	const AllReviews = (event) => {
 
 		setReview(false)
@@ -294,7 +298,7 @@ export default function ProductCard(props) {
 						</div>
 					</div>
 
-
+					
 					<div className="col-span-1 md:col-span-3">
 						<div className="mt-8 bg-white p-4 rounded-lg shadow">
 							<div style={{ display: "flex" }}>
@@ -320,7 +324,7 @@ export default function ProductCard(props) {
 										</div>
 									</div>
 								))}
-								<form onSubmit={commenthandler} className="mt-4">
+								{sessionStorage.getItem("accessToken") && <form onSubmit={commenthandler} className="mt-4">
 									<textarea
 										className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
 										placeholder="Write your review here..."
@@ -409,9 +413,9 @@ export default function ProductCard(props) {
 										</div>
 
 									</div>
-								</form>
+								</form>}
 							</div>}
-							{Review && MyReview && <div>
+							{Review  && MyReview && <div>
 								<div className="mt-4 flex items-center space-x-4">
 									<div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
 										{MyReview.rating}

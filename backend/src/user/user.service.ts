@@ -10,6 +10,7 @@ import { basename, extname } from 'path';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/enum/Role';
 
 @Injectable()
 export class UserService {
@@ -77,6 +78,11 @@ export class UserService {
             user.limit = false;
         }
         return await this.userRepository.update(id , user);
+    }
+
+    async Hostupdate(id : number){
+        return await this.userRepository.update(id , {authority : Role.Host})
+    
     }
 
 }

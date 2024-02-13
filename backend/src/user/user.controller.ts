@@ -77,4 +77,14 @@ export class UserController {
       message: '회원 정보를 성공적으로 업데이트했습니다.',
     };
   }
+
+  @Put("/Hostupdate")
+  async Hostupdate(@UserInfo() userinfo: User){
+    await this.userService.Hostupdate(userinfo.id)
+    return {
+      statusCode: HttpStatus.OK,
+    };
+
+
+  }
 }

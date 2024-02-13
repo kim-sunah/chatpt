@@ -4,6 +4,7 @@ import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom"
+import { left } from "@popperjs/core";
 
 const spanStyle = {
     padding: '20px',
@@ -38,8 +39,6 @@ const Bodymain = () => {
     const [yourBest, setYourBest] = useState([])
     const [category, setCategory] = useState('')
     const [categoryBest, setCategoryBest] = useState([])
-
-
 
     const turnedOn = true
     const getBest = async () => {
@@ -200,27 +199,18 @@ const Bodymain = () => {
 
                     ))}
                 </div></div>
+
+     
             <main className="bg-white text-black pt-8">
                 <h2 className="text-xl font-bold mb-4 mt-5">최근 인기있는 강의</h2>
                 <div className="max-w-screen-xl mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5 gap-10">
                         {weekBest.length > 0 && weekBest.map(product => (
+                            
 
                             <Link to={`product/${product.product_id}`}><div key={product.product_id} className=" overflow-hidden">
-                                <img
-                                    src={product.product_thumbnail}
-                                    alt="Course thumbnail"
-                                    className="w-full h-36 object-cover"
-                                    width="240"
-                                    height="160"
-                                
-                                    style={{ aspectratio: 240 / 160, objectfit: "cover" }}
-                                />
-                                <div className="p-4">
-                                    <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
-                                    <p className="text-sm mb-4">{product.product_intro}</p>
                                     <div className="flex items-center justify-between mb-2">
-                                        <div className="flex items-center" style={{ marginLeft: "80%" }}>
+                                        <div className="flex items-center " >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -238,6 +228,20 @@ const Bodymain = () => {
                                             <span className="text-xs font-semibold ml-1">4.5</span>
                                         </div>
                                     </div>
+
+                                <img
+                                    src={product.product_thumbnail}
+                                    alt="Course thumbnail"
+                                    className="w-full h-36 object-cover"
+                                    width="240"
+                                    height="160"
+                                
+                                    style={{ aspectratio: 240 / 160, objectfit: "cover" }}
+                                />
+                                <div className="mt-2">
+                                    <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
+                                    <p className="text-sm mb-4">{product.product_intro}</p>
+                                
                                 </div>
                             </div></Link>
 

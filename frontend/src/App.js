@@ -71,7 +71,9 @@ const router = createBrowserRouter([
         ],
     },
     // { path: 'TrainerPage', element: <TrainerPage /> },
-    { path: 'TrainerPage', element: <Trainerstart /> },
+    { path: 'TrainerPage', element: <Trainerstart />, children : [
+        
+    ]},
   
     { path: 'Login/kakao', element: <KakaoRedirect></KakaoRedirect> },
     { path: 'Login/naver', element: <Redirecturl></Redirecturl> },
