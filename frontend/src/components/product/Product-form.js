@@ -25,8 +25,15 @@ const imgStyle = {
 	margin: '10px'
 }
 
+const videoStyle = {
+	borderRadius: 15,
+	objectFit: 'cover',
+	width: 300,
+	height: 225
+}
+
 const categoryList = [['헬스','Fitness'], ['요가','Yoga'], ['필라테스','Pilates'], ['합기도','Hapkido'], ['태권도','Taekwondo'], ['자세교정','Posture'], ['스트레칭','Stretch'], ['발레','Ballet'], ['스포츠','Sports'], ['기타','Others']]
-const weekdayList = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일']
+const weekdayList = ['일','월','화','수','목','금','토']
 
 const ProductForm = props => {
 	const [name,setName] = useState(props.product?.name || '')
@@ -37,6 +44,7 @@ const ProductForm = props => {
 	const [thumbnail,setThumbnail] = useState(props.product?.thumbnail || '')
 	const [images,setImages] = useState(props.images || [])
 	const [image_,setImage_] = useState([])
+	const [shorts,setShorts] = useState(props.product?.shorts || '')
 	const [intro,setIntro] = useState(props.product?.intro || '')
 	const [capacity,setCapacity] = useState(props.product?.capacity || 1)
 	const [start_on,setStartOn] = useState(props.product?.start_on || (new Date().toISOString().slice(0,10)))
@@ -59,6 +67,7 @@ const ProductForm = props => {
 		setEndOn(props.product?.end_on || (new Date().toISOString().slice(0,10)))
 		setStartAt(props.product?.start_at || '06:00:00')
 		setEndAt(props.product?.end_at || '07:00:00')
+		setShorts(props.product?.shorts || '')
 	}, [props.product, props.images])
 	
 	const handleFileChange = e => {
@@ -70,9 +79,14 @@ const ProductForm = props => {
 		const file = e.target.files[0]
 		if (file) setImage_(file)
 	}
+
+	const handleShortChange = e => {
+		const file = e.target.files[0]
+		if (file) setShorts(file)
+	}
 	
 	return (
-		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,image:image_,intro,capacity,start_on,end_on,weekday,start_at,end_at})}>
+		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,image:image_,intro,capacity,start_on,end_on,weekday,start_at,end_at,shorts})}>
 			<Form.Group>
 				<Form.Label>이름</Form.Label>
 				<Form.Control required onChange={e => setName(e.target.value)} value={name} />
@@ -113,9 +127,9 @@ const ProductForm = props => {
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>수업 요일</Form.Label>
-				<Form.Select onChange={e => setWeekday(+e.target.value)} value={weekday}>
-					{weekdayList.map((weekday_,i) => <option key={i} value={i}>{weekday_}</option>)}
-				</Form.Select>
+				<div style={{display:'flex',justifyContent:'space-between'}}>
+					{weekdayList.map((weekday_,i) => <Form.Check key={i} onChange={() => setWeekday(weekday^(1<<i))} checked={(weekday&(1<<i))>0} label={weekday_}/>)}
+				</div>
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>수업 시작 시간</Form.Label>
@@ -140,6 +154,15 @@ const ProductForm = props => {
 				)))}
 				<Form.Control type='file' onChange={handleImageChange} accept='.jpg, .jpeg, .png' />
 				{props.product && <Button onClick={e => props.uploadImage(e,image_)}>이미지 추가</Button> }
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>상품 쇼츠 (mp4, avi, mov, mkv만 가능, 50MB 이하)</Form.Label>
+				{props.product?.shorts && (
+					<video style={videoStyle} controls>
+						<source src={props.product.shorts} type='video/mp4' />
+					</video>
+				)}
+				<Form.Control type='file' onChange={handleShortChange} accept='.mp4, .avi, .mov, .mkv' defaultValue={props.product?.shorts || ''} />
 			</Form.Group>
 			<br />
 			<Button type='submit' className='me-2'>{props.tag || '상품 등록'}</Button>

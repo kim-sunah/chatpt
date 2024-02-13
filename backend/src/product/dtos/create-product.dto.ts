@@ -42,8 +42,8 @@ export class CreateProductDto {
 	end_on: string
 	
 	@IsInt()
-	@Min(0)
-	@Max(6)
+	@Min(1)
+	@Max(127)
 	weekday: number
 	
 	// start_at
