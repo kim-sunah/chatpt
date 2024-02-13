@@ -1,15 +1,21 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword } from 'class-validator';
 import {
-    Index,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    OneToMany,
-    OneToOne,
-    Relation,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsStrongPassword,
+} from 'class-validator';
+import {
+  Index,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+  Relation,
 } from 'typeorm';
 import { Gender } from '../enum/Gender';
 import { Role } from '../enum/Role';
@@ -20,70 +26,77 @@ import { Comment } from './comment.entity';
 import { HostInfo } from './host-info.entity';
 import { UserInfo } from './user-info.entity';
 import { Payment } from './payment.entity';
+import { Message } from './message.entity';
 
 @Entity('users')
 @Index(['id', 'nickname'])
 export class User {
-    @PrimaryGeneratedColumn({ unsigned: true })
-    id: number;
+  @PrimaryGeneratedColumn({ unsigned: true })
+  id: number;
 
-    @Column()
-    registration_information: string;
+  @Column()
+  registration_information: string;
 
-    @Column()
-    email: string;
+  @Column()
+  email: string;
 
-    @Column()
-    password: string;
-    
-    @Column({nullable: true})
-    profile_image : string
+  @Column()
+  password: string;
 
-    @Column()
-    nickname: string;
+  @Column({ nullable: true })
+  profile_image: string;
 
-    @Column({ default: 0 })
-    mileage: number;
+  @Column()
+  nickname: string;
 
-    @Column()
-    gender: string;
+  @Column({ default: 0 })
+  mileage: number;
 
-    @Column()
-    phone: string;
+  @Column()
+  gender: string;
 
-    @Column({ type: 'enum', enum: Role, default: Role.User })
-    authority: Role;
+  @Column()
+  phone: string;
 
-    @Column({ default: false })
-    limit: boolean;
+  @Column({ type: 'enum', enum: Role, default: Role.User })
+  authority: Role;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @Column({ default: false })
+  limit: boolean;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @DeleteDateColumn()
-    deletedAt: Date | null;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @OneToMany(() => Product, (product) => product.user_id)
-    products: Product[];
+  @DeleteDateColumn()
+  deletedAt: Date | null;
 
-    @OneToMany(() => Inquiry, (inquiry) => inquiry.user_id)
-    inquiries: Inquiry[];
+  @OneToMany(() => Product, (product) => product.user_id)
+  products: Product[];
 
-    @OneToMany(() => InquiryReply, (inquiryReply) => inquiryReply.user_id)
-    inquiryReplies: InquiryReply[];
+  @OneToMany(() => Inquiry, (inquiry) => inquiry.user_id)
+  inquiries: Inquiry[];
 
-    @OneToMany(() => Comment, (comment) => comment.user)
-    comment: Relation<Comment>[];
+  @OneToMany(() => InquiryReply, (inquiryReply) => inquiryReply.user_id)
+  inquiryReplies: InquiryReply[];
 
-    @OneToOne(() => HostInfo)
-    hostInfo?: HostInfo;
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comment: Relation<Comment>[];
 
-    @OneToOne(() => UserInfo)
-    userInfo?: UserInfo;
+  @OneToOne(() => HostInfo)
+  hostInfo?: HostInfo;
 
-    @OneToMany(() => Payment, (payment) => payment.user)
-    payments: Payment[];
+  @OneToOne(() => UserInfo)
+  userInfo?: UserInfo;
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payments: Payment[];
+
+  @OneToMany(() => Message, (message) => message.host)
+  host_message: Relation<Message>[];
+
+  @OneToMany(() => Message, (message) => message.gest)
+  gest_message: Relation<Message>[];
 }
