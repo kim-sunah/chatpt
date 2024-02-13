@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { Message } from '../entities/message.entity';
 import { User } from 'src/entities/user.entity';
 var amqp = require('amqplib/callback_api');
-const url = 'amqp://localhost';
+const url =
+  'amqps://b-e4d218f5-5560-4786-b2bc-f3185dca9ce3.mq.ap-northeast-2.amazonaws.com:5671';
 @Injectable()
 export class MessageService {
   constructor(
