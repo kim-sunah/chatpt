@@ -33,7 +33,7 @@ const Allproduct = () => {
                         <h3 class="text-lg font-semibold mb-2">{product.product.name}</h3>
                         <p class="text-sm mb-4">{product.product.intro ? product.product.intro : "안녕하세요"}</p>
                         <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center" style={{marginLeft :"90%"}}>
+                            <div class="flex items-center" style={{ marginLeft: "90%" }}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
