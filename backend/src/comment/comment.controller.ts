@@ -19,7 +19,7 @@ export class CommentController {
     @Get('product/:productId')
     async commentfind(@Param('productId') productId: number, @Query() query: PageDto) {
 		const { page, pageSize } = query
-        //console.error('Error in commentfind:', error);
+        //console.error('Error in commentfind:', error)
         return this.commentService.commentfind(productId,page,pageSize);
     }
 	
@@ -51,6 +51,7 @@ export class CommentController {
         @UserInfo() userId: number
     ) {
         return this.commentService.comment(createCommentDto, productId, userId['id']);
+     
     }
 
 	// 리뷰 수정
@@ -64,7 +65,7 @@ export class CommentController {
     ) {
        
         console.error('Error in commentUpdate:', error);
-       this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
+       this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto)
         return {
             statusCode: HttpStatus.OK,
 
@@ -77,6 +78,6 @@ export class CommentController {
     @Delete(':commentId')
     async commentDelete(@Param('commentId') commentId: number, @UserInfo() userId: number) {
         console.error('Error in commentDelete:', error);
-        return this.commentService.commentDelete(userId['id'], commentId);
+        this.commentService.commentDelete(userId['id'], commentId);
     }
 }

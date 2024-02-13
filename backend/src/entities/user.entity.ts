@@ -49,7 +49,7 @@ export class User {
   @Column()
   nickname: string;
 
-  @Column({ default: 0 })
+  @Column({ default: 100000})
   mileage: number;
 
   @Column()

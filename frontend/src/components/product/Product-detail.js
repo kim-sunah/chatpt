@@ -24,25 +24,22 @@ export default function ProductCard(props) {
 	const [wish, setwish] = useState(false);
 	const [Review, setReview] = useState(false)
 	const [MyReview, setMyReview] = useState()
-	
+
 
 	useEffect(() => {
 		fetch(`http://localhost:4000/comment/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 			.then(res => res.json())
-			.then(resData => { setcommentList(resData) })
+			.then(resData => { setcommentList(resData); })
 			.catch(err => console.log(err))
-		if (sessionStorage.getItem("accessToken")) {
-			fetch(`http://localhost:4000/wishlist/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
-				.then(res => res.json())
-				.then(resData => { setwish(resData) })
-				.catch(err => { console.log(err) })
-			fetch(`http://localhost:4000/comment/my/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
-				.then(res => res.json())
-				.then(resData => { setMyReview(resData[0][0]); console.log(resData[0][0]) })
-				.catch(err => console.log(err))
-		}
 
-
+		fetch(`http://localhost:4000/wishlist/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+			.then(res => res.json())
+			.then(resData => { setwish(resData) })
+			.catch(err => { console.log(err) })
+		fetch(`http://localhost:4000/comment/my/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+			.then(res => res.json())
+			.then(resData => { setMyReview(resData[0][0]) })
+			.catch(err => console.log(err))
 		const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
 		socket.on('events', (data) => {
 			if (data === "LIKE") {
@@ -51,35 +48,41 @@ export default function ProductCard(props) {
 			else if (data === "UNLIKE") {
 				setwish(false)
 			}
-			else if (data === "createcomment")
+			else if (data === "createcomment" || data === "updatecomment"  || data ==="deletecomment")
 				fetch(`http://localhost:4000/comment/product/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
 					.then(res => res.json())
 					.then(resData => { setcommentList(resData) })
 					.catch(err => console.log(err))
+			fetch(`http://localhost:4000/comment/my/${id}`, { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+				.then(res => res.json())
+				.then(resData => { setMyReview(resData[0][0])})
+				.catch(err => console.log(err))
 		});
 	}, [])
-
-
 	const commenthandler = (event) => {
 		event.preventDefault()
 		if (!starsum || !comment) {
 			alert("충족되지 않은 입력란이 존재합니다.")
 		}
-		fetch(`http://localhost:4000/comment/${id}`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: comment.current.value, rating: starsum }) })
-			.then(res => res.json())
-			.then(resData => {
-				
-				if (resData.statusCode !== 200) {
-					alert(resData.message)
-				}
-			})
-			.catch(err => console.log(err))
-		setonestar(false)
-		settwostar(false)
-		setthreestar(false)
-		setfourstar(false)
-		setfivestar(false)
-		comment.current.value = ""
+		else {
+			fetch(`http://localhost:4000/comment/${id}`, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: comment.current.value, rating: starsum }) })
+				.then(res => res.json())
+				.then(resData => {
+					
+					if (resData.statusCode !== 200 && resData.message) {
+						alert(resData.message)
+					}
+				})
+				.catch(err => console.log(err))
+			setonestar(false)
+			settwostar(false)
+			setthreestar(false)
+			setfourstar(false)
+			setfivestar(false)
+			comment.current.value = ""
+
+		}
+
 	}
 
 	const updatecommenthandler = (event) => {
@@ -87,26 +90,39 @@ export default function ProductCard(props) {
 		if (!starsum || !updatecommnet) {
 			alert("충족되지 않은 입력란이 존재합니다.")
 		}
-		fetch(`http://localhost:4000/comment/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: updatecommnet.current.value, rating: starsum }) })
-			.then(res => res.json())
-			.then(resData => {
-				
-				if (resData.statusCode !== 200) {
-					alert(resData.message)
-				}
-				else if(resData.statusCode === 200){
-					window.location.reload()
-					alert("수정이 완료되었습니다.")
-				}
-			})
-			.catch(err => console.log(err))
-		setonestar(false)
-		settwostar(false)
-		setthreestar(false)
-		setfourstar(false)
-		setfivestar(false)
-		setstarsum(0)
-		updatecommnet.current.value = ""
+		else {
+			fetch(`http://localhost:4000/comment/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: updatecommnet.current.value, rating: starsum }) })
+				.then(res => res.json())
+				.then(resData => {
+
+					if (resData.statusCode !== 200) {
+						alert(resData.message)
+					}
+					else if (resData.statusCode === 200) {
+						window.location.reload()
+						alert("수정이 완료되었습니다.")
+					}
+				})
+				.catch(err => console.log(err))
+			setonestar(false)
+			settwostar(false)
+			setthreestar(false)
+			setfourstar(false)
+			setfivestar(false)
+			setstarsum(0)
+			updatecommnet.current.value = ""
+		}
+	}
+
+	const deletecomment = () =>{
+		
+		fetch(`http://localhost:4000/comment/${MyReview.id}`, { method: "DELETE", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ comment: updatecommnet.current.value, rating: starsum }) })
+				.then(res => res.json())
+				.then(resData => {
+					console.log(resData)
+				})
+				.catch(err => console.log(err))
+
 	}
 
 	const starhandler = (event) => {
@@ -170,12 +186,12 @@ export default function ProductCard(props) {
 	}
 
 	const AllReviews = (event) => {
-		event.preventDefault()
+
 		setReview(false)
 
 	}
 	const MyReviews = (event) => {
-		event.preventDefault()
+
 		setReview(true)
 
 
@@ -400,26 +416,26 @@ export default function ProductCard(props) {
 									<div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
 										{MyReview.rating}
 									</div>
-									<span class="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-										<img src= {MyReview.user.profile_image} className="flex h-full w-full items-center justify-center rounded-full bg-muted"/>
-									</span> 
+									<span className="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
+										<img src={MyReview.user.profile_image} className="flex h-full w-full items-center justify-center rounded-full bg-muted" />
+									</span>
 									<div className="grid gap-1.5">
 										<div className="flex items-center gap-2">
 											<div className="font-semibold">{MyReview.user.nickname}</div>
-											<div className="text-gray-500 text-xs dark:text-gray-400">{MyReview.createdAt}</div>
+											<div className="text-gray-500 text-xs dark:text-gray-400">{MyReview.createdAt.split("T")[0]}</div>
 										</div>
 										<div>{MyReview.body}</div>
 									</div>
 								</div>
 								<form onSubmit={updatecommenthandler}>
-								<div className="mt-4">
-									<textarea
-										className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
-										placeholder="Modify your review here..."
-										ref={updatecommnet}
-									></textarea>
-								</div>
-								<div className="mt-4">
+									<div className="mt-4">
+										<textarea
+											className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
+											placeholder="Modify your review here..."
+											ref={updatecommnet}
+										></textarea>
+									</div>
+									<div className="mt-4">
 										<div className="flex items-center space-x-2" >
 											<div className="flex items-center space-x-2">
 												<svg
@@ -498,13 +514,16 @@ export default function ProductCard(props) {
 													<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
 												</svg>
 											</div>
-										<button  type ="submit" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-											Update Review
-										</button>
+											<button type="submit" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+												Update Review
+											</button>
 										
+										</div>
 									</div>
-								</div>
 								</form>
+								<button onClick ={deletecomment} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2">
+												Delete Review
+								</button>
 							</div>}
 						</div>
 					</div>

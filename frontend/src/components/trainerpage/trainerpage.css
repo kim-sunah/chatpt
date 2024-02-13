@@ -91,3 +91,9 @@ h2 {
     justify-content: space-between;
     align-items: center;
 }
+
+.button-black {
+    background-color: black;
+    color: white; 
+}
+

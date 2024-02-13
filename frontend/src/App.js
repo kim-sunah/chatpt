@@ -25,17 +25,13 @@ import PaymentSuccess from './components/payment/Payment-success';
 import KakaoRedirect from './components/KakaoRedirect';
 import Message from './components/message/Message';
 import TrainerPage from './components/trainerpage/Trainer-main.js';
+import Trainerstart from './components/trainerpage/Trainerstart.js';
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Root></Root>,
-        errorElement: <Errorpage></Errorpage>,
-        children: [
+    {path: '/',element: <Root></Root>,errorElement: <Errorpage></Errorpage>,children: [
             { index: true, element: <Main></Main> },
             { path: 'mypage', element: <Mypage></Mypage> },
-            {
-                path: 'product',
+            {   path: 'product',
                 children: [
                     { path: 'create', element: <ProductCreate /> },
                     { path: 'update', element: <ProductUpdate /> },
@@ -74,7 +70,9 @@ const router = createBrowserRouter([
             { path: 'data-tables', element: <AdminTable></AdminTable> },
         ],
     },
-    { path: 'TrainerPage', element: <TrainerPage /> },
+    // { path: 'TrainerPage', element: <TrainerPage /> },
+    { path: 'TrainerPage', element: <Trainerstart /> },
+  
     { path: 'Login/kakao', element: <KakaoRedirect></KakaoRedirect> },
     { path: 'Login/naver', element: <Redirecturl></Redirecturl> },
 ]);
