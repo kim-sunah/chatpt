@@ -9,6 +9,6 @@ export class UpdateCommentDto {
 	
 	@IsInt()
 	@Min(1)
-	@Max(10)
+	@Max(5)
 	rating: number
 }

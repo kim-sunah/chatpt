@@ -18,18 +18,21 @@ const Redirecturl = (props) => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const resData = await response.json();
-      console.log(resData)
-      if(resData.statusCode === 200){
-        sessionStorage.setItem("authority" , resData.authority)
+      if (resData.limit === true) {
+        navigate("/")    
+        alert("사용이 제한된 사용자입니다.")
+      }
+      else if (resData.statusCode === 200) {
+        sessionStorage.setItem("authority", resData.authority)
         sessionStorage.setItem("accessToken", resData.accessToken)
         sessionStorage.setItem("refreshToken", resData.refreshToken)
-        navigate("/")    
-        }
-        else{
-            navigate("/Login")   
-            alert(resData.message) 
-        }
-      
+        navigate("/")
+      }
+      else {
+        navigate("/Login")
+        alert(resData.message)
+      }
+
       // if (responseData.statusCode === 200) {
       //   const userData = await fetch("http://localhost:4000/auth/naversignin", {
       //     method: "POST",

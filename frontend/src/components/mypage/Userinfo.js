@@ -44,7 +44,7 @@ const Userinfo = () => {
                             </div>
                         </div>
                     </div>}
-                    <div style={{ marginTop: "30%" }}>
+                    {/* <div style={{ marginTop: "30%" }}>
                         <h3 className="text-lg font-bold">수강 완료한 강의 목록</h3>
                         <div className="mt-4 grid grid-cols-2 gap-4">
                             <div className="bg-gray-200 p-4 rounded-lg">
@@ -58,7 +58,7 @@ const Userinfo = () => {
                                 <p className="text-sm text-gray-600">상품설명</p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>}
             {update && <Userupdate info={{ email: info.email, imgurl : info.profile_image}}></Userupdate>}
         </div>
