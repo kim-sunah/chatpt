@@ -31,6 +31,17 @@ export class CommentController {
 		const { page, pageSize } = query
         return this.commentService.getMyComments(page,pageSize);
 	}
+
+    //강의에 맞는 리뷰 목록
+    @ApiBearerAuth('accessToken')
+	@UseGuards(JwtAuthGuard)
+	@Get('my/:id')
+	async getComments(@Param("id") param : string){
+       
+		
+        return this.commentService.getComments(+param);
+	}
+
 	
 	// 리뷰 쓰기
     @ApiBearerAuth('accessToken')

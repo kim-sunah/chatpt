@@ -28,10 +28,14 @@ export class WishlistService {
 	// 찜 삭제
 	async deleteWish(id: number){
 		const wish = await this.wishlistRepository.findOne({where:{product_id : id}})
-		if(!wish) throw new NotFoundException('찜하지 않은 강의입니다.')
-		if(wish.user_id!==this.req.user['id']) {
-			throw new ForbiddenException('권한이 없습니다.')
+		console.log(wish)
+		if(!wish) {
+			throw new NotFoundException('찜하지 않은 강의입니다.')
 		}
+		
+		// if(wish.user_id !==this.req.user['id']) {
+		// 	throw new ForbiddenException('권한이 없습니다.')
+		// }
 		this.event.GetwishList("UNLIKE")
 		await this.wishlistRepository.delete(wish.id)
 	}
@@ -46,12 +50,11 @@ export class WishlistService {
 	}
 	
 	// 내 찜 목록
-	async getMyWish(page: number, pageSize: number){
+	async getMyWish(){
 		return await this.wishlistRepository.createQueryBuilder('wishlist')
 			.leftJoinAndSelect('wishlist.product','product')
 			.where(`wishlist.user_id=${this.req.user['id']}`)
-			.take(pageSize)
-			.skip((page - 1) * pageSize)
 			.getManyAndCount()
+		
 	}
 }

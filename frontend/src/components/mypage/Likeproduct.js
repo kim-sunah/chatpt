@@ -2,26 +2,26 @@ import { useEffect, useState } from "react"
 import logo from "../../img/Designer.jpeg"
 
 const Likeproduct = () =>{
-    const [productlist, setproductlist] = useState([])
+    const [productlist, setproductlist] = useState()
     
     useEffect(() => {
-        fetch("http://localhost:4000/wishlist/my", {method : "GET" , headers :  { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
+        fetch("http://localhost:4000/wishlist/my", {method : "get" , headers :  { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
         .then(res => res.json())
         .then(resData => {
-				setproductlist(resData[0])
+            console.log(resData[0])
+            setproductlist(resData[0])
         })
         .catch(err=> {
             console.log(err)
         })
 
     }, [])
-    console.log(productlist)
     return (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
         {productlist && productlist.map(product => (
             <div class="rounded-lg overflow-hidden">
                 <img
-                    src={logo}
+                    src={product.product.thumbnail}
                     alt="Course thumbnail"
                     class="w-full h-36 object-cover"
                     width="240"

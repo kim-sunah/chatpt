@@ -5,8 +5,12 @@ import { Role } from '../enum/Role';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Id } from 'src/util/id'
 import { PageDto } from '../product/dtos/page.dto'
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
+import { UserInfo } from 'src/auth/decorators/userinfo.decorator';
+import { User } from 'src/entities/user.entity';
 
-@UseGuards(RoleGuard)
+ @UseGuards(RoleGuard)
+
 @Controller('wishlist')
 export class WishlistController {
 	constructor(private readonly wishlistService: WishlistService) {}
@@ -25,17 +29,18 @@ export class WishlistController {
 		return await this.wishlistService.deleteWish(param.id)
 	}
 	//찜 여부 확인
-	@Get(":id")
+	@Get("/product/:id")
 	async Wish(@Param() param: Id){
+		
 		
 		return await this.wishlistService.Wish(param.id)
 	}
 	
 	// 내 찜 목록
-	@Roles(Role.User)
+	// @Roles(Role.User)
 	@Get('my')
-	async getMyWish(@Query() query: PageDto){
-		const { page, pageSize } = query
-		return await this.wishlistService.getMyWish(page,pageSize)
+	async getMyWish(){
+	
+		return await this.wishlistService.getMyWish()
 	}
 }
