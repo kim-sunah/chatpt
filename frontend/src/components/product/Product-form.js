@@ -43,7 +43,7 @@ const ProductForm = props => {
 	const [sale_price,setSalePrice] = useState(props.product?.sale_price || 1)
 	const [thumbnail,setThumbnail] = useState(props.product?.thumbnail || '')
 	const [images,setImages] = useState(props.images || [])
-	const [image_,setImage_] = useState([])
+	const [newImages,setNewImages] = useState([])
 	const [shorts,setShorts] = useState(props.product?.shorts || '')
 	const [intro,setIntro] = useState(props.product?.intro || '')
 	const [capacity,setCapacity] = useState(props.product?.capacity || 1)
@@ -58,8 +58,7 @@ const ProductForm = props => {
 	}
 
 	const handleImageChange = e => {
-		const file = e.target.files[0]
-		if (file) setImage_(file)
+		if(e.target.files.length) setNewImages([...Array(e.target.files.length).keys()].map(i => e.target.files[i]))
 	}
 
 	const handleShortChange = e => {
@@ -101,7 +100,7 @@ const ProductForm = props => {
 	}, [props.product, props.images])
 	
 	return (
-		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,image:image_,intro,capacity,start_on,end_on,weekday:bitToString(weekday),start_at,end_at,shorts})}>
+		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,images:newImages,intro,capacity,start_on,end_on,weekday:bitToString(weekday),start_at,end_at,shorts})}>
 			<Form.Group>
 				<Form.Label>이름</Form.Label>
 				<Form.Control required onChange={e => setName(e.target.value)} value={name} />
@@ -167,8 +166,8 @@ const ProductForm = props => {
 				{props.images && (props.images.map(image => (
 					<img style={imgStyle} src={image.original_url} key={image.id} data-image-id={image.id} onClick={props.deleteImage} />
 				)))}
-				<Form.Control type='file' onChange={handleImageChange} accept='.jpg, .jpeg, .png' />
-				{props.product && <Button onClick={e => props.uploadImage(e,image_)}>이미지 추가</Button> }
+				<Form.Control multiple type='file' onChange={handleImageChange} accept='.jpg, .jpeg, .png' />
+				{props.product && <Button onClick={e => props.uploadImage(e,newImages)}>이미지 추가</Button> }
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>상품 쇼츠 (mp4, avi, mov, mkv만 가능, 50MB 이하)</Form.Label>
