@@ -4,7 +4,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import session from 'express-session';
 import { TypeormStore } from 'connect-typeorm';
-import { TypeormStore } from 'connect-typeorm';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as winston from 'winston';
 import SlackHook from 'winston-slack-webhook-transport';
