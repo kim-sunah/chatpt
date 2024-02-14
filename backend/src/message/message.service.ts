@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Message } from '../entities/message.entity';
 import { User } from 'src/entities/user.entity';
+import { SendMessageDto } from './dto/send-message.dto';
 
 var amqp = require('amqplib/callback_api');
 const url =
@@ -88,16 +89,12 @@ export class MessageService {
     }
   }
 
-  async sendMessage(hostId: number, userId: number, body) {
-    const message = '안녕하세요 반갑습니다!';
-    const createMessage = await this.messageRepository.save({
-      host_id: hostId,
-      gest_id: userId,
-      last_message: message,
-    });
+  async sendMessage(userId: number, queue: string, body: SendMessageDto) {
+    console.log(body);
     try {
-      await this.messageRepository.save(createMessage);
-      var queue = createMessage.id.toString();
+      await this.messageRepository.update(queue, {
+        last_message: body.message,
+      });
       amqp.connect(url, function (error0, connection) {
         if (error0) {
           throw error0;
@@ -120,5 +117,32 @@ export class MessageService {
       console.log(err);
       throw new Error('메세지전송에 실패하였습니다.');
     }
+  }
+
+  async messageText(queue: number) {
+    amqp.connect(url, function (error0, connection) {
+      if (error0) {
+        throw error0;
+      }
+      connection.createChannel(function (error1, channel) {
+        if (error1) {
+          throw error1;
+        }
+
+        channel.assertQueue(queue, {
+          durable: false,
+        });
+
+        channel.consume(
+          queue,
+          function (msg) {
+            console.log(' [x] Received %s', msg.content.toString());
+          },
+          {
+            noAck: false,
+          }
+        );
+      });
+    });
   }
 }

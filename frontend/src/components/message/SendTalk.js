@@ -1,6 +1,30 @@
-const io = openSocket('http://localhost:4000', { transports: ['websocket'] });
-
+import openSocket from 'socket.io-client';
+import React, { useMemo, useState, useEffect } from "react";
+import { useParams } from 'react-router-dom'
 const SendTalk = () => {
+    const { id } = useParams()
+    useEffect(() => {
+        const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
+        socket.on('events', (data) => {
+            if (data === "userban") {
+                fetch(`http://localhost:4000/comment/{id}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
+                            "refreshtoken": sessionStorage.getItem("refreshToken")
+                        },
+                        // body: JSON.stringify({ pages: pages })
+                    }).
+                    then(res => res.json())
+                    .then(resData => {
+                        console.log(resData)
+                    })
+                    .catch(err => console.log(err))
+            }
+        });
+    });
     // io.on('connection', message => {
     //     message.on('message', (message, sender, color, time) => {
     //         connectMessage(roomId, JSON.stringify({

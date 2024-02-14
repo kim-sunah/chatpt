@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 import openSocket from 'socket.io-client';
 const TackList = () => {
 
@@ -37,32 +38,34 @@ const TackList = () => {
     return (
         <ul class="space-y-4">
             {messageList && messageList.map(list => (
-                <li class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
-                            <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
-                                <img src={list.gest.profile_image} />
+                <Link to={`${list.id}`} >
+                    <li class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                                <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
+                                    <img src={list.gest.profile_image} />
+                                </span>
                             </span>
-                        </span>
-                        <div>
-                            <div class="font-semibold">{list.gest.nickname}</div>
-                            <div class="text-sm text-gray-500">{list.gest.updatedAt.substr(0, 10)}</div>
+                            <div>
+                                <div class="font-semibold">{list.gest.nickname}</div>
+                                <div class="text-sm text-gray-500">{list.gest.updatedAt.substr(0, 10)}</div>
+                            </div>
                         </div>
-                    </div>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="text-gray-400"
-                    >
-                    </svg>
-                </li>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="text-gray-400"
+                        >
+                        </svg>
+                    </li>
+                </Link>
             ))}
 
         </ul>

@@ -38,12 +38,21 @@ export class MessageController {
     return await this.messageService.isRead(userinfo.id);
   }
 
+  @Get(':queue')
+  async messageText(@Param('queue') queue: number, @UserInfo() userinfo: User) {
+    return await this.messageService.messageText(queue);
+  }
   @Put(':queue')
   async sendMessage(
     @Param('queue') queue: number,
     @UserInfo() userinfo: User,
     @Body() body: SendMessageDto
   ) {
-    return await this.messageService.sendMessage(userinfo.id, queue, body);
+    console.log(body);
+    return await this.messageService.sendMessage(
+      userinfo.id,
+      queue.toString(),
+      body
+    );
   }
 }
