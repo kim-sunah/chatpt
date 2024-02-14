@@ -8,7 +8,6 @@ const GoogleRedirect = () => {
     const code = searchParams.get('code');
     const navigate = useNavigate()
     useEffect(() => {
-
         fetch("https://oauth2.googleapis.com/token", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: `grant_type=authorization_code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_KEY}&client_secret=${process.env.REACT_APP_GOOGLE_SECRET_CLIENT_KEY}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&code=${code}` })
             .then(res => res.json())
             .then(resData => {
@@ -50,7 +49,7 @@ const GoogleRedirect = () => {
     }, [])
     return (
         <>
-            <h1>aasdasd</h1>
+        
         </>
     );
 }

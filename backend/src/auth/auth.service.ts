@@ -208,7 +208,7 @@ export class AuthService {
         profile_image: profile_image,
       });
       const userInfo = await this.userRepository.save(user);
-      //await this.messageService.newMessage(5, userInfo.id);
+      await this.messageService.newMessage(5, userInfo.id);
       return userInfo;
     } catch (error) {
       if (error instanceof BadRequestException) {
@@ -273,12 +273,12 @@ export class AuthService {
         html: `<b>${sixDigitNumber}</b>`,
       })
       .then((result) => {
-        console.log(result);
+       
       })
       .catch((error) => {
         new ConflictException(error);
       });
-    console.log(email);
+    
     await this.cacheManager.set(email, sixDigitNumber, 60000);
     return { sucess: '이메일 인증' };
   }

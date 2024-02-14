@@ -25,8 +25,7 @@ import { User } from 'src/entities/user.entity';
 import { Response } from 'express';
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
 import { MessageService } from 'src/message/message.service';
-import slackAlarm from 'src/slack/slackAlarm';
-import errorGenerator from 'src/slack/errorGenerator';
+
 import { googleLoginDto } from './dtos/google-user.dto';
 
 

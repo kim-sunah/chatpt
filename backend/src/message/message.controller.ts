@@ -48,7 +48,7 @@ export class MessageController {
     @UserInfo() userinfo: User,
     @Body() body: SendMessageDto
   ) {
-    console.log(body);
+    
     return await this.messageService.sendMessage(
       userinfo.id,
       queue.toString(),
