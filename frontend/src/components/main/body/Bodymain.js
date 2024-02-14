@@ -39,6 +39,7 @@ const Bodymain = () => {
 	const [yourBest,setYourBest] = useState([])
 	const [category,setCategory] = useState('')
 	const [categoryBest,setCategoryBest] = useState([])
+	const [ratings,setRatings] = useState([])
 	const navigate = useNavigate()
 
     const turnedOn = true
@@ -64,6 +65,22 @@ const Bodymain = () => {
             if (!yourBest_.filter(product => product.product_id === weekBest_[i].product_id).length) yourBest_.push(weekBest_[i])
         }
         setYourBest(yourBest_)
+		try{
+			const arr = await Promise.all(weekBest_.map(async product => {
+				const res = await fetch(`http://localhost:4000/comment/rating/${product.product_id}`)
+				return [product.product_id, (await res.json()).avg]
+			}))
+			const arr2 = await Promise.all(yourBest_.map(async product => {
+				const res = await fetch(`http://localhost:4000/comment/rating/${product.product_id}`)
+				return [product.product_id, (await res.json()).avg]
+			}))
+			const ratings_ = {}
+			for(let [id,avg] of arr) ratings_[id] = avg.toFixed(1)
+			for(let [id,avg] of arr2) ratings_[id] = avg.toFixed(1)
+			setRatings(ratings_)
+		}catch(e){
+			console.log(e)
+		}
     }
 
     const imgStyle = {
@@ -75,6 +92,11 @@ const Bodymain = () => {
 	useEffect(() => {
 		getBest()
 	},[])
+	
+	const getRating = async id => {
+		const res = await fetch(`http://localhost:4000/comment/rating/${id}`)
+		return (await res.json()).avg
+	}
 
     return (
         <div className="p-6 max-w-screen-xl px-40 mx-40" style={{ margin: "0px auto" }}>
@@ -144,7 +166,7 @@ const Bodymain = () => {
                                         >
                                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                                         </svg>
-                                        <span className="text-xs font-semibold ml-1">4.5</span>
+                                        <span className="text-xs font-semibold ml-1">{ratings[product.product_id]}</span>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +201,7 @@ const Bodymain = () => {
                                             >
                                                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                                             </svg>
-                                            <span className="text-xs font-semibold ml-1">4.5</span>
+                                            <span className="text-xs font-semibold ml-1">{ratings[product.product_id]}</span>
                                         </div>
                                     </div>
 

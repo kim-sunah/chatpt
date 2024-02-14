@@ -18,6 +18,7 @@ const TrainerPage = () => {
     const [product_Id, setProduct_Id] = useState(0);
     const [selectedUser, setSelectedUser] = useState(null);
     const [revenue_Id, setRevenue_Id] = useState({ sum: '0', sum2: '0' });
+	const [ratings, setRatings] = useState({})
 
     const navigate = useNavigate();
 
@@ -31,6 +32,19 @@ const TrainerPage = () => {
         getPayment();
         getRevenue();
     }, [product_Id]);
+	
+	useEffect(() => {
+		Promise.all(products[0].map(async product => {
+			const res = await fetch(`http://localhost:4000/comment/rating/${product.id}`)
+			return [product.product_id, (await res.json()).avg]
+		}))
+		.then(arr => {
+			const ratings_ = {}
+			for(let [id,avg] of arr) ratings_[id] = avg.toFixed(1)
+			setRatings(ratings_)
+		})
+	}, [products])
+
 
     const getUser = async () => {
         const res = await fetch('http://localhost:4000/users/Mypage', {
@@ -192,7 +206,7 @@ const TrainerPage = () => {
                                         >
                                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                                         </svg>
-                                        <span className="text-xs font-semibold ml-1">4.5</span>
+                                        <span className="text-xs font-semibold ml-1">{ratings[products.id]}</span>
                                     </div>
                                     <p className="text-sm mb-4">{product.intro}</p>
                                     <div className="flex items-center justify-between mb-2">
