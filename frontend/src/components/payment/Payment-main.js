@@ -96,8 +96,9 @@ const Payment = (props) => {
     const [method, setMethod] = useState('kakao');
     const navigate = useNavigate();
 
-    const getUser = async () => {
-        const res = await fetch('http://localhost:4000/users/Mypage', {
+	const id = searchParams.get('id')
+	const getInfo = async () => {
+		const res = await fetch('http://localhost:4000/users/Mypage', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
         });
@@ -106,29 +107,32 @@ const Payment = (props) => {
             navigate('/Login');
         }
         const user_ = (await res.json()).user;
-        if (user_.authority !== 'User') {
+        if (user_.authority === 'Admin') {
             alert('권한이 없습니다.');
             navigate('/');
         }
         setUser(user_);
-    };
-
-	const id = searchParams.get('id')
-	const getPayment = async () => {
-		const res = await fetch(`http://localhost:4000/payment/my/${id}`,{headers: { 'Content-Type': 'application/json', Authorization, refreshtoken }})
-		const res_ = await res.json()
-		if(res_.id){
+		
+		const res2 = await fetch(`http://localhost:4000/payment/my/${id}`,{headers: { 'Content-Type': 'application/json', Authorization, refreshtoken }})
+		const payment = await res2.json()
+		if(payment.id){
 			alert('이미 구매한 강의입니다.')
 			navigate('../mypage')
 		}
+		
+		const res3 = await fetch(`http://localhost:4000/product?id=${id}`);
+        if (res3.status !== 200){
+			alert('해당 상품이 존재하지 않습니다.');
+			navigate('/')
+		}
+		const product_ = await res3.json()
+		if(product_.user_id===user_.id){
+			alert('자신이 등록한 강의는 구매할 수 없습니다.')
+			navigate('../mypage')
+		}
+        setProduct(product_);
 	}
 	
-    const getProduct = async () => {
-        const res = await fetch(`http://localhost:4000/product?id=${id}`);
-        if (res.status !== 200) return alert('해당 상품이 존재하지 않습니다.');
-        setProduct(await res.json());
-    };
-
     const handleMileage = (e) => {
         const mileage_ = +e.target.value;
         if (
@@ -144,9 +148,7 @@ const Payment = (props) => {
     };
 
     useEffect(() => {
-        getUser()
-		getPayment()
-        getProduct()
+        getInfo()
         const jquery = document.createElement('script');
         jquery.src = 'http://code.jquery.com/jquery-1.12.4.min.js';
         const iamport = document.createElement('script');
