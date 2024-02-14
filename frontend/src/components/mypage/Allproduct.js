@@ -20,7 +20,7 @@ const Allproduct = () => {
     return (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {productlist && productlist.map(product => (
-                <Link to={`../product/${product.id}`} class="rounded-lg overflow-hidden" >
+                <Link to={`../product/${product.product_id}`} class="rounded-lg overflow-hidden" >
                     <img
                         src={product.product.thumbnail}
                         alt="Course thumbnail"
