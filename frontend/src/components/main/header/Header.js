@@ -45,10 +45,7 @@ const Header = () => {
         <header className="flex items-center justify-between p-6 border-b px-20 mx-40  max-w-screen-xl mx-auto">
             <Link to="/">Chat PT</Link>
             <div className="flex items-center space-x-4 ">
-                <p style={{ margin: '0px auto' }} onClick={handleTrainerClick}>
-                    {' '}
-                    Trainer{' '}
-                </p>
+                <Link to ="TrainerPage" >Trainer</Link>
                 <form onSubmit={searchhandler}>
                     <input
                         type="text"
