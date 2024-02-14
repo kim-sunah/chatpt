@@ -16,7 +16,7 @@ export class PaymentController {
 
 	// 구매하기
     @ApiBearerAuth()
-    @Roles(Role.User)
+    @Roles(Role.User,Role.Host)
     @UseGuards(RoleGuard)
     @Post()
     async create(@Request() req, @Body() createPaymentDto: CreatePaymentDto) {
@@ -50,7 +50,8 @@ export class PaymentController {
 
 	// 내 구매 목록
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
+    @Roles(Role.User,Role.Host)
+    @UseGuards(RoleGuard)
     @Get('my')
     async findAll(@Request() req, @Query() query: PageDto) {
         const userId = req.user.id;
@@ -76,6 +77,14 @@ export class PaymentController {
 	async getByProduct(@Param() param: Id, @Query() query: PageDto){
 		const { page, pageSize } = query
 		return await this.paymentService.getByProduct(param.id, page, pageSize)
+	}
+	
+	// 구매자+상품 조합 찾기
+	@UseGuards(JwtAuthGuard)
+	@Get('my/:id')
+	async getMyAndProduct(@Request() req, @Param() param: Id){
+		const res = await this.paymentService.getMyAndProduct(req.user.id, param.id)
+		return res? res:{}
 	}
 
 	// 구매자+id 조합 찾기

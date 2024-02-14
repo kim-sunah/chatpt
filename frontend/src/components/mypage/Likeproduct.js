@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import logo from "../../img/Designer.jpeg"
+
+import { Link } from "react-router-dom"
 
 const Likeproduct = () =>{
     const [productlist, setproductlist] = useState()
@@ -19,7 +20,7 @@ const Likeproduct = () =>{
     return (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
         {productlist && productlist.map(product => (
-            <div class="rounded-lg overflow-hidden">
+            <Link to ={`/product/${product.product.id}`}> <div class="overflow-hidden">
                 <img
                     src={product.product.thumbnail}
                     alt="Course thumbnail"
@@ -51,7 +52,7 @@ const Likeproduct = () =>{
                         </div>
                     </div>
                 </div>
-            </div>
+            </div></Link>
 
 
         ))}

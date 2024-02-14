@@ -5,18 +5,11 @@ import { useNavigate } from "react-router-dom"
 
 const Userupdate = (props) => {
     const navigate = useNavigate()
-    const [Email, setemail] = useState(() => props.info.email || '')
-  
-    const [image, setImage] = useState(null);
     const Password = useRef()
     const ConfirmPassword = useRef()
-
-
-    const Authentication_number = useRef()
-
     const [passworderror, setpassworderror] = useState()
     const [Confirmerror, setConfirmerror] = useState()
-    const [Authenticationerror, setAuthenticationerror] = useState()
+  
 
 
     const onUpload = (e) => {
@@ -28,35 +21,20 @@ const Userupdate = (props) => {
             .then(resData => { })
             .catch(err => console.log(err))
     }
-
     const updateinfo = (event) => {
         event.preventDefault(); // 폼 제출 방지
-        fetch("http://localhost:4000/users/MypageUpdate", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ Email: props.info.email, Password: Password.current.value, ConfirmPassword: ConfirmPassword.current.value, Authentication_number : Authentication_number.current.value}) })
+        fetch("http://localhost:4000/users/MypageUpdate", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ Email: props.info.email, Password: Password.current.value, ConfirmPassword: ConfirmPassword.current.value}) })
             .then(res => res.json())
             .then(resData => {
-                console.log(resData)
                 if (resData.statusCode === 400) {
                     setpassworderror(resData.message.some(str => str.includes('password')))
                     setConfirmerror(resData.message.some(str => str.includes('Confirm')))
-                    setAuthenticationerror(resData.message.some(str => str.includes('Authentication')))
                 }
                 if (resData.statusCode === 200) {
                     navigate("/")
                 }
             })
             .catch(err => console.log(err))
-
-    }
-
-    const emailsubmit = (events) => {
-        events.preventDefault()
-        fetch("http://localhost:4000/auth/Email_authentication", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: props.info.email }) })
-            .then(res => res.json())
-            .then(resData => { console.log(resData) })
-            .catch(err => {
-                console.log(err)
-                // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {status: 500,});
-            })
     }
 
     return (
@@ -79,7 +57,7 @@ const Userupdate = (props) => {
                                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                 placeholder="email"
                                 type="email"
-                                onChange={(e) => setemail(e.target.value)}
+                                
                                 value={props.info.email}
                             />
                             <input

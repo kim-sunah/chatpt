@@ -11,6 +11,7 @@ import SearchMain from './components/search/Search-main';
 import ProductDetail from './components/product/Product-detail';
 import ProductUpdate from './components/product/Product-update';
 import ProductMy from './components/product/Product-my';
+import ProductCategory from './components/product/Product-category';
 import InquiryMy from './components/inquiry/Inquiry-my';
 import InquiryMain from './components/inquiry/Inquiry-main';
 import InquiryGeneral from './components/inquiry/Inquiry-general';
@@ -25,6 +26,8 @@ import PaymentSuccess from './components/payment/Payment-success';
 import KakaoRedirect from './components/KakaoRedirect';
 import Message from './components/message/Message';
 import TrainerPage from './components/trainerpage/Trainer-main.js';
+import Trainerstart from './components/trainerpage/Trainerstart.js';
+import TrainerRoot from './components/trainerpage/TrainerRoot.js';
 
 const router = createBrowserRouter([
     {
@@ -62,10 +65,12 @@ const router = createBrowserRouter([
                 ],
             },
             { path: 'Message', element: <Message></Message> },
+            { path: 'category', element: <ProductCategory /> },
         ],
     },
     { path: 'Login', element: <Login></Login> },
     { path: 'Signup', element: <Signup></Signup> },
+
     {
         path: 'admin',
         element: <Adminpage></Adminpage>,
@@ -74,8 +79,9 @@ const router = createBrowserRouter([
             { path: 'data-tables', element: <AdminTable></AdminTable> },
         ],
     },
-    { path: '/trainer', element: <TrainerPage /> },
-    { path: 'trainerpage', element: <TrainerPage /> },
+    // { path: 'TrainerPage', element: <TrainerPage /> },
+    { path: 'TrainerPage', element: <TrainerRoot />, children: [] },
+
     { path: 'Login/kakao', element: <KakaoRedirect></KakaoRedirect> },
     { path: 'Login/naver', element: <Redirecturl></Redirecturl> },
 ]);

@@ -115,44 +115,7 @@ h2 {
     transform: scale(1.05);
 }
 
-.productGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.productItem {
-    padding: 10px;
-}
-
-.productItem .flex.space-x-2 {
-    margin-left: auto;
-}
-.messageButton.editButton {
-    background-color: #3498db;
+.button-black {
+    background-color: black;
     color: white;
 }
-.messageButton.deleteButton {
-    background-color: #e74c3c;
-    color: white;
-}
-
-/* .responsive-table {
-    width: 100%;
-    overflow-x: auto;
-} */
-
-/* 미디어 쿼리를 사용하여 특정 창 크기에서 스타일을 수정 */
-/* @media screen and (max-width: 600px) {
-    .responsive-table th,
-    .responsive-table td {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .responsive-table th {
-        text-align: left;
-        margin-bottom: 10px;
-    }
-} */

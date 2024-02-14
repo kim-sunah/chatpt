@@ -45,7 +45,6 @@ export default function ProductCreate(props){
 					headers:{Authorization, refreshtoken},
 					body: formData})
 			}))
-			
 		}
 		if(shorts){
 			const formData = new FormData()

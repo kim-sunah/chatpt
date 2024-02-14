@@ -43,6 +43,15 @@ export class EventsGateway {
   createcomment(@MessageBody() message: string): void {
     this.server.emit('events',message);
   }
+  @SubscribeMessage('updatgecomment')
+  updatgecomment(@MessageBody() message: string): void {
+    this.server.emit('events',message);
+  }
+
+  @SubscribeMessage('deletecomment')
+  deletecomment(@MessageBody() message: string): void {
+    this.server.emit('events',message);
+  }
 
 
 

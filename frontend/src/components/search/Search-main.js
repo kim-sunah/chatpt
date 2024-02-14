@@ -72,7 +72,6 @@ const SearchMain = () => {
 					</select>
 				</div>
 				<h2 className="text-2xl font-bold mb-4">검색한 상품</h2>
-
 				<div className="grid grid-cols-4 gap-4">
 					{productlist && productlist.map(product=>(
 						<div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full" data-v0-t="card">
