@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import logo from "../../img/Designer.jpeg"
 const Allproduct = () => {
-    const [productlist, setproductlist] = useState()
+    const [productlist, setproductlist] = useState([])
+	const [ratings, setRatings] = useState({})
 
     useEffect(() => {
         fetch("http://localhost:4000/payment/my", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
@@ -15,8 +16,21 @@ const Allproduct = () => {
             .catch(err => {
                 console.log(err)
             })
-
     }, [])
+	
+	useEffect(() => {
+		Promise.all(productlist.map(async product => {
+			const res = await fetch(`http://localhost:4000/comment/rating/${product.product_id}`)
+			return [product.product_id, (await res.json()).avg]
+		}))
+		.then(arr => {
+			const ratings_ = {}
+			for(let [id,avg] of arr) ratings_[id] = avg.toFixed(1)
+			setRatings(ratings_)
+		})
+	},[productlist])
+
+	console.log(productlist,ratings)
     return (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {productlist && productlist.map(product => (
@@ -48,7 +62,7 @@ const Allproduct = () => {
                                 >
                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                                 </svg>
-                                <span class="text-xs font-semibold ml-1">4.5</span>
+                                <span class="text-xs font-semibold ml-1">{ratings[product.product_id]}</span>
                             </div>
                         </div>
                     </div>
