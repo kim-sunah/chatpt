@@ -132,7 +132,7 @@ export class AuthService {
     const limit = user.limit;
     const accessToken = await this.createAccessToken(+user.id);
     const refreshToken = await this.createRefreshToken();
-    console.log(authority,limit,accessToken,refreshToken)
+    
     return { accessToken, refreshToken, authority, limit };
   }
 
@@ -189,6 +189,50 @@ export class AuthService {
     return { accessToken, refreshToken, authority, limit };
   }
 
+  async googlesignup({ Email, Nickname, profile_image }: KakaoLoginDto) {
+    try {
+      const GOOGLE_USER = await this.userRepository.findOne({where: { email: Email, registration_information: 'GOOGLE' },});
+      if (GOOGLE_USER) {
+        return;
+      }
+      const existedUser = await this.userRepository.findOne({where: { email: Email },});
+      if (existedUser) {
+        throw new BadRequestException(
+          `This Email is already in ${existedUser.registration_information} use`
+        );
+      }
+      const user = this.userRepository.create({
+        email: Email,
+        nickname: Nickname,
+        registration_information: 'GOOGLE',
+        profile_image: profile_image,
+      });
+      const userInfo = await this.userRepository.save(user);
+      //await this.messageService.newMessage(5, userInfo.id);
+      return userInfo;
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        '회원 가입 중 오류가 발생했습니다.'
+      );
+    }
+  }
+
+
+  async googlesignin(Email: string) {
+    const user = await this.userRepository.findOne({ where: { email: Email} });
+    if (!user) {
+      throw new UnauthorizedException('존재하지 않는 이메일입니다.');
+    }
+    const authority = user.authority;
+    const limit = user.limit;
+    const accessToken = await this.createAccessToken(+user.id);
+    const refreshToken = await this.createRefreshToken();
+    
+    return { accessToken, refreshToken, authority, limit };
+  }
   async createAccessToken(id: number) {
     const payload = { id: id };
     return await this.jwtService.signAsync(payload, { expiresIn: '5m' });
@@ -238,4 +282,6 @@ export class AuthService {
     await this.cacheManager.set(email, sixDigitNumber, 60000);
     return { sucess: '이메일 인증' };
   }
+
+
 }

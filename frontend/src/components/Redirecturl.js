@@ -23,10 +23,11 @@ const Redirecturl = (props) => {
         alert("사용이 제한된 사용자입니다.")
       }
       else if (resData.statusCode === 200) {
+        navigate("/")
         sessionStorage.setItem("authority", resData.authority)
         sessionStorage.setItem("accessToken", resData.accessToken)
         sessionStorage.setItem("refreshToken", resData.refreshToken)
-        navigate("/")
+        
       }
       else {
         navigate("/Login")
