@@ -85,6 +85,6 @@ export class CommentController {
     @Delete(':commentId')
     async commentDelete(@Param('commentId') commentId: number, @UserInfo() userId: number) {
         console.error('Error in commentDelete:', error);
-        return await this.commentService.commentDelete(userId['id'], commentId);
+        await this.commentService.commentDelete(userId['id'], commentId);
     }
 }

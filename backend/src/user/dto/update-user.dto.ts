@@ -22,7 +22,4 @@ export class UpdateuserDto {
     ConfirmPassword : string
 
 
-    @IsString()
-    Authentication_number : string
-
 }

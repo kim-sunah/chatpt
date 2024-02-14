@@ -83,7 +83,8 @@ export class PaymentController {
 	@UseGuards(JwtAuthGuard)
 	@Get('my/:id')
 	async getMyAndProduct(@Request() req, @Param() param: Id){
-		return await this.paymentService.getMyAndProduct(req.user.id, param.id)
+		const res = await this.paymentService.getMyAndProduct(req.user.id, param.id)
+		return res? res:{}
 	}
 
 	// 구매자+id 조합 찾기

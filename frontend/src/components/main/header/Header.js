@@ -44,7 +44,7 @@ const Header = () => {
     <header className="flex items-center justify-between p-6 border-b px-20 mx-40  max-w-screen-xl mx-auto">
       <Link to="/">Chat PT</Link>
       <div className="flex items-center space-x-4 ">
-        <p style={{margin : "0px auto"}}> 강사 </p>
+      {sessionStorage.getItem("accessToken") && <Link to="TrainerPage"><p style={{margin : "0px auto"}}> 강사 </p></Link>}
         <form onSubmit={searchhandler}>
           <input
             type="text"
@@ -59,7 +59,7 @@ const Header = () => {
         <Link to={sessionStorage.getItem("accessToken") ?  "/mypage" : "/Login"}><BiSolidUser size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>
       
         
-        {sessionStorage.getItem("authority") === "Admin" && <Link to= "admin"><BsFillFilePersonFill size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>}
+        {sessionStorage.getItem("authority") === "Admin" && <Link to= "admin/default"><BsFillFilePersonFill size="30" style={{ color: "black", marginLeft: "10%" }} /></Link>}
 
         {sessionStorage.getItem("accessToken") ? <BiLogOut size="30" onClick={Logouthanlder} style={{ color: "black" }} /> : <Link to="Login" style={{ color: "black" }}><BiLogIn size="30" /> </Link>}
 

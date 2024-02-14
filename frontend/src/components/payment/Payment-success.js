@@ -28,6 +28,8 @@ export default function PaymentSuccess(){
 		  }
 		}
 		confirm()
+		alert('결제에 성공했습니다.')
+		navigate('../../mypage')
 	},[])
 	
 	return <p>결제가 완료되었습니다.</p>
