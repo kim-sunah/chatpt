@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Message } from '../entities/message.entity';
 import { User } from 'src/entities/user.entity';
 import { SendMessageDto } from './dto/send-message.dto';
+import { number } from 'joi';
 
 var amqp = require('amqplib/callback_api');
 const url =
@@ -20,19 +21,17 @@ export class MessageService {
     @Inject(REQUEST) private readonly req: Request
   ) {}
 
-  async list_gest(id: number) {
-    const role = (await this.userRepository.findOne({ where: { id: id } }))
-      .authority;
+  async list_gest(userId: number) {
+    const list = await this.messageRepository
+      .createQueryBuilder('m')
+      .where('m.gest_id = :id OR m.host_id = :id', { id: userId })
+      .leftJoinAndSelect('m.host', 'host')
+      .leftJoinAndSelect('m.gest', 'gest')
+      .getMany();
 
-    return role === 'User'
-      ? this.messageRepository.find({
-          where: { gest_id: id },
-          relations: ['host', 'gest'],
-        })
-      : this.messageRepository.find({
-          where: { host_id: id },
-          relations: ['host', 'gest'],
-        });
+    console.log(list);
+
+    return { list: list, userId: userId };
   }
 
   async newMessage(hostId: number, userId: number) {

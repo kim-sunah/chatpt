@@ -7,21 +7,30 @@ import openSocket from 'socket.io-client';
 const Message = () => {
     const { id } = useParams()
     let sendMessage = useRef()
-    let uploadState = 0;
-    // const socket = io('/');
+    // useEffect(() =>
+    //     fetch(`http://localhost:4000/message/${id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ message: sendMessage.current.value }) })
+    //         .then(res => res.json())
+    //         .then(resData => {
+    //             console.log(resData);
+    //             sendMessage.current.value = ""
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
+    // )
     const send = (events) => {
-        events.preventDefault();
-
+        events.preventDefault()
         fetch(`http://localhost:4000/message/${id}`, { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ message: sendMessage.current.value }) })
             .then(res => res.json())
             .then(resData => {
-                console.log(resData)
+                console.log(resData);
+                sendMessage.current.value = ""
             })
             .catch(err => {
                 console.log(err)
             })
-        sendMessage.current.value = ""
     }
+    let uploadState = 0;
     // const send = (events) => {
     //     events.preventDefault()
     //     var hour = new Date().getHours();

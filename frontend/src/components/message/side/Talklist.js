@@ -25,11 +25,13 @@ const TackList = () => {
     // });
 
     const [messageList, setMessageList] = useState();
+    const [userId, setUserId] = useState();
     useEffect(() => {
         fetch("http://localhost:4000/message", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => {
-                setMessageList(resData)
+                setMessageList(resData.list);
+                setUserId(resData.userId)
             })
             .catch(err => {
                 console.log(err)
@@ -43,12 +45,12 @@ const TackList = () => {
                         <div class="flex items-center space-x-3">
                             <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
                                 <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
-                                    <img src={list.gest.profile_image} />
+                                    {userId == list.host_id ? <img src={list.gest.profile_image} /> : <img src={list.host.profile_image} />}
                                 </span>
                             </span>
                             <div>
-                                <div class="font-semibold">{list.gest.nickname}</div>
-                                <div class="text-sm text-gray-500">{list.gest.updatedAt.substr(0, 10)}</div>
+                                {userId == list.host_id ? <div class="font-semibold">{list.gest.nickname}</div> : <div class="font-semibold">{list.host.nickname}</div>}
+                                <div class="text-sm text-gray-500">{list.updatedAt.substr(0, 10)}</div>
                             </div>
                         </div>
                         <svg
