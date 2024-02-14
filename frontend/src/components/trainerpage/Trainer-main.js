@@ -96,13 +96,11 @@ const TrainerPage = () => {
         if (product_Id === 0) {
             return;
         }
-
         try {
             const res = await fetch(`http://localhost:4000/payment/revenue/${product_Id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });
-
             if (res.status === 200) {
                 const revenueData = await res.json();
                 console.log(revenueData);

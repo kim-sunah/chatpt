@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import logo from "../../img/Designer.jpeg"
 const Allproduct = () => {
     const [productlist, setproductlist] = useState()
@@ -16,11 +17,10 @@ const Allproduct = () => {
             })
 
     }, [])
-    console.log(productlist)
     return (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {productlist && productlist.map(product => (
-                <div class="rounded-lg overflow-hidden">
+                <Link to={`../product/${product.product_id}`} class="rounded-lg overflow-hidden" >
                     <img
                         src={product.product.thumbnail}
                         alt="Course thumbnail"
@@ -52,16 +52,10 @@ const Allproduct = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-
-
-            ))}
-
-        </div>
-
-
+                </Link>
+            ))
+            }
+        </div >
     )
-
-
 }
 export default Allproduct
