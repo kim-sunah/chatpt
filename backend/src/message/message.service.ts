@@ -1,11 +1,11 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
+import { Inject, Injectable, Scope, Request } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Message } from '../entities/message.entity';
 import { User } from 'src/entities/user.entity';
 import { SendMessageDto } from './dto/send-message.dto';
-import { number } from 'joi';
+import { EventsGateway } from 'src/events/events.gateway';
 
 var amqp = require('amqplib/callback_api');
 const url =
@@ -18,7 +18,8 @@ export class MessageService {
     private readonly messageRepository: Repository<Message>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @Inject(REQUEST) private readonly req: Request
+    @Inject(REQUEST) private readonly req: Request,
+    private readonly event: EventsGateway
   ) {}
 
   async list_gest(userId: number) {
@@ -28,8 +29,6 @@ export class MessageService {
       .leftJoinAndSelect('m.host', 'host')
       .leftJoinAndSelect('m.gest', 'gest')
       .getMany();
-
-    console.log(list);
 
     return { list: list, userId: userId };
   }
@@ -81,19 +80,22 @@ export class MessageService {
         .where(`m.${whereField} = :id`, { id })
         .getRawOne();
 
-      console.log(sumResult.sum);
       return { isRead: sumResult.sum > 0 ? true : false };
     } catch (err) {
       throw new Error('메세지를 가져오지 못했습니다');
     }
   }
 
-  async sendMessage(userId: number, queue: string, body: SendMessageDto) {
-    console.log(body);
+  async sendMessage(
+    userId: number,
+    queue: string,
+    body: SendMessageDto
+  ): Promise<void> {
     try {
       await this.messageRepository.update(queue, {
         last_message: body.message,
       });
+
       amqp.connect(url, function (error0, connection) {
         if (error0) {
           throw error0;
@@ -111,37 +113,43 @@ export class MessageService {
           channel.sendToQueue(queue, Buffer.from(body.message));
         });
       });
-      return true;
+      this.event.sendMessage('sendMessage');
+      this.receiveMessage(queue);
     } catch (err) {
       console.log(err);
       throw new Error('메세지전송에 실패하였습니다.');
     }
   }
 
-  async messageText(queue: number) {
-    amqp.connect(url, function (error0, connection) {
-      if (error0) {
-        throw error0;
-      }
-      connection.createChannel(function (error1, channel) {
-        if (error1) {
-          throw error1;
+  async receiveMessage(queue: string) {
+    try {
+      amqp.connect(url, function (error0, connection) {
+        if (error0) {
+          throw error0;
         }
-
-        channel.assertQueue(queue, {
-          durable: false,
-        });
-
-        channel.consume(
-          queue,
-          function (msg) {
-            console.log(' [x] Received %s', msg.content.toString());
-          },
-          {
-            noAck: false,
+        connection.createChannel(function (error1, channel) {
+          if (error1) {
+            throw error1;
           }
-        );
+
+          channel.assertQueue(queue, {
+            durable: false,
+          });
+
+          channel.consume(
+            queue,
+            function (msg) {
+              console.log(' [x] Received %s', msg.content.toString());
+            },
+            {
+              noAck: true,
+            }
+          );
+        });
       });
-    });
+    } catch (err) {
+      console.log(err);
+      throw new Error('메세지를 가져오는데에 실패하였습니다.');
+    }
   }
 }

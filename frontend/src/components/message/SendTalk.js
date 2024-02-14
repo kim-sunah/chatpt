@@ -4,29 +4,23 @@ import { useParams } from 'react-router-dom'
 const SendTalk = () => {
     const { id } = useParams()
     const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
-    socket.on('events', (id, message) => {
-        fetch(`http://localhost:4000/message/${id}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
-                    "refreshtoken": sessionStorage.getItem("refreshToken")
-                },
-            }).
-            then(res => res.json())
-            .then(resData => {
-                console.log(resData)
-            })
-            .catch(err => console.log(err))
-    });
-    // io.on('connection', message => {
-    //     message.on('message', (message, sender, color, time) => {
-    //         connectMessage(roomId, JSON.stringify({
-    //             message, sender, color, time
-    //         }))
-    //     })
-    // })
+
+    useEffect(() => {
+
+    })
+
+    socket.on('message', (data) => {
+        if (data === "sendMessage") {
+            fetch(`http://localhost:4000/message/${id}`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
+                })
+                .then(res => console.log(res))
+                .catch(err => console.log("err", err))
+        }
+    })
+
     return (
         <>
             <div class="flex-1 overflow-y-auto">

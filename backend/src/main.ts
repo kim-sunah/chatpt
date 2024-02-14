@@ -35,7 +35,6 @@ async function bootstrap() {
           (symbol) => symbol.toString() === 'Symbol(splat)'
         );
         const text = info[stack as any];
-        //console.log(info[Symbol(mesasge)])
         return text;
       })
     ),
@@ -51,7 +50,6 @@ async function bootstrap() {
             (symbol) => symbol.toString() === 'Symbol(splat)'
           );
           const text = info[stack as any][0];
-          //console.log(info[Symbol(mesasge)])
           return { text };
         },
       }),

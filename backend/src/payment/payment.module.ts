@@ -9,6 +9,7 @@ import { AuthModule } from './../auth/auth.module';
 import { Livecast } from 'src/entities/livecast.entity';
 import { Message } from 'src/entities/message.entity';
 import { MessageService } from 'src/message/message.service';
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { MessageService } from 'src/message/message.service';
     TypeOrmModule.forFeature([Payment, User, Product, Livecast, Message]),
   ],
   controllers: [PaymentController],
-  providers: [PaymentService, MessageService],
+  providers: [PaymentService, MessageService, EventsGateway],
 })
 export class PaymentModule {}

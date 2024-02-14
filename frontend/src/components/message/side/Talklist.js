@@ -40,7 +40,8 @@ const TackList = () => {
     return (
         <ul class="space-y-4">
             {messageList && messageList.map(list => (
-                <Link to={`${list.id}`} >
+                // <Link to={`${list.id}`}>
+                <Link to={`/message/${list.id}`} >
                     <li class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
@@ -68,9 +69,10 @@ const TackList = () => {
                         </svg>
                     </li>
                 </Link>
-            ))}
+            ))
+            }
 
-        </ul>
+        </ul >
     )
 }
 
