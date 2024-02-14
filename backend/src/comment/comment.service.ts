@@ -42,6 +42,15 @@ export class CommentService {
         return comments;
     }
 	
+	// 강의별 리뷰 수, 평점 총합
+	async getRating(product_id: number){
+		return await this.commentRepository.createQueryBuilder()
+			.select('COUNT(*)','count')
+			.addSelect('SUM(rating)','sum')
+			.where(`product_id=${product_id}`)
+			.getRawOne()
+	}
+	
 	// 내가 쓴 리뷰 목록
 	async getMyComments(page: number, pageSize: number){
 		return await this.commentRepository.findAndCount({where:{user_id:this.req.user['id']},take: pageSize, skip:(page-1)*pageSize,relations:['product']})

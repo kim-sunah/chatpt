@@ -187,4 +187,9 @@ export class PaymentService {
 			if(!res.filter(product => product.product_id===products[i].product_id).length) res.push(products[i])
 		return res
 	}
+	
+	// 구매자+상품 조합 찾기
+	async getMyAndProduct(user_id: number, product_id: number){
+		return await this.paymentRepository.findOne({where:{user_id,product_id}})
+	}
 }
