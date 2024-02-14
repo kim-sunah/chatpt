@@ -36,7 +36,7 @@ export class ProductService {
 	
 	// 최근 등록 수업 목록
 	async getLatestProducts(){
-		return await this.productRepository.find({take:5, order:{'id':'DESC'}})
+		return await this.productRepository.find({where:{accepted:true},take:5, order:{'id':'DESC'}})
 	}
 
     // 쿼리 검색 문자열 만들기

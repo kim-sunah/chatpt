@@ -64,8 +64,14 @@ const router = createBrowserRouter([
                     { path: 'detail', element: <InquiryDetail /> },
                 ],
             },
-            { path: 'Message', element: <Message></Message> },
             { path: 'category', element: <ProductCategory /> },
+            {
+                path: 'Message',
+                children: [
+                    { path: '', element: <Message /> },
+                    { path: ':id', element: <Message /> }
+                ]
+            },
         ],
     },
     { path: 'Login', element: <Login></Login> },
