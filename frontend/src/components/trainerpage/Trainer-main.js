@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import './trainerpage.css';
 import { linkStyles } from './../admin/theme/components/link';
 import Form from 'react-bootstrap/Form';
+import Table from 'react-bootstrap/Table';
 
 const TrainerPage = () => {
     const Authorization = 'Bearer ' + window.sessionStorage.getItem('accessToken');
@@ -23,12 +24,12 @@ const TrainerPage = () => {
     useEffect(() => {
         getUser();
         getProduct();
-        getRevenue();
         // getPayment();
     }, [product_Id, selectedUser]);
 
     useEffect(() => {
         getPayment();
+        getRevenue();
     }, [product_Id]);
 
     const getUser = async () => {
@@ -104,6 +105,7 @@ const TrainerPage = () => {
 
             if (res.status === 200) {
                 const revenueData = await res.json();
+                console.log(revenueData);
                 setRevenue_Id(revenueData);
             } else {
                 alert('수익 정보를 가져오는데 실패했습니다.');
@@ -152,6 +154,9 @@ const TrainerPage = () => {
             }
         }
     };
+
+    const tableStyle = {};
+
     return (
         <div className="mainpage">
             <h1>강사 페이지</h1>
@@ -233,7 +238,6 @@ const TrainerPage = () => {
                         </option>
                     ))}
                 </Form.Select>
-
                 {product_Id !== 0 && (
                     <>
                         <div className="revenueTotal">
@@ -242,36 +246,37 @@ const TrainerPage = () => {
                                 {revenue_Id ? parseInt(revenue_Id.sum) + parseInt(revenue_Id.sum2) : 0}원
                             </div>
                         </div>
+                        <Table className="responsive-table" style={tableStyle}>
+                            <thead>
+                                <tr>
+                                    <th>이름</th>
+                                    <th>이메일</th>
+                                    <th>결제일</th>
+                                    <th>결제금액</th>
+                                    <th>결제수단</th>
+                                    <th>마일리지 사용</th>
+                                    <th>1:1 대화</th>
+                                </tr>
+                            </thead>
+                        </Table>
+
                         {payment[0]?.map((payment) => {
                             const user = payment.user;
                             return (
                                 <div key={user.id} className="userItem">
                                     <div className="userDetails">
-                                        <div style={{ fontSize: '11px' }}>
-                                            <strong>이름:</strong> {user.nickname}
-                                        </div>
-                                        <div style={{ fontSize: '11px' }}>
-                                            <strong>이메일:</strong> {user.email}
-                                        </div>
-                                        <div style={{ fontSize: '11px' }}>
-                                            <strong>결제일:</strong> {new Date(payment.createdAt).toLocaleDateString()}
-                                        </div>
-                                        <div style={{ fontSize: '11px' }}>
-                                            <strong>결제금액:</strong> {payment.spending}원
-                                        </div>
-                                        <div style={{ fontSize: '11px' }}>
-                                            <strong>결제수단:</strong> {payment.method}
-                                        </div>
-                                        <div style={{ fontSize: '11px' }}>
-                                            <strong>마일리지 사용:</strong> {payment.mileage}포인트
-                                        </div>
-                                        <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+                                        <div>{user.nickname}</div>
+                                        <div>{user.email}</div>
+                                        <div>{new Date(payment.createdAt).toLocaleDateString()}</div>
+                                        <div>{payment.spending}원</div>
+                                        <div>{payment.method}</div>
+                                        <div>{payment.mileage}포인트</div>
+                                        <div style={{ textAlign: 'right' }}>
                                             <button
                                                 className="messageButton"
-                                                style={{ fontSize: '11px' }}
                                                 onClick={() => handleSendMessage(user.id)}
                                             >
-                                                메시지 보내기
+                                                대화하기
                                             </button>
                                         </div>
                                     </div>
@@ -284,4 +289,5 @@ const TrainerPage = () => {
         </div>
     );
 };
+
 export default TrainerPage;
