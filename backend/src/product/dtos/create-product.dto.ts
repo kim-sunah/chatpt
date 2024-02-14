@@ -41,10 +41,10 @@ export class CreateProductDto {
 	@IsNotEmpty()
 	end_on: string
 	
-	@IsInt()
-	@Min(0)
-	@Max(6)
-	weekday: number
+	/* @IsInt()
+	@Min(1)
+	@Max(127)
+	weekday: number */
 	
 	// start_at
 	// end_at

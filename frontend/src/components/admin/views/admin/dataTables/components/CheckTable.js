@@ -1,6 +1,7 @@
 import {Flex,Table,Checkbox,Tbody,Td,Text,Th,Thead,Tr,useColorModeValue,} from "@chakra-ui/react";
 import React, { useMemo, useState, useEffect } from "react";
 import {useGlobalFilter,usePagination,useSortBy,useTable} from "react-table";
+import { Link } from "react-router-dom"
 
 // Custom components
 import Card from "../../../../components/card/Card"
@@ -105,7 +106,7 @@ export default function CheckTable(props) {
         <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
           <Flex align='center'>
             <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-              <img src={product.thumbnail} style={{width:"100px" , height:"80px"}}></img>
+              <Link to ={`http://localhost:3000/product/{product.id}`}><img src={product.thumbnail} style={{width:"100px" , height:"80px"}}></img></Link>
             </Text>
           </Flex>
         </Td>

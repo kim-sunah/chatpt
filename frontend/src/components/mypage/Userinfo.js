@@ -4,7 +4,10 @@ const Userinfo = () => {
     const [info, setinfo] = useState()
     const [update, setupdate] = useState(false)
     useEffect(() => {
-        fetch("http://localhost:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } }).then(res => res.json()).then(resData => setinfo(resData.user)).catch(err => console.log(err))
+        fetch("http://localhost:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        .then(res => res.json())
+        .then(resData => {setinfo(resData.user); console.log(resData)})
+        .catch(err => console.log(err))
     }, [])
     const updatehalder = () => {
         setupdate(!update)
@@ -19,9 +22,8 @@ const Userinfo = () => {
                 <div className="max-w-2xl mx-auto bg-white p-6">
                     {info && <div className="flex mt-0">
                         <img src={info.profile_image} className="h-40 w-40 rounded-full bg-gray-300 mt-10 mr-10" />
-
                         <div className="ml-4 flex-1 ml-10">
-                            <h1 className="text-xl font-bold">내 정보 <button onClick={updatehalder} style={{ fontSize: "10px", color: "blue" }}> 내 정보 수정</button></h1>
+                            <h1 className="text-xl font-bold">내 정보 {info.registration_information === "site" || info.registration_information ==="SITE" && <button onClick={updatehalder} style={{ fontSize: "10px", color: "blue" }}> 내 정보 수정</button>}</h1>
 
                             <div className="mt-4">
                                 <div className="flex items-center justify-between">
@@ -44,21 +46,6 @@ const Userinfo = () => {
                             </div>
                         </div>
                     </div>}
-                    <div style={{ marginTop: "30%" }}>
-                        <h3 className="text-lg font-bold">수강 완료한 강의 목록</h3>
-                        <div className="mt-4 grid grid-cols-2 gap-4">
-                            <div className="bg-gray-200 p-4 rounded-lg">
-                                <div className="h-20 bg-gray-300 rounded-md"></div>
-                                <h5 className="mt-2 text-sm font-medium">상품명</h5>
-                                <p className="text-sm text-gray-600">상품설명</p>
-                            </div>
-                            <div className="bg-gray-200 p-4 rounded-lg">
-                                <div className="h-20 bg-gray-300 rounded-md"></div>
-                                <h5 className="mt-2 text-sm font-medium">상품명</h5>
-                                <p className="text-sm text-gray-600">상품설명</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>}
             {update && <Userupdate info={{ email: info.email, imgurl : info.profile_image}}></Userupdate>}
         </div>

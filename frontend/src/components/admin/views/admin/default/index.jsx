@@ -108,7 +108,7 @@ export default function UserReports() {
            endContent={
             <Flex me='-16px' mt='10px'>
               <FormLabel htmlFor='balance'>
-                <BiPackage size = "50"></BiPackage>
+               
               </FormLabel>
             </Flex>
           }

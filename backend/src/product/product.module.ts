@@ -38,7 +38,7 @@ const multerOptionsForImages = (configService: ConfigService) => {
                 const ext = extname(file.originalname); // 확장자
                 const baseName = basename(file.originalname, ext); // 확장자 제외
                 // 파일이름-날짜.확장자
-                const fileName = `images/${baseName}-${Date.now()}${ext}`
+                const fileName = `images/${Date.now()}_${Math.floor(Math.random() * 1000)}${ext}`
                 callback(null, fileName)
             }
 		}),
@@ -79,7 +79,7 @@ const multerOptionsForVideos = (configService: ConfigService) => {
                 const ext = extname(file.originalname); // 확장자
                 const baseName = basename(file.originalname, ext); // 확장자 제외
                 // 파일이름-날짜.확장자
-                const fileName = `images/${baseName}-${Date.now()}${ext}`
+                const fileName = `images/${Date.now()}_${Math.floor(Math.random() * 1000)}${ext}`
                 callback(null, fileName)
             }
 		}),

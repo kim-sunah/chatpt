@@ -10,6 +10,7 @@ import { basename, extname } from 'path';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/enum/Role';
 
 @Injectable()
 export class UserService {
@@ -37,12 +38,7 @@ export class UserService {
         return user;
     }
     async updateUserinfo(id: number ,updateUser:  UpdateuserDto){
-        const email_Emailauthentication = await this.cacheManager.get(updateUser.Email);
-        const user = await this.userRepository.findOne({where : {id : id}});
         const hashedPassword = await bcrypt.hashSync(updateUser.Password, 12);
-        if(email_Emailauthentication !== updateUser.Authentication_number){
-            throw new BadRequestException(["Authentication number does not match"])
-        }
         return await this.userRepository.update(id , {email : updateUser.Email , password : hashedPassword })
     
       
@@ -82,6 +78,11 @@ export class UserService {
             user.limit = false;
         }
         return await this.userRepository.update(id , user);
+    }
+
+    async Hostupdate(id : number){
+        return await this.userRepository.update(id , {authority : Role.Host})
+    
     }
 
 }

@@ -37,10 +37,11 @@ export class Product {
     @Column()
     intro: string;
 
-    @Column({ nullable: true })
+    @Column({ default: 'https://lsh318204.cafe24.com/wp-content/uploads/kboard_attached/8/201906/5cf728d931fab7574308-600x338.jpg' })
     thumbnail: string;
 
     @Column('enum', { enum: Category, default: Category.Others })
+	@Index()
     category: Category;
 
     @Column({ nullable: true })
@@ -65,8 +66,8 @@ export class Product {
   	@Column('date')
 	  end_on: Date
 	
-  	@Column('tinyint')
-  	weekday: number
+  	@Column({default:'0123456'})
+  	weekday: string
 	
 	  @Column('time')
   	start_at: string

@@ -5,14 +5,8 @@ import { AppModule } from './app.module';
 import session from 'express-session';
 import { TypeormStore } from 'connect-typeorm';
 import { IoAdapter } from '@nestjs/platform-socket.io';
-
-import winston from 'winston';
+import * as winston from 'winston';
 import SlackHook from 'winston-slack-webhook-transport';
-import { WinstonModule } from 'nest-winston';
-
-var amqp = require('amqplib/callback_api');
-const url =
-  'amqps://chatPT:chatPT123456@b-e4d218f5-5560-4786-b2bc-f3185dca9ce3.mq.ap-northeast-2.amazonaws.com:5671';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -32,14 +26,17 @@ async function bootstrap() {
   });
 
   const logger = winston.createLogger({
-    level: 'info',
+    level: 'debug',
     format: winston.format.combine(
       winston.format.timestamp(), // Add a timestamp to Slack logs
       winston.format.errors({ stack: true }),
-      winston.format.printf(({ timestamp, level, message, context, stack }) => {
-        return `${timestamp} [${context}] ${level}: ${message}${
-          stack ? `\n${stack}` : ''
-        }`;
+      winston.format.printf((info) => {
+        const stack = Object.getOwnPropertySymbols(info).find(
+          (symbol) => symbol.toString() === 'Symbol(splat)'
+        );
+        const text = info[stack as any];
+        //console.log(info[Symbol(mesasge)])
+        return text;
       })
     ),
     transports: [
@@ -48,11 +45,18 @@ async function bootstrap() {
         webhookUrl: process.env.SLACK_WEBHOOK_URL,
         channel: '#project',
         username: 'LoggerBot',
-        level: 'info',
+        level: 'debug',
+        formatter: (info) => {
+          const stack = Object.getOwnPropertySymbols(info).find(
+            (symbol) => symbol.toString() === 'Symbol(splat)'
+          );
+          const text = info[stack as any][0];
+          //console.log(info[Symbol(mesasge)])
+          return { text };
+        },
       }),
     ],
   });
-
   app.useLogger(logger);
   await app.listen(4000, '0.0.0.0');
 }

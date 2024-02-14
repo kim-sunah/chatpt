@@ -6,12 +6,21 @@ import Footer from "../../components/footer/FooterAdmin.js"
 import Navbar from '../../components/navbar/NavbarAdmin.js';
 import Sidebar from '../../components/sidebar/Sidebar.js';
 import { SidebarContext } from '../../contexts/SidebarContext.js';
-import React, { useState } from 'react';
-import { Outlet, Redirect, Route, Routes, Switch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, Redirect, Route, Routes, Switch, useNavigate } from 'react-router-dom';
 import routes from '../../routes.js';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
+	const navigate = useNavigate()
+	useEffect(() =>{
+		if(sessionStorage.getItem("authority") !== "Admin"){
+			navigate("/")
+			alert("접근 권한이 없습니다")
+			
+		}
+
+	},[])
 	const { ...rest } = props;
 	// states and functions
 	const [fixed] = useState(false);

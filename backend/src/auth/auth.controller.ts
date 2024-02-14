@@ -4,7 +4,9 @@ import {
   Get,
   Header,
   HttpCode,
+  HttpException,
   HttpStatus,
+  InternalServerErrorException,
   Post,
   Query,
   Req,
@@ -23,6 +25,9 @@ import { User } from 'src/entities/user.entity';
 import { Response } from 'express';
 import { KakaoLoginDto } from './dtos/kakao-user.dto';
 import { MessageService } from 'src/message/message.service';
+import slackAlarm from 'src/slack/slackAlarm';
+import errorGenerator from 'src/slack/errorGenerator';
+
 
 @ApiTags('인증')
 @Controller('auth')
@@ -112,9 +117,10 @@ export class AuthController {
   }
   @Post('kakaosingup')
   async postKakaoInfo(@Body() kakaoLoginDto: KakaoLoginDto) {
-    await this.authService.kakosignUp(kakaoLoginDto);
-    const { accessToken, refreshToken, authority, limit } =
-      await this.authService.kakaosignIn(kakaoLoginDto.Email);
+    const userinfo = await this.authService.kakosignUp(kakaoLoginDto);
+    
+    const { accessToken, refreshToken, authority, limit } = await this.authService.kakaosignIn(kakaoLoginDto.Email);
+    
     return {
       statusCode: HttpStatus.OK,
       message: '로그인에 성공했습니다.',
@@ -123,5 +129,13 @@ export class AuthController {
       authority,
       limit,
     };
+  }
+
+  @Post("Test")
+  async sendErrorToSlack() {
+    throw errorGenerator({
+      msg: "서버 내부 에러입니다.",
+      statusCode: 500
+    });
   }
 }

@@ -186,7 +186,7 @@ export class ProductController {
 
     // 수업 이미지 지우기
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin,Role.Host)
     @Delete('image/:id')
     async softDeleteImage(@Param() param: Id) {
         return await this.productService.softDeleteImage(param.id);
