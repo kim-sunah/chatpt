@@ -45,7 +45,7 @@ const Header = () => {
         <header className="flex items-center justify-between p-6 border-b px-20 mx-40  max-w-screen-xl mx-auto">
             <Link to="/">Chat PT</Link>
             <div className="flex items-center space-x-4 ">
-                <Link to ="TrainerPage" >Trainer</Link>
+                <Link to="TrainerPage">Trainer</Link>
                 <form onSubmit={searchhandler}>
                     <input
                         type="text"

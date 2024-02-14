@@ -11,9 +11,8 @@ const TrainerRoot = () =>{
     }, [])
     return (
         <div>
-            {authority !== "Host" && <Trainerstart></Trainerstart>}
-            {authority === "Host" && <TrainerPage></TrainerPage>} 
-            
+            {authority && authority !== "Host" && <Trainerstart></Trainerstart>}
+            {authority && authority === "Host" && <TrainerPage></TrainerPage>}  
         </div>
     )
 
