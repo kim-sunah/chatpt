@@ -78,6 +78,13 @@ export class PaymentController {
 		const { page, pageSize } = query
 		return await this.paymentService.getByProduct(param.id, page, pageSize)
 	}
+	
+	// 구매자+상품 조합 찾기
+	@UseGuards(JwtAuthGuard)
+	@Get('my/:id')
+	async getMyAndProduct(@Request() req, @Param() param: Id){
+		return await this.paymentService.getMyAndProduct(req.user.id, param.id)
+	}
 
 	// 구매자+id 조합 찾기
     @ApiBearerAuth()
