@@ -93,7 +93,7 @@ const TrainerPage = () => {
     };
 
     const getRevenue = async () => {
-        if (product_Id === 0 || !selectedUser) {
+        if (product_Id === 0) {
             return;
         }
 
@@ -242,8 +242,9 @@ const TrainerPage = () => {
                     <>
                         <div className="revenueTotal">
                             <div style={{ fontSize: '11px' }}>
-                                <strong>총 매출액:</strong>{' '}
-                                {revenue_Id ? parseInt(revenue_Id.sum) + parseInt(revenue_Id.sum2) : 0}원
+                                <></>
+                                <strong>총 매출액:</strong> {parseInt(revenue_Id.sum) + parseInt(revenue_Id.sum2) || 0}
+                                원
                             </div>
                         </div>
                         <Table className="responsive-table" style={tableStyle}>
