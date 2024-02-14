@@ -11,6 +11,7 @@ import SearchMain from './components/search/Search-main';
 import ProductDetail from './components/product/Product-detail';
 import ProductUpdate from './components/product/Product-update';
 import ProductMy from './components/product/Product-my';
+import ProductCategory from './components/product/Product-category'
 import InquiryMy from './components/inquiry/Inquiry-my';
 import InquiryMain from './components/inquiry/Inquiry-main';
 import InquiryGeneral from './components/inquiry/Inquiry-general';
@@ -62,10 +63,12 @@ const router = createBrowserRouter([
                 ],
             },
             { path: 'Message', element: <Message></Message> },
+			{ path: 'category', element: <ProductCategory />},
         ],
     },
     { path: 'Login', element: <Login></Login> },
     { path: 'Signup', element: <Signup></Signup> },
+	
     {
         path: 'admin',
         element: <Adminpage></Adminpage>,
