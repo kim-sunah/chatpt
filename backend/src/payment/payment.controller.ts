@@ -16,7 +16,7 @@ export class PaymentController {
 
 	// 구매하기
     @ApiBearerAuth()
-    @Roles(Role.User)
+    @Roles(Role.User,Role.Host)
     @UseGuards(RoleGuard)
     @Post()
     async create(@Request() req, @Body() createPaymentDto: CreatePaymentDto) {
@@ -50,7 +50,8 @@ export class PaymentController {
 
 	// 내 구매 목록
     @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
+    @Roles(Role.User,Role.Host)
+    @UseGuards(RoleGuard)
     @Get('my')
     async findAll(@Request() req, @Query() query: PageDto) {
         const userId = req.user.id;

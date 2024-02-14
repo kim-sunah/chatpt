@@ -9,6 +9,7 @@ import { SwUpdateDto } from './dto/swupdate-comment.dto';
 import { error } from 'console';
 import { PageDto } from '../product/dtos/page.dto'
 import { use } from 'passport';
+import {Id} from '../util/id'
 
 @Controller('comment')
 export class CommentController {
@@ -22,6 +23,12 @@ export class CommentController {
         //console.error('Error in commentfind:', error);
         return this.commentService.commentfind(productId,page,pageSize);
     }
+	
+	// 강의별 리뷰 수, 평점 총합
+	@Get('rating/:id')
+	async getRating(@Param() param: Id){
+		return this.commentService.getRating(param.id)
+	}
 	
 	// 내가 쓴 리뷰 목록
 	@ApiBearerAuth('accessToken')
