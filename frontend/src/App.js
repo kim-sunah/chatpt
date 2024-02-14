@@ -11,7 +11,7 @@ import SearchMain from './components/search/Search-main';
 import ProductDetail from './components/product/Product-detail';
 import ProductUpdate from './components/product/Product-update';
 import ProductMy from './components/product/Product-my';
-import ProductCategory from './components/product/Product-category'
+import ProductCategory from './components/product/Product-category';
 import InquiryMy from './components/inquiry/Inquiry-my';
 import InquiryMain from './components/inquiry/Inquiry-main';
 import InquiryGeneral from './components/inquiry/Inquiry-general';
@@ -30,10 +30,15 @@ import Trainerstart from './components/trainerpage/Trainerstart.js';
 import TrainerRoot from './components/trainerpage/TrainerRoot.js';
 
 const router = createBrowserRouter([
-    {path: '/',element: <Root></Root>,errorElement: <Errorpage></Errorpage>,children: [
+    {
+        path: '/',
+        element: <Root></Root>,
+        errorElement: <Errorpage></Errorpage>,
+        children: [
             { index: true, element: <Main></Main> },
             { path: 'mypage', element: <Mypage></Mypage> },
-            {   path: 'product',
+            {
+                path: 'product',
                 children: [
                     { path: 'create', element: <ProductCreate /> },
                     { path: 'update', element: <ProductUpdate /> },
@@ -60,12 +65,12 @@ const router = createBrowserRouter([
                 ],
             },
             { path: 'Message', element: <Message></Message> },
-			{ path: 'category', element: <ProductCategory />},
+            { path: 'category', element: <ProductCategory /> },
         ],
     },
     { path: 'Login', element: <Login></Login> },
     { path: 'Signup', element: <Signup></Signup> },
-	
+
     {
         path: 'admin',
         element: <Adminpage></Adminpage>,
@@ -75,10 +80,8 @@ const router = createBrowserRouter([
         ],
     },
     // { path: 'TrainerPage', element: <TrainerPage /> },
-    { path: 'TrainerPage', element: <TrainerRoot />, children : [
-        
-    ]},
-  
+    { path: 'TrainerPage', element: <TrainerRoot />, children: [] },
+
     { path: 'Login/kakao', element: <KakaoRedirect></KakaoRedirect> },
     { path: 'Login/naver', element: <Redirecturl></Redirecturl> },
 ]);
