@@ -27,17 +27,17 @@ export class ProductService {
         @Inject(REQUEST) private readonly req: Request,
         private readonly event: EventsGateway,
         private readonly elasticsearchService: SearchService
-    ) {}
+    ) { }
 
     // 수업 목록
     async getProducts(page: number, pageSize: number) {
         return await this.productRepository.find({ take: pageSize, skip: (page - 1) * pageSize });
     }
-	
-	// 최근 등록 수업 목록
-	async getLatestProducts(){
-		return await this.productRepository.find({where:{accepted:true},take:5, order:{'id':'DESC'}})
-	}
+
+    // 최근 등록 수업 목록
+    async getLatestProducts() {
+        return await this.productRepository.find({ where: { accepted: true }, take: 5, order: { 'id': 'DESC' } })
+    }
 
     // 쿼리 검색 문자열 만들기
     query(key, antiKey) {
@@ -47,9 +47,9 @@ export class ProductService {
             .join(' ');
         const antiKeyQuery = antiKey
             ? antiKey
-                  .split(' ')
-                  .map((k) => '-' + k)
-                  .join(' ')
+                .split(' ')
+                .map((k) => '-' + k)
+                .join(' ')
             : '';
         return keyQuery + (antiKeyQuery ? ' ' + antiKeyQuery : '');
     }
@@ -121,12 +121,13 @@ export class ProductService {
         const Instructor = await this.userRepository.findOne({ where: { id: product.user_id } });
         const index = 'products';
         await this.elasticsearchService.indexDocument(index, {
-            id : product.id,
+            id: product.id,
             productname: product.name,
             descirption: product.body,
             Instructor: Instructor.nickname,
             category: product.category,
             price: product.price,
+            thumbnail: product.thumbnail,
             sale_price: product.sale_price,
             start: product.start_on,
             end: product.end_on,
@@ -144,12 +145,31 @@ export class ProductService {
 
     // 수업 수정
     async updateProduct(id: number, body) {
+
         const badwords = await this.badwordService.searchBadword(body.name + ' ' + body.body);
         if (badwords.length)
             throw new BadRequestException(
                 '적절하지 못한 단어가 들어있습니다: ' + badwords.map((badword) => badword[1][0]).join(', ')
             );
-        return await this.productRepository.save({ id, ...body });
+
+        await this.productRepository.update(id, { ...body })
+        const product = await this.productRepository.findOne({ where: { id } })
+        const Instructor = await this.userRepository.findOne({ where: { id: product.user_id } });
+        await this.elasticsearchService.getDocumentId("products", id, {
+            id: id,
+            productname: body.name,
+            descirption: body.body,
+            Instructor: Instructor.nickname,
+            category: body.category,
+            price: body.price,
+            thumbnail: body.images,
+            sale_price: body.sale_price,
+            start: body.start_on,
+            end: body.end_on,
+            startTime: body.start_at,
+            endTime: body.end_at,
+        })
+        return true
     }
 
     // 내가 등록한 수업 목록

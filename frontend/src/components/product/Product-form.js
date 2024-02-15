@@ -32,6 +32,10 @@ const videoStyle = {
 	height: 225
 }
 
+const xStyle = {
+	cursor: 'pointer'
+}
+
 const categoryList = [['헬스','Fitness'], ['요가','Yoga'], ['필라테스','Pilates'], ['합기도','Hapkido'], ['태권도','Taekwondo'], ['자세교정','Posture'], ['스트레칭','Stretch'], ['발레','Ballet'], ['스포츠','Sports'], ['기타','Others']]
 const weekdayList = ['일','월','화','수','목','금','토']
 
@@ -58,7 +62,9 @@ const ProductForm = props => {
 	}
 
 	const handleImageChange = e => {
-		if(e.target.files.length) setNewImages([...Array(e.target.files.length).keys()].map(i => e.target.files[i]))
+		const file = e.target.files[0]
+		if(file) setNewImages([...newImages,file])
+		e.target.value = null
 	}
 
 	const handleShortChange = e => {
@@ -100,7 +106,11 @@ const ProductForm = props => {
 	}, [props.product, props.images])
 	
 	return (
-		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,images:newImages,intro,capacity,start_on,end_on,weekday:bitToString(weekday),start_at,end_at,shorts})}>
+		<Form style={style} onSubmit={e => {
+			e.preventDefault()
+			if(start_on<=end_on && Number.isInteger(capacity) && 1<=capacity && capacity<=100 && weekday>0){
+				props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,images:newImages,intro,capacity,start_on,end_on,weekday:bitToString(weekday),start_at,end_at,shorts})
+		}}}>
 			<Form.Group>
 				<Form.Label>이름</Form.Label>
 				<Form.Control required onChange={e => setName(e.target.value)} value={name} />
@@ -131,6 +141,7 @@ const ProductForm = props => {
 				<Form.Label>정원(최대 100명)</Form.Label>
 				<Form.Control type='number' onChange={e => setCapacity(+e.target.value)} value={capacity} />
 			</Form.Group>
+			{!(Number.isInteger(capacity) && 1<=capacity && capacity<=100) && <p style={{color:'red'}}>정원은 1 이상 100 이하의 자연수여야 합니다.</p>}
 			<Form.Group>
 				<Form.Label>강의 시작일</Form.Label>
 				<Form.Control type="date" onChange={e => setStartOn(e.target.value)} value={start_on} />
@@ -139,12 +150,14 @@ const ProductForm = props => {
 				<Form.Label>강의 종료일</Form.Label>
 				<Form.Control type="date" onChange={e => setEndOn(e.target.value)} value={end_on} />
 			</Form.Group>
+			{start_on>end_on && <p style={{color:'red'}}>강의 종료일이 강의 시작일보다 빠를 수 없습니다.</p>}
 			<Form.Group>
 				<Form.Label>수업 요일</Form.Label>
 				<div style={{display:'flex',justifyContent:'space-between'}}>
 					{weekdayList.map((weekday_,i) => <Form.Check key={i} onChange={() => setWeekday(weekday^(1<<i))} checked={(weekday&(1<<i))>0} label={weekday_}/>)}
 				</div>
 			</Form.Group>
+			{weekday===0 && <p style={{color:'red'}}>적어도 하나의 수업 요일을 지정해야 합니다.</p>}
 			<Form.Group>
 				<Form.Label>수업 시작 시간</Form.Label>
 				<Form.Control type='time' onChange={e => setStartAt(e.target.value)} value={start_at} />
@@ -167,7 +180,15 @@ const ProductForm = props => {
 					<img style={imgStyle} src={image.original_url} key={image.id} data-image-id={image.id} onClick={props.deleteImage} />
 				)))}
 				<Form.Control multiple type='file' onChange={handleImageChange} accept='.jpg, .jpeg, .png' />
-				{props.product && <Button onClick={e => props.uploadImage(e,newImages)}>이미지 추가</Button> }
+				{newImages.length>0 && newImages.map((img,i) => (
+					<div key={i} style={{display:'flex'}}>
+						<p style={{marginRight:'10px'}}>{img.name}</p>
+						<p style={xStyle} onClick={() =>setNewImages(newImages.filter((img,j) => j!==i))}>X</p>
+					</div>))}
+				{props.product && <Button onClick={e => { 
+					props.uploadImage(e,newImages)
+					setNewImages([])
+				}}>이미지 추가</Button> }
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>상품 쇼츠 (mp4, avi, mov, mkv만 가능, 50MB 이하)</Form.Label>
