@@ -168,7 +168,6 @@ export class ProductService {
             startTime: body.start_at,
             endTime: body.end_at,
          })
-        
         return await this.productRepository.save({ id, ...body });
     }
 
