@@ -29,7 +29,16 @@ async function bootstrap() {
     level: 'debug',
     format: winston.format.combine(
       winston.format.timestamp(),
-      winston.format.json()
+      winston.format.json(),
+	  winston.format.timestamp(), // Add a timestamp to Slack logs
+      winston.format.errors({ stack: true }),
+      winston.format.printf((info) => {
+        const stack = Object.getOwnPropertySymbols(info).find(
+          (symbol) => symbol.toString() === 'Symbol(splat)'
+        );
+        const text = info[stack as any];
+        return text;
+      })
     ),
     transports: [
       new winston.transports.Console(),
@@ -37,17 +46,14 @@ async function bootstrap() {
         webhookUrl: process.env.SLACK_WEBHOOK_URL,
         channel: '#project',
         username: 'LoggerBot',
-        level: 'error',
-        format: winston.format.combine(
-          winston.format.timestamp(), // Add a timestamp to Slack logs
-          winston.format.printf(
-            ({ timestamp, level, message, context, trace }) => {
-              return `${timestamp} [${context}] ${level}: ${message}${
-                trace ? `\n${trace}` : ''
-              }`;
-            }
-          )
-        ),
+        level: 'debug',
+        formatter: (info) => {
+          const stack = Object.getOwnPropertySymbols(info).find(
+            (symbol) => symbol.toString() === 'Symbol(splat)'
+          );
+          const text = info[stack as any][0];
+          return { text };
+        },
       }),
     ],
   });

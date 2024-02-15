@@ -42,10 +42,10 @@ export class PaymentController {
         return await this.paymentService.getPersonalTopProducts(query.key);
     }
 
-    // 카테고리별 인기 강의 찾기
+    // 카테고리별 강의 찾기
     @Get('categoryBest')
     async getCategoryTopProducts(@Query() query: any) {
-        return await this.paymentService.getCategoryTopProducts(query.category);
+        return await this.paymentService.getCategoryTopProducts(query.category,query.page);
     }
 
     // 내 구매 목록

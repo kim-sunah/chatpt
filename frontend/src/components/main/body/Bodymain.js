@@ -58,13 +58,14 @@ const Bodymain = () => {
             const name = localStorage.getItem('name')
             if (name) {
                 const res = await fetch(`http://localhost:4000/payment/personalBest?key=${name}`)
-                yourBest_ = await res.json()
+                if(res.status===200) yourBest_ = await res.json()
             }
         }
         for (let i = 0; i < weekBest_.length && yourBest_.length < 5; ++i) {
             if (!yourBest_.filter(product => product.product_id === weekBest_[i].product_id).length) yourBest_.push(weekBest_[i])
         }
         setYourBest(yourBest_)
+		console.log(yourBest_)
 		try{
 			const arr = await Promise.all(weekBest_.map(async product => {
 				const res = await fetch(`http://localhost:4000/comment/rating/${product.product_id}`)
@@ -97,7 +98,6 @@ const Bodymain = () => {
 		const res = await fetch(`http://localhost:4000/comment/rating/${id}`)
 		return (await res.json()).avg
 	}
-
     return (
         <div className="p-6 max-w-screen-xl px-40 mx-40" style={{ margin: "0px auto" }}>
 
