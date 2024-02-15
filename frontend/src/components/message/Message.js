@@ -72,34 +72,40 @@ const Message = () => {
                     })
                     .then(res => res.json())
                     .then(resData => {
-                        console.log(resData.userId.id == userId)
+                        console.log(resData)
+                        console.log(resData.message.id)
+                        console.log(id)
+                        console.log(id == resData.message.id)
                         console.log(resData.userId.id, userId)
-                        if (resData.userId.id === userId) {
-                            const newMessageElement = document.createElement('div');
-                            newMessageElement.className = "flex items-start space-x-2 p-1";
-                            const innerDiv = document.createElement('div');
-                            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
-                            innerDiv.innerText = resData.message.last_message;
-                            newMessageElement.appendChild(innerDiv);
-                            messageTextRef.current.appendChild(newMessageElement);
-                            sendMessage.current.value = "";
-                        } else {
-                            const newMessageElement = document.createElement('div');
-                            newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
-                            const innerDiv = document.createElement('div');
-                            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
-                            innerDiv.innerText = resData.message.last_message;
-                            newMessageElement.appendChild(innerDiv);
-                            messageTextRef.current.appendChild(newMessageElement);
-                            sendMessage.current.value = "";
+                        if (resData.message.id === id) {
+                            if (resData.userId.id === userId) {
+                                const newMessageElement = document.createElement('div');
+                                newMessageElement.className = "flex items-start space-x-2 p-1";
+                                const innerDiv = document.createElement('div');
+                                innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                                innerDiv.innerText = resData.message.last_message;
+                                newMessageElement.appendChild(innerDiv);
+                                messageTextRef.current.appendChild(newMessageElement);
+                                sendMessage.current.value = "";
+                            } else {
+                                const newMessageElement = document.createElement('div');
+                                newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
+                                const innerDiv = document.createElement('div');
+                                innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                                innerDiv.innerText = resData.message.last_message;
+                                newMessageElement.appendChild(innerDiv);
+                                messageTextRef.current.appendChild(newMessageElement);
+                                sendMessage.current.value = "";
+                            }
+
+                            socket.off('message', handleMessage);
                         }
                     })
                     .catch(err => console.log("err", err))
             }
         };
         socket.on('message', handleMessage);
-        // socket.off('message', handleMessage);
-    }, [id]); // id를 의존성 배열에 추가
+    }, [id]);
 
     return (
         <div className="flex h-screen bg-gray-100 max-w-screen-xl mx-auto">
