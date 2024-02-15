@@ -38,7 +38,7 @@ export class MessageController {
     return await this.messageService.isRead(userinfo.id);
   }
 
-  @Put(':queue')
+  @Post(':queue')
   async sendMessage(
     @Param('queue') queue: string,
     @UserInfo() userinfo: User,
@@ -48,7 +48,10 @@ export class MessageController {
   }
 
   @Get(':queue')
-  async receiveMessage(@Param('queue') queue: string) {
-    return await this.messageService.receiveMessage(queue);
+  async receiveMessage(
+    @Param('queue') queue: string,
+    @UserInfo() userId: number
+  ) {
+    return await this.messageService.receiveMessage(queue, userId);
   }
 }

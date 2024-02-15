@@ -28,7 +28,6 @@ import TrainerPage from './components/trainerpage/Trainer-main.js';
 import Trainerstart from './components/trainerpage/Trainerstart.js';
 import TrainerRoot from './components/trainerpage/TrainerRoot.js';
 import GoogleRedirect from './components/GoogleRedirect.js';
-import Room from './components/room/meeting-room.js';
 
 const router = createBrowserRouter([
     {
@@ -71,12 +70,6 @@ const router = createBrowserRouter([
                 children: [
                     { path: '', element: <Message /> },
                     { path: ':id', element: <Message /> }
-                ]
-            },
-            {
-                path: 'room',
-                children: [
-                    { path: ':ROOM_ID', element: <Room /> }
                 ]
             },
         ],

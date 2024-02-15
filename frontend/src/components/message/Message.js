@@ -10,10 +10,11 @@ const Message = () => {
     const sendMessage = useRef();
     const messageTextRef = useRef();
     const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
+    const [messageList, setMessageList] = useState([]);
+    const [userId, setUserId] = useState();
 
-    const send = (event) => {
-        event.preventDefault();
-        console.log(id)
+    const send = (e) => {
+        e.preventDefault();
         fetch(`http://localhost:4000/message/${id}`, {
             method: "PUT",
             headers: {
@@ -23,46 +24,82 @@ const Message = () => {
             },
             body: JSON.stringify({ message: sendMessage.current.value })
         })
-            .then(resData => {
-                // 새로운 메시지를 messageText 요소 안으로 추가합니다.
-                const newMessageElement = document.createElement('div');
-                newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
-                const innerDiv = document.createElement('div');
-                innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
-                innerDiv.innerText = sendMessage.current.value;
-                newMessageElement.appendChild(innerDiv);
-                messageTextRef.current.appendChild(newMessageElement);
-                sendMessage.current.value = "";
-            })
             .catch(err => {
                 console.log(err);
             });
     };
 
-    socket.on('message', (data) => {
-        if (data === "sendMessage") {
-            fetch(`http://localhost:4000/message/${id}`,
-                {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
-                })
-                .then(res => console.log(res))
-                .catch(err => console.log("err", err))
-        }
-    })
-    const [messageList, setMessageList] = useState();
-    const [userId, setUserId] = useState();
     useEffect(() => {
-        fetch("http://localhost:4000/message", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("http://localhost:4000/message", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
+                "refreshtoken": sessionStorage.getItem("refreshToken")
+            }
+        })
             .then(res => res.json())
             .then(resData => {
+                console.log(resData);
                 setMessageList(resData.list);
                 setUserId(resData.userId)
             })
             .catch(err => {
                 console.log(err)
+            });
+
+        fetch(`http://localhost:4000/message/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
+                "refreshtoken": sessionStorage.getItem("refreshToken")
+            }
+        })
+            .then(res => res.json())
+            .then(resData => {
+                // Handle response data if needed
             })
-    }, [])
+            .catch(err => {
+                console.log(err)
+            });
+
+        const handleMessage = (data) => {
+            if (data === "sendMessage") {
+                fetch(`http://localhost:4000/message/${id}`,
+                    {
+                        method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
+                    })
+                    .then(res => res.json())
+                    .then(resData => {
+                        console.log(resData.userId.id == userId)
+                        console.log(resData.userId.id, userId)
+                        if (resData.userId.id === userId) {
+                            const newMessageElement = document.createElement('div');
+                            newMessageElement.className = "flex items-start space-x-2 p-1";
+                            const innerDiv = document.createElement('div');
+                            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                            innerDiv.innerText = resData.message.last_message;
+                            newMessageElement.appendChild(innerDiv);
+                            messageTextRef.current.appendChild(newMessageElement);
+                            sendMessage.current.value = "";
+                        } else {
+                            const newMessageElement = document.createElement('div');
+                            newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
+                            const innerDiv = document.createElement('div');
+                            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                            innerDiv.innerText = resData.message.last_message;
+                            newMessageElement.appendChild(innerDiv);
+                            messageTextRef.current.appendChild(newMessageElement);
+                            sendMessage.current.value = "";
+                        }
+                    })
+                    .catch(err => console.log("err", err))
+            }
+        };
+        socket.on('message', handleMessage);
+        // socket.off('message', handleMessage);
+    }, [id]); // id를 의존성 배열에 추가
 
     return (
         <div className="flex h-screen bg-gray-100 max-w-screen-xl mx-auto">
@@ -109,12 +146,7 @@ const Message = () => {
             <main className="w-3/4 bg-white p-6 border border-gray-200">
                 <div className="flex flex-col h-full">
                     <div ref={messageTextRef} className="flex-1 overflow-y-auto">
-                        <div class="flex items-end justify-end space-x-2 p-1">
-                            <div class="bg-blue-500 text-white p-3 rounded-lg">Let’s start messaging with your nodes!</div>
-                        </div>
-                        <div class="flex items-start space-x-2 p-1">
-                            <div class="bg-blue-500 text-white p-3 rounded-lg">Let’s start messagi</div>
-                        </div>
+
                     </div>
                     <form onSubmit={send} className="mt-6 flex items-center space-x-3">
                         <input
