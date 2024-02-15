@@ -1,8 +1,9 @@
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import openSocket from 'socket.io-client';
+import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 // import SendTalk from "./SendTalk";
-import TackList from "./side/Talklist";
+// import TackList from "./side/Talklist";
 
 const Message = () => {
     const { id } = useParams();
@@ -49,9 +50,19 @@ const Message = () => {
                 .catch(err => console.log("err", err))
         }
     })
+    const [messageList, setMessageList] = useState();
+    const [userId, setUserId] = useState();
     useEffect(() => {
-
-    })
+        fetch("http://localhost:4000/message", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+            .then(res => res.json())
+            .then(resData => {
+                setMessageList(resData.list);
+                setUserId(resData.userId)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [])
 
     return (
         <div className="flex h-screen bg-gray-100 max-w-screen-xl mx-auto">
@@ -59,7 +70,41 @@ const Message = () => {
                 <div className="flex items-center justify-between pb-6">
                     <h1 className="text-xl font-semibold">Message</h1>
                 </div>
-                <TackList />
+                <ul class="space-y-4">
+                    {messageList && messageList.map(list => (
+                        // <Link to={`${list.id}`}>
+                        <Link to={`/message/${list.id}`} >
+                            <li class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                                        <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
+                                            {userId}
+                                            {userId == list.host_id ? <img src={list.gest.profile_image} /> : <img src={list.host.profile_image} />}
+                                        </span>
+                                    </span>
+                                    <div>
+                                        {userId == list.host_id ? <div class="font-semibold">{list.gest.nickname}</div> : <div class="font-semibold">{list.host.nickname}</div>}
+                                        <div class="text-sm text-gray-500">{list.updatedAt.substr(0, 10)}</div>
+                                    </div>
+                                </div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="text-gray-400"
+                                >
+                                </svg>
+                            </li>
+                        </Link>
+                    ))
+                    }
+                </ul >
             </aside>
             <main className="w-3/4 bg-white p-6 border border-gray-200">
                 <div className="flex flex-col h-full">
