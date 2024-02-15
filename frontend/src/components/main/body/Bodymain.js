@@ -97,7 +97,6 @@ const Bodymain = () => {
 		const res = await fetch(`http://localhost:4000/comment/rating/${id}`)
 		return (await res.json()).avg
 	}
-
     return (
         <div className="p-6 max-w-screen-xl px-40 mx-40" style={{ margin: "0px auto" }}>
 

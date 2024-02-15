@@ -171,20 +171,25 @@ export class PaymentService {
 			.orderBy('count','DESC')
 			.limit(5)
 			.getRawMany()
-		return products.filter(product => topProducts.map(product => product.product_id).indexOf(product.product_id)!==-1)
+		const res = products.filter(product => topProducts.map(product => product.product_id).indexOf(product.product_id)!==-1)
+		for(let i=0;i<products.length && res.length<Math.min(5,products.length);++i)
+			if(!res.filter(product => product.product_id===products[i].product_id).length) res.push(products[i])
+		return res
 	}
 	
 	// 카테고리별 인기 강의 찾기
-	async getCategoryTopProducts(category){
+	async getCategoryTopProducts(category, page: number = 1, pageSize: number = 5){
 		const products = await this.productRepository.createQueryBuilder('product')
 			.select()
 			.where(`category='${category}'`)
 			.andWhere('accepted=1')
 			.orderBy('id','DESC')
-			.limit(30)
-			.getRawMany()
+			.take(pageSize)
+			.skip((page-1)*pageSize)
+			.getManyAndCount()
 		if(!products.length) return []
-		const topProducts = await this.paymentRepository.createQueryBuilder('payment')	
+		return products
+		/* const topProducts = await this.paymentRepository.createQueryBuilder('payment')	
 			.select('payment.product_id','product_id')
 			.addSelect('COUNT(*)','count')
 			.where('payment.product_id IN (:...product_ids)', { product_ids:products.map(product => product.product_id) })
@@ -195,7 +200,7 @@ export class PaymentService {
 		const res = products.filter(product => topProducts.map(product => product.product_id).indexOf(product.product_id)!==-1)
 		for(let i=0;i<products.length && res.length<Math.min(5,products.length);++i)
 			if(!res.filter(product => product.product_id===products[i].product_id).length) res.push(products[i])
-		return res
+		return res */
 	}
 	
 	// 구매자+상품 조합 찾기
