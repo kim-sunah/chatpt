@@ -129,7 +129,7 @@ const Login = () => {
                         </form>
                         <div style={{ display: "flex", gap: "10%", justifyContent: "center" }}>
                             <img src={kakao} style={{ width: "50px", height: "50px", cursor: "pointer" }} onClick={KakaoLogin}></img>
-                            <img src={naver} style={{ width: "50px", height: "50px" }} onClick={NaverLogin}></img>
+                            {/* <img src={naver} style={{ width: "50px", height: "50px" }} onClick={NaverLogin}></img> */}
                             <img src={Google} style={{ width: "50px", height: "50px" }} onClick={GoogleLogin}></img>
                         
                             

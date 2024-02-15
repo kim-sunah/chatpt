@@ -54,17 +54,9 @@ export class SearchService {
       index,
       body: document,
     });
-
     return result;
-
-
-
-
-
   }
   async searchDocuments(index: string, query: any): Promise<any> {
-
-
     const result = await this.elasticsearchService.search({
       index,
       body: {
@@ -95,7 +87,6 @@ export class SearchService {
   }
 
   async categorysearchDocuments(index: string, query: any): Promise<any> {
-
     const result = await this.elasticsearchService.search({
       index,
       body: {
@@ -128,4 +119,49 @@ export class SearchService {
     }
     return result.hits.hits;
   }
+
+  //: Promise<string | null> 
+  async getDocumentId(index: string, query: any , document :any) {
+    try {
+      const result = await this.elasticsearchService.search({
+        index,
+        body: {
+          query: {
+            match: { id: query }
+          }
+        }
+      })
+      console.log(result.hits.hits[0]._id)
+      await this.elasticsearchService.update({
+        index,
+        id: result.hits.hits[0]._id,
+        body: {doc: document }
+      });
+    } catch (error) {
+      // Handle error
+      console.error('Elasticsearch search error:', error);
+      throw error;
+    }
+  }
+
+
+
+  // async updateDocument(index: string, id: string, body: any): Promise<any> {
+  //   try {
+  //     const { body: response } = await this.elasticsearchService.update({
+  //       index,
+  //       id,
+  //       body: {
+  //         doc: body,
+  //       },
+  //     });
+  //     return response;
+  //   } catch (error) {
+  //     // Handle error
+  //     console.error('Elasticsearch update error:', error);
+  //     throw error;
+  //   }
+  // }
 }
+
+
