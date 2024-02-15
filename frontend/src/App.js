@@ -28,6 +28,7 @@ import TrainerPage from './components/trainerpage/Trainer-main.js';
 import Trainerstart from './components/trainerpage/Trainerstart.js';
 import TrainerRoot from './components/trainerpage/TrainerRoot.js';
 import GoogleRedirect from './components/GoogleRedirect.js';
+import Room from './components/room/meeting-room.js';
 
 const router = createBrowserRouter([
     {
@@ -72,6 +73,12 @@ const router = createBrowserRouter([
                     { path: ':id', element: <Message /> }
                 ]
             },
+            {
+                path: 'room',
+                children: [
+                    { path: ':ROOM_ID', element: <Room /> }
+                ]
+            },
         ],
     },
     { path: 'Login', element: <Login></Login> },
@@ -90,7 +97,8 @@ const router = createBrowserRouter([
 
     { path: 'Login/kakao', element: <KakaoRedirect></KakaoRedirect> },
     { path: 'Login/naver', element: <Redirecturl></Redirecturl> },
-    { path : "Login/google" , element : <GoogleRedirect></GoogleRedirect>}
+    { path: "Login/google", element: <GoogleRedirect></GoogleRedirect> }
+
 ]);
 function App() {
     return <RouterProvider router={router}></RouterProvider>;
