@@ -150,6 +150,7 @@ export class ProductService {
             throw new BadRequestException(
                 '적절하지 못한 단어가 들어있습니다: ' + badwords.map((badword) => badword[1][0]).join(', ')
             );
+		console.log('AABBCC')
         return await this.productRepository.save({ id, ...body });
     }
 
