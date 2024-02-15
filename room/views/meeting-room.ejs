@@ -492,7 +492,8 @@
             if (confirm(text) == true) {
                 socket.emit('leave-meeting', myPeerId, USERNAME);
                 peer.disconnect();
-                location.assign("/");
+                // location.assign("/");
+                location.replace("http://localhost:3000/mypage")
             }
         }
         socket.on('user-leave', (peerId, peerName) => {
