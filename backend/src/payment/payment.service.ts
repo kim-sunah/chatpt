@@ -6,6 +6,7 @@ import { Payment } from '../entities/payment.entity';
 import { Product } from '../entities/product.entity';
 import { User } from '../entities/user.entity';
 import { Livecast } from './../entities/livecast.entity';
+import { SearchService } from 'src/search/search.service'
 
 @Injectable()
 export class PaymentService {
@@ -13,7 +14,8 @@ export class PaymentService {
         @InjectRepository(Payment) private readonly paymentRepository: Repository<Payment>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Product) private readonly productRepository: Repository<Product>,
-        @InjectRepository(Livecast) private readonly livecastRepository: Repository<Livecast>
+        @InjectRepository(Livecast) private readonly livecastRepository: Repository<Livecast>,
+		private readonly elasticsearchService: SearchService
     ) {}
 
     // 구매하기
@@ -80,7 +82,6 @@ export class PaymentService {
     }
 
     // 내 구매 목록
-
     async findAll(userId: number, page: number, pageSize: number) {
         return await this.paymentRepository.findAndCount({
             where: { user_id: userId },
@@ -155,13 +156,17 @@ export class PaymentService {
 	
 	// 주어진 product_id 배열 안에서 인기 강의 찾기
 	async getPersonalTopProducts(key: string){
-		const products = await this.productRepository.createQueryBuilder('product')
+		const products = (await this.elasticsearchService.searchDocuments('products',{name:key})).map(product => {
+			const source = product._source
+			return {product_id:source.id, product_name:source.productname, product_intro:source.intro, product_thumbnail:source.thumbnail}
+		})
+		/* const products = await this.productRepository.createQueryBuilder('product')
 			.select()
 			.where(`match(name,body) against ('${key}' in boolean mode)`)
 			.andWhere('accepted=1')
 			.orderBy('id','DESC')
 			.limit(30)
-			.getRawMany()
+			.getRawMany() */
 		if(!products.length) return []
 		const topProducts = await this.paymentRepository.createQueryBuilder('payment')	
 			.select('payment.product_id','product_id')
@@ -174,10 +179,11 @@ export class PaymentService {
 		const res = products.filter(product => topProducts.map(product => product.product_id).indexOf(product.product_id)!==-1)
 		for(let i=0;i<products.length && res.length<Math.min(5,products.length);++i)
 			if(!res.filter(product => product.product_id===products[i].product_id).length) res.push(products[i])
+		console.log(topProducts,res)
 		return res
 	}
 	
-	// 카테고리별 인기 강의 찾기
+	// 카테고리별 강의 찾기
 	async getCategoryTopProducts(category, page: number = 1, pageSize: number = 5){
 		const products = await this.productRepository.createQueryBuilder('product')
 			.select()
@@ -189,18 +195,6 @@ export class PaymentService {
 			.getManyAndCount()
 		if(!products.length) return []
 		return products
-		/* const topProducts = await this.paymentRepository.createQueryBuilder('payment')	
-			.select('payment.product_id','product_id')
-			.addSelect('COUNT(*)','count')
-			.where('payment.product_id IN (:...product_ids)', { product_ids:products.map(product => product.product_id) })
-			.groupBy('payment.product_id')
-			.orderBy('count','DESC')
-			.limit(5)
-			.getRawMany()
-		const res = products.filter(product => topProducts.map(product => product.product_id).indexOf(product.product_id)!==-1)
-		for(let i=0;i<products.length && res.length<Math.min(5,products.length);++i)
-			if(!res.filter(product => product.product_id===products[i].product_id).length) res.push(products[i])
-		return res */
 	}
 	
 	// 구매자+상품 조합 찾기
