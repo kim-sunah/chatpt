@@ -74,7 +74,7 @@ const SearchMain = () => {
 				<h1 className="text-3xl font-bold mb-6">"{search}" 에 대한 검색 결과</h1>
 				<div className="flex gap-4 mb-6">
 					<select onChange ={handlecategoryChange} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-						<option value="Category">카테고리</option>
+						
 						<option value="Yoga">요가</option>
 						<option value="Pilates">필라테스</option>
 						<option value="Fitness">헬스</option>
