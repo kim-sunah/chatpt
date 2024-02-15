@@ -49,7 +49,7 @@ const TrainerPage = () => {
     const getUser = async () => {
         const res = await fetch('http://localhost:4000/users/Mypage', {
             method: 'GET',
-            headers: { Authorization, refreshtoken },
+            headers: {"Content-Type" : "application/json", Authorization, refreshtoken },
         });
         if (res.status !== 200) return alert('로그인을 해주세요.');
         setUser(await res.json());
@@ -64,7 +64,7 @@ const TrainerPage = () => {
         // setUser(user_);
         // }
     };
-
+    console.log(user)
     const [searchParams] = useSearchParams();
     const getProduct = async () => {
         const id = searchParams.get('id');
