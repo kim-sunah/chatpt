@@ -145,11 +145,29 @@ export class ProductService {
 
     // 수업 수정
     async updateProduct(id: number, body) {
+       
         const badwords = await this.badwordService.searchBadword(body.name + ' ' + body.body);
         if (badwords.length)
             throw new BadRequestException(
                 '적절하지 못한 단어가 들어있습니다: ' + badwords.map((badword) => badword[1][0]).join(', ')
             );
+        const product = await this.productRepository.findOne({where : {id : id }})
+        const Instructor = await this.userRepository.findOne({ where: { id: product.user_id } });
+        
+		 await this.elasticsearchService.getDocumentId("products", id , {
+            id : id,
+            productname: body.name,
+            descirption: body.body,
+            Instructor: Instructor.nickname,
+            category: body.category,
+            price: body.price,
+            thumbnail :  body.images,
+            sale_price: body.sale_price,
+            start: body.start_on,
+            end: body.end_on,
+            startTime: body.start_at,
+            endTime: body.end_at,
+         })
         return await this.productRepository.save({ id, ...body });
     }
 
