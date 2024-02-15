@@ -61,7 +61,7 @@ export default function PaymentToss({product,user,spending,mileage,callback,hand
         //customerMobilePhone: user.phone,
         successUrl: `${window.location.origin}/payment/success?user_id=${user.id}&product_id=${product.id}&mileage=${mileage}`,
         failUrl: `${window.location.origin}/payment`,
-        _skipAuth: "FORCE_SUCCESS",
+        //_skipAuth: "FORCE_SUCCESS",
       }).catch(e => console.error("Error requesting payment:", e))
   };
 
