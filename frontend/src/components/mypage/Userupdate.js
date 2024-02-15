@@ -9,20 +9,20 @@ const Userupdate = (props) => {
     const ConfirmPassword = useRef()
     const [passworderror, setpassworderror] = useState()
     const [Confirmerror, setConfirmerror] = useState()
-  
-
-
+	const [image, setImage] = useState({}) 
+ 
     const onUpload = (e) => {
-        const formData = new FormData();
         const selectedFile = e.target.files[0];
-        formData.append("image", selectedFile)
+		if(selectedFile) setImage(selectedFile)
+    }
+    const updateinfo = (event) => {
+        event.preventDefault(); // 폼 제출 방지
+		const formData = new FormData();
+		formData.append("image", image)
         fetch("http://localhost:4000/users/update", { method: "POST", headers: { "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: formData })
             .then(res => res.json())
             .then(resData => { })
             .catch(err => console.log(err))
-    }
-    const updateinfo = (event) => {
-        event.preventDefault(); // 폼 제출 방지
         fetch("http://localhost:4000/users/MypageUpdate", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ Email: props.info.email, Password: Password.current.value, ConfirmPassword: ConfirmPassword.current.value}) })
             .then(res => res.json())
             .then(resData => {
