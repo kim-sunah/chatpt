@@ -66,6 +66,7 @@ export class UserController {
     @Post('update')
     @UseInterceptors(FileInterceptor('image'))
     async uploadImage(@UploadedFile() file: Express.Multer.File, @UserInfo() userinfo: User) {
+		console.log('ABCDEFGHI')
         await this.userService.upload(file.originalname, file.buffer, userinfo.id);
     }
 
