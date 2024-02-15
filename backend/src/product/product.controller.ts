@@ -118,7 +118,8 @@ export class ProductController {
     @Roles(Role.Admin,Role.Host)
     @Patch(':id')
     async updateProduct(@Param() param: Id, @Body() body: UpdateProductDto) {
-        return await this.productService.updateProduct(param.id, body);
+        await this.productService.updateProduct(param.id, body);
+		return { statusCode: HttpStatus.OK } 
     }
 
     // 수업 썸네일 넣기/수정

@@ -170,7 +170,6 @@ export class ProductService {
             endTime: body.end_at,
         })
         return true
-
     }
 
     // 내가 등록한 수업 목록
