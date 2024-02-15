@@ -24,26 +24,26 @@ export class SearchService {
               category: {
                 type: 'keyword',
               },
-              price : {
-                type : "keyword"
+              price: {
+                type: "keyword"
               },
-              sale_price : {
-                type : "keyword"
+              sale_price: {
+                type: "keyword"
               },
-              start :{
-                type : "keyword"
-
+              start: {
+                type: "keyword"
               },
-              end :{
-                type : "keyword"
-
+              end: {
+                type: "keyword"
               },
-              startTime:{
-                type : "keyword"
-
+              startTime: {
+                type: "keyword"
               },
-              endTime :{
-                type : "keyword"
+              endTime: {
+                type: "keyword"
+              },
+              thumbnail: {
+                type: "keyword"
               }
             },
           },
@@ -58,12 +58,13 @@ export class SearchService {
     return result;
 
 
-  
 
-   
+
+
   }
   async searchDocuments(index: string, query: any): Promise<any> {
-    console.log(query)
+
+
     const result = await this.elasticsearchService.search({
       index,
       body: {
@@ -71,7 +72,7 @@ export class SearchService {
           bool: {
             should: [
               { wildcard: { productname: `*${query.name}*` } },
-              { wildcard: { Instructor_name: `*${query.name}*` } },
+              { wildcard: { Instructor: `*${query.name}*` } },
               { wildcard: { descirption: `*${query.name}*` } },
             ],
             minimum_should_match: 1,
@@ -79,12 +80,14 @@ export class SearchService {
         },
         size: 30,
         sort: [
-          { productname: "desc"},
+          { productname: "desc" },
         ],
       },
     });
-   
-    if(result.hits.hits.length < 1){
+
+
+
+    if (result.hits.hits.length < 1) {
       throw new NotFoundException("검색한 상품에 일치하는 상품을 찾을수 없습니다.")
 
     }
@@ -92,18 +95,7 @@ export class SearchService {
   }
 
   async categorysearchDocuments(index: string, query: any): Promise<any> {
-    let sortOptions: any = {};
 
-    if (query.select === "Other") {
-      sortOptions = {
-        productname: {
-          order: "asc",
-        },
-      };
-    } else {
-      // Add default sort options here if needed
-    }
-    console.log(query)
     const result = await this.elasticsearchService.search({
       index,
       body: {
@@ -111,22 +103,26 @@ export class SearchService {
           bool: {
             should: [
               { wildcard: { productname: `*${query.name}*` } },
-              { wildcard: { Instructor_name: `*${query.name}*` } },
+              { wildcard: { Instructor: `*${query.name}*` } },
               { wildcard: { descirption: `*${query.name}*` } },
-              { match: { category: query.category } },
+
             ],
-            minimum_should_match: 2,
+            must: [
+              { match: { category: query.category } }
+            ],
+            minimum_should_match: 1,
           },
         },
         size: 30,
         sort: [
-          { productname: "desc"},
+          { productname: "desc" },
         ],
-        
+
       },
     });
-   
-    if(result.hits.hits.length < 1){
+
+
+    if (result.hits.hits.length < 1) {
       throw new NotFoundException("검색한 상품에 일치하는 상품을 찾을수 없습니다.")
 
     }
