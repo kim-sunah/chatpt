@@ -35,6 +35,10 @@ const Userinfo = () => {
                                     <span className="text-sm text-gray-600">{info.email}</span>
                                 </div>
                                 <div className="flex items-center justify-between mt-4">
+                                    <span className="text-sm font-medium text-gray-700">gender</span>
+                                    <span className="text-sm text-gray-600">{info.gender}</span>
+                                </div>
+                                <div className="flex items-center justify-between mt-4">
                                     <span className="text-sm font-medium text-gray-700">phone</span>
                                     <span className="text-sm text-gray-600">{info.phone}</span>
                                 </div>

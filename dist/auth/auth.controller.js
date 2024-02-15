@@ -153,7 +153,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "naversignin", null);
 __decorate([
-    (0, common_1.Post)('kakaosingup'),
+    (0, common_1.Post)('kakaosignup'),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
