@@ -23,7 +23,7 @@ const Userinfo = () => {
                     {info && <div className="flex mt-0">
                         <img src={info.profile_image} className="h-40 w-40 rounded-full bg-gray-300 mt-10 mr-10" />
                         <div className="ml-4 flex-1 ml-10">
-                            <h1 className="text-xl font-bold">내 정보 {info.registration_information === "site" || info.registration_information ==="SITE" && <button onClick={updatehalder} style={{ fontSize: "10px", color: "blue" }}> 내 정보 수정</button>}</h1>
+                            <h1 className="text-xl font-bold">내 정보 {info.registration_information ==="SITE" && <button onClick={updatehalder} style={{ fontSize: "10px", color: "blue" }}> 내 정보 수정</button>}</h1>
 
                             <div className="mt-4">
                                 <div className="flex items-center justify-between">
