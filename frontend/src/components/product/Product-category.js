@@ -2,7 +2,7 @@ import { useSearchParams, useNavigate, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { PaginationControl } from 'react-bootstrap-pagination-control'
 
-const categoryList = ['Fitness', 'Yoga', 'Pilates', 'Hapkido', 'Taekwondo', 'Posture', 'Stretch', 'Ballet', 'Sports', 'Others']
+const categoryList = ['Fitness', 'Yoga', 'Pilates', 'Taekwondo', 'Posture', 'Stretch', 'Ballet', 'Sports', 'Others']
 const ProductCategory = props => {
 	const [searchParams] = useSearchParams()
 	const navigate = useNavigate()

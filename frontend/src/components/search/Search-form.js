@@ -15,7 +15,7 @@ const buttonStyle = {
 	margin: '10px'
 }
 
-const categoryList = ['Fitness', 'Yoga', 'Pilates', 'Hapkido', 'Taekwondo', 'Posture', 'Stretch', 'Ballet', 'Sports', 'Others']
+const categoryList = ['Fitness', 'Yoga', 'Pilates', 'Taekwondo', 'Posture', 'Stretch', 'Ballet', 'Sports', 'Others']
 
 const pageSizeList = [5,10,20,50,100]
 
