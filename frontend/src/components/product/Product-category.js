@@ -14,14 +14,12 @@ const ProductCategory = props => {
 	const [categoryBest,setCategoryBest] = useState([])
 	const [page, setPage] = useState(1)
 	const [count, setCount] = useState(0)
-	
+	const [ratings, setRatings] = useState({})
 	
 	const getCategoryBest = async () => {
 		if(category){
 			const res = await fetch(`http://localhost:4000/payment/categoryBest?category=${category}&page=${page}`)
-			const ress = await res.json()
-			console.log(ress,page)
-			const [categoryBest_,count_] = ress
+			const [categoryBest_,count_] = await res.json()
 			setCategoryBest(categoryBest_)
 			setCount(count_)
 		}
@@ -31,8 +29,20 @@ const ProductCategory = props => {
 		getCategoryBest()
 	},[category,page])
 	
+	useEffect(() => {
+		Promise.all(categoryBest.map(async product => {
+			const res = await fetch(`http://localhost:4000/comment/rating/${product.id}`)
+			return [product.id, (await res.json()).avg]
+		}))
+		.then(arr => {
+			const ratings_ = {}
+			for(let [id,avg] of arr) ratings_[id] = avg.toFixed(1)
+			setRatings(ratings_)
+		})
+	},[categoryBest])
+	
 	return (
-		<div className="max-w-screen-xl mx-auto px-4">
+		<div className="max-w-screen-xl mx-auto px-4 mt-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5 gap-8">
 				{categoryBest.length>0 && categoryBest.map(product => (
                 <Link to = {`../product/${product.id}`}><div key ={product.id} className="rounded-lg overflow-hidden">
@@ -63,7 +73,7 @@ const ProductCategory = props => {
                                 >
                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                                 </svg>
-                                <span className="text-xs font-semibold ml-1">4.5</span>
+                                <span className="text-xs font-semibold ml-1">{ratings[product.id]}</span>
                             </div>
                         </div>
                     </div>
