@@ -131,7 +131,8 @@ export class SearchService {
           }
         }
       })
-      console.log(result.hits.hits[0]._id)
+	  console.log(result.hits)
+      //console.log(result.hits.hits[0]._id)
       await this.elasticsearchService.update({
         index,
         id: result.hits.hits[0]._id,
