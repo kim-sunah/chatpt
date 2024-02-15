@@ -18,38 +18,41 @@ const TrainerPage = () => {
     const [product_Id, setProduct_Id] = useState(0);
     const [selectedUser, setSelectedUser] = useState(null);
     const [revenue_Id, setRevenue_Id] = useState({ sum: '0', sum2: '0' });
-	const [ratings, setRatings] = useState({})
+    const [ratings, setRatings] = useState({});
+    const [student, setStudent] = useState([1]);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         getUser();
         getProduct();
+
         // getPayment();
     }, [product_Id, selectedUser]);
 
     useEffect(() => {
         getPayment();
         getRevenue();
+        getStudent();
     }, [product_Id]);
-	
-	useEffect(() => {
-		Promise.all(products[0].map(async product => {
-			const res = await fetch(`http://localhost:4000/comment/rating/${product.id}`)
-			return [product.product_id, (await res.json()).avg]
-		}))
-		.then(arr => {
-			const ratings_ = {}
-			for(let [id,avg] of arr) ratings_[id] = avg.toFixed(1)
-			setRatings(ratings_)
-		})
-	}, [products])
 
+    useEffect(() => {
+        Promise.all(
+            products[0].map(async (product) => {
+                const res = await fetch(`http://localhost:4000/comment/rating/${product.id}`);
+                return [product.product_id, (await res.json()).avg];
+            })
+        ).then((arr) => {
+            const ratings_ = {};
+            for (let [id, avg] of arr) ratings_[id] = avg.toFixed(1);
+            setRatings(ratings_);
+        });
+    }, [products]);
 
     const getUser = async () => {
         const res = await fetch('http://localhost:4000/users/Mypage', {
             method: 'GET',
-            headers: {"Content-Type" : "application/json", Authorization, refreshtoken },
+            headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
         });
         if (res.status !== 200) return alert('로그인을 해주세요.');
         setUser(await res.json());
@@ -64,11 +67,11 @@ const TrainerPage = () => {
         // setUser(user_);
         // }
     };
-    console.log(user)
+    console.log(user);
     const [searchParams] = useSearchParams();
     const getProduct = async () => {
         const id = searchParams.get('id');
-        const res = await fetch(`http://localhost:4000/product/my`, {
+        const res = await fetch(`http://localhost:4000/product/my?pageSize=100`, {
             method: 'GET',
             headers: {
                 Authorization,
@@ -166,8 +169,15 @@ const TrainerPage = () => {
             }
         }
     };
-
+    console.log(handleEditProduct);
+    console.log(handleDeleteProduct);
     const tableStyle = {};
+
+    const getStudent = async () => {
+        const res = await fetch(`http://localhost:4000/payment/${product_Id}`, {});
+        // if (res.status !== 200) return alert('수강생 인원을 불러올 수 없습니다.');
+        setStudent(await res.json());
+    };
 
     return (
         <div className="mainpage">
@@ -243,61 +253,64 @@ const TrainerPage = () => {
             </div>
             <div className="userListContainer">
                 <h2>강의를 수강하는 유저 목록</h2>
-                <Form.Select onChange={(e) => setProduct_Id(+e.target.value)} value={product_Id}>
-                    {products[0]?.map((product) => (
-                        <option key={product.id} value={product.id}>
-                            {product.name}
-                        </option>
-                    ))}
-                </Form.Select>
-                {product_Id !== 0 && (
-                    <>
-                        <div className="revenueTotal">
-                            <div style={{ fontSize: '11px' }}>
-                                <></>
-                                <strong>총 매출액:</strong> {parseInt(revenue_Id.sum) + parseInt(revenue_Id.sum2) || 0}
-                                원
+                <div className="userListContainer">
+                    <ul>
+                        {products[0]?.map((product) => (
+                            <li key={product.id} onClick={() => setProduct_Id(product.id)}>
+                                {product.name}
+                            </li>
+                        ))}
+                    </ul>
+                    {product_Id !== 0 && (
+                        <>
+                            <div className="revenueTotal">
+                                <span className="lectureItemCount">{student[1]}명 수강</span>
+                                <div style={{ fontSize: '11px' }}>
+                                    <></>
+                                    <strong>총 매출액:</strong>{' '}
+                                    {parseInt(revenue_Id.sum) + parseInt(revenue_Id.sum2) || 0}원
+                                </div>
                             </div>
-                        </div>
-                        <Table className="responsive-table" style={tableStyle}>
-                            <thead>
-                                <tr>
-                                    <th>이름</th>
-                                    <th>이메일</th>
-                                    <th>결제일</th>
-                                    <th>결제금액</th>
-                                    <th>결제수단</th>
-                                    <th>마일리지 사용</th>
-                                    <th>1:1 대화</th>
-                                </tr>
-                            </thead>
-                        </Table>
+                            <Table className="responsive-table" style={tableStyle}>
+                                <thead>
+                                    <tr>
+                                        <th>이름</th>
+                                        <th>이메일</th>
+                                        <th>결제일</th>
+                                        <th>결제금액</th>
+                                        <th>결제수단</th>
+                                        <th>마일리지 사용</th>
+                                        <th>1:1 대화</th>
+                                    </tr>
+                                </thead>
+                            </Table>
 
-                        {payment[0]?.map((payment) => {
-                            const user = payment.user;
-                            return (
-                                <div key={user.id} className="userItem">
-                                    <div className="userDetails">
-                                        <div>{user.nickname}</div>
-                                        <div>{user.email}</div>
-                                        <div>{new Date(payment.createdAt).toLocaleDateString()}</div>
-                                        <div>{payment.spending}원</div>
-                                        <div>{payment.method}</div>
-                                        <div>{payment.mileage}포인트</div>
-                                        <div style={{ textAlign: 'right' }}>
-                                            <button
-                                                className="messageButton"
-                                                onClick={() => handleSendMessage(user.id)}
-                                            >
-                                                대화하기
-                                            </button>
+                            {payment[0]?.map((payment) => {
+                                const user = payment.user;
+                                return (
+                                    <div key={user.id} className="userItem">
+                                        <div className="userDetails">
+                                            <div>{user.nickname}</div>
+                                            <div>{user.email}</div>
+                                            <div>{new Date(payment.createdAt).toLocaleDateString()}</div>
+                                            <div>{payment.spending}원</div>
+                                            <div>{payment.method}</div>
+                                            <div>{payment.mileage}포인트</div>
+                                            <div style={{ textAlign: 'right' }}>
+                                                <button
+                                                    className="messageButton"
+                                                    onClick={() => handleSendMessage(user.id)}
+                                                >
+                                                    대화하기
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
-                        })}
-                    </>
-                )}
+                                );
+                            })}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
