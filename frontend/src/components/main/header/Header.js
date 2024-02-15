@@ -34,6 +34,7 @@ const Header = () => {
         localStorage.setItem('name', searchref.current.value);
         dispatch(searchActions.search(searchref.current.value));
         navigate('/search');
+        searchref.current.value=""
     };
 
     const handleTrainerClick = () => {
@@ -64,7 +65,7 @@ const Header = () => {
                 </Link>
 
                 {sessionStorage.getItem('authority') === 'Admin' && (
-                    <Link to="admin">
+                    <Link to="admin/default">
                         <BsFillFilePersonFill size="30" style={{ color: 'black', marginLeft: '10%' }} />
                     </Link>
                 )}

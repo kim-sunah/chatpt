@@ -127,6 +127,7 @@ export class ProductService {
             Instructor: Instructor.nickname,
             category: product.category,
             price: product.price,
+            thumbnail :  product.thumbnail,
             sale_price: product.sale_price,
             start: product.start_on,
             end: product.end_on,
