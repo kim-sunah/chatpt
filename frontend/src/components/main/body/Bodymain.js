@@ -141,14 +141,14 @@ const Bodymain = () => {
                         ></img>
                         <span className="text-lg">필라테스</span>
                     </div>
-                    <div className="flex flex-col items-center mr-8">
+                    {/* <div className="flex flex-col items-center mr-8">
                         <img
                             onClick={() => navigate('category?category=Hapkido')}
                             src="https://t4.ftcdn.net/jpg/00/21/55/81/240_F_21558137_ObrgnMLOVnaZqY7UHcuarsg7ECPrUlji.jpg"
                             className="relative flex shrink-0 overflow-hidden w-24 h-24 border rounded-full mb-2"
                         ></img>
                         <span className="text-lg">합기도</span>
-                    </div>
+                    </div> */}
                     <div className="flex flex-col items-center mr-8">
                         <img
                             onClick={() => navigate('category?category=Taekwondo')}
@@ -238,6 +238,7 @@ const Bodymain = () => {
                                     <div className="mt-2">
                                         <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
                                         <p className="text-sm mb-4">{product.product_intro}</p>
+										<p>{product.product_sale_price?.toLocaleString()}원</p>
                                     </div>
                                 </div>
                             </Link>
@@ -286,6 +287,7 @@ const Bodymain = () => {
                                         <div className="mt-2">
                                             <h3 className="text-lg font-semibold mb-2">{product.product_name}</h3>
                                             <p className="text-sm mb-4">{product.product_intro}</p>
+											<p>{product.product_sale_price?.toLocaleString()}원</p>
                                         </div>
                                     </div>
                                 </Link>

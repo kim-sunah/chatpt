@@ -57,6 +57,7 @@ const ProductCategory = props => {
                     <div className="p-4">
                         <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
                         <p className="text-sm mb-4">{product.intro}</p>
+						<p>{product.sale_price?.toLocaleString()}원</p>
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center" style={{marginLeft :"80%"}}>
                                 <svg
