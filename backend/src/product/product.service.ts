@@ -153,23 +153,22 @@ export class ProductService {
             );
         const product = await this.productRepository.findOne({where : {id : id }})
         const Instructor = await this.userRepository.findOne({ where: { id: product.user_id } });
-      
-		//  await this.elasticsearchService.getDocumentId("products", id , {
-        //     id : id,
-        //     productname: body.name,
-        //     descirption: body.body,
-        //     Instructor: Instructor.nickname,
-        //     category: body.category,
-        //     price: body.price,
-        //     thumbnail :  body.images,
-        //     sale_price: body.sale_price,
-        //     start: body.start_on,
-        //     end: body.end_on,
-        //     startTime: body.start_at,
-        //     endTime: body.end_at,
-        //  })
-        const updateproduct = await this.productRepository.save({ id, ...body });
-        console.log(updateproduct)
+		 /* await this.elasticsearchService.getDocumentId("products", id , {
+            id : id,
+            productname: body.name,
+            descirption: body.body,
+            Instructor: Instructor.nickname,
+            category: body.category,
+            price: body.price,
+            thumbnail :  body.images,
+            sale_price: body.sale_price,
+            start: body.start_on,
+            end: body.end_on,
+            startTime: body.start_at,
+            endTime: body.end_at,
+         }) */
+		await this.productRepository.update(id, {...body })
+		return await this.productRepository.findOne({where:{id}})
     }
 
     // 내가 등록한 수업 목록
