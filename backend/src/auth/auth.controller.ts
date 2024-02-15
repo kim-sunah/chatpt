@@ -38,7 +38,7 @@ export class AuthController {
   async signUp(@Body() createuserDto: CreateuserDto) {
     const user = await this.authService.signUp(createuserDto);
 
-    this.messageService.newMessage(5, user.id);
+    this.messageService.newMessage(79, user.id);
     return {
       statusCode: HttpStatus.CREATED,
       message: '회원가입에 성공했습니다.',
@@ -115,7 +115,8 @@ export class AuthController {
   @Post('kakaosignup')
   async postKakaoInfo(@Body() kakaoLoginDto: KakaoLoginDto) {
     const userinfo = await this.authService.kakosignUp(kakaoLoginDto);
-    const { accessToken, refreshToken, authority, limit } = await this.authService.kakaosignIn(kakaoLoginDto.Email);
+    const { accessToken, refreshToken, authority, limit } =
+      await this.authService.kakaosignIn(kakaoLoginDto.Email);
     return {
       statusCode: HttpStatus.OK,
       message: '로그인에 성공했습니다.',
@@ -126,10 +127,11 @@ export class AuthController {
     };
   }
 
-  @Post("googlesignup")
-  async googlesignup(@Body() googleLoginDto : googleLoginDto) {
-    await this.authService.googlesignup(googleLoginDto)
-    const { accessToken, refreshToken, authority, limit } = await this.authService.googlesignin(googleLoginDto.Email);
+  @Post('googlesignup')
+  async googlesignup(@Body() googleLoginDto: googleLoginDto) {
+    await this.authService.googlesignup(googleLoginDto);
+    const { accessToken, refreshToken, authority, limit } =
+      await this.authService.googlesignin(googleLoginDto.Email);
     return {
       statusCode: HttpStatus.OK,
       message: '로그인에 성공했습니다.',

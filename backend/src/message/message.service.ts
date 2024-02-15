@@ -92,6 +92,18 @@ export class MessageService {
     body: SendMessageDto
   ): Promise<void> {
     try {
+      const message = await this.messageRepository.findOne({
+        where: { id: +queue },
+      });
+      message.last_message = body.message;
+      if (userId === message.gest_id) {
+        message.host_count + 1;
+        message.gest_count = 0;
+      } else {
+        message.gest_count + 1;
+        message.host_count = 0;
+      }
+
       await this.messageRepository.update(queue, {
         last_message: body.message,
       });
@@ -113,16 +125,19 @@ export class MessageService {
           channel.sendToQueue(queue, Buffer.from(body.message));
         });
       });
+
       this.event.sendMessage('sendMessage');
-      this.receiveMessage(queue);
     } catch (err) {
       console.log(err);
       throw new Error('메세지전송에 실패하였습니다.');
     }
   }
 
-  async receiveMessage(queue: string) {
+  async receiveMessage(queue: string, userId: number) {
     try {
+      const message = await this.messageRepository.findOne({
+        where: { id: +queue },
+      });
       amqp.connect(url, function (error0, connection) {
         if (error0) {
           throw error0;
@@ -136,10 +151,12 @@ export class MessageService {
             durable: false,
           });
 
+          channel.prefetch(1);
+
           channel.consume(
             queue,
             function (msg) {
-              console.log(' [x] Received %s', msg.content.toString());
+              // console.log(' [x] Received %s', msg.content.toString());
             },
             {
               noAck: true,
@@ -147,6 +164,7 @@ export class MessageService {
           );
         });
       });
+      return { message: message, userId: userId };
     } catch (err) {
       console.log(err);
       throw new Error('메세지를 가져오는데에 실패하였습니다.');

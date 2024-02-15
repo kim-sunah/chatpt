@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import logo from "../../img/Designer.jpeg"
 const Allproduct = () => {
     const [productlist, setproductlist] = useState([])
-	const [ratings, setRatings] = useState({})
+    const [ratings, setRatings] = useState({})
 
     useEffect(() => {
         fetch("http://localhost:4000/payment/my", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
@@ -17,24 +17,23 @@ const Allproduct = () => {
                 console.log(err)
             })
     }, [])
-	
-	useEffect(() => {
-		Promise.all(productlist.map(async product => {
-			const res = await fetch(`http://localhost:4000/comment/rating/${product.product_id}`)
-			return [product.product_id, (await res.json()).avg]
-		}))
-		.then(arr => {
-			const ratings_ = {}
-			for(let [id,avg] of arr) ratings_[id] = avg.toFixed(1)
-			setRatings(ratings_)
-		})
-	},[productlist])
 
-	console.log(productlist,ratings)
+    useEffect(() => {
+        Promise.all(productlist.map(async product => {
+            const res = await fetch(`http://localhost:4000/comment/rating/${product.product_id}`)
+            return [product.product_id, (await res.json()).avg]
+        }))
+            .then(arr => {
+                const ratings_ = {}
+                for (let [id, avg] of arr) ratings_[id] = avg.toFixed(1)
+                setRatings(ratings_)
+            })
+    }, [productlist])
+
     return (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {productlist && productlist.map(product => (
-                <Link to={`../product/${product.product_id}`} class="rounded-lg overflow-hidden" >
+                <Link to={`localhost:8080/${product.product_id}`} class="rounded-lg overflow-hidden" >
                     <img
                         src={product.product.thumbnail}
                         alt="Course thumbnail"
