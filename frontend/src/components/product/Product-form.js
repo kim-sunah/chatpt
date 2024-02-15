@@ -100,7 +100,11 @@ const ProductForm = props => {
 	}, [props.product, props.images])
 	
 	return (
-		<Form style={style} onSubmit={e => props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,images:newImages,intro,capacity,start_on,end_on,weekday:bitToString(weekday),start_at,end_at,shorts})}>
+		<Form style={style} onSubmit={e => {
+			e.preventDefault()
+			if(start_on<=end_on && Number.isInteger(capacity) && 1<=capacity && capacity<=100 && weekday>0){
+				props.onSubmit(e,{name,category,body:product_body,price,sale_price,thumbnail,images:newImages,intro,capacity,start_on,end_on,weekday:bitToString(weekday),start_at,end_at,shorts})
+		}}}>
 			<Form.Group>
 				<Form.Label>이름</Form.Label>
 				<Form.Control required onChange={e => setName(e.target.value)} value={name} />
@@ -131,6 +135,7 @@ const ProductForm = props => {
 				<Form.Label>정원(최대 100명)</Form.Label>
 				<Form.Control type='number' onChange={e => setCapacity(+e.target.value)} value={capacity} />
 			</Form.Group>
+			{!(Number.isInteger(capacity) && 1<=capacity && capacity<=100) && <p style={{color:'red'}}>정원은 1 이상 100 이하의 자연수여야 합니다.</p>}
 			<Form.Group>
 				<Form.Label>강의 시작일</Form.Label>
 				<Form.Control type="date" onChange={e => setStartOn(e.target.value)} value={start_on} />
@@ -139,12 +144,14 @@ const ProductForm = props => {
 				<Form.Label>강의 종료일</Form.Label>
 				<Form.Control type="date" onChange={e => setEndOn(e.target.value)} value={end_on} />
 			</Form.Group>
+			{start_on>end_on && <p style={{color:'red'}}>강의 종료일이 강의 시작일보다 빠를 수 없습니다.</p>}
 			<Form.Group>
 				<Form.Label>수업 요일</Form.Label>
 				<div style={{display:'flex',justifyContent:'space-between'}}>
 					{weekdayList.map((weekday_,i) => <Form.Check key={i} onChange={() => setWeekday(weekday^(1<<i))} checked={(weekday&(1<<i))>0} label={weekday_}/>)}
 				</div>
 			</Form.Group>
+			{weekday===0 && <p style={{color:'red'}}>적어도 하나의 수업 요일을 지정해야 합니다.</p>}
 			<Form.Group>
 				<Form.Label>수업 시작 시간</Form.Label>
 				<Form.Control type='time' onChange={e => setStartAt(e.target.value)} value={start_at} />
