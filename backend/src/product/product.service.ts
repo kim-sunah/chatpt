@@ -153,8 +153,8 @@ export class ProductService {
             );
         const product = await this.productRepository.findOne({where : {id : id }})
         const Instructor = await this.userRepository.findOne({ where: { id: product.user_id } });
-        
-		 await this.elasticsearchService.getDocumentId("products", id , {
+        console.log(body)
+		 /* await this.elasticsearchService.getDocumentId("products", id , {
             id : id,
             productname: body.name,
             descirption: body.body,
@@ -167,8 +167,9 @@ export class ProductService {
             end: body.end_on,
             startTime: body.start_at,
             endTime: body.end_at,
-         })
-        return await this.productRepository.save({ id, ...body });
+         }) */
+		await this.productRepository.update(id, {...body })
+		return await this.productRepository.findOne({where:{id}})
     }
 
     // 내가 등록한 수업 목록
