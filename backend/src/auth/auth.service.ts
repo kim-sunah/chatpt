@@ -111,7 +111,7 @@ export class AuthService {
         profile_image: profile_image,
       });
       const userInfo = await this.userRepository.save(user);
-      await this.messageService.newMessage(5, userInfo.id);
+      await this.messageService.newMessage(79, userInfo.id);
       return userInfo;
     } catch (error) {
       if (error instanceof BadRequestException) {
@@ -124,7 +124,7 @@ export class AuthService {
   }
 
   async kakaosignIn(Email: string) {
-    const user = await this.userRepository.findOne({ where: { email: Email} });
+    const user = await this.userRepository.findOne({ where: { email: Email } });
     if (!user) {
       throw new UnauthorizedException('존재하지 않는 이메일입니다.');
     }
@@ -132,7 +132,7 @@ export class AuthService {
     const limit = user.limit;
     const accessToken = await this.createAccessToken(+user.id);
     const refreshToken = await this.createRefreshToken();
-    
+
     return { accessToken, refreshToken, authority, limit };
   }
 
@@ -171,7 +171,7 @@ export class AuthService {
       gender: USER_GENDER,
     });
     const userInfo = await this.userRepository.save(naveruser);
-    await this.messageService.newMessage(5, userInfo.id);
+    await this.messageService.newMessage(79, userInfo.id);
     return userInfo;
   }
 
@@ -191,11 +191,15 @@ export class AuthService {
 
   async googlesignup({ Email, Nickname, profile_image }: KakaoLoginDto) {
     try {
-      const GOOGLE_USER = await this.userRepository.findOne({where: { email: Email, registration_information: 'GOOGLE' },});
+      const GOOGLE_USER = await this.userRepository.findOne({
+        where: { email: Email, registration_information: 'GOOGLE' },
+      });
       if (GOOGLE_USER) {
         return;
       }
-      const existedUser = await this.userRepository.findOne({where: { email: Email },});
+      const existedUser = await this.userRepository.findOne({
+        where: { email: Email },
+      });
       if (existedUser) {
         throw new BadRequestException(
           `This Email is already in ${existedUser.registration_information} use`
@@ -208,7 +212,7 @@ export class AuthService {
         profile_image: profile_image,
       });
       const userInfo = await this.userRepository.save(user);
-      await this.messageService.newMessage(5, userInfo.id);
+      await this.messageService.newMessage(79, userInfo.id);
       return userInfo;
     } catch (error) {
       if (error instanceof BadRequestException) {
@@ -220,9 +224,8 @@ export class AuthService {
     }
   }
 
-
   async googlesignin(Email: string) {
-    const user = await this.userRepository.findOne({ where: { email: Email} });
+    const user = await this.userRepository.findOne({ where: { email: Email } });
     if (!user) {
       throw new UnauthorizedException('존재하지 않는 이메일입니다.');
     }
@@ -230,7 +233,7 @@ export class AuthService {
     const limit = user.limit;
     const accessToken = await this.createAccessToken(+user.id);
     const refreshToken = await this.createRefreshToken();
-    
+
     return { accessToken, refreshToken, authority, limit };
   }
   async createAccessToken(id: number) {
@@ -272,16 +275,12 @@ export class AuthService {
         subject: '이메일 인증번호',
         html: `<b>${sixDigitNumber}</b>`,
       })
-      .then((result) => {
-       
-      })
+      .then((result) => {})
       .catch((error) => {
         new ConflictException(error);
       });
-    
+
     await this.cacheManager.set(email, sixDigitNumber, 60000);
     return { sucess: '이메일 인증' };
   }
-
-
 }

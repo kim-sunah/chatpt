@@ -53,7 +53,7 @@ export class EventsGateway {
   }
 
   @SubscribeMessage('sendMessage')
-  sendMessage(@MessageBody() message: string): void {
-    this.server.emit('message', message);
+  sendMessage(@MessageBody() queue: string): void {
+    this.server.emit('message', queue);
   }
 }
