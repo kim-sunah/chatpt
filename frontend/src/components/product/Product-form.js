@@ -32,7 +32,11 @@ const videoStyle = {
 	height: 225
 }
 
-const categoryList = [['헬스','Fitness'], ['요가','Yoga'], ['필라테스','Pilates'], ['합기도','Hapkido'], ['태권도','Taekwondo'], ['자세교정','Posture'], ['스트레칭','Stretch'], ['발레','Ballet'], ['스포츠','Sports'], ['기타','Others']]
+const xStyle = {
+	cursor: 'pointer'
+}
+
+const categoryList = [['헬스','Fitness'], ['요가','Yoga'], ['필라테스','Pilates'], ['태권도','Taekwondo'], ['자세교정','Posture'], ['스트레칭','Stretch'], ['발레','Ballet'], ['스포츠','Sports'], ['기타','Others']]
 const weekdayList = ['일','월','화','수','목','금','토']
 
 const ProductForm = props => {
@@ -58,7 +62,9 @@ const ProductForm = props => {
 	}
 
 	const handleImageChange = e => {
-		if(e.target.files.length) setNewImages([...Array(e.target.files.length).keys()].map(i => e.target.files[i]))
+		const file = e.target.files[0]
+		if(file) setNewImages([...newImages,file])
+		e.target.value = null
 	}
 
 	const handleShortChange = e => {
@@ -125,15 +131,15 @@ const ProductForm = props => {
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>정가</Form.Label>
-				<Form.Control required type='number' onChange={e => setPrice(+e.target.value)} value={price} />
+				<Form.Control required type='number' onChange={e => setPrice(parseInt(e.target.value))} value={price} />
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>판매가</Form.Label>
-				<Form.Control type='number' onChange={e => setSalePrice(+e.target.value)} value={sale_price} />
+				<Form.Control type='number' onChange={e => setSalePrice(parseInt(e.target.value))} value={sale_price} />
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>정원(최대 100명)</Form.Label>
-				<Form.Control type='number' onChange={e => setCapacity(+e.target.value)} value={capacity} />
+				<Form.Control type='number' onChange={e => setCapacity(parseInt(e.target.value))} value={capacity} />
 			</Form.Group>
 			{!(Number.isInteger(capacity) && 1<=capacity && capacity<=100) && <p style={{color:'red'}}>정원은 1 이상 100 이하의 자연수여야 합니다.</p>}
 			<Form.Group>
@@ -174,7 +180,15 @@ const ProductForm = props => {
 					<img style={imgStyle} src={image.original_url} key={image.id} data-image-id={image.id} onClick={props.deleteImage} />
 				)))}
 				<Form.Control multiple type='file' onChange={handleImageChange} accept='.jpg, .jpeg, .png' />
-				{props.product && <Button onClick={e => props.uploadImage(e,newImages)}>이미지 추가</Button> }
+				{newImages.length>0 && newImages.map((img,i) => (
+					<div key={i} style={{display:'flex'}}>
+						<p style={{marginRight:'10px'}}>{img.name}</p>
+						<p style={xStyle} onClick={() =>setNewImages(newImages.filter((img,j) => j!==i))}>X</p>
+					</div>))}
+				{props.product && <Button onClick={e => { 
+					props.uploadImage(e,newImages)
+					setNewImages([])
+				}}>이미지 추가</Button> }
 			</Form.Group>
 			<Form.Group>
 				<Form.Label>상품 쇼츠 (mp4, avi, mov, mkv만 가능, 50MB 이하)</Form.Label>

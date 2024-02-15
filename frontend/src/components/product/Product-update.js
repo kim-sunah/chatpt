@@ -57,7 +57,7 @@ const ProductUpdate = props => {
 	
 	const updateProduct = async (e,body) => {
 		e.preventDefault()
-		const {thumbnail, image, shorts, ...body_} = body
+		const {thumbnail, images, shorts, ...body_} = body
 		if(thumbnail && thumbnail!==product.thumbnail){
 			const formData = new FormData()
 			formData.append('image', thumbnail)
@@ -75,14 +75,12 @@ const ProductUpdate = props => {
 		const res = await fetch(server+`/product/${id}`, {method:'PATCH',
 		headers:{'Content-Type':'application/json', Authorization, refreshtoken},
 		body: JSON.stringify(body_)})
-		if(res.status!==201){
+		if(res.status!==200){
 			const {message} = await res.json()
-			if(message[0]==='적') return alert(message)
-			return alert('오류가 발생했습니다. 다시 시도해주세요.')
+			return alert(message || '오류가 발생했습니다. 다시 시도해주세요.')
 		}
 		alert('상품 수정이 완료되었습니다.')
-		console.log(await res.json())
-		//navigate('/mypage')
+		navigate('/mypage')
 	}
 	
 	const deleteProduct = async e => {
@@ -100,7 +98,6 @@ const ProductUpdate = props => {
 	}
 	
 	const uploadImage = async (e,images_) => {
-		console.log(images_)
 		const res = await Promise.all(images_.map(async image => {
 			const formData = new FormData()
 			formData.append('image', image)

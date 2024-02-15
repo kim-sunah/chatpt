@@ -158,7 +158,7 @@ export class PaymentService {
 	async getPersonalTopProducts(key: string){
 		const products = (await this.elasticsearchService.searchDocuments('products',{name:key})).map(product => {
 			const source = product._source
-			return {product_id:source.id, product_name:source.productname, product_intro:source.intro, product_thumbnail:source.thumbnail}
+			return {product_id:source.id, product_name:source.productname, product_intro:source.intro, product_thumbnail:source.thumbnail, product_sale_price:source.sale_price}
 		})
 		/* const products = await this.productRepository.createQueryBuilder('product')
 			.select()

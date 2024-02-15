@@ -107,10 +107,6 @@ const Payment = (props) => {
             navigate('/Login');
         }
         const user_ = (await res.json()).user;
-        if (user_.authority === 'Admin') {
-            alert('권한이 없습니다.');
-            navigate('/');
-        }
         setUser(user_);
 		
 		const res2 = await fetch(`http://localhost:4000/payment/my/${id}`,{headers: { 'Content-Type': 'application/json', Authorization, refreshtoken }})
@@ -134,10 +130,8 @@ const Payment = (props) => {
 	}
 	
     const handleMileage = (e) => {
-        const mileage_ = +e.target.value;
+        const mileage_ = parseInt(e.target.value) || 0;
         if (
-            isNaN(mileage_) ||
-            !Number.isInteger(mileage_) ||
             mileage_ < 0 ||
             mileage_ > product.sale_price ||
             mileage_ > user.mileage

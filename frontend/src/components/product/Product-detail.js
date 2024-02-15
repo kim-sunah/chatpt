@@ -455,8 +455,8 @@ export default function ProductCard(props) {
                         <div className="mt-8 bg-white p-4 rounded-lg shadow">
                             <div className="flex justify-between items-center">
                                 <div>
-                                    <p className="text-2xl font-semibold">{products.sale_price}</p>
-                                    <p className="text-sm text-gray-500 line-through">{products.price}</p>
+                                    <p className="text-2xl font-semibold">{products.sale_price}원</p>
+                                    <p className="text-sm text-gray-500 line-through">{products.price}원</p>
                                     <p className="text-sm text-red-500">
                                         {(((products.price - products.sale_price) * 100) / products.price) | 0} % 할인
                                     </p>
