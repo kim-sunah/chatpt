@@ -82,7 +82,7 @@ const SearchMain = () => {
 						<option value="Stretch">스트레칭</option>
 						<option value="Posture">자세교정</option>
 						<option value="Taekwondo">태권도</option>
-						<option value="Hapkido">합기도</option>
+						{/*<option value="Hapkido">합기도</option>*/}
 						<option value="Others">그외.....</option>
 					</select>
 					<select onChange ={handleSelectChange} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
