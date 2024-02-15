@@ -7,6 +7,7 @@ import './style.css';
 import logo from '../../img/Designer.jpeg';
 
 import './product.css';
+import { Image } from '@chakra-ui/react';
 
 export default function ProductCard(props) {
     const { id } = useParams();
@@ -28,12 +29,23 @@ export default function ProductCard(props) {
     const [products, setProduct] = useState([], 0);
     const [average, setAverage] = useState({});
     const [student, setStudent] = useState([1]);
+    const [host, setHost] = useState({});
+    const [img, setImg] = useState([]);
+
+    const [trainerImg, setTrainerImg] = useState({});
 
     useEffect(() => {
         getProduct();
         getAverage();
         getStudent();
+        // getTrainerImg();
+        // getHost();
     }, []);
+
+    useEffect(() => {
+        if (products.user_id) getHost();
+        getImg();
+    }, [products]);
 
     useEffect(() => {
         fetch(`http://localhost:4000/comment/product/${id}`, {
@@ -115,6 +127,7 @@ export default function ProductCard(props) {
                 .catch((err) => console.log(err));
         });
     }, []);
+
     const commenthandler = (event) => {
         event.preventDefault();
         if (!starsum || !comment) {
@@ -302,6 +315,64 @@ export default function ProductCard(props) {
         setStudent(await res.json());
     };
 
+    // const TrainerId = searchParams.id;
+    // const getTrainerImg = async () => {
+    //     try {
+    //         const res = await fetch(`http://localhost:4000/users/Hostupdate/${TrainerId}`, {
+    //             method: 'GET',
+    //             Authorization,
+    //             refreshtoken,
+    //         });
+
+    //         if (res.status === 200) {
+    //             const data = await res.json();
+    //             setTrainerImg(data.hostInfo?.profile_image);
+    //         } else {
+    //             alert('트레이너 이미지를 불러올 수 없습니다.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching trainer image:', error);
+    //         alert('트레이너 이미지를 불러오는 중에 오류가 발생했습니다.');
+    //     }
+    // };
+
+    const getHost = async () => {
+        try {
+            const res = await fetch(`http://localhost:4000/users/HostImg/${products.user_id}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
+            });
+
+            if (res.status !== 200) {
+                return alert('트레이너 정보를 가져올 수 없습니다.');
+            }
+
+            const hostData = await res.json();
+            setHost(hostData);
+        } catch (error) {
+            console.error('트레이너 정보를 가져오는 중에 오류가 발생했습니다.', error);
+        }
+    };
+
+    const getImg = async () => {
+        try {
+            const res = await fetch(`http://localhost:4000/product/${id}/image/`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
+            });
+
+            if (res.status !== 200) {
+                return alert('상품 이미지를 가져올 수 없습니다.');
+            }
+
+            const imgData = await res.json();
+            console.log(imgData);
+            setImg(imgData);
+        } catch (error) {
+            console.error('상품 이미지 정보를 가져오는 중에 오류가 발생했습니다.', error);
+        }
+    };
+
     return (
         <div className="bg-gray-100 py-10">
             <div className="container mx-auto px-4">
@@ -310,20 +381,53 @@ export default function ProductCard(props) {
                         <h1 className="text-3xl font-bold">{products.name}</h1>
                         <p className="mt-4 text-lg">{products.intro}</p>
                         <div className="mt-4 flex items-center space-x-2">
-                            <p>{student[1]}</p>
-                            <p>{average.count}</p>
+                            <p>수강생 인원:{student[1]}</p>
+                            <p>리뷰 등록 수:{average.count}</p>
                             <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                {average.avg}
+                                리뷰 평점: {average.avg}
                             </div>
                         </div>
-                        <p className="mt-2 text-sm text-gray-600">발행자: Colt Steele, 엘리스 AI 트랙</p>
-                        <p className="text-sm text-gray-600">{products.updatedAt}</p>
+                        <p className="mt-2 text-sm text-gray-600">발행자:{host?.host?.nickname}</p>
+                        <p className="text-sm text-gray-600">강의 등록일: {products.updatedAt}</p>
                         <p className="text-sm text-gray-600">언어: 한국어</p>
+                        <h2 className="text-xl font-semibold">쇼츠 영상</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex justify-center">
+                                {products.shorts && (
+                                    <video className="shorts" width="1000" height="1000" controls>
+                                        <source src={products.shorts} type="video/mp4" />
+                                    </video>
+                                )}
+                            </div>
+                        </div>
                         <div className="mt-8" id="cga77rp3m8w">
                             <h2 className="text-xl font-semibold">배울 내용</h2>
                             <ul className="mt-4 space-y-2  grid-cols-1 md:grid-cols-2">
                                 <p>{products.body}</p>
                             </ul>
+                            <div className="Thumbnail">
+                                <img
+                                    alt="Course Preview"
+                                    className="rounded-lg"
+                                    height="1000"
+                                    src={products.thumbnail}
+                                    width="1000"
+                                    style={{ aspectratio: 500 / 500, objectfit: 'cover' }}
+                                />
+
+                                {img.map((Image) => {
+                                    return (
+                                        <img
+                                            alt="Course Preview"
+                                            className="rounded-lg"
+                                            height="1000"
+                                            src={Image.original_url}
+                                            width="1000"
+                                            style={{ aspectratio: 500 / 500, objectfit: 'cover' }}
+                                        />
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                     <div className="col-span-1 md:col-span-1">
@@ -336,9 +440,9 @@ export default function ProductCard(props) {
                                     alt="Course Preview"
                                     className="rounded-lg"
                                     height="200"
-                                    src={products.thumbnail}
+                                    src={host?.host?.profile_image}
                                     width="200"
-                                    style={{ aspectratio: 200 / 200, objectfit: 'cover' }}
+                                    style={{ aspectRatio: 1, objectFit: 'cover' }}
                                 />
                             </div>
                         </div>
