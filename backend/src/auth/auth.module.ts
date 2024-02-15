@@ -14,6 +14,7 @@ import { RoleGuard } from './guard/role.guard';
 import { MessageModule } from 'src/message/message.module';
 import { MessageService } from 'src/message/message.service';
 import { Message } from 'src/entities/message.entity';
+import { EventsModule } from 'src/events/events.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { Message } from 'src/entities/message.entity';
         },
       },
     }),
+    EventsModule, // 여기에 추가
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtAuthGuard, RoleGuard, MessageService],
