@@ -34,7 +34,7 @@ const Header = () => {
         localStorage.setItem('name', searchref.current.value);
         dispatch(searchActions.search(searchref.current.value));
         navigate('/search');
-        searchref.current.value=""
+        searchref.current.value = ""
     };
 
     const handleTrainerClick = () => {
@@ -46,7 +46,7 @@ const Header = () => {
         <header className="flex items-center justify-between p-6 border-b px-20 mx-40  max-w-screen-xl mx-auto">
             <Link to="/">Chat PT</Link>
             <div className="flex items-center space-x-4 ">
-                {sessionStorage.getItem("accessToken") && <Link to ="TrainerPage"> Trainer </Link>}
+                {sessionStorage.getItem("accessToken") && <Link to="TrainerPage"> Trainer </Link>}
                 <form onSubmit={searchhandler}>
                     <input
                         type="text"
@@ -55,10 +55,10 @@ const Header = () => {
                         ref={searchref}
                     />
                 </form>
-
-                <Link to="message">
+                {sessionStorage.getItem('accessToken') && <Link to="message">
                     <BiSolidCommentDetail size="30" style={{ color: 'black' }} />
-                </Link>
+                </Link>}
+
 
                 <Link to={sessionStorage.getItem('accessToken') ? '/mypage' : '/Login'}>
                     <BiSolidUser size="30" style={{ color: 'black', marginLeft: '10%' }} />
