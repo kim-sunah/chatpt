@@ -98,7 +98,6 @@ const ProductUpdate = props => {
 	}
 	
 	const uploadImage = async (e,images_) => {
-		console.log(images_)
 		const res = await Promise.all(images_.map(async image => {
 			const formData = new FormData()
 			formData.append('image', image)
