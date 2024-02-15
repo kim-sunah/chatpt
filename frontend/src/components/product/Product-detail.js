@@ -319,9 +319,6 @@ export default function ProductCard(props) {
                         <p className="mt-2 text-sm text-gray-600">발행자: Colt Steele, 엘리스 AI 트랙</p>
                         <p className="text-sm text-gray-600">{products.updatedAt}</p>
                         <p className="text-sm text-gray-600">언어: 한국어</p>
-						{products.shorts && <video controls>
-							<source src={products.shorts} type='video/mp4' />
-						</video>}
                         <div className="mt-8" id="cga77rp3m8w">
                             <h2 className="text-xl font-semibold">배울 내용</h2>
                             <ul className="mt-4 space-y-2  grid-cols-1 md:grid-cols-2">
