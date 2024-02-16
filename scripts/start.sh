@@ -24,6 +24,7 @@ cd $REACT_ROOT
 pm2 start npm --name $REACT_APP_NAME -- start
 
 cd $ROOM_ROOT
+
 pm2 start npm --name $ROOM_NAME -- start
 
 echo "$TIME_NOW > Deploy has been completed"
