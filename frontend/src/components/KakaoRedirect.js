@@ -14,7 +14,7 @@ const KakaoRedirect = () => {
             .then(resData =>
                 fetch("https://kapi.kakao.com/v2/user/me", { method: "GET", headers: { "Authorization": "Bearer " + resData.access_token } })
                     .then(res => res.json()).
-                    then(resData => fetch("https://iamchatpt.com:444/auth/kakaosignup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: resData.kakao_account.email, Nickname: resData.kakao_account.profile.nickname, profile_image: resData.kakao_account.profile.profile_image_url }) })
+                    then(resData => fetch("https://iamchatpt.com:4430/auth/kakaosignup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: resData.kakao_account.email, Nickname: resData.kakao_account.profile.nickname, profile_image: resData.kakao_account.profile.profile_image_url }) })
                         .then(res => res.json())
                         .then(resData => {
                             if (resData.limit === true) {

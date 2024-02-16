@@ -16,7 +16,7 @@ const GoogleRedirect = () => {
                         .then(res => res.json())
                         .then(resData => {
                             if (resData.id) {
-                                fetch("https://iamchatpt.com:444/auth/googlesignup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: resData.email, Nickname: resData.name, profile_image: resData.picture }) })
+                                fetch("https://iamchatpt.com:4430/auth/googlesignup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: resData.email, Nickname: resData.name, profile_image: resData.picture }) })
                                     .then(res => res.json())
                                     .then(resData => {
                                         console.log(resData);

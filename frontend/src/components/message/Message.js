@@ -9,13 +9,13 @@ const Message = () => {
     const { id } = useParams();
     const sendMessage = useRef();
     const messageTextRef = useRef();
-    const socket = openSocket('https://iamchatpt.com:444', { transports: ['websocket'] });
+    const socket = openSocket('https://iamchatpt.com:4430', { transports: ['websocket'] });
     const [messageList, setMessageList] = useState([]);
     const [userId, setUserId] = useState();
 
     const send = (e) => {
         e.preventDefault();
-        fetch(`https://iamchatpt.com:444/message/${id}`, {
+        fetch(`https://iamchatpt.com:4430/message/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ const Message = () => {
     };
 
     useEffect(() => {
-        fetch("https://iamchatpt.com:444/message", {
+        fetch("https://iamchatpt.com:4430/message", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const Message = () => {
                 console.log(err)
             });
 
-        fetch(`https://iamchatpt.com:444/message/${id}`, {
+        fetch(`https://iamchatpt.com:4430/message/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -66,7 +66,7 @@ const Message = () => {
 
         const handleMessage = (data) => {
             if (data === "sendMessage") {
-                fetch(`https://iamchatpt.com:444/message/${id}`,
+                fetch(`https://iamchatpt.com:4430/message/${id}`,
                     {
                         method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
                     })
