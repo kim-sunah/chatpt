@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfbebaca-66d1-4968-8d95-9220654af5c8" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/admin/views/admin/dataTables/components/DevelopmentTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/admin/views/admin/dataTables/components/DevelopmentTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/message/Message.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/message/Message.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/message/side/Talklist.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/message/side/Talklist.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +25,14 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="message2" />
+                    <option name="lastUsedInstant" value="1708036900" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="room" />
+                    <option name="lastUsedInstant" value="1708035516" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="message" />
                     <option name="lastUsedInstant" value="1707855280" />
@@ -47,10 +53,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2cI2yAATgBDnD1ycHOynnlMNH4W" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -64,7 +70,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "message",
+    "git-widget-placeholder": "message2",
     "last_opened_file_path": "/Users/suna/Develop/shopping-mall",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

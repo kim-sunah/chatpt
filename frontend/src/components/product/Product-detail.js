@@ -298,9 +298,13 @@ export default function ProductCard(props) {
     };
 
     const weeklyday = (weekday) => {
-        const arr = [0, 1, 2, 3, 4, 5, 6];
-        const day = arr.filter((day) => weekday?.indexOf(day));
-        return day;
+        // const arr = [0, 1, 2, 3, 4, 5, 6];
+        // const day = arr.filter((day) => weekday?.indexOf(day));
+        // return day;
+
+        const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+        const selectedDays = daysOfWeek.filter((day, index) => (weekday ?? []).includes(index.toString()));
+        return selectedDays.join(', ');
     };
 
     const getAverage = async () => {
@@ -388,7 +392,9 @@ export default function ProductCard(props) {
                             </div>
                         </div>
                         <p className="mt-2 text-sm text-gray-600">발행자:{host?.host?.nickname}</p>
-                        <p className="text-sm text-gray-600">강의 등록일: {products.updatedAt}</p>
+                        <p className="text-sm text-gray-600">
+                            강의 등록일: {products.updatedAt ? products.updatedAt.split('T')[0] : '날짜 없음'}
+                        </p>
                         <p className="text-sm text-gray-600">언어: 한국어</p>
                         <h2 className="text-xl font-semibold">쇼츠 영상</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
