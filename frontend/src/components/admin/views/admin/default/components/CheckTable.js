@@ -59,7 +59,7 @@ export default function CheckTable(props) {
   const [userCount, setusercount] = useState();
 
   useEffect(() => {
-    fetch("http://3.36.1.132:4000/admin/Alluser", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } }).then(res => res.json()).then(resData => { console.log(resData); setusercount(resData.userCount); setUser(resData.users) }).catch(err => console.log(err))
+    fetch("https://iamchatpt.com:444/admin/Alluser", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } }).then(res => res.json()).then(resData => { console.log(resData); setusercount(resData.userCount); setUser(resData.users) }).catch(err => console.log(err))
 
   }, [pages])
   return (
