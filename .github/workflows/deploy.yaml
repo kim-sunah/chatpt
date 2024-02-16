@@ -55,8 +55,6 @@ jobs:
                   npm run build
                   cd ../frontend
                   npm run build
-                  cd ../room
-                  npm run build
               env:
                   CI: ''
 
