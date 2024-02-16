@@ -27,8 +27,3 @@ jobs:
               run: |
                   set -e  # Terminate build on any errors
                   npm run ci
-
-            - name: Deploy with pm2
-              run: |
-                  set -e  # Terminate build on any errors
-                  /bin/bash start.sh
