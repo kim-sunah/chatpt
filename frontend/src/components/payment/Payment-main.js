@@ -98,7 +98,7 @@ const Payment = (props) => {
 
 	const id = searchParams.get('id')
 	const getInfo = async () => {
-		const res = await fetch('http://3.36.1.132:4000/users/Mypage', {
+		const res = await fetch('https://iamchatpt.com:444/users/Mypage', {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
 		});
@@ -109,14 +109,14 @@ const Payment = (props) => {
 		const user_ = (await res.json()).user;
 		setUser(user_);
 
-		const res2 = await fetch(`http://3.36.1.132:4000/payment/my/${id}`, { headers: { 'Content-Type': 'application/json', Authorization, refreshtoken } })
+		const res2 = await fetch(`https://iamchatpt.com:444/payment/my/${id}`, { headers: { 'Content-Type': 'application/json', Authorization, refreshtoken } })
 		const payment = await res2.json()
 		if (payment.id) {
 			alert('이미 구매한 강의입니다.')
 			navigate('../mypage')
 		}
 
-		const res3 = await fetch(`http://3.36.1.132:4000/product?id=${id}`);
+		const res3 = await fetch(`https://iamchatpt.com:444/product?id=${id}`);
 		if (res3.status !== 200) {
 			alert('해당 상품이 존재하지 않습니다.');
 			navigate('/')
@@ -161,7 +161,7 @@ const Payment = (props) => {
 
 	const callback = async (rsp, isKakao = true) => {
 		if (rsp.success) {
-			const res = await fetch(`http://3.36.1.132:4000/payment`, {
+			const res = await fetch(`https://iamchatpt.com:444/payment`, {
 				method: 'post',
 				headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
 				body: JSON.stringify({
