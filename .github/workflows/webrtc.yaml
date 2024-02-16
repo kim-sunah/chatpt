@@ -1,0 +1,34 @@
+name: Webrtc
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '14'
+
+            - name: Install dependencies
+              run: |
+                  set -e  # Terminate build on any errors
+                  npm install
+
+            - name: Run WebRTC CI
+              run: |
+                  set -e  # Terminate build on any errors
+                  npm run ci
+
+            - name: Deploy with pm2
+              run: |
+                  set -e  # Terminate build on any errors
+                  /bin/bash start.sh
