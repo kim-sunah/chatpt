@@ -73,6 +73,7 @@ export class ProductController {
     @Roles(Role.Host)
     @Get('my')
     async getMyProducts(@Query() query: PageDto) {
+		// aaaaa
         return await this.productService.getMyProducts(query);
     }
 
