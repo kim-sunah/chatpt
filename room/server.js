@@ -7,7 +7,8 @@ server.listen(process.env.PORT || 8080);
 app.use(express.static('public')); 
 app.set('view engine', 'ejs'); 
 app.get('/', (req, res) => { 
-  res.render('frontpage'); 
+  console.log(16)
+  //res.render('frontpage'); 
 })
 
 const { v4: uuidv4 } = require('uuid');
