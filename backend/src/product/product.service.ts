@@ -154,7 +154,7 @@ export class ProductService {
 
         await this.productRepository.update(id, { ...body })
 		const product = await this.productRepository.findOne({ where: { id } })
-		if(product.accepted){
+		if(+product.accepted){
 			const Instructor = await this.userRepository.findOne({ where: { id: product.user_id } });
 			await this.elasticsearchService.getDocumentId("products", id, {
 				id: id,
