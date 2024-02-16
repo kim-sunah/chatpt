@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react"
 const Paymentlist = () => {
-    const [paymentlist , setpaymentlist] = useState()
+    const [paymentlist, setpaymentlist] = useState()
 
     useEffect(() => {
-        fetch("http://localhost:4000/payment/my", {method : "GET" , headers :  { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
-        .then(res => res.json())
-        .then(resData => { 
-            console.log(resData); 
-            if(resData.statusCode === 200){
-            setpaymentlist(resData.payments)
-        }})
-        .catch(err=> {
-            console.log(err)
-        })
+        fetch("http://3.36.1.132:4000/payment/my", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+            .then(res => res.json())
+            .then(resData => {
+                console.log(resData);
+                if (resData.statusCode === 200) {
+                    setpaymentlist(resData.payments)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
-    },[])
+    }, [])
     return (
         <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-6xl" data-v0-t="card">
             <div class="flex flex-col space-y-1.5 p-6">
@@ -43,30 +44,9 @@ const Paymentlist = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {paymentlist && paymentlist.map(product =>(
-                                <tr key = {product.id}class="group hover:bg-gray-100/40 dark:hover:bg-gray-800/40 transition-all">
-                                <td class="px-4 py-4">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all"
-                                    >
-                                        <path d="m9 18 6-6-6-6"></path>
-                                    </svg>
-                                </td>
-                                <td class="text-sm">{product.createdAt.split("T")[0]}</td>
-                                <td class="text-sm">{product.product.name}</td>
-                                <td class="text-sm">{product.method}</td>
-                                <td class="text-sm font-medium">{product.product.price}</td>
-                                <td class="px-4 text-right">
-                                    <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full w-6 h-6">
+                            {paymentlist && paymentlist.map(product => (
+                                <tr key={product.id} class="group hover:bg-gray-100/40 dark:hover:bg-gray-800/40 transition-all">
+                                    <td class="px-4 py-4">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="24"
@@ -77,19 +57,40 @@ const Paymentlist = () => {
                                             strokeWidth="2"
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
-                                            class="h-4 w-4"
+                                            class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all"
                                         >
                                             <path d="m9 18 6-6-6-6"></path>
                                         </svg>
-                                        <span class="sr-only">View</span>
-                                    </button>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td class="text-sm">{product.createdAt.split("T")[0]}</td>
+                                    <td class="text-sm">{product.product.name}</td>
+                                    <td class="text-sm">{product.method}</td>
+                                    <td class="text-sm font-medium">{product.product.price}</td>
+                                    <td class="px-4 text-right">
+                                        <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-full w-6 h-6">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                class="h-4 w-4"
+                                            >
+                                                <path d="m9 18 6-6-6-6"></path>
+                                            </svg>
+                                            <span class="sr-only">View</span>
+                                        </button>
+                                    </td>
+                                </tr>
 
                             ))}
-                            
-                            
-                        
+
+
+
                         </tbody>
                     </table>
                 </div>

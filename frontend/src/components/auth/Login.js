@@ -26,7 +26,7 @@ const Login = () => {
     const [passworderrormessage, setpassworderrormessage] = useState()
     const Loginsubmithanlder = (events) => {
         events.preventDefault()
-        fetch("http://localhost:4000/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
+        fetch("http://3.36.1.132:4000/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
             .then(res => res.json())
             .then(resData => {
                 console.log(resData)
@@ -70,8 +70,8 @@ const Login = () => {
         window.location.href = KAKAO_URL
     }
 
-    const GoogleLogin = () =>{
-        const Google_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=1050893472397-hotgn026mmcjckjh77nfmv7tj47uh4nl.apps.googleusercontent.com&redirect_uri=http://localhost:3000/Login/google&response_type=code&scope=email profile"
+    const GoogleLogin = () => {
+        const Google_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=1050893472397-hotgn026mmcjckjh77nfmv7tj47uh4nl.apps.googleusercontent.com&redirect_uri=http://3.36.1.132:3000/Login/google&response_type=code&scope=email profile"
         window.location.href = Google_URL
     }
     return (
@@ -131,8 +131,8 @@ const Login = () => {
                             <img src={kakao} style={{ width: "50px", height: "50px", cursor: "pointer" }} onClick={KakaoLogin}></img>
                             {/* <img src={naver} style={{ width: "50px", height: "50px" }} onClick={NaverLogin}></img> */}
                             <img src={Google} style={{ width: "50px", height: "50px" }} onClick={GoogleLogin}></img>
-                        
-                            
+
+
                         </div>
                     </div>
                     <div className="mt-4 text-center text-sm">

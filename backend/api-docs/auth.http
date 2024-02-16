@@ -1,5 +1,5 @@
 ###  회원가입
-POST http://localhost:3001/api/auth/sign-up
+POST http://3.36.1.132:3001/api/auth/sign-up
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### 로그인
-POST http://localhost:3001/api/auth/sign-in
+POST http://3.36.1.132:3001/api/auth/sign-in
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### 회원정보가져오기
-GET http://localhost:3001/api/users/info
+GET http://3.36.1.132:3001/api/users/info
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA0NTI3NDkwLCJleHAiOjE3MDQ2MTM4OTB9.1OMbm6KjDMT4oIKWU5XU2kU_RUqOaVTgt2j46_dphms
 RefreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDQ1Mjc0OTAsImV4cCI6MTcwNTczNzA5MH0.llXQfDj_7k-4PKErWK3bYar2QzO7_Tu3lcQMedPWgJ0

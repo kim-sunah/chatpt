@@ -9,21 +9,21 @@ const Userupdate = (props) => {
     const ConfirmPassword = useRef()
     const [passworderror, setpassworderror] = useState()
     const [Confirmerror, setConfirmerror] = useState()
-	const [image, setImage] = useState({}) 
- 
+    const [image, setImage] = useState({})
+
     const onUpload = (e) => {
         const selectedFile = e.target.files[0];
-		if(selectedFile) setImage(selectedFile)
+        if (selectedFile) setImage(selectedFile)
     }
     const updateinfo = (event) => {
         event.preventDefault(); // 폼 제출 방지
-		const formData = new FormData();
-		formData.append("image", image)
-        fetch("http://localhost:4000/users/update", { method: "POST", headers: { "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: formData })
+        const formData = new FormData();
+        formData.append("image", image)
+        fetch("http://3.36.1.132:4000/users/update", { method: "POST", headers: { "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: formData })
             .then(res => res.json())
             .then(resData => { })
             .catch(err => console.log(err))
-        fetch("http://localhost:4000/users/MypageUpdate", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ Email: props.info.email, Password: Password.current.value, ConfirmPassword: ConfirmPassword.current.value}) })
+        fetch("http://3.36.1.132:4000/users/MypageUpdate", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ Email: props.info.email, Password: Password.current.value, ConfirmPassword: ConfirmPassword.current.value }) })
             .then(res => res.json())
             .then(resData => {
                 if (resData.statusCode === 400) {
@@ -51,13 +51,13 @@ const Userupdate = (props) => {
                             <div class="btn-upload">파일 업로드하기</div>
                         </label>
                         <input type="file" name="file" id="file" onChange={onUpload}></input>
-                     
+
                         <form className="flex flex-col gap-4" onSubmit={updateinfo}>
                             <input
                                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                 placeholder="email"
                                 type="email"
-                                
+
                                 value={props.info.email}
                             />
                             <input

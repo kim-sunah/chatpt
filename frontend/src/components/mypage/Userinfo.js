@@ -4,10 +4,10 @@ const Userinfo = () => {
     const [info, setinfo] = useState()
     const [update, setupdate] = useState(false)
     useEffect(() => {
-        fetch("http://localhost:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
-        .then(res => res.json())
-        .then(resData => {setinfo(resData.user); console.log(resData)})
-        .catch(err => console.log(err))
+        fetch("http://3.36.1.132:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+            .then(res => res.json())
+            .then(resData => { setinfo(resData.user); console.log(resData) })
+            .catch(err => console.log(err))
     }, [])
     const updatehalder = () => {
         setupdate(!update)
@@ -23,7 +23,7 @@ const Userinfo = () => {
                     {info && <div className="flex mt-0">
                         <img src={info.profile_image} className="h-40 w-40 rounded-full bg-gray-300 mt-10 mr-10" />
                         <div className="ml-4 flex-1 ml-10">
-                            <h1 className="text-xl font-bold">내 정보 {info.registration_information ==="SITE" && <button onClick={updatehalder} style={{ fontSize: "10px", color: "blue" }}> 내 정보 수정</button>}</h1>
+                            <h1 className="text-xl font-bold">내 정보 {info.registration_information === "SITE" && <button onClick={updatehalder} style={{ fontSize: "10px", color: "blue" }}> 내 정보 수정</button>}</h1>
 
                             <div className="mt-4">
                                 <div className="flex items-center justify-between">
@@ -51,7 +51,7 @@ const Userinfo = () => {
                         </div>
                     </div>}
                 </div>}
-            {update && <Userupdate info={{ email: info.email, imgurl : info.profile_image}}></Userupdate>}
+            {update && <Userupdate info={{ email: info.email, imgurl: info.profile_image }}></Userupdate>}
         </div>
     )
 

@@ -16,7 +16,7 @@ const GoogleRedirect = () => {
                         .then(res => res.json())
                         .then(resData => {
                             if (resData.id) {
-                                fetch("http://localhost:4000/auth/googlesignup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: resData.email, Nickname: resData.name, profile_image: resData.picture }) })
+                                fetch("http://3.36.1.132:4000/auth/googlesignup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: resData.email, Nickname: resData.name, profile_image: resData.picture }) })
                                     .then(res => res.json())
                                     .then(resData => {
                                         console.log(resData);
@@ -49,7 +49,7 @@ const GoogleRedirect = () => {
     }, [])
     return (
         <>
-        
+
         </>
     );
 }

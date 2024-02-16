@@ -1,13 +1,13 @@
 import './trainerpage.css';
 const Trainerstart = () => {
 
-    const HostHandler = () =>{
+    const HostHandler = () => {
         sessionStorage.removeItem("authority")
         sessionStorage.setItem("authority", "Host")
-        fetch("http://localhost:4000/users/Hostupdate", {method :"PUT" ,headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken")}})
-        .then(res => res.json())
-        .then(resData => {window.location.reload();})
-        .catch(err => console.log(err))
+        fetch("http://3.36.1.132:4000/users/Hostupdate", { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+            .then(res => res.json())
+            .then(resData => { window.location.reload(); })
+            .catch(err => console.log(err))
 
     }
     return (
@@ -21,7 +21,7 @@ const Trainerstart = () => {
                         </p>
                     </div>
                     <div class="flex flex-col min-w-[300px] gap-2 mt-3">
-                        <button onClick ={HostHandler}class="button-black inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                        <button onClick={HostHandler} class="button-black inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                             Get Started
                         </button>
                     </div>

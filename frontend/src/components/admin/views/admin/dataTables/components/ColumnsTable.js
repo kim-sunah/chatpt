@@ -9,7 +9,7 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { useMemo , useEffect, useState} from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import {
   useGlobalFilter,
   usePagination,
@@ -24,20 +24,20 @@ import { PaginationControl } from 'react-bootstrap-pagination-control';
 import openSocket from 'socket.io-client';
 export default function ColumnsTable(props) {
   const [pages, setPage] = useState(1)
-  const [banuserlist , setbanuserlist] = useState()
+  const [banuserlist, setbanuserlist] = useState()
   const [banusercount, setbanusercount] = useState()
-  useEffect(() =>{
-    fetch("http://localhost:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users)}).catch(err => console.log(err))
-    const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
+  useEffect(() => {
+    fetch("http://3.36.1.132:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
+    const socket = openSocket('http://3.36.1.132:4000', { transports: ['websocket'] });
     socket.on('events', (data) => {
-          if(data === "userban"){
-            fetch("http://localhost:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users)}).catch(err => console.log(err))
-          }
+      if (data === "userban") {
+        fetch("http://3.36.1.132:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
+      }
     });
-  },[pages])
+  }, [pages])
 
-    const banuser = (id) => {
-    fetch(`http://localhost:4000/admin/limituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }}).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
+  const banuser = (id) => {
+    fetch(`http://3.36.1.132:4000/admin/limituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
 
   }
   const { columnsData, tableData } = props;
@@ -79,7 +79,7 @@ export default function ColumnsTable(props) {
           lineHeight='100%'>
           Ban user
         </Text>
-      
+
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
@@ -104,58 +104,58 @@ export default function ColumnsTable(props) {
           ))}
         </Thead>
         <Tbody >
-        {banuserlist && banuserlist.map((user, index) => {
+          {banuserlist && banuserlist.map((user, index) => {
             return (
               <Tr key={index}>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.nickname}
-                  </Text>
-                </Flex>
-              </Td>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.gender}
-                  </Text>
-                </Flex>
-              </Td>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.authority}
-                  </Text>
-                </Flex>
-              </Td>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.registration_information}
-                  </Text>
-                </Flex>
-              </Td>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'   onClick={() => banuser(user.id)}>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" ,color : "red", cursor:"pointer"}}>
-                  NO ban
-                  </Text>
-                </Flex>
-              </Td>
-            </Tr>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.nickname}
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.gender}
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.authority}
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.registration_information}
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent' onClick={() => banuser(user.id)}>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap", color: "red", cursor: "pointer" }}>
+                      NO ban
+                    </Text>
+                  </Flex>
+                </Td>
+              </Tr>
             );
           })}
         </Tbody>
       </Table>
       <PaginationControl
-                page={pages}
-                between={4}
-                total={banusercount}
-                limit={11}
-                changePage={(pages) => {
-                    setPage(pages)
-                }}
-                ellipsis={1}/>
+        page={pages}
+        between={4}
+        total={banusercount}
+        limit={11}
+        changePage={(pages) => {
+          setPage(pages)
+        }}
+        ellipsis={1} />
     </Card>
   );
 }

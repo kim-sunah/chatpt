@@ -56,10 +56,10 @@ export default function CheckTable(props) {
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
   const [User, setUser] = useState("")
-  const [userCount, setusercount ] = useState();
+  const [userCount, setusercount] = useState();
 
   useEffect(() => {
-    fetch("http://localhost:4000/admin/Alluser", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } }).then(res => res.json()).then(resData => { console.log(resData); setusercount(resData.userCount); setUser(resData.users) }).catch(err => console.log(err))
+    fetch("http://3.36.1.132:4000/admin/Alluser", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } }).then(res => res.json()).then(resData => { console.log(resData); setusercount(resData.userCount); setUser(resData.users) }).catch(err => console.log(err))
 
   }, [pages])
   return (
@@ -76,7 +76,7 @@ export default function CheckTable(props) {
           lineHeight='100%'>
           Recent Subscribers
         </Text>
-        
+
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='12px'>
         <Thead>
@@ -105,54 +105,54 @@ export default function CheckTable(props) {
           {User && User.map((user, index) => {
             return (
               <Tr key={index}>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.nickname}
-                  </Text>
-                </Flex>
-              </Td>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.gender}
-                  </Text>
-                </Flex>
-              </Td>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.authority}
-                  </Text>
-                </Flex>
-              </Td>
-              <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
-                <Flex align='center'>
-                  <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
-                  {user.registration_information}
-                  </Text>
-                </Flex>
-              </Td>
-            </Tr>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.nickname}
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.gender}
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.authority}
+                    </Text>
+                  </Flex>
+                </Td>
+                <Td fontSize={{ sm: "14px" }} minW={{ sm: "150px", md: "200px", lg: "auto" }} borderColor='transparent'>
+                  <Flex align='center'>
+                    <Text color={textColor} fontSize='sm' fontWeight='700' style={{ whiteSpace: "nowrap" }}>
+                      {user.registration_information}
+                    </Text>
+                  </Flex>
+                </Td>
+              </Tr>
             );
           })}
 
         </Tbody>
-        
+
 
       </Table>
       <div className="pagenation">
-          <PaginationControl
-            page={pages}
-            between={4}
-            total={userCount}
-            limit={6}
-            changePage={(pages) => {
-              setPage(pages)
-            }}
-            ellipsis={1}
-          />
-        </div>
+        <PaginationControl
+          page={pages}
+          between={4}
+          total={userCount}
+          limit={6}
+          changePage={(pages) => {
+            setPage(pages)
+          }}
+          ellipsis={1}
+        />
+      </div>
     </Card>
   );
 }

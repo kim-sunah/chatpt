@@ -9,7 +9,7 @@ const Redirecturl = (props) => {
 
   const naverLogin = async () => {
     try {
-      const response = await fetch("http://localhost:4000/auth/naversignup", {
+      const response = await fetch("http://3.36.1.132:4000/auth/naversignup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: code })
@@ -19,7 +19,7 @@ const Redirecturl = (props) => {
       }
       const resData = await response.json();
       if (resData.limit === true) {
-        navigate("/")    
+        navigate("/")
         alert("사용이 제한된 사용자입니다.")
       }
       else if (resData.statusCode === 200) {
@@ -27,7 +27,7 @@ const Redirecturl = (props) => {
         sessionStorage.setItem("authority", resData.authority)
         sessionStorage.setItem("accessToken", resData.accessToken)
         sessionStorage.setItem("refreshToken", resData.refreshToken)
-        
+
       }
       else {
         navigate("/Login")
@@ -35,7 +35,7 @@ const Redirecturl = (props) => {
       }
 
       // if (responseData.statusCode === 200) {
-      //   const userData = await fetch("http://localhost:4000/auth/naversignin", {
+      //   const userData = await fetch("http://3.36.1.132:4000/auth/naversignin", {
       //     method: "POST",
       //     headers: { "Content-Type": "application/json" },
       //     body: JSON.stringify({ email: responseData.naveruser.email })
