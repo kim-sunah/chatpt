@@ -46,6 +46,8 @@ jobs:
                   npm install
                   cd ../frontend
                   npm install
+                  cd ../room
+                  npm install
 
             - name: Build test
               run: |
