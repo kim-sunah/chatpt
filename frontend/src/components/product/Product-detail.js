@@ -376,398 +376,323 @@ export default function ProductCard(props) {
             console.error('상품 이미지 정보를 가져오는 중에 오류가 발생했습니다.', error);
         }
     };
-
+    function ProductCard({ imageSrc, altText, title, category, availability, price, originalPrice }) {
+        return (
+            <div className="flex flex-col items-center p-4 border">
+                <img src={imageSrc} alt={altText} className="mb-4" width="150" height="150" style={{ aspectRatio: "150 / 150", objectFit: "cover" }} />
+                <h3 className="mb-2 text-lg font-bold">{title}</h3>
+                <p className="mb-2 text-sm">카테고리: {category}</p>
+                <p className="mb-2 text-sm">{availability}</p>
+                <p className="text-lg font-bold text-red-600">{price}</p>
+                <p className="text-sm line-through text-gray-500">{originalPrice}</p>
+            </div>
+        );
+    }
     return (
-        <div className="bg-gray-100 py-10">
-            <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="col-span-1 md:col-span-2">
-                        <h1 className="text-3xl font-bold">{products.name}</h1>
-                        <p className="mt-4 text-lg">{products.intro}</p>
-                        <div className="mt-4 flex items-center space-x-2">
-                            <p>수강생 인원:{student[1]}</p>
-                            <p>리뷰 등록 수:{average.count}</p>
-                            <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                리뷰 평점: {average.avg}
-                            </div>
-                        </div>
-                        <p className="mt-2 text-sm text-gray-600">발행자:{host?.host?.nickname}</p>
-                        <p className="text-sm text-gray-600">
-                            강의 등록일: {products.updatedAt ? products.updatedAt.split('T')[0] : '날짜 없음'}
+        <div className="max-w-screen-lg mx-auto">
+            <main>
+                <section className="my-4">
+                    <img src={products.thumbnail} alt="Featured product" className="w-full h-auto" width="1024" height="300" style={{ aspectRatio: "1024 / 300", objectFit: "cover" }} />
+                </section>
+                <section className="p-4">
+                    <h2 className="text-2xl font-bold">{products.name}</h2>
+                    <div className="mt-4 mb-4 text-sm space-x-2">
+                        <span className="text-gray-500 line-through">₩{products.price}</span>
+                        <span className="ml-2 text-lg font-bold text-red-600">₩{products.sale_price}</span>
+                        <span className="mt1">
+                            <button
+                                onClick={() => navigate(`../../payment?id=${id}`)}
+                                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-40%"
+                            >
+                                지금 구매
+                            </button>
+                        </span>
+                        <p className="text-sm text-red-500">
+                            {(((products.price - products.sale_price) * 100) / products.price) | 0} % 할인중!
                         </p>
-                        <p className="text-sm text-gray-600">언어: 한국어</p>
-                        <h2 className="text-xl font-semibold">쇼츠 영상</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="flex justify-center">
-                                {products.shorts && (
-                                    <video className="shorts" width="1000" height="1000" controls>
-                                        <source src={products.shorts} type="video/mp4" />
-                                    </video>
-                                )}
-                            </div>
-                        </div>
-                        <div className="mt-8" id="cga77rp3m8w">
-                            <h2 className="text-xl font-semibold">배울 내용</h2>
-                            <ul className="mt-4 space-y-2  grid-cols-1 md:grid-cols-2">
-                                <p>{products.body}</p>
-                            </ul>
-                            <div className="Thumbnail">
-                                <img
-                                    alt="Course Preview"
-                                    className="rounded-lg"
-                                    height="1000"
-                                    src={products.thumbnail}
-                                    width="1000"
-                                    style={{ aspectratio: 500 / 500, objectfit: 'cover' }}
-                                />
 
-                                {img.map((Image) => {
-                                    return (
-                                        <img
-                                            alt="Course Preview"
-                                            className="rounded-lg"
-                                            height="1000"
-                                            src={Image.original_url}
-                                            width="1000"
-                                            style={{ aspectratio: 500 / 500, objectfit: 'cover' }}
-                                        />
-                                    );
-                                })}
-                            </div>
+                    </div>
+
+                    <div className="flex space-x-2 mb-4">
+                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">{products.category}</div>
+                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                            리뷰 평점: {average.avg}
+                        </div>
+                        <div className="flex items-center space-x-4">
+                            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2">
+                                {' '}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill={wish ? 'red' : 'white'}
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="w-6 h-6"
+                                    onClick={wishListhandler}
+                                >
+                                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
-                    <div className="col-span-1 md:col-span-1">
-                        <div
-                            className="rounded-lg border bg-card text-card-foreground shadow-sm w-full"
-                            data-v0-t="card"
-                        >
-                            <div className="flex justify-center p-4">
-                                <img
-                                    alt="Course Preview"
-                                    className="rounded-lg"
-                                    height="200"
-                                    src={host?.host?.profile_image}
-                                    width="200"
-                                    style={{ aspectRatio: 1, objectFit: 'cover' }}
-                                />
-                            </div>
+                    <p className="mb-1">이 강의는 {products.capacity} 명 수강할 수 있어요</p>
+                    <p className="mb-1">현재 {student[1
+                    ]} 분이 이 강의를 수강신청하셨어요</p>
+                    <br />
+                    <div className="mb-4">
+                        <h3 className="font-bold">강의 기간</h3>
+                        <p>{products.start_on} ~ {products.end_on}</p>
+                        <p>매주 {weeklyday(products.weekday)}</p>
+
+                        <p>{products.start_at}부터 {products.end_at} 까지 진행되며 이용약관을 확인하시고 여러분들의 자세한 사항들은 관리자에게 채팅을 통하여 문의하여 주시면 됩니다.</p>
+                    </div>
+                    <div className="mb-4">
+                        <h3 className="font-bold">상세설명</h3>
+                        <br />
+                        {products.body}
+                    </div>
+                </section>
+
+                <section className="grid grid-cols-3 gap-4 p-4">
+                    {img.map((Image) => {
+                        console.log(Image)
+                        return (
+                            <img src={Image.original_url} alt="Yoga class" className="w-full h-auto" width="300" height="300" style={{ aspectRatio: "300 / 300", objectFit: "cover" }} />
+                        )
+                    })}
+                </section>
+                <div className="flex justify-center">
+                    {products.shorts && (
+                        <video className="shorts" width="1000" height="1000" controls>
+                            <source src={products.shorts} type="video/mp4" />
+                        </video>
+                    )}
+                </div>
+                <div class="col-span-1 md:col-span-3">
+                    <div class="mt-8 bg-white p-4 rounded-lg shadow">
+                        <div style={{ display: "flex" }}>
+                            <h3 class="text-lg font-semibold" onClick={AllReviews}>모든 리뷰&nbsp;&nbsp;/ </h3>
+                            <h3 class="text-lg font-semibold" onClick={MyReviews}>&nbsp;&nbsp;내 리뷰</h3>
                         </div>
-                        <div className="mt-8 bg-white p-4 rounded-lg shadow">
-                            <div className="flex justify-between items-center">
-                                <div>
-                                    <p className="text-2xl font-semibold">{products.sale_price}원</p>
-                                    <p className="text-sm text-gray-500 line-through">{products.price}원</p>
-                                    <p className="text-sm text-red-500">
-                                        {(((products.price - products.sale_price) * 100) / products.price) | 0} % 할인
-                                    </p>
+                        {!Review && <div>
+                            {commentList && commentList.map(comment => (
+                                <div key={comment.id} className="flex items-center space-x-4 mt-10">
+                                    <div class="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                        {comment.rating}
+                                    </div>
+                                    <span className="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
+                                        <img className="aspect-square h-full w-full" alt="profile" src={comment.user.profile_image} />
+                                    </span>
+
+                                    <div class="grid gap-1.5">
+                                        <div className="flex items-center gap-2">
+                                            <div className="font-semibold">{comment.user.nickname}</div>
+                                            <div className="text-gray-500 text-xs dark:text-gray-400">{comment.createdAt.split("T")[0]}</div>
+                                        </div>
+                                        <div>{comment.body}</div>
+                                    </div>
                                 </div>
-                                <div className="flex items-center space-x-4">
-                                    <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2">
-                                        {' '}
+                            ))}
+                            <form onSubmit={commenthandler} className="mt-4">
+                                <textarea
+                                    className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
+                                    placeholder="Write your review here..."
+                                    ref={comment}
+                                ></textarea>
+                                <div className="mt-4">
+                                    <div className="flex items-center space-x-2" >
+                                        <div className="flex items-center space-x-2">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill={onestar ? "black" : "white"}
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="w-6 h-6 "
+                                                onClick={() => starhandler("one")}
+                                            >
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill={twostar ? "black" : "white"}
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="w-6 h-6 "
+                                                onClick={() => starhandler("two")}
+                                            >
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill={threestar ? "black" : "white"}
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="w-6 h-6 "
+                                                onClick={() => starhandler("three")}
+                                            >
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill={fourstar ? "black" : "white"}
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="w-6 h-6"
+                                                onClick={() => starhandler("four")}
+                                            >
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                            </svg>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill={fivestar ? "black" : "white"}
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="w-6 h-6"
+                                                onClick={() => starhandler("five")}
+                                            >
+                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                            </svg>
+                                        </div>
+                                        <Button type="submit" variant="outline" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Submit Review</Button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>}
+                        {Review && MyReview && <div>
+                            <div class="mt-4 flex items-center space-x-4">
+                                <div class="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    4.5
+                                </div>
+                                <span class="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
+                                    <img src={MyReview.profile_image} class="flex h-full w-full items-center justify-center rounded-full bg-muted">YU</img>
+                                </span>
+                                <div class="grid gap-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <div class="font-semibold">asd</div>
+                                        <div class="text-gray-500 text-xs dark:text-gray-400">{MyReview.createdAt}</div>
+                                    </div>
+                                    <div>{MyReview.body}</div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <textarea
+                                    class="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
+                                    placeholder="Modify your review here..."
+                                ></textarea>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex items-center space-x-2">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="24"
                                             height="24"
                                             viewBox="0 0 24 24"
-                                            fill={wish ? 'red' : 'white'}
+                                            fill="none"
                                             stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="w-6 h-6"
-                                            onClick={wishListhandler}
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="w-6 h-6 fill-primary"
                                         >
-                                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                                         </svg>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="mt-4">
-                                <button
-                                    onClick={() => navigate(`../../payment?id=${id}`)}
-                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
-                                >
-                                    지금 구매
-                                </button>
-                            </div>
-                            <div className="mt-8">
-                                <h3 className="text-lg font-semibold">강의 일정</h3>
-                                <ul className="mt-4 space-y-2 text-sm">
-                                    강의 시작일: {products.start_on} ~ 강의 종료일: {products.end_on}
-                                    강의 요일: {weeklyday(products.weekday)}
-                                    강의 시간: {products.start_at} ~ {products.end_at}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-span-1 md:col-span-3">
-                        <div className="mt-8 bg-white p-4 rounded-lg shadow">
-                            <div style={{ display: 'flex' }}>
-                                <h3 className="text-lg font-semibold" onClick={AllReviews}>
-                                    모든 리뷰&nbsp;&nbsp;/{' '}
-                                </h3>
-                                <h3 className="text-lg font-semibold" onClick={MyReviews}>
-                                    &nbsp;&nbsp;내 리뷰
-                                </h3>
-                            </div>
-                            {!Review && (
-                                <div>
-                                    {commentList &&
-                                        commentList.map((comment) => (
-                                            <div key={comment.id} className="flex items-center space-x-4 mt-10">
-                                                <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                    {comment.rating}
-                                                </div>
-                                                <span className="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-                                                    <img
-                                                        className="aspect-square h-full w-full"
-                                                        alt="profile"
-                                                        src={comment.user.profile_image}
-                                                    />
-                                                </span>
-
-                                                <div className="grid gap-1.5">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="font-semibold">{comment.user.nickname}</div>
-                                                        <div className="text-gray-500 text-xs dark:text-gray-400">
-                                                            {comment.createdAt.split('T')[0]}
-                                                        </div>
-                                                    </div>
-                                                    <div>{comment.body}</div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    {sessionStorage.getItem('accessToken') && (
-                                        <form onSubmit={commenthandler} className="mt-4">
-                                            <textarea
-                                                className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
-                                                placeholder="Write your review here..."
-                                                ref={comment}
-                                            ></textarea>
-                                            <div className="mt-4">
-                                                <div className="flex items-center space-x-2">
-                                                    <div className="flex items-center space-x-2">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill={onestar ? 'black' : 'white'}
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="w-6 h-6 "
-                                                            onClick={() => starhandler('one')}
-                                                        >
-                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                        </svg>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill={twostar ? 'black' : 'white'}
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="w-6 h-6 "
-                                                            onClick={() => starhandler('two')}
-                                                        >
-                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                        </svg>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill={threestar ? 'black' : 'white'}
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="w-6 h-6 "
-                                                            onClick={() => starhandler('three')}
-                                                        >
-                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                        </svg>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill={fourstar ? 'black' : 'white'}
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="w-6 h-6"
-                                                            onClick={() => starhandler('four')}
-                                                        >
-                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                        </svg>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill={fivestar ? 'black' : 'white'}
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            className="w-6 h-6"
-                                                            onClick={() => starhandler('five')}
-                                                        >
-                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                        </svg>
-                                                    </div>
-                                                    <Button
-                                                        type="submit"
-                                                        variant="outline"
-                                                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-                                                    >
-                                                        Submit Review
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    )}
-                                </div>
-                            )}
-                            {Review && MyReview && (
-                                <div>
-                                    <div className="mt-4 flex items-center space-x-4">
-                                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                            {MyReview.rating}
-                                        </div>
-                                        <span className="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-                                            <img
-                                                src={MyReview.user.profile_image}
-                                                className="flex h-full w-full items-center justify-center rounded-full bg-muted"
-                                            />
-                                        </span>
-                                        <div className="grid gap-1.5">
-                                            <div className="flex items-center gap-2">
-                                                <div className="font-semibold">{MyReview.user.nickname}</div>
-                                                <div className="text-gray-500 text-xs dark:text-gray-400">
-                                                    {MyReview.createdAt.split('T')[0]}
-                                                </div>
-                                            </div>
-                                            <div>{MyReview.body}</div>
-                                        </div>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="w-6 h-6 fill-primary"
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="w-6 h-6 fill-primary"
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="w-6 h-6 fill-muted stroke-muted-foreground"
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="w-6 h-6 fill-muted stroke-muted-foreground"
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
                                     </div>
-                                    <form onSubmit={updatecommenthandler}>
-                                        <div className="mt-4">
-                                            <textarea
-                                                className="flex min-h-[80px] border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full h-24 p-2 border rounded-md"
-                                                placeholder="Modify your review here..."
-                                                ref={updatecommnet}
-                                            ></textarea>
-                                        </div>
-                                        <div className="mt-4">
-                                            <div className="flex items-center space-x-2">
-                                                <div className="flex items-center space-x-2">
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill={onestar ? 'black' : 'white'}
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        className="w-6 h-6 "
-                                                        onClick={() => starhandler('one')}
-                                                    >
-                                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                    </svg>
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill={twostar ? 'black' : 'white'}
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        className="w-6 h-6 "
-                                                        onClick={() => starhandler('two')}
-                                                    >
-                                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                    </svg>
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill={threestar ? 'black' : 'white'}
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        className="w-6 h-6 "
-                                                        onClick={() => starhandler('three')}
-                                                    >
-                                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                    </svg>
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill={fourstar ? 'black' : 'white'}
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        className="w-6 h-6"
-                                                        onClick={() => starhandler('four')}
-                                                    >
-                                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                    </svg>
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill={fivestar ? 'black' : 'white'}
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        className="w-6 h-6"
-                                                        onClick={() => starhandler('five')}
-                                                    >
-                                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                    </svg>
-                                                </div>
-                                                <button
-                                                    type="submit"
-                                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-                                                >
-                                                    Update Review
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <button
-                                        onClick={deletecomment}
-                                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
-                                    >
-                                        Delete Review
+                                    <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                        Update Review
                                     </button>
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        </div>}
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 }
