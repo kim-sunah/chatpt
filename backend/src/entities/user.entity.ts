@@ -49,7 +49,7 @@ export class User {
   @Column()
   nickname: string;
 
-  @Column({ default: 100000})
+  @Column({ default: 100000 })
   mileage: number;
 
   @Column()
@@ -94,9 +94,9 @@ export class User {
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
 
-  @OneToMany(() => Message, (message) => message.host)
-  host_message: Relation<Message>[];
+  // @OneToMany(() => Message, (message) => message.host)
+  // host_message: Relation<Message>[];
 
-  @OneToMany(() => Message, (message) => message.gest)
-  gest_message: Relation<Message>[];
+  // @OneToMany(() => Message, (message) => message.gest)
+  // gest_message: Relation<Message>[];
 }

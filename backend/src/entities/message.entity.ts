@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -11,37 +12,54 @@ import { User } from './user.entity';
 
 @Entity('message')
 export class Message {
+  /**
+   * 아이디
+   * 참가자 1
+   * 참가자 2
+   * 메세지내용
+   * createdAt
+   * 보낸사람
+   * 참가자 1 읽음유무
+   * 참가자 2 읽음유무
+   */
+  //queue 이름
   @PrimaryGeneratedColumn({ unsigned: true })
   id: number;
 
-  @Column('int', { unsigned: true })
-  gest_id: number;
+  @Column()
+  queue: string;
 
-  @Column('int', { unsigned: true })
-  host_id: number;
+  // //참가자 1
+  // @Column('int', { unsigned: true })
+  // gest_id: number;
 
-  @Column({ default: 1 })
-  gest_count: number;
-
-  @Column({ default: 0 })
-  host_count: number;
+  // //참가자 2
+  // @Column('int', { unsigned: true })
+  // host_id: number;
 
   @Column()
-  last_message: string;
-  @UpdateDateColumn()
-  updatedAt: Date;
+  send_user: number;
 
-  @ManyToOne(() => User, (user) => user.host_message, {
-    nullable: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'host_id', referencedColumnName: 'id' })
-  host: Relation<User>;
+  @Column()
+  message: string;
 
-  @ManyToOne(() => User, (user) => user.gest_message, {
-    nullable: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'gest_id', referencedColumnName: 'id' })
-  gest: Relation<User>;
+  @Column({ default: 1 })
+  is_read: boolean;
+
+  // @ManyToOne(() => User, (user) => user.host_message, {
+  //   nullable: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // @JoinColumn({ name: 'host_id', referencedColumnName: 'id' })
+  // host: Relation<User>;
+
+  // @ManyToOne(() => User, (user) => user.gest_message, {
+  //   nullable: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // @JoinColumn({ name: 'gest_id', referencedColumnName: 'id' })
+  // gest: Relation<User>;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
