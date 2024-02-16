@@ -7,7 +7,7 @@ server.listen(process.env.PORT || 8080);
 app.use(express.static('public')); 
 app.set('view engine', 'ejs'); 
 app.get('/', (req, res) => { 
-  console.log(16)
+  res.send('hello world')
   //res.render('frontpage'); 
 })
 
