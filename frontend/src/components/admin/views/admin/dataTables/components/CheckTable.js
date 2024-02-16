@@ -15,21 +15,21 @@ export default function CheckTable(props) {
   const [pages, setPage] = useState(1)
 
   useEffect(() => {
-    fetch("http://3.36.1.132:4000/admin/reservationproductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setProductCount(resData.productCount); setproductlist(resData.products) }).catch(err => console.log(err))
-    const socket = openSocket('http://3.36.1.132:4000', { transports: ['websocket'] });
+    fetch("https://iamchatpt.com:4430/admin/reservationproductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setProductCount(resData.productCount); setproductlist(resData.products) }).catch(err => console.log(err))
+    const socket = openSocket('https://iamchatpt.com:4430', { transports: ['websocket'] });
     socket.on('events', (data) => {
       if (data === "acceptproduct" || data === "rejectproduct") {
-        fetch("http://3.36.1.132:4000/admin/reservationproductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData.products); setProductCount(resData.productCount); setproductlist(resData.products) }).catch(err => console.log(err))
+        fetch("https://iamchatpt.com:4430/admin/reservationproductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData.products); setProductCount(resData.productCount); setproductlist(resData.products) }).catch(err => console.log(err))
       }
     });
   }, [pages])
 
   const productacceptance = (id) => {
-    fetch(`http://3.36.1.132:4000/product/accept/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => { }).catch(err => console.log(err))
+    fetch(`https://iamchatpt.com:4430/product/accept/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => { }).catch(err => console.log(err))
 
   }
   const productreject = (id) => {
-    fetch(`http://3.36.1.132:4000/product/${id}`, { method: "DELETE", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => { }).catch(err => console.log(err))
+    fetch(`https://iamchatpt.com:4430/product/${id}`, { method: "DELETE", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => { }).catch(err => console.log(err))
 
   }
 

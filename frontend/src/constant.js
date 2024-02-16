@@ -1,2 +1,2 @@
-const server = 'http://3.36.1.132:4000'
+const server = 'https://iamchatpt.com:4430'
 export { server }

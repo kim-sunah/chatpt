@@ -6,7 +6,7 @@ const Allproduct = () => {
     const [ratings, setRatings] = useState({})
 
     useEffect(() => {
-        fetch("http://3.36.1.132:4000/payment/my", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("https://iamchatpt.com:4430/payment/my", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => {
                 if (resData.statusCode === 200) {
@@ -20,7 +20,7 @@ const Allproduct = () => {
 
     useEffect(() => {
         Promise.all(productlist.map(async product => {
-            const res = await fetch(`http://3.36.1.132:4000/comment/rating/${product.product_id}`)
+            const res = await fetch(`https://iamchatpt.com:4430/comment/rating/${product.product_id}`)
             return [product.product_id, (await res.json()).avg]
         }))
             .then(arr => {

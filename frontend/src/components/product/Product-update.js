@@ -29,7 +29,7 @@ const ProductUpdate = (props) => {
             navigate('/');
         }
         const product_ = await res.json();
-        const res2 = await fetch('http://3.36.1.132:4000/users/Mypage', { headers: { Authorization, refreshtoken } });
+        const res2 = await fetch('https://iamchatpt.com:4430/users/Mypage', { headers: { Authorization, refreshtoken } });
         const user_ = await res2.json();
         if (user_.user.id !== product_.user_id) {
             alert('권한이 없습니다.');

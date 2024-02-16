@@ -9,7 +9,7 @@ const Redirecturl = (props) => {
 
   const naverLogin = async () => {
     try {
-      const response = await fetch("http://3.36.1.132:4000/auth/naversignup", {
+      const response = await fetch("https://iamchatpt.com:4430/auth/naversignup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: code })
@@ -35,7 +35,7 @@ const Redirecturl = (props) => {
       }
 
       // if (responseData.statusCode === 200) {
-      //   const userData = await fetch("http://3.36.1.132:4000/auth/naversignin", {
+      //   const userData = await fetch("https://iamchatpt.com:4430/auth/naversignin", {
       //     method: "POST",
       //     headers: { "Content-Type": "application/json" },
       //     body: JSON.stringify({ email: responseData.naveruser.email })

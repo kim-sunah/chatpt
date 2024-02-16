@@ -12,7 +12,7 @@ import { Message } from '../entities/message.entity';
 import { User } from 'src/entities/user.entity';
 import { SendMessageDto } from './dto/send-message.dto';
 import { EventsGateway } from 'src/events/events.gateway';
-import { BadwordService } from 'src/badword/badword.service';
+import { BadwordService } from '../badword/badword.service';
 
 var amqp = require('amqplib/callback_api');
 const url =
@@ -127,44 +127,13 @@ export class MessageService {
     //메세지를 송신받았을 때와 수신받았을 때 전부 포함해서 가져와야함
     const messages = await this.messageRepository
       .createQueryBuilder('m')
-      .where('m.queue LIKE :prefix1', { prefix1: `%-${userId}` })
-      .orWhere('m.queue LIKE :prefix2', { prefix2: `${userId}-%` })
+      .select('m.queue')
+      .addSelect('SUM(m.is_read)', 'sum')
+      .where('m.queue LIKE :prefix1', { prefix1: '%-1' })
+      .orWhere('m.queue LIKE :prefix2', { prefix2: '1-%' })
       .groupBy('m.queue')
-      .getMany();
-
+      .getRawMany();
     return { status: 200, messages: messages };
-  }
-
-  //읽지 않은 메세지
-
-  async list_gest(userId: number) {
-    const list = await this.messageRepository
-      .createQueryBuilder('m')
-      .where('m.gest_id = :id OR m.host_id = :id', { id: userId })
-      .leftJoinAndSelect('m.host', 'host')
-      .leftJoinAndSelect('m.gest', 'gest')
-      .getMany();
-
-    return { list: list, userId: userId };
-  }
-
-  async isRead(id: number) {
-    try {
-      const role = (await this.userRepository.findOne({ where: { id: id } }))
-        .authority;
-      const sumField = role === 'User' ? 'gest_count' : 'host_count';
-      const whereField = role === 'User' ? 'gest_id' : 'host_id';
-
-      const sumResult = await this.messageRepository
-        .createQueryBuilder('m')
-        .select(`SUM(m.${sumField})`, 'sum')
-        .where(`m.${whereField} = :id`, { id })
-        .getRawOne();
-
-      return { isRead: sumResult.sum > 0 ? true : false };
-    } catch (err) {
-      throw new Error('메세지를 가져오지 못했습니다');
-    }
   }
 
   async receiveMessage(queue: string, userId: number) {
@@ -187,15 +156,9 @@ export class MessageService {
 
           channel.prefetch(1);
 
-          channel.consume(
-            queue,
-            function (msg) {
-              // console.log(' [x] Received %s', msg.content.toString());
-            },
-            {
-              noAck: true,
-            }
-          );
+          channel.consume(queue, {
+            noAck: true,
+          });
         });
       });
       return { message: message, userId: userId };

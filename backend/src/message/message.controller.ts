@@ -21,7 +21,7 @@ export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
   //message queue 생성하기
-  @Get(':sendId')
+  @Get('new/:sendId')
   async createMessage(@UserInfo() userInfo: User, @Param() sendId: number) {
     return this.messageService.createMessage(userInfo.id, sendId);
   }
@@ -42,22 +42,11 @@ export class MessageController {
     return this.messageService.messageList(userInfo.id);
   }
 
-  //읽지 않은 메세지 체크하기
-  @Get(':id')
-  async list(@UserInfo() userinfo: User) {
-    return await this.messageService.list_gest(userinfo.id);
-  }
-
-  @Get('isRead')
-  async isRead(@UserInfo() userinfo: User) {
-    return await this.messageService.isRead(userinfo.id);
-  }
-
   @Get(':queue')
   async receiveMessage(
     @Param('queue') queue: string,
-    @UserInfo() userId: number
+    @UserInfo() userInfo: User
   ) {
-    return await this.messageService.receiveMessage(queue, userId);
+    return await this.messageService.receiveMessage(queue, userInfo.id);
   }
 }

@@ -67,7 +67,7 @@ export default function UserReports() {
   const [productCount, setProductcount] = useState();
   const [userCount, setusercount] = useState();
   useEffect(() => {
-    fetch('http://3.36.1.132:4000/admin/count', {
+    fetch('https://iamchatpt.com:4430/admin/count', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

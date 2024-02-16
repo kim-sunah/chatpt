@@ -39,7 +39,7 @@ const TrainerPage = () => {
     useEffect(() => {
         Promise.all(
             products[0].map(async (product) => {
-                const res = await fetch(`http://3.36.1.132:4000/comment/rating/${product.id}`);
+                const res = await fetch(`https://iamchatpt.com:4430/comment/rating/${product.id}`);
                 return [product.product_id, (await res.json()).avg];
             })
         ).then((arr) => {
@@ -50,7 +50,7 @@ const TrainerPage = () => {
     }, [products]);
 
     const getUser = async () => {
-        const res = await fetch('http://3.36.1.132:4000/users/Mypage', {
+        const res = await fetch('https://iamchatpt.com:4430/users/Mypage', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
         });
@@ -71,7 +71,7 @@ const TrainerPage = () => {
     const [searchParams] = useSearchParams();
     const getProduct = async () => {
         const id = searchParams.get('id');
-        const res = await fetch(`http://3.36.1.132:4000/product/my?pageSize=100`, {
+        const res = await fetch(`https://iamchatpt.com:4430/product/my?pageSize=100`, {
             method: 'GET',
             headers: {
                 Authorization,
@@ -89,7 +89,7 @@ const TrainerPage = () => {
         }
         console.log(product_Id);
         const id = searchParams.get('id');
-        return fetch(`http://3.36.1.132:4000/payment/${product_Id}`, {
+        return fetch(`https://iamchatpt.com:4430/payment/${product_Id}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
         })
@@ -114,7 +114,7 @@ const TrainerPage = () => {
             return;
         }
         try {
-            const res = await fetch(`http://3.36.1.132:4000/payment/revenue/${product_Id}`, {
+            const res = await fetch(`https://iamchatpt.com:4430/payment/revenue/${product_Id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });
@@ -153,7 +153,7 @@ const TrainerPage = () => {
         e.preventDefault();
         if (window.confirm('정말로 이 강의를 삭제하시겠습니까?')) {
             try {
-                const res = await fetch(`http://3.36.1.132:4000/product/${productId}`, {
+                const res = await fetch(`https://iamchatpt.com:4430/product/${productId}`, {
                     method: 'DELETE',
                     headers: { Authorization, refreshtoken },
                 });
@@ -174,7 +174,7 @@ const TrainerPage = () => {
     const tableStyle = {};
 
     const getStudent = async () => {
-        const res = await fetch(`http://3.36.1.132:4000/payment/${product_Id}`, {});
+        const res = await fetch(`https://iamchatpt.com:4430/payment/${product_Id}`, {});
         // if (res.status !== 200) return alert('수강생 인원을 불러올 수 없습니다.');
         setStudent(await res.json());
     };

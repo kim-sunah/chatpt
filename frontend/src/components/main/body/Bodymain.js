@@ -41,10 +41,10 @@ const Bodymain = () => {
 
     const turnedOn = true;
     const getBest = async () => {
-        const res = await fetch('http://3.36.1.132:4000/payment/best');
+        const res = await fetch('https://iamchatpt.com:4430/payment/best');
         const weekBest_ = await res.json();
         if (weekBest_.length < 5) {
-            const res2 = await fetch('http://3.36.1.132:4000/product/latest');
+            const res2 = await fetch('https://iamchatpt.com:4430/product/latest');
             const latests = await res2.json();
             for (let i = 0; i < latests.length && weekBest_.length < 5; ++i)
                 if (!weekBest_.filter((product) => product.product_id === latests[i].id).length)
@@ -60,7 +60,7 @@ const Bodymain = () => {
         if (turnedOn) {
             const name = localStorage.getItem('name');
             if (name) {
-                const res = await fetch(`http://3.36.1.132:4000/payment/personalBest?key=${name}`);
+                const res = await fetch(`https://iamchatpt.com:4430/payment/personalBest?key=${name}`);
                 if (res.status === 200) yourBest_ = await res.json();
             }
         }
@@ -73,13 +73,13 @@ const Bodymain = () => {
         try {
             const arr = await Promise.all(
                 weekBest_.map(async (product) => {
-                    const res = await fetch(`http://3.36.1.132:4000/comment/rating/${product.product_id}`);
+                    const res = await fetch(`https://iamchatpt.com:4430/comment/rating/${product.product_id}`);
                     return [product.product_id, (await res.json()).avg];
                 })
             );
             const arr2 = await Promise.all(
                 yourBest_.map(async (product) => {
-                    const res = await fetch(`http://3.36.1.132:4000/comment/rating/${product.product_id}`);
+                    const res = await fetch(`https://iamchatpt.com:4430/comment/rating/${product.product_id}`);
                     return [product.product_id, (await res.json()).avg];
                 })
             );
@@ -102,7 +102,7 @@ const Bodymain = () => {
     }, []);
 
     const getRating = async (id) => {
-        const res = await fetch(`http://3.36.1.132:4000/comment/rating/${id}`);
+        const res = await fetch(`https://iamchatpt.com:4430/comment/rating/${id}`);
         return (await res.json()).avg;
     };
     return (

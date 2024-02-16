@@ -48,7 +48,7 @@ export default function ProductCard(props) {
     }, [products]);
 
     useEffect(() => {
-        fetch(`http://3.36.1.132:4000/comment/product/${id}`, {
+        fetch(`https://iamchatpt.com:4430/comment/product/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export default function ProductCard(props) {
             })
             .catch((err) => console.log(err));
         if (sessionStorage.getItem('accessToken')) {
-            fetch(`http://3.36.1.132:4000/wishlist/product/${id}`, {
+            fetch(`https://iamchatpt.com:4430/wishlist/product/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export default function ProductCard(props) {
                 .catch((err) => {
                     console.log(err);
                 });
-            fetch(`http://3.36.1.132:4000/comment/my/${id}`, {
+            fetch(`https://iamchatpt.com:4430/comment/my/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,14 +92,14 @@ export default function ProductCard(props) {
                 .catch((err) => console.log(err));
         }
 
-        const socket = openSocket('http://3.36.1.132:4000', { transports: ['websocket'] });
+        const socket = openSocket('https://iamchatpt.com:4430', { transports: ['websocket'] });
         socket.on('events', (data) => {
             if (data === 'LIKE') {
                 setwish(true);
             } else if (data === 'UNLIKE') {
                 setwish(false);
             } else if (data === 'createcomment' || data === 'updatecomment' || data === 'deletecomment')
-                fetch(`http://3.36.1.132:4000/comment/product/${id}`, {
+                fetch(`https://iamchatpt.com:4430/comment/product/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ export default function ProductCard(props) {
                         setcommentList(resData);
                     })
                     .catch((err) => console.log(err));
-            fetch(`http://3.36.1.132:4000/comment/my/${id}`, {
+            fetch(`https://iamchatpt.com:4430/comment/my/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export default function ProductCard(props) {
         if (!starsum || !comment) {
             alert('충족되지 않은 입력란이 존재합니다.');
         } else {
-            fetch(`http://3.36.1.132:4000/comment/${id}`, {
+            fetch(`https://iamchatpt.com:4430/comment/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ export default function ProductCard(props) {
         if (!starsum || !updatecommnet) {
             alert('충족되지 않은 입력란이 존재합니다.');
         } else {
-            fetch(`http://3.36.1.132:4000/comment/${id}`, {
+            fetch(`https://iamchatpt.com:4430/comment/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export default function ProductCard(props) {
     };
 
     const deletecomment = () => {
-        fetch(`http://3.36.1.132:4000/comment/${MyReview.id}`, {
+        fetch(`https://iamchatpt.com:4430/comment/${MyReview.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ export default function ProductCard(props) {
     const wishListhandler = (event) => {
         event.preventDefault();
         if (!wish) {
-            fetch(`http://3.36.1.132:4000/wishlist/${id}`, {
+            fetch(`https://iamchatpt.com:4430/wishlist/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ export default function ProductCard(props) {
                 .then((res) => res.json())
                 .catch((err) => console.log(err));
         } else if (wish) {
-            fetch(`http://3.36.1.132:4000/wishlist/${id}`, {
+            fetch(`https://iamchatpt.com:4430/wishlist/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -285,7 +285,7 @@ export default function ProductCard(props) {
     const searchParams = useParams();
     const productId = searchParams.id;
     const getProduct = async () => {
-        const res = await fetch(`http://3.36.1.132:4000/product?id=${productId}`, {
+        const res = await fetch(`https://iamchatpt.com:4430/product?id=${productId}`, {
             method: 'GET',
             headers: {
                 Authorization,
@@ -308,13 +308,13 @@ export default function ProductCard(props) {
     };
 
     const getAverage = async () => {
-        const res = await fetch(`http://3.36.1.132:4000/comment/rating/${productId}`, {});
+        const res = await fetch(`https://iamchatpt.com:4430/comment/rating/${productId}`, {});
         if (res.status !== 200) return alert('해당 정보를 불러올 수 없습니다.');
         setAverage(await res.json());
     };
 
     const getStudent = async () => {
-        const res = await fetch(`http://3.36.1.132:4000/payment/${productId}`, {});
+        const res = await fetch(`https://iamchatpt.com:4430/payment/${productId}`, {});
         if (res.status !== 200) return alert('수강생 인원을 불러올 수 없습니다.');
         setStudent(await res.json());
     };
@@ -322,7 +322,7 @@ export default function ProductCard(props) {
     // const TrainerId = searchParams.id;
     // const getTrainerImg = async () => {
     //     try {
-    //         const res = await fetch(`http://3.36.1.132:4000/users/Hostupdate/${TrainerId}`, {
+    //         const res = await fetch(`https://iamchatpt.com:4430/users/Hostupdate/${TrainerId}`, {
     //             method: 'GET',
     //             Authorization,
     //             refreshtoken,
@@ -342,7 +342,7 @@ export default function ProductCard(props) {
 
     const getHost = async () => {
         try {
-            const res = await fetch(`http://3.36.1.132:4000/users/HostImg/${products.user_id}`, {
+            const res = await fetch(`https://iamchatpt.com:4430/users/HostImg/${products.user_id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });
@@ -360,7 +360,7 @@ export default function ProductCard(props) {
 
     const getImg = async () => {
         try {
-            const res = await fetch(`http://3.36.1.132:4000/product/${id}/image/`, {
+            const res = await fetch(`https://iamchatpt.com:4430/product/${id}/image/`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });
