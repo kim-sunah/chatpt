@@ -5,11 +5,7 @@ REACT_ROOT="/home/ubuntu/app/frontend"
 ROOM_NAME="/home/ubuntu/app/room"
 APP_NAME="nest"
 REACT_APP_NAME="react"
-<<<<<<< HEAD
 ROOM_NAME="server"
-=======
-ROOM_NAME="webRTC"
->>>>>>> 0b334346a1c76a4cb831db70abfc9900927da446
 PM2_PATH="/home/ubuntu/.nvm/versions/node/v21.5.0/bin/pm2"
 
 TIME_NOW=$(date +%c)
