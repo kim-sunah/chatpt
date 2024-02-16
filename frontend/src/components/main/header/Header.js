@@ -55,9 +55,9 @@ const Header = () => {
                         ref={searchref}
                     />
                 </form>
-                {sessionStorage.getItem('accessToken') && <Link to="message">
+                {/* {sessionStorage.getItem('accessToken') && <Link to="message">
                     <BiSolidCommentDetail size="30" style={{ color: 'black' }} />
-                </Link>}
+                </Link>} */}
 
 
                 <Link to={sessionStorage.getItem('accessToken') ? '/mypage' : '/Login'}>
