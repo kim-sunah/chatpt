@@ -15,6 +15,7 @@ var un, pc;
 app.get('/newroom', (req, res) => {
   un = req.query.username;
   pc = req.query.passcode;
+  console.log(un,pc)
   var roomId = uuidv4();
   fs.appendFileSync("public/meeting-log.txt", roomId + ":" + pc + "\n", "utf-8");
   res.redirect(`/${roomId}`);
@@ -27,6 +28,7 @@ app.get('/joinroom', (req, res) => {
   pcJ = req.query.passcode;
   var log = fs.readFileSync("public/meeting-log.txt", "utf-8");
   var findInvitation = log.indexOf(inJ + ":" + pcJ);
+  console.log(findInvitation,'ABC')
   if (findInvitation != -1) {
     res.redirect(`/${inJ}`);
     un = unJ,
