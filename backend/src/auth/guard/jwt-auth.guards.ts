@@ -12,7 +12,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         const req = context.switchToHttp().getRequest();
         const accessToken = req.headers.authorization.split(' ')[1];
         const refreshToken = req.headers.refreshtoken;
-        console.log(accessToken, refreshToken);
+        
 
         if (!accessToken || !refreshToken) {
             throw new UnauthorizedException('접근할 수 없습니다.');

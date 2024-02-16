@@ -25,6 +25,7 @@ export class UpdateProductDto {
 	@Min(1)
 	price: number
 	
+	
 	@IsOptional()
 	@IsInt()
 	@Min(1)

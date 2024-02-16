@@ -38,6 +38,12 @@ export class ProductController {
         const { page, pageSize } = query;
         return await this.productService.getProducts(page, pageSize);
     }
+	
+	// 최근 등록 수업 목록
+	@Get('latest')
+	async getLatestProducts(){
+		return await this.productService.getLatestProducts()
+	}
 
     // 수업 검색 .......
     @Post('search')
@@ -109,15 +115,16 @@ export class ProductController {
 
     // 수업 수정
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin,Role.Host)
     @Patch(':id')
     async updateProduct(@Param() param: Id, @Body() body: UpdateProductDto) {
-        return await this.productService.updateProduct(param.id, body);
+        await this.productService.updateProduct(param.id, body);
+		return { statusCode: HttpStatus.OK } 
     }
 
     // 수업 썸네일 넣기/수정
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin,Role.Host)
     @Patch(':id/thumbnail')
     @UseInterceptors(FileInterceptor('image', {
 		fileFilter: (req, file, callback) => {
@@ -136,7 +143,7 @@ export class ProductController {
 	
 	// 수업 쇼츠 넣기/수정
 	@UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin,Role.Host)
     @Patch(':id/shorts')
     @UseInterceptors(FileInterceptor('shorts', {
 		fileFilter: (req, file, callback) => {
@@ -155,7 +162,7 @@ export class ProductController {
 
     // 수업 이미지 넣기
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin,Role.Host)
     @Post(':id/image')
     @UseInterceptors(FileInterceptor('image', {
 		fileFilter: (req, file, callback) => {
@@ -180,7 +187,7 @@ export class ProductController {
 
     // 수업 이미지 지우기
     @UseGuards(RoleGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin,Role.Host)
     @Delete('image/:id')
     async softDeleteImage(@Param() param: Id) {
         return await this.productService.softDeleteImage(param.id);

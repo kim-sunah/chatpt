@@ -1,0 +1,186 @@
+body {
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.mainpage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+h1,
+h2 {
+    color: #333;
+}
+
+.registrationButton {
+    background-color: #bdbd2d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: absolute;
+    top: 20px;
+    right: 430px;
+}
+
+.registrationButton:hover {
+    background-color: #d6d66e;
+}
+
+.lectureListContainer,
+.userListContainer {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    width: 50%;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.userListContainer {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    width: 50%; /* 좌우 여백을 줄이기 위해 50%에서 80%로 조정 */
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.userItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.userDetails h3 {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.userDetails div {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.messageButton {
+    background-color: #bdbd2d;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.messageButton:hover {
+    background-color: #d6d66e;
+}
+
+.productItemContainer {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.productItemContainer:hover {
+    transform: scale(1.05);
+}
+
+.button-black {
+    background-color: black;
+    color: white;
+}
+
+.userListContainer {
+    margin-top: 20px;
+    min-width: 700px;
+}
+
+.userListContainer h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.userListContainer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.userListContainer li {
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.userListContainer li:hover {
+    background-color: #f0f0f0;
+}
+.userListContainer .lectureItemCount {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.userListContainer li.active {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.userListContainer li.active .lectureItemCount {
+    color: #fff;
+}
+.revenueTotal {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-top: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.revenueTotal .lectureItemCount {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.revenueTotal .revenueInfo {
+    display: flex;
+    align-items: center;
+}
+
+.revenueTotal strong {
+    margin-right: 5px;
+}

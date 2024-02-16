@@ -7,12 +7,15 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import store from "./components/store/index.js"
 import { Provider } from 'react-redux';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Provider store ={store}>
+    <ChakraProvider>
+        <Provider store={store}>
             <App />
-    </Provider>
+        </Provider>
+    </ChakraProvider>
 
 
 );

@@ -43,7 +43,7 @@ export class AdminService {
   }
 
   async RecentlyAlluser(){
-    const users = await this.userRepository.find({order: {createdAt: 'DESC',}, take: 8});
+    const users = await this.userRepository.find({order: {createdAt: 'DESC',}, take: 6});
     return {users}
   }
 
@@ -67,7 +67,6 @@ export class AdminService {
     const user = await this.userRepository.find({where : {limit : false}})
     const userCount = user.length;
     const users = await this.userRepository.find({skip : (page - 1) * 11, take: 11,where : {limit : false} })
-    console.log()
     return {users, userCount}
   }
 

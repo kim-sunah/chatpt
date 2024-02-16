@@ -1,4 +1,4 @@
-import { Body, Query, Controller, Delete, Get, Param, Patch, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Query, Controller, Delete, Get, Param, Patch, Post, UseGuards, Request, HttpStatus } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from '../auth/decorators/userinfo.decorator';
@@ -8,6 +8,8 @@ import { SwCreateDto } from './dto/swcreate-comment.dto';
 import { SwUpdateDto } from './dto/swupdate-comment.dto';
 import { error } from 'console';
 import { PageDto } from '../product/dtos/page.dto'
+import { use } from 'passport';
+import {Id} from '../util/id'
 
 @Controller('comment')
 export class CommentController {
@@ -19,8 +21,15 @@ export class CommentController {
     async commentfind(@Param('productId') productId: number, @Query() query: PageDto) {
 		const { page, pageSize } = query
         //console.error('Error in commentfind:', error);
-        return this.commentService.commentfind(productId,page,pageSize);
+        return await this.commentService.commentfind(productId,page,pageSize);
     }
+	
+	// 강의별 리뷰 수, 평점 총합, 평균
+	@Get('rating/:id')
+	async getRating(@Param() param: Id){
+		const {count,sum} = await this.commentService.getRating(param.id)
+		return {count,sum,avg:(count!=='0'? sum/count:0)}
+	}
 	
 	// 내가 쓴 리뷰 목록
 	@ApiBearerAuth('accessToken')
@@ -28,8 +37,17 @@ export class CommentController {
 	@Get('my')
 	async getMyComments(@Query() query: PageDto){
 		const { page, pageSize } = query
-        return this.commentService.getMyComments(page,pageSize);
+        return await this.commentService.getMyComments(page,pageSize);
 	}
+
+    //강의에 맞는 리뷰 목록
+    @ApiBearerAuth('accessToken')
+	@UseGuards(JwtAuthGuard)
+	@Get('my/:id')
+	async getComments(@Param("id") param : string){
+        return await this.commentService.getComments(+param);
+	}
+
 	
 	// 리뷰 쓰기
     @ApiBearerAuth('accessToken')
@@ -40,8 +58,7 @@ export class CommentController {
         @Body() createCommentDto: SwCreateDto,
         @UserInfo() userId: number
     ) {
-        console.error('Error in createComment:', error);
-        return this.commentService.comment(createCommentDto, productId, userId['id']);
+        return await this.commentService.comment(createCommentDto, productId, userId['id']);
     }
 
 	// 리뷰 수정
@@ -53,8 +70,13 @@ export class CommentController {
         @Param('commentId') commentId: number,
         @UserInfo() userId: number
     ) {
+       
         console.error('Error in commentUpdate:', error);
-        return this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
+       await this.commentService.commentUpdate(userId['id'], commentId, updateCommentDto);
+        return {
+            statusCode: HttpStatus.OK,
+
+          };
     }
 
 	// 리뷰 삭제
@@ -63,6 +85,6 @@ export class CommentController {
     @Delete(':commentId')
     async commentDelete(@Param('commentId') commentId: number, @UserInfo() userId: number) {
         console.error('Error in commentDelete:', error);
-        return this.commentService.commentDelete(userId['id'], commentId);
+        await this.commentService.commentDelete(userId['id'], commentId);
     }
 }

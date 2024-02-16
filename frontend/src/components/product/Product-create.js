@@ -15,7 +15,7 @@ export default function ProductCreate(props){
 	const refreshtoken = window.sessionStorage.getItem('refreshToken')
 	
 	useEffect(() => {
-		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken || window.sessionStorage.getItem('authority')!=='Host'){
+		if(!window.sessionStorage.getItem('accessToken') || !refreshtoken || window.sessionStorage.getItem('authority') !=='Host'){
 			alert('권한이 없습니다.')
 			navigate('/')
 		}
@@ -23,11 +23,16 @@ export default function ProductCreate(props){
 
 	const createProduct = async (e,body) => {
 		e.preventDefault()
-		const {thumbnail, image, ...body_} = body
+		const {thumbnail, images, shorts, ...body_} = body
+		console.log(body_)
 		const res = await fetch(server+'/product', {method:'post',
 			headers:{'Content-Type':'application/json', Authorization, refreshtoken},
 			body: JSON.stringify(body_)})
-		if(res.status!==201) return alert('오류가 발생했습니다. 다시 시도해주세요.')
+		if(res.status!==201){
+			const {message} = await res.json()
+			if(message[0]==='적') return alert(message)
+			return alert('오류가 발생했습니다. 다시 시도해주세요.')
+		}
 		const id = (await res.json()).id
 		if(thumbnail){
 			const formData = new FormData()
@@ -36,10 +41,19 @@ export default function ProductCreate(props){
 				headers:{Authorization, refreshtoken},
 				body: formData})
 		}
-		if(image){
+		if(images.length){
+			await Promise.all(images.map(async image => {
+				const formData = new FormData()
+				formData.append('image', image)
+				await fetch(server+`/product/${id}/image`, {method:'post',
+					headers:{Authorization, refreshtoken},
+					body: formData})
+			}))
+		}
+		if(shorts){
 			const formData = new FormData()
-			formData.append('image', image)
-			const res = await fetch(server+`/product/${id}/image`, {method:'post',
+			formData.append('shorts', shorts)
+			const res_shorts = await fetch(server+`/product/${id}/shorts`, {method:'PATCH',
 				headers:{Authorization, refreshtoken},
 				body: formData})
 		}
