@@ -374,76 +374,83 @@ export default function ProductCard(props) {
                 </section>
                 <section className="p-4">
                     <h2 className="text-2xl font-bold">{products.name}</h2>
-                    <div className="mt-2 mb-4 text-sm">
+
+                    <div className="mt-4 mb-4 text-sm space-x-2">
+
                         <span className="text-gray-500 line-through">₩{products.price}</span>
                         <span className="ml-2 text-lg font-bold text-red-600">₩{products.sale_price}</span>
+                        <span className="mt1">
+                            <button
+                                onClick={() => navigate(`../../payment?id=${id}`)}
+                                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-40%"
+                            >
+                                지금 구매
+                            </button>
+                        </span>
+                        <p className="text-sm text-red-500">
+                            {(((products.price - products.sale_price) * 100) / products.price) | 0} % 할인중!
+                        </p>
+
                     </div>
                     <div className="flex space-x-2 mb-4">
-                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">상세설명</div>
-                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">강사 소개</div>
-                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">리뷰</div>
+                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">{products.category}</div>
+                        <div className="inline-flex items-center rounded-full whitespace-nowrap border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                            리뷰 평점: {average.avg}
+                        </div>
+                        <div className="flex items-center space-x-4">
+                            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2">
+                                {' '}
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill={wish ? 'red' : 'white'}
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="w-6 h-6"
+                                    onClick={wishListhandler}
+                                >
+                                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                    <p className="mb-4">
-                        {products.body}
-                    </p>
+                    <p className="mb-1">이 강의는 {products.capacity} 명 수강할 수 있어요</p>
+                    <p className="mb-1">현재 {student[1
+                    ]} 분이 이 강의를 수강신청하셨어요</p>
+                    <br />
                     <div className="mb-4">
                         <h3 className="font-bold">강의 기간</h3>
                         <p>{products.start_on} ~ {products.end_on}</p>
+                        <p>매주 {weeklyday(products.weekday)}</p>
+
                         <p>{products.start_at}부터 {products.end_at} 까지 진행되며 이용약관을 확인하시고 여러분들의 자세한 사항들은 관리자에게 채팅을 통하여 문의하여 주시면 됩니다.</p>
                     </div>
                     <div className="mb-4">
-                        <h3 className="font-bold">주의사항</h3>
-                        <ol className="list-decimal ml-4">
-                            <li>환불</li>
-                            <li>교환안내의 안내</li>
-                            <li>배송안내 안내</li>
-                            <li>판매약관</li>
-                            <li>자주묻는</li>
-                        </ol>
-                        <p>상품이, 상품들중에 환불 조건이 각기 다를 수도 있으니 주의하시길 바랍니다</p>
-                        <p>상품에 관해서 안내드릴 사항입니다!</p>
+                        <h3 className="font-bold">상세설명</h3>
+                        <br />
+                        {products.body}
                     </div>
-                    <p>포토, 판매중 입니다.</p>
                 </section>
+
                 <section className="grid grid-cols-3 gap-4 p-4">
-
-
-                    <img src="/placeholder.svg" alt="Yoga class" className="w-full h-auto" width="300" height="300" style={{ aspectRatio: "300 / 300", objectFit: "cover" }} />
-                    <img src="/placeholder.svg" alt="Yoga class" className="w-full h-auto" width="300" height="300" style={{ aspectRatio: "300 / 300", objectFit: "cover" }} />
-                    <img src="/placeholder.svg" alt="Yoga class" className="w-full h-auto" width="300" height="300" style={{ aspectRatio: "300 / 300", objectFit: "cover" }} />
+                    {img.map((Image) => {
+                        console.log(Image)
+                        return (
+                            <img src={Image.original_url} alt="Yoga class" className="w-full h-auto" width="300" height="300" style={{ aspectRatio: "300 / 300", objectFit: "cover" }} />
+                        )
+                    })}
                 </section>
-                <section className="grid grid-cols-3 gap-4 p-4">
-                    <ProductCard
-                        imageSrc="/placeholder.svg"
-                        altText="Product image"
-                        title="제품 (30자 이내)"
-                        category="요가"
-                        availability="평일에만 이용"
-                        price="₩360,000"
-                        originalPrice="₩660,000"
-                    />
-                    <ProductCard
-                        imageSrc="/placeholder.svg"
-                        altText="Product image"
-                        title="제품 (30자 이내)"
-                        category="요가"
-                        availability="평일에만 이용"
-                        price="₩360,000"
-                        originalPrice="₩660,000"
-                    />
-                    <ProductCard
-                        imageSrc="/placeholder.svg"
-                        altText="Product image"
-                        title="제품 (30자 이내)"
-                        category="요가"
-                        availability="평일에만 이용"
-                        price="₩360,000"
-                        originalPrice="₩660,000"
-                    />
-                </section>
-
-
-
+                <div className="flex justify-center">
+                    {products.shorts && (
+                        <video className="shorts" width="1000" height="1000" controls>
+                            <source src={products.shorts} type="video/mp4" />
+                        </video>
+                    )}
+                </div>
                 <div class="col-span-1 md:col-span-3">
                     <div class="mt-8 bg-white p-4 rounded-lg shadow">
                         <div style={{ display: "flex" }}>
