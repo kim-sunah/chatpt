@@ -102,7 +102,11 @@ $ npm start
 $ cd ../frontend
 $ npm start
 ```
-프로젝트 폴더 내의 backend와 frontend 폴더에서 각각 npm install을 실행하여 의존성을 설치하고, 서버와 클라이언트를 각각 실행해주세요.
+```
+$ cd ../room
+$ npm start
+```
+프로젝트 폴더 내의 backend와 frontend, room 폴더에서 각각 npm install을 실행하여 의존성을 설치하고, 서버와 클라이언트를 각각 실행해주세요.
 이제 브라우저에서 http://localhost:3000로 이동하여 프로젝트를 확인할 수 있습니다. 
 
 #### 환경변수 설정 
