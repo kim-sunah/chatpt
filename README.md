@@ -97,16 +97,16 @@ $ npm start
 #### 환경변수 설정 
 * Backend .env 작성 예시
 ```
-NODE_ENV=development
-SERVER_PORT=4000
-DB_HOST=localhost
-DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=mydatabasepassword
-DB_NAME=mydatabase
-DB_SYNC=true
-JWT_SECRET_KEY=myjwtsecretkey
-ELASTICSEARCH_NODE=http://localhost:9200/
+NODE_ENV=
+SERVER_PORT=
+DB_HOST=
+DB_PORT=
+DB_USERNAME=
+DB_PASSWORD
+DB_NAME=
+DB_SYNC=
+JWT_SECRET_KEY=
+ELASTICSEARCH_NODE=
 
 S3_REGION=
 S3_ACCESS_ID=
