@@ -48,7 +48,10 @@ export class ProductController {
     // 수업 검색 .......
     @Post('search')
     async searchProducts(@Body() query: any) {
+        console.log(query)
         const indexName = 'products';
+        const seachindexName= "search"
+        await this.elasticsearchService.searchindexDocument(seachindexName, query)
         const result =  await this.elasticsearchService.searchDocuments(indexName, query);
         return {
             statusCode: HttpStatus.OK,
@@ -58,8 +61,10 @@ export class ProductController {
 
     @Post("categorysearch")
     async categorysearcProducts(@Body() query: any) {
+        
         const indexName = 'products';
         const result =  await this.elasticsearchService.categorysearchDocuments(indexName, query);
+       
         return {
             statusCode: HttpStatus.OK,
             result,
