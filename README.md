@@ -152,9 +152,4 @@ Spart-Coding-club-node.js3-Team(sohwaje )
 
 # 버그 및 디버그
 
-# 참고 및 출처
-
-# 버전 및 업데이트 정보
-
-# FAQ
 
