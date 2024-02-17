@@ -1,7 +1,7 @@
 # Node.js-Final-Project-chatPT
 ---
+## 1:N 화상캠을 활용한 실시간 그룹 홈 퍼스널 트레이닝 서비스 
 ![OpenAI Logo](https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fd7014c93-cbe2-410a-87e5-40d22c9d6878%2FUntitled.png?table=block&id=45176b5d-cc84-465d-9c5b-75fca1767be9&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=902e594e-967e-4d2b-8c83-1018c92d752f&cache=v2)
-1:N 화상캠을 활용한 실시간 그룹 홈 퍼스널 트레이닝 서비스 
 
 # 프로젝트 소개 
 ---
