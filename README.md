@@ -55,7 +55,7 @@ Git, Github, Figma, Notion
 
 # 서비스 아키텍쳐
 ---
-![ service architecture]([https://mail.google.com/mail/u/0?ui=2&ik=ffbf5e0fce&attid=0.1&permmsgid=msg-a:r-2871983173777102556&th=18db811c842314be&view=fimg&fur=ip&sz=s0-l75-ft&attbid=ANGjdJ_CzqUe_HAPria7fVD-c9grpBa0BRlaCnAwoND6789DZZ-0zx5EQ8Hx37dlqRsvEx23QcQXEkmIGzqMSMuKsuwMAZ-y9xCY-NxYqYqLpUd3R7xywQXQY1HlCx0&disp=emb&realattid=ii_lsqcbvp21))
+![ service architecture](https://mail.google.com/mail/u/0?ui=2&ik=ffbf5e0fce&attid=0.1&permmsgid=msg-a:r-2871983173777102556&th=18db811c842314be&view=fimg&fur=ip&sz=s0-l75-ft&attbid=ANGjdJ_CzqUe_HAPria7fVD-c9grpBa0BRlaCnAwoND6789DZZ-0zx5EQ8Hx37dlqRsvEx23QcQXEkmIGzqMSMuKsuwMAZ-y9xCY-NxYqYqLpUd3R7xywQXQY1HlCx0&disp=emb&realattid=ii_lsqcbvp21)
 
 #### 고려사항
 Frontend에서 React를 선택한 이유는 먼저 React의 가상 DOM과 컴포넌트 기반 구조가 사용자 인터페이스를 더 효율적으로 관리할 수 있게 해주기 때문입니다. 또한 React의 커뮤니티와 생태계가 풍부하여 다양한 라이브러리와 도구를 활용할 수 있습니다. 다른 대안으로는 Vue.js나 Angular를 고려할 수 있었지만, React의 유연성과 개발 생산성을 고려하여 이를 선택했습니다.
