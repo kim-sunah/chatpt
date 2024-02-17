@@ -32,12 +32,14 @@ CI/CD, 결제,Nest, React
 
 # 개발 환경 
 ---
-* Nest.js
-* TypeORM
-* React
-* MySQL
-* GithubActions
-* AWS(EC2, S3, IAM, Codedploy)
+### front
+react, html, css, modan script
+### back
+nest.js, node.js
+### db
+mysql
+### collaboration tools
+git, github, figma, 노션
 
 # 주요기능
 ---
