@@ -1,6 +1,6 @@
 # Node.js-Final-Project-chatPT
 ---
-![OpenAI Logo](https://www.notion.so/B-2-2391c189623047378f2fb0ddae83b451?pvs=4#45176b5dcc84465d9c5b75fca1767be9)
+![OpenAI Logo](https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fd7014c93-cbe2-410a-87e5-40d22c9d6878%2FUntitled.png?table=block&id=45176b5d-cc84-465d-9c5b-75fca1767be9&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=902e594e-967e-4d2b-8c83-1018c92d752f&cache=v2)
 1:N 화상캠을 활용한 실시간 그룹 홈 퍼스널 트레이닝 서비스 
 
 # 프로젝트 소개 
@@ -46,7 +46,7 @@ CI/CD, 결제,Nest, React
 
 # 서비스 아키텍쳐
 ---
-![ service architecture](https://www.notion.so/B-2-2391c189623047378f2fb0ddae83b451?pvs=4#4a59a205d54c434284d4a5b8dce5b7d7)
+![ service architecture](https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F22835954-acd9-40c9-9423-9abe256fd9ad%2FUntitled.png?table=block&id=b0b07509-6be5-4836-ade6-d8428e3f21b6&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=902e594e-967e-4d2b-8c83-1018c92d752f&cache=v2)
 
 #### 고려사항
 Frontend에서 React를 선택한 이유는 먼저 React의 가상 DOM과 컴포넌트 기반 구조가 사용자 인터페이스를 더 효율적으로 관리할 수 있게 해주기 때문입니다. 또한 React의 커뮤니티와 생태계가 풍부하여 다양한 라이브러리와 도구를 활용할 수 있습니다. 다른 대안으로는 Vue.js나 Angular를 고려할 수 있었지만, React의 유연성과 개발 생산성을 고려하여 이를 선택했습니다.
