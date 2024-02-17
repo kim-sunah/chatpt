@@ -32,14 +32,14 @@ CI/CD, 결제,Nest, React
 
 # 개발 환경 
 ---
-### front
-react, html, css, modan script
-### back
-nest.js, node.js
-### db
-mysql
+### Front
+React, Html, Css, Modan script
+### Back
+Nest.js, Node.js
+### DB
+Mysql
 ### collaboration tools
-git, github, figma, 노션
+Git, Github, Figma, Notion
 
 # 주요기능
 ---
@@ -47,6 +47,7 @@ git, github, figma, 노션
 * WebSocket
 * RabbitMQ
 * Elasticsearch
+* Payment(PortOne, TossAPI, Transaction)
 
 # 서비스 아키텍쳐
 ---
