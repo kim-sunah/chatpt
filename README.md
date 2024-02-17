@@ -49,6 +49,9 @@ Git, Github, Figma, Notion
 * Elasticsearch
 * Payment(PortOne, TossAPI, Transaction)
 * ErrorBot & Slack
+* Socket.io
+* Social Login(KAKAO, Google)
+* Mail authentication
 
 # 서비스 아키텍쳐
 ---
