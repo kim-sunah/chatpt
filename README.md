@@ -88,6 +88,11 @@ $ npm inastll
 $ cd frontend
 $ npm inastll
 ```
+### WebRTC 설치
+```
+$ cd room
+$ npm inastll
+```
 ### 서버와 클라이언트 동시 실행(로컬에서 테스트)
 ```
 $ cd ../backend
