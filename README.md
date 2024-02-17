@@ -48,6 +48,7 @@ Git, Github, Figma, Notion
 * RabbitMQ
 * Elasticsearch
 * Payment(PortOne, TossAPI, Transaction)
+* ErrorBot & Slack
 
 # 서비스 아키텍쳐
 ---
