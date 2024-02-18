@@ -55,7 +55,7 @@ Git, Github, Figma, Notion
 
 # 서비스 아키텍쳐
 
-![test](https://mail.google.com/mail/u/0?ui=2&ik=ffbf5e0fce&attid=0.1&permmsgid=msg-a:r-4288729578526081381&th=18dbc7cac1b87258&view=fimg&fur=ip&sz=s0-l75-ft&attbid=ANGjdJ-qINbKdqvirFH24elIUjnmAVdu9DwHCyhEhz4YqgMa0y20CWqoxxECDWjaNj-Aswdkpgfe3iqPsTnDJWjs29wT-dB_1PN-2v0pf10jy6KNtd0LRfO758tjpZw&disp=emb&realattid=ii_lsrkggv60)
+![Service Architecture](https://mail.google.com/mail/u/0?ui=2&ik=ffbf5e0fce&attid=0.1&permmsgid=msg-a:r-4288729578526081381&th=18dbc7cac1b87258&view=fimg&fur=ip&sz=s0-l75-ft&attbid=ANGjdJ-qINbKdqvirFH24elIUjnmAVdu9DwHCyhEhz4YqgMa0y20CWqoxxECDWjaNj-Aswdkpgfe3iqPsTnDJWjs29wT-dB_1PN-2v0pf10jy6KNtd0LRfO758tjpZw&disp=emb&realattid=ii_lsrkggv60) 
 
 
 #### 고려사항
