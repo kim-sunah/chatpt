@@ -7,6 +7,9 @@ import { TypeormStore } from 'connect-typeorm';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import * as winston from 'winston';
 import SlackHook from 'winston-slack-webhook-transport';
+var amqp = require('amqplib/callback_api');
+const url =
+  'amqps://chatPT:chatPT123456@b-e4d218f5-5560-4786-b2bc-f3185dca9ce3.mq.ap-northeast-2.amazonaws.com:5671';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,7 +33,7 @@ async function bootstrap() {
     format: winston.format.combine(
       winston.format.timestamp(),
       winston.format.json(),
-	  winston.format.timestamp(), // Add a timestamp to Slack logs
+      winston.format.timestamp(), // Add a timestamp to Slack logs
       winston.format.errors({ stack: true }),
       winston.format.printf((info) => {
         const stack = Object.getOwnPropertySymbols(info).find(

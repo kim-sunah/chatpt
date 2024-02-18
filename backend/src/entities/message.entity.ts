@@ -29,13 +29,13 @@ export class Message {
   @Column()
   queue: string;
 
-  // //참가자 1
-  // @Column('int', { unsigned: true })
-  // gest_id: number;
+  //참가자 1
+  @Column('int', { unsigned: true })
+  gest_id: number;
 
-  // //참가자 2
-  // @Column('int', { unsigned: true })
-  // host_id: number;
+  //참가자 2
+  @Column('int', { unsigned: true })
+  host_id: number;
 
   @Column()
   send_user: number;
@@ -46,19 +46,19 @@ export class Message {
   @Column({ default: 1 })
   is_read: boolean;
 
-  // @ManyToOne(() => User, (user) => user.host_message, {
-  //   nullable: true,
-  //   onDelete: 'CASCADE',
-  // })
-  // @JoinColumn({ name: 'host_id', referencedColumnName: 'id' })
-  // host: Relation<User>;
+  @ManyToOne(() => User, (user) => user.host_message, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'host_id', referencedColumnName: 'id' })
+  host: Relation<User>;
 
-  // @ManyToOne(() => User, (user) => user.gest_message, {
-  //   nullable: true,
-  //   onDelete: 'CASCADE',
-  // })
-  // @JoinColumn({ name: 'gest_id', referencedColumnName: 'id' })
-  // gest: Relation<User>;
+  @ManyToOne(() => User, (user) => user.gest_message, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'gest_id', referencedColumnName: 'id' })
+  gest: Relation<User>;
 
   @CreateDateColumn()
   createdAt: Date;

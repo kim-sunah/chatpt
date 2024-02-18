@@ -29,10 +29,13 @@ export class MessageController {
   //메세지 보내기
   @Post(':queue')
   async sendMessage(
-    @Param() queue: string,
+    @Param('queue') queue: string,
     @UserInfo() userInfo: User,
-    dto: SendMessageDto
+    @Body() dto: SendMessageDto
   ) {
+    console.log(queue);
+    console.log(userInfo);
+    console.log(dto);
     return this.messageService.sendMessage(queue, userInfo.id, dto);
   }
 

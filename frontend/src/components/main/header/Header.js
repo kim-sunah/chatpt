@@ -55,10 +55,11 @@ const Header = () => {
                         ref={searchref}
                     />
                 </form>
-                {/* {sessionStorage.getItem('accessToken') && <Link to="message">
-                    <BiSolidCommentDetail size="30" style={{ color: 'black' }} />
-                </Link>} */}
-
+                {sessionStorage.getItem('accessToken') &&
+                    <Link to="/message">
+                        <BiSolidCommentDetail size="30" style={{ color: 'black' }} />
+                    </Link>
+                }
 
                 <Link to={sessionStorage.getItem('accessToken') ? '/mypage' : '/Login'}>
                     <BiSolidUser size="30" style={{ color: 'black', marginLeft: '10%' }} />

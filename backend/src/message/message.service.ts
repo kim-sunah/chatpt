@@ -12,7 +12,6 @@ import { Message } from '../entities/message.entity';
 import { User } from 'src/entities/user.entity';
 import { SendMessageDto } from './dto/send-message.dto';
 import { EventsGateway } from 'src/events/events.gateway';
-import { BadwordService } from '../badword/badword.service';
 
 var amqp = require('amqplib/callback_api');
 const url =
@@ -26,8 +25,7 @@ export class MessageService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @Inject(REQUEST) private readonly req: Request,
-    private readonly event: EventsGateway,
-    private readonly badwordService: BadwordService
+    private readonly event: EventsGateway
   ) {}
 
   async createMessage(userId: number, sendId: number) {
@@ -39,12 +37,13 @@ export class MessageService {
           { queue: `${sendId}-${userId}` },
         ],
       });
-
       if (!isMessage) {
         const message = '안녕하세요 반갑습니다!';
         //메세지 저장
         await this.messageRepository.save({
           queue: `${userId}-${sendId}`,
+          gest_id: userId,
+          host_id: sendId,
           send_user: sendId,
           message: message,
         });
@@ -56,7 +55,7 @@ export class MessageService {
           if (error0) {
             throw error0;
           }
-          connection.createChannelß(function (error1, channel) {
+          connection.createChannel(function (error1, channel) {
             if (error1) {
               throw error1;
             }
@@ -70,6 +69,7 @@ export class MessageService {
           });
         });
       }
+      this.event.createMessage('createMessage');
       return {
         status: 200,
       };
@@ -80,46 +80,40 @@ export class MessageService {
   }
 
   async sendMessage(queue: string, userId: number, body: SendMessageDto) {
-    try {
-      const badwords = await this.badwordService.searchBadword(body.message);
-      if (badwords.length)
-        throw new BadRequestException(
-          '적절하지 못한 단어가 들어있습니다: ' +
-            badwords.map((badword) => badword[1][0]).join(', ')
-        );
+    console.log('queue:{}', queue);
+    const message = await this.messageRepository.findOne({
+      where: { queue: queue },
+    });
+    //새로운 메세지 db에 저장
+    const new_message = await this.messageRepository.save({
+      queue: queue,
+      gest_id: message.gest_id,
+      host_id: message.host_id,
+      send_user: userId,
+      message: body.message,
+    });
 
-      //새로운 메세지 db에 저장
-      await this.messageRepository.save({
-        queue: queue,
-        send_user: userId,
-        message: body.message,
-      });
-
-      //queue에 메세지 전송
-      amqp.connect(url, function (error0, connection) {
-        if (error0) {
-          throw error0;
+    //queue에 메세지 전송
+    amqp.connect(url, function (error0, connection) {
+      if (error0) {
+        throw error0;
+      }
+      connection.createChannel(function (error1, channel) {
+        if (error1) {
+          throw error1;
         }
-        connection.createChannel(function (error1, channel) {
-          if (error1) {
-            throw error1;
-          }
 
-          channel.assertQueue(queue, {
-            durable: false,
-          });
-
-          //메세지 보내기
-          channel.sendToQueue(queue, Buffer.from(body.message));
+        channel.assertQueue(queue, {
+          durable: false,
         });
+
+        //메세지 보내기
+        channel.sendToQueue(queue, Buffer.from(JSON.stringify(new_message)));
+        this.event.createMessage('createMessage');
       });
+    });
 
-      this.event.sendMessage('sendMessage');
-
-      return { status: 200 };
-    } catch (err) {
-      throw new Error('메세지전송에 실패하였습니다.');
-    }
+    return { status: 200 };
   }
 
   //나의 메세지 목록 가져오기
@@ -127,40 +121,26 @@ export class MessageService {
     //메세지를 송신받았을 때와 수신받았을 때 전부 포함해서 가져와야함
     const messages = await this.messageRepository
       .createQueryBuilder('m')
-      .select('m.queue')
+      .select('m.queue,m.created_at, m.host_id, m.gest_id')
       .addSelect('SUM(m.is_read)', 'sum')
-      .where('m.queue LIKE :prefix1', { prefix1: '%-1' })
-      .orWhere('m.queue LIKE :prefix2', { prefix2: '1-%' })
+      .leftJoinAndSelect('m.host', 'host')
+      .leftJoinAndSelect('m.gest', 'gest')
+      .where('m.queue LIKE :prefix1', { prefix1: `%-${userId}` })
+      .orWhere('m.queue LIKE :prefix2', { prefix2: `${userId}-%` })
       .groupBy('m.queue')
       .getRawMany();
+
+    console.log(messages);
     return { status: 200, messages: messages };
   }
 
   async receiveMessage(queue: string, userId: number) {
     try {
-      const message = await this.messageRepository.findOne({
-        where: { id: +queue },
+      const message = await this.messageRepository.find({
+        where: { queue: queue },
       });
-      amqp.connect(url, function (error0, connection) {
-        if (error0) {
-          throw error0;
-        }
-        connection.createChannel(function (error1, channel) {
-          if (error1) {
-            throw error1;
-          }
+      console.log(message);
 
-          channel.assertQueue(queue, {
-            durable: false,
-          });
-
-          channel.prefetch(1);
-
-          channel.consume(queue, {
-            noAck: true,
-          });
-        });
-      });
       return { message: message, userId: userId };
     } catch (err) {
       console.log(err);
