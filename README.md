@@ -48,7 +48,7 @@ Git, Github, Figma, Notion
 * Mail authentication
 
 # 서비스 아키텍쳐
-![service architecture](https://mail.google.com/mail/u/0?ui=2&ik=ffbf5e0fce&attid=0.1&permmsgid=msg-a:r-4288729578526081381&th=18dbc7cac1b87258&view=fimg&fur=ip&sz=s0-l75-ft&attbid=ANGjdJ-qINbKdqvirFH24elIUjnmAVdu9DwHCyhEhz4YqgMa0y20CWqoxxECDWjaNj-Aswdkpgfe3iqPsTnDJWjs29wT-dB_1PN-2v0pf10jy6KNtd0LRfO758tjpZw&disp=emb&realattid=ii_lsrkggv60](https://www.notion.so/B-2-2391c189623047378f2fb0ddae83b451?pvs=4#088d81fe087e4d17bbb625af4b4a7032)
+![service architecture](https://www.notion.so/B-2-2391c189623047378f2fb0ddae83b451?pvs=4#088d81fe087e4d17bbb625af4b4a7032)
 
 
 #### 고려사항
