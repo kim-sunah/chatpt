@@ -1,7 +1,7 @@
 # Node.js-Final-Project-chatPT
 ---
 ## 1:N 화상캠을 활용한 실시간 그룹 홈 퍼스널 트레이닝 서비스 
-링크 주소 : https://iamchatpt.com/     
+링크 주소 : https://iamchatpt.com
 오픈 소스 코드: https://github.com/kim-sunah/shopping-mall
 ![OpenAI Logo](https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fd7014c93-cbe2-410a-87e5-40d22c9d6878%2FUntitled.png?table=block&id=45176b5d-cc84-465d-9c5b-75fca1767be9&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=902e594e-967e-4d2b-8c83-1018c92d752f&cache=v2)
 
@@ -55,7 +55,7 @@ Git, Github, Figma, Notion
 
 # 서비스 아키텍쳐
 ---
-![service architecture](https://mail.google.com/mail/u/0?ui=2&ik=ffbf5e0fce&attid=0.1&permmsgid=msg-a:r-2871983173777102556&th=18db811c842314be&view=fimg&fur=ip&sz=s0-l75-ft&attbid=ANGjdJ_YtOC1XdqQRS4WqQxaVDUQbiUm078EEBGu33JPCjX1qNNH_I9WWnmKG6SlyPX_U0L7XMZur_6_TIHAQV8WsAiYO9l8bn-Uc_y6qZVZcfyCw-kiDDEUvA_ieh0&disp=emb&realattid=ii_lsqcbvp21)
+![service architecture](https://mail.google.com/mail/u/0?ui=2&ik=ffbf5e0fce&attid=0.1&permmsgid=msg-a:r-4288729578526081381&th=18dbc7cac1b87258&view=fimg&fur=ip&sz=s0-l75-ft&attbid=ANGjdJ9c9a8z7zaU9donp-KS-Ybq-XU14CpBOjuCrQqo6jX4MVG-vf2I8fzCQMcv8AKVtbsfrZuYneuM88vjJamo0sBBdhIxGNvs5XTYY8DRVksbJXkPlDtzMJiDsAg&disp=emb&realattid=ii_lsrkggv60)
 
 
 #### 고려사항
