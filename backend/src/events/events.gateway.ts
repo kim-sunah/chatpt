@@ -57,6 +57,6 @@ export class EventsGateway {
 
   @SubscribeMessage('createMessage')
   createMessage(@MessageBody() message: string): void {
-    this.server.emit('events', message);
+    this.server.emit(JSON.parse(message).queue, message);
   }
 }

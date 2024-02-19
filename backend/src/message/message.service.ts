@@ -111,7 +111,8 @@ export class MessageService {
         channel.sendToQueue(queue, Buffer.from(JSON.stringify(new_message)));
       });
     });
-    this.event.createMessage(queue);
+
+    this.event.createMessage(JSON.stringify(new_message));
     return { status: 200 };
   }
 
