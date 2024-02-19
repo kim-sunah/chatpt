@@ -48,7 +48,7 @@ export default function ProductCard(props) {
     }, [products]);
 
     useEffect(() => {
-        fetch(`iamchatpt.com/comment/product/${id}`, {
+        fetch(`iamchatpiamchatpt.com:4430/product/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export default function ProductCard(props) {
             })
             .catch((err) => console.log(err));
         if (sessionStorage.getItem('accessToken')) {
-            fetch(`iamchatpt.com/wishlist/product/${id}`, {
+            fetch(`iamchatpiamchatpt.com:4430t/product/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export default function ProductCard(props) {
                 .catch((err) => {
                     console.log(err);
                 });
-            fetch(`iamchatpt.com/comment/my/${id}`, {
+            fetch(`iamchatpiamchatpt.com:4430/my/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,14 +92,14 @@ export default function ProductCard(props) {
                 .catch((err) => console.log(err));
         }
 
-        const socket = openSocket('iamchatpt.com', { transports: ['websocket'] });
+        const socket = openSocket('iamchatpiamchatpt.com:4430nsports: ['websocket'] });
         socket.on('events', (data) => {
             if (data === 'LIKE') {
                 setwish(true);
             } else if (data === 'UNLIKE') {
                 setwish(false);
             } else if (data === 'createcomment' || data === 'updatecomment' || data === 'deletecomment')
-                fetch(`iamchatpt.com/comment/product/${id}`, {
+                fetch(`iamchatpiamchatpt.com:4430/product/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ export default function ProductCard(props) {
                         setcommentList(resData);
                     })
                     .catch((err) => console.log(err));
-            fetch(`iamchatpt.com/comment/my/${id}`, {
+            fetch(`iamchatpiamchatpt.com:4430/my/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export default function ProductCard(props) {
         if (!starsum || !comment) {
             alert('충족되지 않은 입력란이 존재합니다.');
         } else {
-            fetch(`iamchatpt.com/comment/${id}`, {
+            fetch(`iamchatpiamchatpt.com:4430/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ export default function ProductCard(props) {
         if (!starsum || !updatecommnet) {
             alert('충족되지 않은 입력란이 존재합니다.');
         } else {
-            fetch(`iamchatpt.com/comment/${id}`, {
+            fetch(`iamchatpiamchatpt.com:4430/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export default function ProductCard(props) {
     };
 
     const deletecomment = () => {
-        fetch(`iamchatpt.com/comment/${MyReview.id}`, {
+        fetch(`iamchatpiamchatpt.com:4430/${MyReview.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ export default function ProductCard(props) {
     const wishListhandler = (event) => {
         event.preventDefault();
         if (!wish) {
-            fetch(`iamchatpt.com/wishlist/${id}`, {
+            fetch(`iamchatpiamchatpt.com:4430t/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ export default function ProductCard(props) {
                 .then((res) => res.json())
                 .catch((err) => console.log(err));
         } else if (wish) {
-            fetch(`iamchatpt.com/wishlist/${id}`, {
+            fetch(`iamchatpiamchatpt.com:4430t/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -285,7 +285,7 @@ export default function ProductCard(props) {
     const searchParams = useParams();
     const productId = searchParams.id;
     const getProduct = async () => {
-        const res = await fetch(`iamchatpt.com/product?id=${productId}`, {
+        const res = await fetch(`iamchatpiamchatpt.com:4430?id=${productId}`, {
             method: 'GET',
             headers: {
                 Authorization,
@@ -308,13 +308,13 @@ export default function ProductCard(props) {
     };
 
     const getAverage = async () => {
-        const res = await fetch(`iamchatpt.com/comment/rating/${productId}`, {});
+        const res = await fetch(`iamchatpiamchatpt.com:4430/rating/${productId}`, {});
         if (res.status !== 200) return alert('해당 정보를 불러올 수 없습니다.');
         setAverage(await res.json());
     };
 
     const getStudent = async () => {
-        const res = await fetch(`iamchatpt.com/payment/${productId}`, {});
+        const res = await fetch(`iamchatpiamchatpt.com:4430/${productId}`, {});
         if (res.status !== 200) return alert('수강생 인원을 불러올 수 없습니다.');
         setStudent(await res.json());
     };
@@ -322,7 +322,7 @@ export default function ProductCard(props) {
     // const TrainerId = searchParams.id;
     // const getTrainerImg = async () => {
     //     try {
-    //         const res = await fetch(`iamchatpt.com/users/Hostupdate/${TrainerId}`, {
+    //         const res = await fetch(`iamchatpiamchatpt.com:4430ostupdate/${TrainerId}`, {
     //             method: 'GET',
     //             Authorization,
     //             refreshtoken,
@@ -342,7 +342,7 @@ export default function ProductCard(props) {
 
     const getHost = async () => {
         try {
-            const res = await fetch(`iamchatpt.com/users/HostImg/${products.user_id}`, {
+            const res = await fetch(`iamchatpiamchatpt.com:4430ostImg/${products.user_id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });
@@ -360,7 +360,7 @@ export default function ProductCard(props) {
 
     const getImg = async () => {
         try {
-            const res = await fetch(`iamchatpt.com/product/${id}/image/`, {
+            const res = await fetch(`iamchatpiamchatpt.com:4430/${id}/image/`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });

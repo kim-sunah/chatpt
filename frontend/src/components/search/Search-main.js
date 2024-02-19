@@ -27,7 +27,7 @@ const SearchMain = () => {
 
 	useEffect(() => {
 		if (category !== "Category") {
-			fetch("iamchatpt.com/product/categorysearch", {
+			fetch("iamchatpiamchatpt.com:4430/categorysearch", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -53,7 +53,7 @@ const SearchMain = () => {
 
 	}
 	useEffect(() => {
-		fetch("iamchatpt.com/product/search", {
+		fetch("iamchatpiamchatpt.com:4430/search", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

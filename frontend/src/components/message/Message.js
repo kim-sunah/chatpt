@@ -11,11 +11,11 @@ const Message = () => {
     const sendMessage = useRef();
     const messageTextRef = useRef();
     const [user_id, setinfo] = useState()
-    const socket = openSocket('iamchatpt.com', { transports: ['websocket'] });
-    // // const socket = openSocket('iamchatpt.com', { transports: ['websocket'] });
+    const socket = openSocket('iamchatpt.com:4430', { transports: ['websocket'] });
+    // // const socket = openSocket('iamchatpt.com:4430', { transports: ['websocket'] });
     // const [messageList, setMessageList] = useState([]);
     useEffect(() => {
-        fetch("iamchatpt.com/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("iamchatpt.com:4430/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => { setinfo(resData.user.id); console.log(resData) })
             .catch(err => console.log(err))
@@ -23,7 +23,7 @@ const Message = () => {
     }, [])
     const send = (events) => {
         events.preventDefault();
-        fetch(`iamchatpt.com/message/${id}`, {
+        fetch(`iamchatpt.com:4430/message/${id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -66,7 +66,7 @@ const Message = () => {
             addMessage(data)
         });
 
-        fetch(`iamchatpt.com/message/${id}`, {
+        fetch(`iamchatpt.com:4430/message/${id}`, {
             method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
         }).then(res => (res.json())
             .then(resData => {

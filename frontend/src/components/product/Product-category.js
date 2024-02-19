@@ -18,7 +18,7 @@ const ProductCategory = props => {
 
 	const getCategoryBest = async () => {
 		if (category) {
-			const res = await fetch(`iamchatpt.com/payment/categoryBest?category=${category}&page=${page}`)
+			const res = await fetch(`iamchatpiamchatpt.com:4430/categoryBest?category=${category}&page=${page}`)
 			const [categoryBest_, count_] = await res.json()
 			setCategoryBest(categoryBest_)
 			setCount(count_)
@@ -31,7 +31,7 @@ const ProductCategory = props => {
 
 	useEffect(() => {
 		Promise.all(categoryBest.map(async product => {
-			const res = await fetch(`iamchatpt.com/comment/rating/${product.id}`)
+			const res = await fetch(`iamchatpiamchatpt.com:4430/rating/${product.id}`)
 			return [product.id, (await res.json()).avg]
 		}))
 			.then(arr => {

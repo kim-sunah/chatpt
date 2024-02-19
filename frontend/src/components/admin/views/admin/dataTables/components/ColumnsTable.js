@@ -27,17 +27,17 @@ export default function ColumnsTable(props) {
   const [banuserlist, setbanuserlist] = useState()
   const [banusercount, setbanusercount] = useState()
   useEffect(() => {
-    fetch("iamchatpt.com/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
-    const socket = openSocket('iamchatpt.com', { transports: ['websocket'] });
+    fetch("iamchatpiamchatpt.com:4430anuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
+    const socket = openSocket('iamchatpiamchatpt.com:4430nsports: ['websocket'] });
     socket.on('events', (data) => {
       if (data === "userban") {
-        fetch("iamchatpt.com/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
+        fetch("iamchatpiamchatpt.com:4430anuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
       }
     });
   }, [pages])
 
   const banuser = (id) => {
-    fetch(`iamchatpt.com/admin/limituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
+    fetch(`iamchatpiamchatpt.com:4430imituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
 
   }
   const { columnsData, tableData } = props;

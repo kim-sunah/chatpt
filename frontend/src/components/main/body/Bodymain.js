@@ -41,10 +41,10 @@ const Bodymain = () => {
 
     const turnedOn = true;
     const getBest = async () => {
-        const res = await fetch('iamchatpt.com/payment/best');
+        const res = await fetch('iamchatpiamchatpt.com:4430/best');
         const weekBest_ = await res.json();
         if (weekBest_.length < 5) {
-            const res2 = await fetch('iamchatpt.com/product/latest');
+            const res2 = await fetch('iamchatpiamchatpt.com:4430/latest');
             const latests = await res2.json();
             for (let i = 0; i < latests.length && weekBest_.length < 5; ++i)
                 if (!weekBest_.filter((product) => product.product_id === latests[i].id).length)
@@ -61,7 +61,7 @@ const Bodymain = () => {
             const name = localStorage.getItem('name');
             if (name) {
                 const res = await fetch(`iamchatpt.com/payment/personalBest?key=${name}`);
-                if (res.status === 200) yourBest_ = await res.json();
+                if (res.status === 200) yourBest_iamchatpt.com: 4430json();
             }
         }
         for (let i = 0; i < weekBest_.length && yourBest_.length < 5; ++i) {
@@ -74,13 +74,13 @@ const Bodymain = () => {
             const arr = await Promise.all(
                 weekBest_.map(async (product) => {
                     const res = await fetch(`iamchatpt.com/comment/rating/${product.product_id}`);
-                    return [product.product_id, (await res.json()).avg];
+                    return [product.product_id, (awaiiamchatpt.com: 4430.avg];
                 })
             );
             const arr2 = await Promise.all(
                 yourBest_.map(async (product) => {
                     const res = await fetch(`iamchatpt.com/comment/rating/${product.product_id}`);
-                    return [product.product_id, (await res.json()).avg];
+                    return [product.product_id, (awaiiamchatpt.com: 4430.avg];
                 })
             );
             const ratings_ = {};
@@ -103,7 +103,7 @@ const Bodymain = () => {
 
     const getRating = async (id) => {
         const res = await fetch(`iamchatpt.com/comment/rating/${id}`);
-        return (await res.json()).avg;
+        return (await res.json()).avg; iamchatpt.com: 4430
     };
     return (
         <div className="p-6 max-w-screen-xl px-40 mx-40" style={{ margin: '0px auto' }}>
