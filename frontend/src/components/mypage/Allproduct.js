@@ -33,7 +33,7 @@ const Allproduct = () => {
     return (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {productlist && productlist.map(product => (
-                <div onClick={() => window.open(`http://3.36.1.132:8080/${product.product.id}`)} className="rounded-lg overflow-hidden">
+                <div onClick={() => window.open(`https://imchatpt.com/${product.product.id}`)} className="rounded-lg overflow-hidden">
                     <img
                         src={product.product.thumbnail}
                         alt="Course thumbnail"
