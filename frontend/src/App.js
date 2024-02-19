@@ -26,6 +26,7 @@ import KakaoRedirect from './components/KakaoRedirect';
 import Message from './components/message/Message';
 import TrainerRoot from './components/trainerpage/TrainerRoot.js';
 import GoogleRedirect from './components/GoogleRedirect.js';
+import Side from './components/message/side/Side';
 
 const router = createBrowserRouter([
     {
@@ -64,9 +65,9 @@ const router = createBrowserRouter([
             },
             { path: 'category', element: <ProductCategory /> },
             {
-                path: 'Message',
+                path: 'message',
                 children: [
-                    { path: '', element: <Message /> },
+                    { path: '', element: <Side /> },
                     { path: ':id', element: <Message /> }
                 ]
             },

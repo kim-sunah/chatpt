@@ -1,4 +1,10 @@
-import { Inject, Injectable, Scope, Request } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Scope,
+  Request,
+  BadRequestException,
+} from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -22,141 +28,143 @@ export class MessageService {
     private readonly event: EventsGateway
   ) {}
 
-  async list_gest(userId: number) {
-    const list = await this.messageRepository
+  async createMessage(userId: number, sendId: number) {
+    try {
+      //db에 저장
+      const isMessage = await this.messageRepository.findOne({
+        where: [
+          { queue: `${userId}-${sendId}` },
+          { queue: `${sendId}-${userId}` },
+        ],
+      });
+      if (!isMessage) {
+        const message = '안녕하세요 반갑습니다!';
+        //메세지 저장
+        await this.messageRepository.save({
+          queue: `${userId}-${sendId}`,
+          gest_id: userId,
+          host_id: sendId,
+          send_user: sendId,
+          message: message,
+        });
+
+        //큐 생성
+        var queue = `${userId}-${sendId}`;
+
+        amqp.connect(url, function (error0, connection) {
+          if (error0) {
+            throw error0;
+          }
+          connection.createChannel(function (error1, channel) {
+            if (error1) {
+              throw error1;
+            }
+
+            channel.assertQueue(queue, {
+              durable: false,
+            });
+
+            //메세지 보내기
+            channel.sendToQueue(queue, Buffer.from(message));
+          });
+        });
+      }
+      this.event.createMessage('createMessage');
+      return {
+        status: 200,
+      };
+    } catch (err) {
+      console.log(err);
+      throw new Error('메세지전송에 실패하였습니다.');
+    }
+  }
+
+  async sendMessage(queue: string, userId: number, body: SendMessageDto) {
+    const message = await this.messageRepository.findOne({
+      where: { queue: queue },
+    });
+    //새로운 메세지 db에 저장
+    const new_message = await this.messageRepository.save({
+      queue: queue,
+      gest_id: message.gest_id,
+      host_id: message.host_id,
+      send_user: userId,
+      message: body.message,
+    });
+
+    //queue에 메세지 전송
+    amqp.connect(url, function (error0, connection) {
+      if (error0) {
+        throw error0;
+      }
+      connection.createChannel(function (error1, channel) {
+        if (error1) {
+          throw error1;
+        }
+
+        channel.assertQueue(queue, {
+          durable: false,
+        });
+
+        //메세지 보내기
+        channel.sendToQueue(queue, Buffer.from(JSON.stringify(new_message)));
+      });
+    });
+
+    this.event.createMessage(JSON.stringify(new_message));
+    return { status: 200 };
+  }
+
+  //나의 메세지 목록 가져오기
+  async messageList(userId: number) {
+    //메세지를 송신받았을 때와 수신받았을 때 전부 포함해서 가져와야함
+    const messages = await this.messageRepository
       .createQueryBuilder('m')
-      .where('m.gest_id = :id OR m.host_id = :id', { id: userId })
+      .select('m.queue,m.created_at, m.host_id, m.gest_id')
+      .addSelect('SUM(m.is_read)', 'sum')
       .leftJoinAndSelect('m.host', 'host')
       .leftJoinAndSelect('m.gest', 'gest')
-      .getMany();
+      .where('m.queue LIKE :prefix1', { prefix1: `%-${userId}` })
+      .orWhere('m.queue LIKE :prefix2', { prefix2: `${userId}-%` })
+      .groupBy('m.queue')
+      .getRawMany();
 
-    return { list: list, userId: userId };
-  }
-
-  async newMessage(hostId: number, userId: number) {
-    const message = '안녕하세요 반갑습니다!';
-    const createMessage = await this.messageRepository.save({
-      host_id: hostId,
-      gest_id: userId,
-      last_message: message,
-    });
-    try {
-      await this.messageRepository.save(createMessage);
-      var queue = createMessage.id.toString();
-      amqp.connect(url, function (error0, connection) {
-        if (error0) {
-          throw error0;
-        }
-        connection.createChannel(function (error1, channel) {
-          if (error1) {
-            throw error1;
-          }
-
-          channel.assertQueue(queue, {
-            durable: false,
-          });
-
-          //메세지 보내기
-          channel.sendToQueue(queue, Buffer.from(message));
-        });
-      });
-      return true;
-    } catch (err) {
-      console.log(err);
-      throw new Error('메세지전송에 실패하였습니다.');
-    }
-  }
-
-  async isRead(id: number) {
-    try {
-      const role = (await this.userRepository.findOne({ where: { id: id } }))
-        .authority;
-      const sumField = role === 'User' ? 'gest_count' : 'host_count';
-      const whereField = role === 'User' ? 'gest_id' : 'host_id';
-
-      const sumResult = await this.messageRepository
-        .createQueryBuilder('m')
-        .select(`SUM(m.${sumField})`, 'sum')
-        .where(`m.${whereField} = :id`, { id })
-        .getRawOne();
-
-      return { isRead: sumResult.sum > 0 ? true : false };
-    } catch (err) {
-      throw new Error('메세지를 가져오지 못했습니다');
-    }
-  }
-
-  async sendMessage(
-    userId: number,
-    queue: string,
-    body: SendMessageDto
-  ): Promise<void> {
-    try {
-      const message = await this.messageRepository.findOne({
-        where: { id: +queue },
-      });
-      message.last_message = body.message;
-      if (userId === message.gest_id) {
-        message.host_count + 1;
-        message.gest_count = 0;
-      } else {
-        message.gest_count + 1;
-        message.host_count = 0;
-      }
-
-      await this.messageRepository.update(queue, {
-        last_message: body.message,
-      });
-
-      amqp.connect(url, function (error0, connection) {
-        if (error0) {
-          throw error0;
-        }
-        connection.createChannel(function (error1, channel) {
-          if (error1) {
-            throw error1;
-          }
-
-          channel.assertQueue(queue, {
-            durable: false,
-          });
-
-          //메세지 보내기
-          channel.sendToQueue(queue, Buffer.from(body.message));
-        });
-      });
-
-      this.event.sendMessage('sendMessage');
-    } catch (err) {
-      console.log(err);
-      throw new Error('메세지전송에 실패하였습니다.');
-    }
+    return { status: 200, messages: messages };
   }
 
   async receiveMessage(queue: string, userId: number) {
     try {
-      const message = await this.messageRepository.findOne({
-        where: { id: +queue },
+      const message = await this.messageRepository.find({
+        where: { queue: queue },
       });
+      return { message: message, userId: userId };
+    } catch (err) {
+      console.log(err);
+      throw new Error('메세지를 가져오는데에 실패하였습니다.');
+    }
+  }
+  async receiveNewMessage(queue: string): Promise<any> {
+    return new Promise((resolve, reject) => {
       amqp.connect(url, function (error0, connection) {
         if (error0) {
-          throw error0;
+          reject(error0);
+          return;
         }
         connection.createChannel(function (error1, channel) {
           if (error1) {
-            throw error1;
+            reject(error1);
+            return;
           }
 
           channel.assertQueue(queue, {
             durable: false,
           });
-
-          channel.prefetch(1);
-
           channel.consume(
             queue,
             function (msg) {
-              // console.log(' [x] Received %s', msg.content.toString());
+              const message = JSON.parse(msg.content.toString());
+              console.log('Received message:', message);
+              resolve(message);
             },
             {
               noAck: true,
@@ -164,10 +172,6 @@ export class MessageService {
           );
         });
       });
-      return { message: message, userId: userId };
-    } catch (err) {
-      console.log(err);
-      throw new Error('메세지를 가져오는데에 실패하였습니다.');
-    }
+    });
   }
 }
