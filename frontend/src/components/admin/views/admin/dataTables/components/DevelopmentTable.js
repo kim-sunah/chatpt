@@ -30,7 +30,7 @@ export default function DevelopmentTable(props) {
   const [pages, setPage] = useState(1)
 
   useEffect(() => {
-    fetch("http://localhost:4000/admin/userlist",
+    fetch("iamchatpt.com/admin/userlist",
       {
         method: "POST",
         headers: {
@@ -45,10 +45,10 @@ export default function DevelopmentTable(props) {
         setuserList(resData.users)
       })
       .catch(err => console.log(err))
-    const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
+    const socket = openSocket('iamchatpt.com', { transports: ['websocket'] });
     socket.on('events', (data) => {
       if (data === "userban") {
-        fetch("http://localhost:4000/admin/userlist",
+        fetch("iamchatpt.com/admin/userlist",
           {
             method: "POST",
             headers: {
@@ -70,7 +70,7 @@ export default function DevelopmentTable(props) {
 
 
   const banuser = (id) => {
-    fetch(`http://localhost:4000/admin/limituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
+    fetch(`iamchatpt.com/admin/limituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
 
   }
   const { columnsData, tableData } = props;

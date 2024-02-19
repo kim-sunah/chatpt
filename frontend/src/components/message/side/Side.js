@@ -2,16 +2,16 @@ import React, { useRef, useMemo, useState, useEffect } from 'react';
 import openSocket from 'socket.io-client';
 import { Link } from "react-router-dom";
 const Side = () => {
-    // const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
+    // const socket = openSocket('iamchatpt.com', { transports: ['websocket'] });
     const [info, setinfo] = useState()
     const [messageList, setMessageList] = useState()
     useEffect(() => {
-        fetch("http://localhost:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("iamchatpt.com/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => { setinfo(resData.user); })
             .catch(err => console.log(err))
 
-        fetch(`http://localhost:4000/message`,
+        fetch(`iamchatpt.com/message`,
             {
                 method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
             })

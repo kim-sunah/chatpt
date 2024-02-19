@@ -34,11 +34,11 @@ export default function ColumnsTable(props) {
 
 
   useEffect(() => {
-    fetch("http://localhost:4000/admin/productlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
-    const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
+    fetch("iamchatpt.com/admin/productlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
+    const socket = openSocket('iamchatpt.com', { transports: ['websocket'] });
     socket.on('events', (data) => {
       if (data === "acceptproduct") {
-        fetch("http://localhost:4000/admin/productlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
+        fetch("iamchatpt.com/admin/productlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
       }
     });
   }, [pages])

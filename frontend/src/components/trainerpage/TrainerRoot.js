@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 const TrainerRoot = () => {
     const [authority, setauthority] = useState()
     useEffect(() => {
-        fetch("http://localhost:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("iamchatpt.com/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => { setauthority(resData.user.authority) })
             .catch(err => console.log(err))

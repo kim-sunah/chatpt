@@ -3,7 +3,7 @@ const Paymentlist = () => {
     const [paymentlist, setpaymentlist] = useState()
 
     useEffect(() => {
-        fetch("http://localhost:4000/payment/my", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("iamchatpt.com/payment/my", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => {
                 console.log(resData);
