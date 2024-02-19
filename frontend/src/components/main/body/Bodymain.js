@@ -53,6 +53,7 @@ const Bodymain = () => {
                         product_intro: latests[i].intro,
                         product_thumbnail: latests[i].thumbnail,
                         product_name: latests[i].name,
+						product_sale_price: latests[i].sale_price
                     });
         }
         let yourBest_ = [];

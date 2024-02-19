@@ -1,7 +1,7 @@
 export default function PaymentCard({payment}){
 	const localTimezoneOffset = (new Date().getTimezoneOffset())*60000
 	const localize = time => {
-		const date = (new Date(time)).getTime()-localTimezoneOffset
+		const date = (new Date(time)).getTime()
 		return new Date(date).toLocaleString()
 	}
 	
