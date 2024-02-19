@@ -109,10 +109,9 @@ export class MessageService {
 
         //메세지 보내기
         channel.sendToQueue(queue, Buffer.from(JSON.stringify(new_message)));
-        this.event.createMessage('createMessage');
       });
     });
-
+    this.event.createMessage(queue);
     return { status: 200 };
   }
 
@@ -130,7 +129,6 @@ export class MessageService {
       .groupBy('m.queue')
       .getRawMany();
 
-    console.log(messages);
     return { status: 200, messages: messages };
   }
 
@@ -139,12 +137,41 @@ export class MessageService {
       const message = await this.messageRepository.find({
         where: { queue: queue },
       });
-      console.log(message);
-
       return { message: message, userId: userId };
     } catch (err) {
       console.log(err);
       throw new Error('메세지를 가져오는데에 실패하였습니다.');
     }
+  }
+  async receiveNewMessage(queue: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      amqp.connect(url, function (error0, connection) {
+        if (error0) {
+          reject(error0);
+          return;
+        }
+        connection.createChannel(function (error1, channel) {
+          if (error1) {
+            reject(error1);
+            return;
+          }
+
+          channel.assertQueue(queue, {
+            durable: false,
+          });
+          channel.consume(
+            queue,
+            function (msg) {
+              const message = JSON.parse(msg.content.toString());
+              console.log('Received message:', message);
+              resolve(message);
+            },
+            {
+              noAck: true,
+            }
+          );
+        });
+      });
+    });
   }
 }

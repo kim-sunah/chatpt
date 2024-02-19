@@ -14,6 +14,11 @@ import { UserInfo } from '../auth/decorators/userinfo.decorator';
 import { User } from 'src/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
 import { SendMessageDto } from './dto/send-message.dto';
+
+var amqp = require('amqplib/callback_api');
+const url =
+  'amqps://chatPT:chatPT123456@b-e4d218f5-5560-4786-b2bc-f3185dca9ce3.mq.ap-northeast-2.amazonaws.com:5671';
+
 @ApiTags('메신저')
 @UseGuards(JwtAuthGuard)
 @Controller('message')
@@ -51,5 +56,15 @@ export class MessageController {
     @UserInfo() userInfo: User
   ) {
     return await this.messageService.receiveMessage(queue, userInfo.id);
+  }
+
+  @Get('/receive/:queue')
+  async newReceiveMessage(
+    @Param('queue') queue: string,
+    @UserInfo() userInfo: User
+  ) {
+    const message = await this.messageService.receiveNewMessage(queue);
+    console.log('컨ㅌ롤러 리텅 : ', message);
+    return { message: message, userId: userInfo.id };
   }
 }

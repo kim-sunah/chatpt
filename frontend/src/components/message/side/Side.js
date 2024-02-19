@@ -8,7 +8,7 @@ const Side = () => {
     useEffect(() => {
         fetch("http://localhost:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
-            .then(resData => { setinfo(resData.user); console.log(resData) })
+            .then(resData => { setinfo(resData.user); })
             .catch(err => console.log(err))
 
         fetch(`http://localhost:4000/message`,

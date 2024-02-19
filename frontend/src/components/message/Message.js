@@ -10,6 +10,7 @@ const Message = () => {
     const { id } = useParams();
     const sendMessage = useRef();
     const messageTextRef = useRef();
+
     // // const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
     // const [messageList, setMessageList] = useState([]);
 
@@ -30,14 +31,49 @@ const Message = () => {
                 console.log(err);
             });
     };
+
     useEffect(() => {
+
         const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
         messageTextRef.current.innerHTML = '';
+
+        socket.on('events', (data) => {
+            console.log(data === id)
+            if (data === id) {
+                console.log("data === id", data === id, data, id)
+                fetch(`http://localhost:4000/message/receive/${id}`, {
+                    method: "get", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
+                }).then(res => res.json())
+                    .then(resData => {
+                        console.log(resData);
+                        if (resData.message.send_user === resData.userId) {
+                            const newMessageElement = document.createElement('div');
+                            newMessageElement.className = "flex items-start space-x-2 p-1";
+                            const innerDiv = document.createElement('div');
+                            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                            innerDiv.innerText = resData.message.message;
+                            newMessageElement.appendChild(innerDiv);
+                            messageTextRef.current.appendChild(newMessageElement);
+                        } else {
+                            const newMessageElement = document.createElement('div');
+                            newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
+                            const innerDiv = document.createElement('div');
+                            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                            innerDiv.innerText = resData.message.message;
+                            newMessageElement.appendChild(innerDiv);
+                            messageTextRef.current.appendChild(newMessageElement);
+                        }
+                    })
+
+                sendMessage.current.value = "";
+            }
+        });
         fetch(`http://localhost:4000/message/${id}`, {
             method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
         }).then(res => (res.json())
             .then(resData => {
                 resData.message.map((message) => {
+                    console.log(resData)
                     if (message.send_user !== resData.userId) {
                         const newMessageElement = document.createElement('div');
                         newMessageElement.className = "flex items-start space-x-2 p-1";
@@ -58,22 +94,7 @@ const Message = () => {
                     }
                 })
             }))
-        socket.on('events', (data) => {
-            if ('createMessage')
-                fetch(`http://localhost:4000/comment/product/${id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
-                        refreshtoken: sessionStorage.getItem('refreshToken'),
-                    },
-                })
-                    .then((res) => res.json())
-                    .then((resData) => {
-                        console.log(resData)
-                    })
-                    .catch((err) => console.log(err));
-        });
+
     })
 
     // useEffect(() => {
