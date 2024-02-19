@@ -4,7 +4,7 @@ const Userinfo = () => {
     const [info, setinfo] = useState()
     const [update, setupdate] = useState(false)
     useEffect(() => {
-        fetch("iamchatpiamchatpt.com:4430ypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("iamchatphttps://iamchatpt.com:4430ypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => { setinfo(resData.user); console.log(resData) })
             .catch(err => console.log(err))

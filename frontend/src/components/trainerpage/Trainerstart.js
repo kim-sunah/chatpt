@@ -4,7 +4,7 @@ const Trainerstart = () => {
     const HostHandler = () => {
         sessionStorage.removeItem("authority")
         sessionStorage.setItem("authority", "Host")
-        fetch("iamchatpiamchatpt.com:4430ostupdate", { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("iamchatphttps://iamchatpt.com:4430ostupdate", { method: "PUT", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => { window.location.reload(); })
             .catch(err => console.log(err))

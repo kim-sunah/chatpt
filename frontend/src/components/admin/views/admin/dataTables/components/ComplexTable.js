@@ -34,11 +34,11 @@ export default function ColumnsTable(props) {
 
 
   useEffect(() => {
-    fetch("iamchatpiamchatpt.com:4430roductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
-    const socket = openSocket('iamchatpiamchatpt.com:4430nsports: ['websocket'] });
+    fetch("iamchatphttps://iamchatpt.com:4430roductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
+    const socket = openSocket('iamchatphttps://iamchatpt.com:4430nsports: ['websocket'] });
     socket.on('events', (data) => {
       if (data === "acceptproduct") {
-        fetch("iamchatpiamchatpt.com:4430roductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
+        fetch("iamchatphttps://iamchatpt.com:4430roductlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { console.log(resData); setProductCount(resData.productCount); setproductList(resData.products) }).catch(err => console.log(err))
       }
     });
   }, [pages])

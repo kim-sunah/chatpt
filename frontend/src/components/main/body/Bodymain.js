@@ -41,10 +41,10 @@ const Bodymain = () => {
 
     const turnedOn = true;
     const getBest = async () => {
-        const res = await fetch('iamchatpiamchatpt.com:4430/best');
+        const res = await fetch('iamchatphttps://iamchatpt.com:4430/best');
         const weekBest_ = await res.json();
         if (weekBest_.length < 5) {
-            const res2 = await fetch('iamchatpiamchatpt.com:4430/latest');
+            const res2 = await fetch('iamchatphttps://iamchatpt.com:4430/latest');
             const latests = await res2.json();
             for (let i = 0; i < latests.length && weekBest_.length < 5; ++i)
                 if (!weekBest_.filter((product) => product.product_id === latests[i].id).length)

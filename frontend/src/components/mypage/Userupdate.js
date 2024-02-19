@@ -19,11 +19,11 @@ const Userupdate = (props) => {
         event.preventDefault(); // 폼 제출 방지
         const formData = new FormData();
         formData.append("image", image)
-        fetch("iamchatpiamchatpt.com:4430pdate", { method: "POST", headers: { "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: formData })
+        fetch("iamchatphttps://iamchatpt.com:4430pdate", { method: "POST", headers: { "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: formData })
             .then(res => res.json())
             .then(resData => { })
             .catch(err => console.log(err))
-        fetch("iamchatpiamchatpt.com:4430ypageUpdate", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ Email: props.info.email, Password: Password.current.value, ConfirmPassword: ConfirmPassword.current.value }) })
+        fetch("iamchatphttps://iamchatpt.com:4430ypageUpdate", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") }, body: JSON.stringify({ Email: props.info.email, Password: Password.current.value, ConfirmPassword: ConfirmPassword.current.value }) })
             .then(res => res.json())
             .then(resData => {
                 if (resData.statusCode === 400) {

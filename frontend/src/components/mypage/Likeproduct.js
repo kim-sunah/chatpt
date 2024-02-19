@@ -7,7 +7,7 @@ const Likeproduct = () => {
     const [ratings, setRatings] = useState({})
 
     useEffect(() => {
-        fetch("iamchatpiamchatpt.com:4430t/my", { method: "get", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("iamchatphttps://iamchatpt.com:4430t/my", { method: "get", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => {
                 console.log(resData)
@@ -20,7 +20,7 @@ const Likeproduct = () => {
 
     useEffect(() => {
         Promise.all(productlist.map(async product => {
-            const res = await fetch(`iamchatpiamchatpt.com:4430/rating/${product.product_id}`)
+            const res = await fetch(`iamchatphttps://iamchatpt.com:4430/rating/${product.product_id}`)
             return [product.product_id, (await res.json()).avg]
         }))
             .then(arr => {
