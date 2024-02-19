@@ -164,5 +164,5 @@ REACT_APP_GOOGLE_CLIENT_KEY=
 Spart-Coding-club-node.js3-Team(sohwaje )
 
 # 버그 및 디버그
-
+![WebRTC Trouble](https://www.canva.com/design/DAF7aXcFe_Y/sBOsBaSU-orO73iQnHPxqQ/edit)
 
