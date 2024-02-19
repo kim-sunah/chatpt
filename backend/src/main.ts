@@ -30,7 +30,7 @@ async function bootstrap() {
     format: winston.format.combine(
       winston.format.timestamp(),
       winston.format.json(),
-	  winston.format.timestamp(), // Add a timestamp to Slack logs
+      winston.format.timestamp(), // Add a timestamp to Slack logs
       winston.format.errors({ stack: true }),
       winston.format.printf((info) => {
         const stack = Object.getOwnPropertySymbols(info).find(
@@ -57,6 +57,7 @@ async function bootstrap() {
       }),
     ],
   });
+
   app.useLogger(logger);
 
   await app.listen(4000, '0.0.0.0');

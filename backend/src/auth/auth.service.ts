@@ -128,7 +128,7 @@ export class AuthService {
     const adminUser = await this.userRepository.findOne({
       where: { authority: Role.Admin },
     });
-    await this.messageService.newMessage(adminUser.id, userInfo.id);
+    await this.messageService.createMessage(adminUser.id, userInfo.id);
     return userInfo;
   }
 
@@ -180,7 +180,7 @@ export class AuthService {
       gender: USER_GENDER,
     });
     const userInfo = await this.userRepository.save(naveruser);
-    await this.messageService.newMessage(79, userInfo.id);
+    return this.createUser(user);
     return userInfo;
   }
 
