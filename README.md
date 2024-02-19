@@ -55,7 +55,7 @@ Git, Github, Figma, Notion
 
 # 서비스 아키텍쳐
 
-![Service Architecture]([https://www.notion.so/B-2-2391c189623047378f2fb0ddae83b451?pvs=4#088d81fe087e4d17bbb625af4b4a7032](https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Faafa1852-55cd-4c45-a2d7-7bee0866cb1e%2FUntitled.png?table=block&id=088d81fe-087e-4d17-bbb6-25af4b4a7032&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2)) 
+![Service Architecture](https://chatpt-githubaction-s3-bucket.s3.ap-northeast-2.amazonaws.com/aaa.png) 
 
 
 #### 고려사항
