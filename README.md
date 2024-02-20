@@ -45,16 +45,32 @@ Git, Github, Figma, Notion
 
 
 <details>
- <summary>* WebRTC</summary>
+ <summary> WebRTC</summary>
 </details>
-* WebSocket
-* RabbitMQ
-* Elasticsearch
-* Payment(PortOne, TossAPI, Transaction)
-* ErrorBot & Slack
-* Socket.io
-* Social Login(KAKAO, Google)
-* Mail authentication
+<details>
+ <summary>WebSocket </summary>
+</details>
+<details>
+ <summary> RabbitMQ</summary>
+</details>
+<details>
+ <summary> Elasticsearch</summary>
+</details>
+<details>
+ <summary> Payment(PortOne, TossAPI, Transaction)</summary>
+</details>
+<details>
+ <summary> ErrorBot & Slack</summary>
+</details>
+<details>
+ <summary> Socket.io</summary>
+</details>
+<details>
+ <summary> Social Login(KAKAO, Google)</summary>
+</details>
+
+
+
 
 # 서비스 아키텍쳐
 
