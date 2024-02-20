@@ -161,7 +161,7 @@ const Payment = (props) => {
 
 	const callback = async (rsp, isKakao = true) => {
 		if (rsp.success) {
-			const res = await fetch(`https://iamchatpt.com:4430/payment`, {
+			const res = await fetch(`http://localhost:4000/payment`, {
 				method: 'post',
 				headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
 				body: JSON.stringify({
