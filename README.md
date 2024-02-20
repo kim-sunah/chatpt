@@ -43,9 +43,9 @@ Git, Github, Figma, Notion
 
 # 주요기능
 
-* WebRTC
+
 <details>
-  * WebRTC
+ <summary>* WebRTC</summary>
 </details>
 * WebSocket
 * RabbitMQ
