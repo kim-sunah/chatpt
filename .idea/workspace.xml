@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfbebaca-66d1-4968-8d95-9220654af5c8" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/message/side/Side.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/auth/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/auth/auth.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/entities/message.entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/entities/message.entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/events/events.gateway.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/events/events.gateway.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/message/message.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/message/message.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/message/message.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/message/message.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/message/message.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/message/message.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/main/header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/main/header/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/message/Message.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/message/Message.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +35,10 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1708386244" />
+                  </RecentBranch>
+                  <RecentBranch>
                     <option name="branchName" value="message2" />
                     <option name="lastUsedInstant" value="1708036900" />
                   </RecentBranch>
@@ -35,10 +49,6 @@
                   <RecentBranch>
                     <option name="branchName" value="message" />
                     <option name="lastUsedInstant" value="1707855280" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1707854380" />
                   </RecentBranch>
                 </list>
               </option>

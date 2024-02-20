@@ -27,7 +27,7 @@ const SearchMain = () => {
 
 	useEffect(() => {
 		if (category !== "Category") {
-			fetch("https://iamchatpt.com:444/product/categorysearch", {
+			fetch("https://iamchatpt.com:4430/product/categorysearch", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -53,7 +53,7 @@ const SearchMain = () => {
 
 	}
 	useEffect(() => {
-		fetch("https://iamchatpt.com:444/product/search", {
+		fetch("https://iamchatpt.com:4430/product/search", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -73,7 +73,7 @@ const SearchMain = () => {
 	}, [search]);
 
 	return (
-		<div className="p-6 max-w-screen-xl px-40 mx-40" style={{ margin: "0px auto" }}>
+		<div className="p-6 max-w-screen-xl px-8 mx-8" style={{ margin: "0px auto" }}>
 			<main className="p-4">
 				<h1 className="text-3xl font-bold mb-6">"{search}" 에 대한 검색 결과</h1>
 				<div className="flex gap-4 mb-6">

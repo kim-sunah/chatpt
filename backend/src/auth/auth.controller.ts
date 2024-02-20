@@ -38,7 +38,6 @@ export class AuthController {
   async signUp(@Body() createuserDto: CreateuserDto) {
     const user = await this.authService.signUp(createuserDto);
 
-    this.messageService.newMessage(79, user.id);
     return {
       statusCode: HttpStatus.CREATED,
       message: '회원가입에 성공했습니다.',

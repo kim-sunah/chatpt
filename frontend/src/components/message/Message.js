@@ -3,20 +3,101 @@ import openSocket from 'socket.io-client';
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 // import SendTalk from "./SendTalk";
-// import TackList from "./side/Talklist";
+import Side from "./side/Side";
 
 const Message = () => {
+
     const { id } = useParams();
     const sendMessage = useRef();
     const messageTextRef = useRef();
-    const socket = openSocket('https://iamchatpt.com:444', { transports: ['websocket'] });
-    const [messageList, setMessageList] = useState([]);
-    const [userId, setUserId] = useState();
+    const [user_id, setinfo] = useState()
+    const socket = openSocket('https://iamchatpt.com:4430', { transports: ['websocket'] });
 
-    const send = (e) => {
-        e.preventDefault();
-        fetch(`https://iamchatpt.com:444/message/${id}`, {
-            method: "PUT",
+    const handleMessage = (data) => {
+        data = JSON.parse(data)
+        if (data.send_user === user_id) {
+            const newMessageElement = document.createElement('div');
+            newMessageElement.className = "flex items-start space-x-2 p-1";
+            const innerDiv = document.createElement('div');
+            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+            innerDiv.innerText = data.message;
+            newMessageElement.appendChild(innerDiv);
+            messageTextRef.current.appendChild(newMessageElement);
+        } else {
+            const newMessageElement = document.createElement('div');
+            newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
+            const innerDiv = document.createElement('div');
+            innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+            innerDiv.innerText = data.message;
+            newMessageElement.appendChild(innerDiv);
+            messageTextRef.current.appendChild(newMessageElement);
+        }
+    };
+
+
+    useEffect(() => {
+        // 유저 정보 가져오기
+        fetchUserInfo();
+        fetch(`https://iamchatpt.com:4430/message/${id}`, {
+            method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
+        }).then(res => (res.json())
+            .then(resData => {
+                resData.message.map((message) => {
+                    if (message.send_user !== resData.userId) {
+                        const newMessageElement = document.createElement('div');
+                        newMessageElement.className = "flex items-start space-x-2 p-1";
+                        const innerDiv = document.createElement('div');
+                        innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                        innerDiv.innerText = message.message;
+                        newMessageElement.appendChild(innerDiv);
+                        messageTextRef.current.appendChild(newMessageElement);
+                        sendMessage.current.value = "";
+                    } else {
+                        const newMessageElement = document.createElement('div');
+                        newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
+                        const innerDiv = document.createElement('div');
+                        innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
+                        innerDiv.innerText = message.message;
+                        newMessageElement.appendChild(innerDiv);
+                        messageTextRef.current.appendChild(newMessageElement);
+                    }
+                })
+            }))
+        // Socket 이벤트 핸들링
+        socket.on(id, handleMessage);
+
+        // 컴포넌트 언마운트 시 Socket 이벤트 리스너 제거
+        return () => {
+            socket.off(id, handleMessage);
+        };
+    }, []);
+
+    // 유저 정보 가져오는 함수
+    const fetchUserInfo = () => {
+        fetch("https://iamchatpt.com:4430/users/Mypage", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
+                "refreshtoken": sessionStorage.getItem("refreshToken")
+            }
+        })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Failed to fetch user info");
+                }
+                return res.json();
+            })
+            .then(resData => {
+                setinfo(resData.user.id);
+            })
+            .catch(err => console.log(err));
+    };
+
+    const send = (event) => {
+        event.preventDefault();
+        fetch(`https://iamchatpt.com:4430/message/${id}`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
@@ -24,131 +105,36 @@ const Message = () => {
             },
             body: JSON.stringify({ message: sendMessage.current.value })
         })
+            .then(() => {
+                sendMessage.current.value = "";
+            })
             .catch(err => {
                 console.log(err);
             });
     };
+    const MessageComponent = ({ message, isOwnMessage }) => {
+        const className = isOwnMessage ? "flex items-end justify-end space-x-2 p-1" : "flex items-start space-x-2 p-1";
+        return (
+            <div className={className}>
+                <div className="bg-blue-500 text-white p-3 rounded-lg">
+                    {message}
+                </div>
+            </div>
+        );
+    };
 
-    useEffect(() => {
-        fetch("https://iamchatpt.com:444/message", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
-                "refreshtoken": sessionStorage.getItem("refreshToken")
-            }
-        })
-            .then(res => res.json())
-            .then(resData => {
-                console.log(resData);
-                setMessageList(resData.list);
-                setUserId(resData.userId)
-            })
-            .catch(err => {
-                console.log(err)
-            });
-
-        fetch(`https://iamchatpt.com:444/message/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + sessionStorage.getItem("accessToken"),
-                "refreshtoken": sessionStorage.getItem("refreshToken")
-            }
-        })
-            .then(res => res.json())
-            .then(resData => {
-                // Handle response data if needed
-            })
-            .catch(err => {
-                console.log(err)
-            });
-
-        const handleMessage = (data) => {
-            if (data === "sendMessage") {
-                fetch(`https://iamchatpt.com:444/message/${id}`,
-                    {
-                        method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
-                    })
-                    .then(res => res.json())
-                    .then(resData => {
-                        console.log(resData)
-                        console.log(resData.message.id)
-                        console.log(id)
-                        console.log(id == resData.message.id)
-                        console.log(resData.userId.id, userId)
-                        if (resData.message.id === id) {
-                            if (resData.userId.id === userId) {
-                                const newMessageElement = document.createElement('div');
-                                newMessageElement.className = "flex items-start space-x-2 p-1";
-                                const innerDiv = document.createElement('div');
-                                innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
-                                innerDiv.innerText = resData.message.last_message;
-                                newMessageElement.appendChild(innerDiv);
-                                messageTextRef.current.appendChild(newMessageElement);
-                                sendMessage.current.value = "";
-                            } else {
-                                const newMessageElement = document.createElement('div');
-                                newMessageElement.className = "flex items-end justify-end space-x-2 p-1";
-                                const innerDiv = document.createElement('div');
-                                innerDiv.className = "bg-blue-500 text-white p-3 rounded-lg";
-                                innerDiv.innerText = resData.message.last_message;
-                                newMessageElement.appendChild(innerDiv);
-                                messageTextRef.current.appendChild(newMessageElement);
-                                sendMessage.current.value = "";
-                            }
-
-                            socket.off('message', handleMessage);
-                        }
-                    })
-                    .catch(err => console.log("err", err))
-            }
-        };
-        socket.on('message', handleMessage);
-    }, [id]);
-
+    const renderMessages = (messages) => {
+        return messages.map((message, index) => (
+            <MessageComponent
+                key={index}
+                message={message.message}
+                isOwnMessage={message.send_user === user_id}
+            />
+        ));
+    };
     return (
         <div className="flex h-screen bg-gray-100 max-w-screen-xl mx-auto">
-            <aside className="w-80 bg-white p-6">
-                <div className="flex items-center justify-between pb-6">
-                    <h1 className="text-xl font-semibold">Message</h1>
-                </div>
-                <ul class="space-y-4">
-                    {messageList && messageList.map(list => (
-                        // <Link to={`${list.id}`}>
-                        <Link to={`/message/${list.id}`} >
-                            <li class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <span class="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full">
-                                        <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
-                                            {userId}
-                                            {userId == list.host_id ? <img src={list.gest.profile_image} /> : <img src={list.host.profile_image} />}
-                                        </span>
-                                    </span>
-                                    <div>
-                                        {userId == list.host_id ? <div class="font-semibold">{list.gest.nickname}</div> : <div class="font-semibold">{list.host.nickname}</div>}
-                                        <div class="text-sm text-gray-500">{list.updatedAt.substr(0, 10)}</div>
-                                    </div>
-                                </div>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="text-gray-400"
-                                >
-                                </svg>
-                            </li>
-                        </Link>
-                    ))
-                    }
-                </ul >
-            </aside>
+            <Side />
             <main className="w-3/4 bg-white p-6 border border-gray-200">
                 <div className="flex flex-col h-full">
                     <div ref={messageTextRef} className="flex-1 overflow-y-auto">

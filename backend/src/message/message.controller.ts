@@ -14,44 +14,57 @@ import { UserInfo } from '../auth/decorators/userinfo.decorator';
 import { User } from 'src/entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guards';
 import { SendMessageDto } from './dto/send-message.dto';
+
+var amqp = require('amqplib/callback_api');
+const url =
+  'amqps://chatPT:chatPT123456@b-e4d218f5-5560-4786-b2bc-f3185dca9ce3.mq.ap-northeast-2.amazonaws.com:5671';
+
 @ApiTags('메신저')
 @UseGuards(JwtAuthGuard)
 @Controller('message')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
-  @Get()
-  async list(@UserInfo() userinfo: User) {
-    return await this.messageService.list_gest(userinfo.id);
+  //message queue 생성하기
+  @Get('new/:sendId')
+  async createMessage(@UserInfo() userInfo: User, @Param() sendId: number) {
+    return this.messageService.createMessage(userInfo.id, sendId);
   }
 
-  @Post(':hostId')
-  async newMessage(
-    @Param('hostId') hostId: number,
-    @UserInfo() userId: number
-  ) {
-    return await this.messageService.newMessage(hostId, userId);
-  }
-
-  @Get('isRead')
-  async isRead(@UserInfo() userinfo: User) {
-    return await this.messageService.isRead(userinfo.id);
-  }
-
-  @Put(':queue')
+  //메세지 보내기
+  @Post(':queue')
   async sendMessage(
     @Param('queue') queue: string,
-    @UserInfo() userinfo: User,
-    @Body() body: SendMessageDto
+    @UserInfo() userInfo: User,
+    @Body() dto: SendMessageDto
   ) {
-    return await this.messageService.sendMessage(userinfo.id, queue, body);
+    console.log(queue);
+    console.log(userInfo);
+    console.log(dto);
+    return this.messageService.sendMessage(queue, userInfo.id, dto);
+  }
+
+  //메세지 목록 가져오기
+  @Get()
+  async messageList(@UserInfo() userInfo: User) {
+    return this.messageService.messageList(userInfo.id);
   }
 
   @Get(':queue')
   async receiveMessage(
     @Param('queue') queue: string,
-    @UserInfo() userId: number
+    @UserInfo() userInfo: User
   ) {
-    return await this.messageService.receiveMessage(queue, userId);
+    return await this.messageService.receiveMessage(queue, userInfo.id);
+  }
+
+  @Get('/receive/:queue')
+  async newReceiveMessage(
+    @Param('queue') queue: string,
+    @UserInfo() userInfo: User
+  ) {
+    const message = await this.messageService.receiveNewMessage(queue);
+    console.log('컨ㅌ롤러 리텅 : ', message);
+    return { message: message, userId: userInfo.id };
   }
 }

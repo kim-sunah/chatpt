@@ -56,6 +56,15 @@ export class SearchService {
     });
     return result;
   }
+
+
+  async searchindexDocument(index: string, document: any): Promise<any> {
+    const result = await this.elasticsearchService.index({
+      index,
+      body: document,
+    });
+    return result;
+  }
   async searchDocuments(index: string, query: any): Promise<any> {
     const result = await this.elasticsearchService.search({
       index,
@@ -131,7 +140,6 @@ export class SearchService {
           }
         }
       })
-	  console.log(result.hits)
       //console.log(result.hits.hits[0]._id)
       await this.elasticsearchService.update({
         index,

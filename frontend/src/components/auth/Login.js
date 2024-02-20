@@ -26,7 +26,7 @@ const Login = () => {
     const [passworderrormessage, setpassworderrormessage] = useState()
     const Loginsubmithanlder = (events) => {
         events.preventDefault()
-        fetch("https://iamchatpt.com:444/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
+        fetch("https://iamchatpt.com:4430/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
             .then(res => res.json())
             .then(resData => {
                 console.log(resData)
@@ -67,11 +67,12 @@ const Login = () => {
 
     const KakaoLogin = () => {
         const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`
+        
         window.location.href = KAKAO_URL
     }
 
     const GoogleLogin = () => {
-        const Google_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=1050893472397-hotgn026mmcjckjh77nfmv7tj47uh4nl.apps.googleusercontent.com&redirect_uri=http://3.36.1.132:3000/Login/google&response_type=code&scope=email profile"
+        const Google_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_KEY}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=code&scope=email profile`
         window.location.href = Google_URL
     }
     return (

@@ -122,7 +122,7 @@ const ProductForm = (props) => {
                     start_on <= end_on &&
                     Number.isInteger(capacity) &&
                     1 <= capacity &&
-                    capacity <= 100 &&
+                    capacity <= 20 &&
                     weekday > 0
                 ) {
                     props.onSubmit(e, {
@@ -185,11 +185,11 @@ const ProductForm = (props) => {
                 />
             </Form.Group>
             <Form.Group>
-                <Form.Label>정원(최대 100명)</Form.Label>
+                <Form.Label>정원(최대 20명)</Form.Label>
                 <Form.Control type="number" onChange={(e) => setCapacity(parseInt(e.target.value))} value={capacity} />
             </Form.Group>
-            {!(Number.isInteger(capacity) && 1 <= capacity && capacity <= 100) && (
-                <p style={{ color: 'red' }}>정원은 1 이상 100 이하의 자연수여야 합니다.</p>
+            {!(Number.isInteger(capacity) && 1 <= capacity && capacity <= 20) && (
+                <p style={{ color: 'red' }}>정원은 1 이상 20 이하의 자연수여야 합니다.</p>
             )}
             <Form.Group>
                 <Form.Label>강의 시작일</Form.Label>
