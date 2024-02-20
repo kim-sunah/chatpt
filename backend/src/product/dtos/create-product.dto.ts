@@ -30,7 +30,7 @@ export class CreateProductDto {
 	@IsOptional()
 	@IsInt()
 	@Min(1)
-	@Max(100)
+	@Max(20)
 	capacity: number
 	
 	@IsDateString()
