@@ -40,7 +40,7 @@ export class MessageService {
       if (!isMessage) {
         const message = '안녕하세요 반갑습니다!';
         //메세지 저장
-        await this.messageRepository.save({
+        const new_message = await this.messageRepository.save({
           queue: `${userId}-${sendId}`,
           gest_id: userId,
           host_id: sendId,
@@ -68,8 +68,8 @@ export class MessageService {
             channel.sendToQueue(queue, Buffer.from(message));
           });
         });
+        this.event.createMessage(JSON.stringify(new_message));
       }
-      this.event.createMessage('createMessage');
       return {
         status: 200,
       };
