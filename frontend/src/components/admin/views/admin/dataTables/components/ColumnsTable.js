@@ -27,17 +27,17 @@ export default function ColumnsTable(props) {
   const [banuserlist, setbanuserlist] = useState()
   const [banusercount, setbanusercount] = useState()
   useEffect(() => {
-    fetch("https://localhost:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
-    const socket = openSocket('https://localhost:4000', { transports: ['websocket'] });
+    fetch("http://localhost:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
+    const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
     socket.on('events', (data) => {
       if (data === "userban") {
-        fetch("https://localhost:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
+        fetch("http://localhost:4000/admin/banuserList", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pages: pages }) }).then(res => res.json()).then(resData => { setbanusercount(resData.userCount); setbanuserlist(resData.users) }).catch(err => console.log(err))
       }
     });
   }, [pages])
 
   const banuser = (id) => {
-    fetch(`https://localhost:4000/admin/limituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
+    fetch(`http://localhost:4000/admin/limituser/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" } }).then(res => res.json()).then(resData => console.log(resData)).catch(err => console.log(err))
 
   }
   const { columnsData, tableData } = props;

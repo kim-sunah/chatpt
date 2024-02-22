@@ -20,7 +20,7 @@ const Signup = () => {
 
   const Singupsubmithanlder = (events) => {
     events.preventDefault()
-    fetch("https://localhost:4000/auth/signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value, ConfirmPassword: Confirmpassword.current.value, phone: Phone.current.value, Gender: Gender, Emailauthentication: Emailauthentication.current.value, nickname: nickname.current.value }) })
+    fetch("http://localhost:4000/auth/signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value, ConfirmPassword: Confirmpassword.current.value, phone: Phone.current.value, Gender: Gender, Emailauthentication: Emailauthentication.current.value, nickname: nickname.current.value }) })
       .then(res => res.json())
       .then(resData => {
         if (resData.statusCode !== 201) {
@@ -78,7 +78,7 @@ const Signup = () => {
 
   const emailsubmit = (events) => {
     events.preventDefault()
-    fetch("https://localhost:4000/auth/Email_authentication", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value }) })
+    fetch("http://localhost:4000/auth/Email_authentication", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value }) })
       .then(res => res.json())
       .then(resData => { console.log(resData) })
       .catch(err => {

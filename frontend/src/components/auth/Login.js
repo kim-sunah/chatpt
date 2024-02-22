@@ -26,7 +26,7 @@ const Login = () => {
     const [passworderrormessage, setpassworderrormessage] = useState()
     const Loginsubmithanlder = (events) => {
         events.preventDefault()
-        fetch("https://localhost:4000/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
+        fetch("http://localhost:4000/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
             .then(res => res.json())
             .then(resData => {
                 console.log(resData)
@@ -67,7 +67,7 @@ const Login = () => {
 
     const KakaoLogin = () => {
         const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`
-        
+
         window.location.href = KAKAO_URL
     }
 

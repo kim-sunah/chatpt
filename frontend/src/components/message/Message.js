@@ -11,7 +11,7 @@ const Message = () => {
     const sendMessage = useRef();
     const messageTextRef = useRef();
     const [user_id, setinfo] = useState()
-    const socket = openSocket('https://localhost:4000', { transports: ['websocket'] });
+    const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
 
     const handleMessage = (data) => {
         data = JSON.parse(data)
@@ -38,7 +38,7 @@ const Message = () => {
     useEffect(() => {
         // 유저 정보 가져오기
         fetchUserInfo();
-        fetch(`https://localhost:4000/message/${id}`, {
+        fetch(`http://localhost:4000/message/${id}`, {
             method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") },
         }).then(res => (res.json())
             .then(resData => {
@@ -74,7 +74,7 @@ const Message = () => {
 
     // 유저 정보 가져오는 함수
     const fetchUserInfo = () => {
-        fetch("https://localhost:4000/users/Mypage", {
+        fetch("http://localhost:4000/users/Mypage", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const Message = () => {
 
     const send = (event) => {
         event.preventDefault();
-        fetch(`https://localhost:4000/message/${id}`, {
+        fetch(`http://localhost:4000/message/${id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

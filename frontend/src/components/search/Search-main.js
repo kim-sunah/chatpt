@@ -27,7 +27,7 @@ const SearchMain = () => {
 
 	useEffect(() => {
 		if (category !== "Category") {
-			fetch("https://localhost:4000/product/categorysearch", {
+			fetch("http://localhost:4000/product/categorysearch", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -53,7 +53,7 @@ const SearchMain = () => {
 
 	}
 	useEffect(() => {
-		fetch("https://localhost:4000/product/search", {
+		fetch("http://localhost:4000/product/search", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

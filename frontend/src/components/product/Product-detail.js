@@ -31,7 +31,7 @@ export default function ProductCard(props) {
     const [student, setStudent] = useState([1]);
     const [host, setHost] = useState({});
     const [img, setImg] = useState([]);
-   
+
 
     const [trainerImg, setTrainerImg] = useState({});
 
@@ -49,7 +49,7 @@ export default function ProductCard(props) {
     }, [products]);
 
     useEffect(() => {
-        fetch(`https://localhost:4000/comment/product/${id}`, {
+        fetch(`http://localhost:4000/comment/product/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export default function ProductCard(props) {
             })
             .catch((err) => console.log(err));
         if (sessionStorage.getItem('accessToken')) {
-            fetch(`https://localhost:4000/wishlist/product/${id}`, {
+            fetch(`http://localhost:4000/wishlist/product/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export default function ProductCard(props) {
                 .catch((err) => {
                     console.log(err);
                 });
-            fetch(`https://localhost:4000/comment/my/${id}`, {
+            fetch(`http://localhost:4000/comment/my/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,14 +93,14 @@ export default function ProductCard(props) {
                 .catch((err) => console.log(err));
         }
 
-        const socket = openSocket('https://localhost:4000', { transports: ['websocket'] });
+        const socket = openSocket('http://localhost:4000', { transports: ['websocket'] });
         socket.on('events', (data) => {
             if (data === 'LIKE') {
                 setwish(true);
             } else if (data === 'UNLIKE') {
                 setwish(false);
             } else if (data === 'createcomment' || data === 'updatecomment' || data === 'deletecomment')
-                fetch(`https://localhost:4000/comment/product/${id}`, {
+                fetch(`http://localhost:4000/comment/product/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export default function ProductCard(props) {
                         setcommentList(resData);
                     })
                     .catch((err) => console.log(err));
-            fetch(`https://localhost:4000/comment/my/${id}`, {
+            fetch(`http://localhost:4000/comment/my/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export default function ProductCard(props) {
         if (!starsum || !comment) {
             alert('충족되지 않은 입력란이 존재합니다.');
         } else {
-            fetch(`https://localhost:4000/comment/${id}`, {
+            fetch(`http://localhost:4000/comment/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ export default function ProductCard(props) {
         if (!starsum || !updatecommnet) {
             alert('충족되지 않은 입력란이 존재합니다.');
         } else {
-            fetch(`https://localhost:4000/comment/${id}`, {
+            fetch(`http://localhost:4000/comment/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export default function ProductCard(props) {
     };
 
     const deletecomment = () => {
-        fetch(`https://localhost:4000/comment/${MyReview.id}`, {
+        fetch(`http://localhost:4000/comment/${MyReview.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ export default function ProductCard(props) {
     const wishListhandler = (event) => {
         event.preventDefault();
         if (!wish) {
-            fetch(`https://localhost:4000/wishlist/${id}`, {
+            fetch(`http://localhost:4000/wishlist/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ export default function ProductCard(props) {
                 .then((res) => res.json())
                 .catch((err) => console.log(err));
         } else if (wish) {
-            fetch(`https://localhost:4000/wishlist/${id}`, {
+            fetch(`http://localhost:4000/wishlist/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -285,7 +285,7 @@ export default function ProductCard(props) {
     const searchParams = useParams();
     const productId = searchParams.id;
     const getProduct = async () => {
-        const res = await fetch(`https://localhost:4000/product?id=${productId}`, {
+        const res = await fetch(`http://localhost:4000/product?id=${productId}`, {
             method: 'GET',
             headers: {
                 Authorization,
@@ -308,13 +308,13 @@ export default function ProductCard(props) {
     };
 
     const getAverage = async () => {
-        const res = await fetch(`https://localhost:4000/comment/rating/${productId}`, {});
+        const res = await fetch(`http://localhost:4000/comment/rating/${productId}`, {});
         if (res.status !== 200) return alert('해당 정보를 불러올 수 없습니다.');
         setAverage(await res.json());
     };
 
     const getStudent = async () => {
-        const res = await fetch(`https://localhost:4000/payment/${productId}`, {});
+        const res = await fetch(`http://localhost:4000/payment/${productId}`, {});
         if (res.status !== 200) return alert('수강생 인원을 불러올 수 없습니다.');
         setStudent(await res.json());
     };
@@ -322,7 +322,7 @@ export default function ProductCard(props) {
 
     const getHost = async () => {
         try {
-            const res = await fetch(`https://localhost:4000/users/HostImg/${products.user_id}`, {
+            const res = await fetch(`http://localhost:4000/users/HostImg/${products.user_id}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });
@@ -340,7 +340,7 @@ export default function ProductCard(props) {
 
     const getImg = async () => {
         try {
-            const res = await fetch(`https://localhost:4000/product/${id}/image/`, {
+            const res = await fetch(`http://localhost:4000/product/${id}/image/`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization, refreshtoken },
             });
@@ -368,7 +368,7 @@ export default function ProductCard(props) {
             </div>
         );
     }
-    
+
     return (
         <div className="max-w-screen-lg mx-auto">
             <main>
@@ -467,7 +467,7 @@ export default function ProductCard(props) {
                                     </div>
                                     <span className="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
 
-                                        <img  src={comment.user.profile_image === null ? " https://png.pngtree.com/png-vector/20191115/ourmid/pngtree-beautiful-profile-line-vector-icon-png-image_1990469.jpg" : comment.user.profile_image}  className="aspect-square h-full w-full" alt="profile" />
+                                        <img src={comment.user.profile_image === null ? " https://png.pngtree.com/png-vector/20191115/ourmid/pngtree-beautiful-profile-line-vector-icon-png-image_1990469.jpg" : comment.user.profile_image} className="aspect-square h-full w-full" alt="profile" />
                                     </span>
 
                                     <div class="grid gap-1.5">
@@ -596,83 +596,83 @@ export default function ProductCard(props) {
                             <div class="mt-4">
                                 <div class="flex items-center space-x-2">
                                     <div class="flex items-center space-x-2">
-                                    <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill={onestar ? "black" : "white"}
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="w-6 h-6 "
-                                                onClick={() => starhandler("one")}
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill={twostar ? "black" : "white"}
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="w-6 h-6 "
-                                                onClick={() => starhandler("two")}
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill={threestar ? "black" : "white"}
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="w-6 h-6 "
-                                                onClick={() => starhandler("three")}
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill={fourstar ? "black" : "white"}
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="w-6 h-6"
-                                                onClick={() => starhandler("four")}
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill={fivestar ? "black" : "white"}
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                className="w-6 h-6"
-                                                onClick={() => starhandler("five")}
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill={onestar ? "black" : "white"}
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="w-6 h-6 "
+                                            onClick={() => starhandler("one")}
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill={twostar ? "black" : "white"}
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="w-6 h-6 "
+                                            onClick={() => starhandler("two")}
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill={threestar ? "black" : "white"}
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="w-6 h-6 "
+                                            onClick={() => starhandler("three")}
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill={fourstar ? "black" : "white"}
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="w-6 h-6"
+                                            onClick={() => starhandler("four")}
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill={fivestar ? "black" : "white"}
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="w-6 h-6"
+                                            onClick={() => starhandler("five")}
+                                        >
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                        </svg>
                                     </div>
-                                    <button onClick ={updatecommenthandler} class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                    <button onClick={updatecommenthandler} class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                         Update Review
                                     </button>
                                     <button onClick={deletecomment} class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2">
