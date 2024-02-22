@@ -26,7 +26,7 @@ const Login = () => {
     const [passworderrormessage, setpassworderrormessage] = useState()
     const Loginsubmithanlder = (events) => {
         events.preventDefault()
-        fetch("https://iamchatpt.com:4430/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
+        fetch("https://localhost:4000/auth/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ Email: emailref.current.value, Password: passwordref.current.value }) })
             .then(res => res.json())
             .then(resData => {
                 console.log(resData)

@@ -4,7 +4,7 @@ const Userinfo = () => {
     const [info, setinfo] = useState()
     const [update, setupdate] = useState(false)
     useEffect(() => {
-        fetch("https://iamchatpt.com:4430/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
+        fetch("https://localhost:4000/users/Mypage", { method: "GET", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + sessionStorage.getItem("accessToken"), "refreshtoken": sessionStorage.getItem("refreshToken") } })
             .then(res => res.json())
             .then(resData => { setinfo(resData.user); console.log(resData) })
             .catch(err => console.log(err))
